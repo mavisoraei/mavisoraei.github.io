@@ -1,0 +1,13 @@
+# Reference-only Persian originals (~4.5 MB) - do not deploy, do not link.
+# See PROJECT_RULES.md section 7
+_archive/
+
+# Orphaned Astro build artefacts from the previous hosting.
+# See PROJECT_RULES.md section 2.6
+_astro/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
