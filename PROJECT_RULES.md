@@ -140,11 +140,11 @@ All CSS/JS references carry an explicit version query string:
 <script src="/app.js?v=1.0.0" defer>
 ```
 
-Current version: **`1.0.1`** (24 references: `style.css` ×11, `app.js` ×11,
+Current version: **`1.0.2`** (24 references: `style.css` ×11, `app.js` ×11,
 `gallery.js` ×1, `contact.js` ×1).
 
 **Rule: whenever you change `style.css`, `app.js`, `gallery.js` or `contact.js`, bump the
-version in all 24 references together** (e.g. `1.0.0` → `1.0.1`). Otherwise GitHub Pages
+version in all 24 references together** (e.g. `1.0.1` → `1.0.2`). Otherwise GitHub Pages
 and browsers will keep serving the stale cached file. Fonts are already versioned by
 filename (`Vazirmatn-*.v2.woff2`) and need no query string.
 
@@ -167,8 +167,14 @@ What was done, for reference:
   in `contact.js`** documented in §2.3. That is correct — leave them.
 
 Verification that proved it clean: 0 Persian codepoints across all 230 HTML files,
-`style.css` and every root JS file; 18/18 JSON blocks parse; 4,663 local links resolve,
+`style.css` and every root JS file; 16/16 JSON-LD blocks parse (plus the
+`application/json` gallery data block in `gallery.html`); 4,668 local refs checked,
 0 broken; all pages `lang="en" dir="ltr"`.
+
+**One known pre-existing exception, left alone on purpose:** three
+`images/hero/doctors-*.avif` entries in the `<link rel="preload">` hint on
+`index.html` point at files that do not exist. They are preload hints only, so
+nothing renders differently. Say the word if you want them cleaned up.
 
 ---
 
@@ -261,39 +267,67 @@ There is no test suite and no linter in this project. Use these checks instead:
 
 ---
 
-*Last updated: Zen Linen theme with terracotta accent live on Pages, cache busting at `v1.0.1`.*
+*Last updated: Zen Linen Light palette live on Pages, cache busting at `v1.0.2`.*
 
 ---
 
-## 9. Theme: Zen Linen (active since `v1.0.1`)
+## 9. Theme: Zen Linen Light (active since `v1.0.2`)
 
-The palette in `style.css` `:root` is **Zen Linen**. The accent is terracotta
-`#F26A4B`. If you are retheming again, edit the tokens, not the call sites —
-step 3 of the migration removed every old hard-coded colour.
+`style.css` `:root` is **Zen Linen Light**: a fully neutral, warm-grey linen ramp
+with a near-black primary. It is deliberately low-chroma. If you are retheming
+again, edit the tokens, not the call sites — the palette is the single source of
+truth and every component already consumes it by semantic name.
 
-Token groups in `:root`:
+**Semantic tokens (authoritative, defined first, use these in new code):**
+
+| Token | Value | Role |
+|---|---|---|
+| `--background` | `#E9E4D8` | page canvas |
+| `--foreground` | `#1E1E1E` | body text |
+| `--card` | `#F4EFE4` | card and panel fills |
+| `--card-foreground` | `#1E1E1E` | text on `--card` |
+| `--primary` | `#2E2E2E` | buttons, CTA bands, emphasis text, active chips |
+| `--primary-foreground` | `#E6E4D7` | text on `--primary` |
+| `--secondary` | `#D8D2C4` | badges, chips, inline notes, hover fills |
+| `--secondary-foreground` | `#2E2E2E` | text on `--secondary` |
+| `--muted` | `#CFC8B8` | subtle fills, `code` |
+| `--muted-foreground` | `#5E5A52` | secondary text, captions |
+| `--border` | `#D2CBBB` | all hairlines and card borders |
+
+Supporting groups:
 
 | Group | Tokens |
 |---|---|
-| Warm linen neutrals | `--cream` `--cream-soft` `--surface` `--line` `--ink` `--ink-soft` `--espresso` `--scrub` `--on-accent` |
-| Terracotta accent | `--gold` `--gold-deep` `--gold-btn` `--gold-btn-deep` `--gold-champagne` |
-| Soft clay wash | `--matcha` `--sage` `--sage-deep` `--sage-light` `--wood` |
-| Status | `--danger` `--danger-deep` `--danger-soft` `--ok` `--warn` |
-| Terracotta depth scale | `--clay-300` … `--clay-900` |
+| Reserved accent | `--chart-1` `#F26A4B`, `--warn` |
+| Status | `--danger` `--danger-deep` `--danger-soft` `--ok` |
+| Dark depth ramp | `--clay-300` … `--clay-900` |
+| Legacy aliases | `--cream` `--cream-soft` `--surface` `--line` `--ink` `--ink-soft` `--espresso` `--scrub` `--on-accent` `--gold` `--gold-deep` `--gold-btn` `--gold-btn-deep` `--gold-champagne` `--matcha` `--sage` `--sage-deep` `--sage-light` `--wood` |
+| Type, layout, shadow | `--font-*` `--step-*` `--wrap` `--gutter` `--radius*` `--shadow-*` `--bottombar-h` |
 
 Notes that will save you time next time:
 
-- **The token names are historical, not descriptive.** `--gold` is terracotta,
-  `--sage`/`--matcha` are clay pinks, `--wood` is a linen tan. Do not "fix" the
-  names — ~1,050 `var()` call sites in `style.css` depend on them.
-- `--clay-300`…`--clay-900` exist only for the dark bands (footer, bottom bar,
-  `.svc-cta`). There are no light counterparts; use the neutral group above.
+- **Zero `var()` call sites reference the legacy aliases.** All 585+ references
+  in the body of `style.css` were rewritten to the semantic names. The alias
+  block is retained only as a safety net for any hand-written or future snippet
+  that still uses the old names. If you add CSS, use the semantic names.
+- **`--gold` is now `--primary`, not terracotta.** The old accent is gone from
+  every call site. Do not reintroduce it.
+- **`#F26A4B` is quarantined in `--chart-1` and is currently unreferenced.**
+  It is reserved for warning/caution tags only — never buttons, headers or CTAs.
+  The only alert element on the site is `.bk-alert`, which is a *form error* and
+  correctly uses `--danger`. Before wiring `--chart-1` into anything, confirm the
+  element is genuinely a warning tag.
+- `--clay-300`…`--clay-900` are `color-mix` results derived from `--foreground`
+  and `--primary`, so the dark bands (footer, bottom bar, CTA strips) stay inside
+  the palette and can never drift from it.
 - **The 219 leaf pages do not load `style.css`.** They are standalone documents
-  with their own inline `<style>` containing a local `:root` with the Zen Linen
-  tokens. They are byte-identical to each other. If you change the palette,
-  change that block in all 219 files too, or the two halves of the site drift.
-- `theme-color` on the 11 main pages is a literal `#F4EFE7`, not a `var()`.
-  A `<meta>` attribute cannot resolve a custom property — update it by hand.
+  with their own inline `<style>` defining a local `:root` plus a small
+  `main`/`.note`/`code` ruleset. All 219 style blocks are byte-identical
+  (single MD5). If you change the palette, change that block in all 219 files
+  too, or the two halves of the site drift.
+- `theme-color` on the 11 main pages is a literal `#E9E4D8` matching
+  `--background`, not a `var()`. A `<meta>` attribute cannot resolve a custom
+  property — update it by hand.
 - Shadows and translucent overlays use `color-mix(in srgb, var(--x) N%, transparent)`
   rather than 8-digit hex. That is why there are no `#RRGGBBAA` literals left
   except pure white/black insets on dark surfaces, which are intentional.
