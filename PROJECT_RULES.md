@@ -140,7 +140,7 @@ All CSS/JS references carry an explicit version query string:
 <script src="/app.js?v=1.0.0" defer>
 ```
 
-Current version: **`1.0.0`** (24 references: `style.css` ×11, `app.js` ×11,
+Current version: **`1.0.1`** (24 references: `style.css` ×11, `app.js` ×11,
 `gallery.js` ×1, `contact.js` ×1).
 
 **Rule: whenever you change `style.css`, `app.js`, `gallery.js` or `contact.js`, bump the
@@ -261,4 +261,39 @@ There is no test suite and no linter in this project. Use these checks instead:
 
 ---
 
-*Last updated: localisation complete, cache busting at `v1.0.0`, pre-Pages push.*
+*Last updated: Zen Linen theme with terracotta accent live on Pages, cache busting at `v1.0.1`.*
+
+---
+
+## 9. Theme: Zen Linen (active since `v1.0.1`)
+
+The palette in `style.css` `:root` is **Zen Linen**. The accent is terracotta
+`#F26A4B`. If you are retheming again, edit the tokens, not the call sites —
+step 3 of the migration removed every old hard-coded colour.
+
+Token groups in `:root`:
+
+| Group | Tokens |
+|---|---|
+| Warm linen neutrals | `--cream` `--cream-soft` `--surface` `--line` `--ink` `--ink-soft` `--espresso` `--scrub` `--on-accent` |
+| Terracotta accent | `--gold` `--gold-deep` `--gold-btn` `--gold-btn-deep` `--gold-champagne` |
+| Soft clay wash | `--matcha` `--sage` `--sage-deep` `--sage-light` `--wood` |
+| Status | `--danger` `--danger-deep` `--danger-soft` `--ok` `--warn` |
+| Terracotta depth scale | `--clay-300` … `--clay-900` |
+
+Notes that will save you time next time:
+
+- **The token names are historical, not descriptive.** `--gold` is terracotta,
+  `--sage`/`--matcha` are clay pinks, `--wood` is a linen tan. Do not "fix" the
+  names — ~1,050 `var()` call sites in `style.css` depend on them.
+- `--clay-300`…`--clay-900` exist only for the dark bands (footer, bottom bar,
+  `.svc-cta`). There are no light counterparts; use the neutral group above.
+- **The 219 leaf pages do not load `style.css`.** They are standalone documents
+  with their own inline `<style>` containing a local `:root` with the Zen Linen
+  tokens. They are byte-identical to each other. If you change the palette,
+  change that block in all 219 files too, or the two halves of the site drift.
+- `theme-color` on the 11 main pages is a literal `#F4EFE7`, not a `var()`.
+  A `<meta>` attribute cannot resolve a custom property — update it by hand.
+- Shadows and translucent overlays use `color-mix(in srgb, var(--x) N%, transparent)`
+  rather than 8-digit hex. That is why there are no `#RRGGBBAA` literals left
+  except pure white/black insets on dark surfaces, which are intentional.
