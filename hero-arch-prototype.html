@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lemon Aesthetic Clinic – hero + dome prototype</title>
+<style>
+/* Put Luxe.webp next to this file. Fonts: add woff2 files in assets/fonts (see @font-face). */
+@font-face{font-family:"Bodoni Moda";src:local("Bodoni Moda"),url("assets/fonts/BodoniModa.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Jost";src:local("Jost"),url("assets/fonts/Jost.woff2") format("woff2");font-display:swap}
+:root{
+  --cream:#f5f2eb; --cream-2:#faf8f5; --sand:#e8e2d5; --ink:#2a2622;
+  --font-display:"Ambroise Std Francois","Bodoni Moda",Georgia,serif;
+  --font-body:"Jost","Vazirmatn",system-ui,sans-serif;
+  --arch-dome:min(50vw,60svh);
+  --dome-k:1; --p:0;
+}
+*{box-sizing:border-box;margin:0}
+html{background:var(--cream)}
+body{font-family:var(--font-body);color:var(--ink);background:var(--cream);overflow-x:hidden}
+
+/* ---------- NAV (glass) ---------- */
+.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:28px;align-items:center;
+  padding:10px 14px 10px 22px;border-radius:999px;background:rgba(250,248,245,.45);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
+  border:1px solid rgba(255,255,255,.5);font-size:14px;white-space:nowrap}
+.nav a{color:inherit;text-decoration:none}
+.nav .cta{background:var(--ink);color:#fff;padding:9px 18px;border-radius:999px}
+
+/* ---------- HERO: sticky, photo only lives here ---------- */
+.hero{position:sticky;top:0;z-index:0;height:100svh;overflow:hidden;color:var(--cream-2)}
+.hero__photo{position:absolute;inset:-4%;
+  background:url("Luxe.webp") center/cover no-repeat,linear-gradient(135deg,#7d6445,#d9c6a5);
+  transform:translate3d(0,calc(var(--p)*-4vh),0) scale(calc(1 + var(--p)*.08));will-change:transform}
+.hero__scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,14,8,.6),rgba(20,14,8,.15) 60%,transparent)}
+.hero__content{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:1.3fr 1fr;align-items:center;
+  gap:40px;padding:90px max(24px,8vw) 40px;opacity:calc(1 - var(--p)*1.2);transform:translate3d(0,calc(var(--p)*-3vh),0)}
+.hero h1{font-family:var(--font-display);font-weight:400;font-size:clamp(64px,11vw,190px);line-height:.88;letter-spacing:-.02em}
+.hero h1 span{display:block;padding-left:.35em}
+.eyebrow{margin-top:28px;font-size:12px;letter-spacing:.25em;text-transform:uppercase;opacity:.85}
+.hero p{margin-top:12px;max-width:34ch;line-height:1.6;color:rgba(250,248,245,.88)}
+.btns{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{padding:12px 22px;border-radius:999px;font-size:14px;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.5)}
+.btn--dark{background:var(--ink);border-color:var(--ink)}
+.btn--glass{background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.doctors{justify-self:end;width:min(100%,300px)}
+.doctors h3{font-weight:400;font-size:20px;margin-bottom:10px}
+.avatars{display:flex;margin-bottom:10px}
+.avatars i{width:30px;height:30px;border-radius:50%;background:#cbb89a;border:2px solid var(--cream-2);margin-right:-8px}
+.film{aspect-ratio:3/3.5;border-radius:18px;border:1px solid rgba(255,255,255,.3);box-shadow:0 20px 50px rgba(0,0,0,.35);
+  background:linear-gradient(160deg,#3a3633,#171514);display:flex;align-items:flex-end;padding:14px;font-size:13px}
+
+/* ---------- SHEET: ONE full-width opaque block, hero→footer ---------- */
+.sheet{position:relative;z-index:2;isolation:isolate;width:100%}
+.sheet__bg{position:absolute;inset:0;z-index:-1;overflow:hidden;
+  background:linear-gradient(180deg,var(--cream-2),var(--cream));
+  border-radius:50% 50% 0 0 / calc(var(--arch-dome)*var(--dome-k)) calc(var(--arch-dome)*var(--dome-k)) 0 0}
+.blob{position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(80px);opacity:.5;will-change:transform;
+  animation:drift 30s ease-in-out infinite alternate}
+.b1{background:var(--sand);top:-8%;left:-12%}
+.b2{background:#efe7d6;top:35%;right:-15%;animation-duration:36s}
+.b3{background:#f0ebdf;bottom:6%;left:18%;animation-duration:42s}
+@keyframes drift{to{transform:translate3d(8vw,6vh,0) scale(1.1)}}
+.sheet__content{position:relative;z-index:1}
+.arc{display:block;width:min(92vw,1100px);margin:0 auto;height:auto;padding-top:2vh}
+.arc text{font-family:var(--font-display);font-size:34px;letter-spacing:.35em;fill:var(--ink);text-transform:uppercase}
+.sec{max-width:1000px;margin:0 auto;padding:12vh 24px}
+.sec h2{font-family:var(--font-display);font-weight:400;font-size:clamp(36px,5vw,64px);line-height:1}
+.sec p{margin-top:16px;max-width:60ch;line-height:1.7}
+footer{padding:10vh 24px;text-align:center;border-top:1px solid rgba(0,0,0,.08)}
+
+@media (max-width:800px){
+  :root{--arch-dome:clamp(120px,45vw,260px)}
+  .nav{gap:14px;font-size:12px;padding:8px 10px 8px 14px}.nav a:not(.cta):not(:first-child){display:none}
+  .hero__content{grid-template-columns:1fr;align-content:center;gap:24px;padding-top:80px}
+  .doctors{justify-self:start;width:200px}
+  .film{aspect-ratio:16/9}
+}
+@media (prefers-reduced-motion:reduce){.blob{animation:none}}
+</style>
+</head>
+<body>
+<nav class="nav"><a href="#">Lemon Aesthetic Clinic</a><a href="#">Laser</a><a href="#">Doctors</a><a href="#">Pricing</a><a class="cta" href="#">Contact Us</a></nav>
+
+<div class="page">
+  <section class="hero" id="hero">
+    <div class="hero__photo"></div>
+    <div class="hero__scrim"></div>
+    <div class="hero__content">
+      <div>
+        <h1>Beauty<span>Clinic</span></h1>
+        <div class="eyebrow">Welcome to Lemon</div>
+        <p>Fillers and Botox, Candela laser and facial rejuvenation, with licensed physicians and authentic filler that is never diluted.</p>
+        <div class="btns"><a class="btn btn-dark btn--dark" href="#">Book Appointment</a><a class="btn btn--glass" href="#">Smart Mirror</a></div>
+      </div>
+      <div class="doctors">
+        <h3>Seeing doctors</h3>
+        <div class="avatars"><i></i><i></i><i></i><i></i></div>
+        <div class="film">Watch the clinic film</div>
+      </div>
+    </div>
+  </section>
+
+  <main class="sheet" id="sheet">
+    <div class="sheet__bg"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i></div>
+    <div class="sheet__content">
+      <svg class="arc" viewBox="0 0 1000 300" aria-hidden="true">
+        <path id="arcPath" d="M 70 290 A 430 280 0 0 1 930 290" fill="none"/>
+        <text><textPath href="#arcPath" startOffset="50%" text-anchor="middle">Lemon Aesthetic Clinic</textPath></text>
+      </svg>
+      <!-- PUT YOUR REAL SECTIONS HERE (before/after, services, reviews, FAQ…). Sections must have NO background of their own. -->
+      <section class="sec"><h2>Before &amp; after</h2><p>Placeholder section. If the photo ever shows at the sides or between sections, a real section has its own background or position:fixed somewhere.</p></section>
+      <section class="sec"><h2>Services</h2><p>Placeholder section.</p></section>
+      <section class="sec"><h2>Reviews</h2><p>Placeholder section.</p></section>
+      <footer>© Lemon Aesthetic Clinic</footer>
+    </div>
+  </main>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement, sheet = document.getElementById('sheet');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let target = 0, cur = 0, raf = 0;
+  const clamp = (v) => Math.min(1, Math.max(0, v));
+  const read = () => { target = clamp(1 - sheet.getBoundingClientRect().top / innerHeight); if (!raf) raf = requestAnimationFrame(tick); };
+  const tick = () => {
+    cur += (target - cur) * (reduce ? 1 : 0.12);
+    if (Math.abs(target - cur) < 0.001) cur = target;
+    root.style.setProperty('--p', cur.toFixed(4));
+    const f = clamp((cur - 0.5) / 0.5);          // stays 0 until the dome reaches mid-screen
+    const ease = f * f * (3 - 2 * f);            // smooth start/end of the flattening
+    root.style.setProperty('--dome-k', reduce ? 1 : (1 - ease * 0.95).toFixed(4));
+    raf = cur === target ? 0 : requestAnimationFrame(tick);
+  };
+  addEventListener('scroll', read, { passive: true });
+  addEventListener('resize', read);
+  read();
+})();
+</script>
+</body>
+</html>

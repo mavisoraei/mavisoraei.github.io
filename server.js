@@ -18,6 +18,8 @@ const MIME = {
   '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
   '.avif': 'image/avif',
+  '.webm': 'video/webm',
+  '.mp4': 'video/mp4',
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.woff2': 'font/woff2',
@@ -95,10 +97,20 @@ const http_ = http.createServer((req, res) => {
     }
   }
 
-  // anything else: single-page-app style fallback to the requested local page, else index
-  if (serveFile(path.join(ROOT, 'index.html'), res)) return;
+  /* Fallback policy.
 
-  send(res, 404, 'text/plain; charset=utf-8', 'Not found');
+     An SPA-style fallback to the requested page, else index, is correct for
+     extensionless navigation. It must NOT apply to anything that names a file
+     though: previously a missing asset answered 200 text/html with index.html's
+     body, so `curl` reported every path as healthy and a typo'd image/CSS/JS
+     reference failed in the browser as a MIME error with nothing pointing at the
+     real cause. Anything carrying a known static extension now 404s. */
+  const ext = path.extname(decoded).toLowerCase();
+  const looksLikeAsset = Boolean(MIME[ext]);
+
+  if (!looksLikeAsset && serveFile(path.join(ROOT, 'index.html'), res)) return;
+
+  send(res, 404, 'text/plain; charset=utf-8', 'Not found: ' + decoded);
 });
 
 http_.listen(PORT, '0.0.0.0', () => {

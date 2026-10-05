@@ -1,0 +1,944 @@
+/* ==========================================================================
+   ARCH INTRO — layered arch-curtain reveal + rising hero arch  (v2.2.3)
+   ==========================================================================
+   Paired with /assets/js/arch-intro.js. Loaded on /index.html ONLY, after
+   style.css.
+
+   This is a re-architecture. The intro is no longer "an opaque box that fades
+   away"; it is a real layer stack, and the photo is a persistent base layer
+   rather than a guest of the overlay.
+
+   --------------------------------------------------------------------------
+   THE LAYER STACK (bottom -> top)
+   --------------------------------------------------------------------------
+z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
+                   ::before           (see THE MESH CROSSFADE note below). This is
+                                       the BACKGROUND of everything outside the arch,
+                                       so it is never clipped.
+
+      z-index   0   #arch-intro-photo   LAYER 0
+                 The clinic photo, `position: fixed`, full viewport, MOUNTED FOR
+                 THE WHOLE SESSION and never removed or re-created. It is the
+                 thing you have "zoomed into"; everything after Phase 1 happens
+                 in front of it.
+
+                 Above the mesh, not below it, and clipped to the arch silhouette
+                 from the moment of the Phase 1 -> Phase 2 handoff. That ordering
+                 is the whole containment story: the photo is what gets the arch
+                 cut into it, so it can only ever be visible INSIDE the arch, and
+                 the wash owns the rest of the page. The previous arrangement had
+                 it inverted, which meant the wash had to be the clipped layer and
+                 the photo consequently ran full-bleed behind every section below
+                 the hero.
+
+      z-index   1   .arch-hero         LAYER 2 — the rising hero arch, transparent
+      z-index   2   .arch-hero + *     the content below the hero
+
+     z-index   3   #arch-intro-overlay   LAYER 1 — the arch CURTAIN
+                frame.svg only. NO background colour: the darkness IS the SVG's
+                own matte, so there is never a flat block painted over the photo.
+
+     z-index   4   #arch-intro-ui     LAYER 2 — the brand title + sub
+
+     z-index   5   .lm-header         LAYER 2 — the floating glass navbar
+
+     z-index 9998  body::after        the site's film grain, above everything
+
+   The curtain (3) sits ABOVE the hero (1) on purpose: during Phase 2 the hero
+   rises behind a curtain that has already left the viewport, and if the curtain
+   were ever still on screen it must occlude the hero rather than the reverse.
+
+   --------------------------------------------------------------------------
+   THE MESH MASK — how two opaque backdrops share the screen
+   --------------------------------------------------------------------------
+   `#lm-bg-mesh` is `position: fixed; z-index: -1` with an OPAQUE drawing buffer
+   (`gl_FragColor = vec4(col, 1.0)`), and `body::before` is an opaque gradient
+   fallback. The photo is opaque too. Three opaque full-viewport layers cannot be
+   visible at once, yet the brief asks for two different backdrops:
+
+     * Phase 1  -> the PHOTO, seen only through the arch hole
+     * Phase 2  -> the MESH, inside the hero arch, WITH THE PHOTO STILL VISIBLE
+                  everywhere the arch is not
+
+   So the mesh is not merely crossfaded; it is masked to the arch window, and
+   the photo is the persistent base layer underneath it for the whole session:
+
+     * Phase 1 hides both mesh layers at `opacity: 0` (free — the curtain is
+       opaque everywhere except the hole), which is what lets the photo show.
+     * The handoff restores them and switches on the clip. Because the clip is
+       the arch, the 620ms dissolve is only ever visible INSIDE the arch; the
+       rest of the screen never pops, it just keeps showing the photograph.
+     * As the hero rises, the window tracks it and grows to the full viewport,
+       where it collapses to no clip at all — byte-identical to classic.
+
+   The photo therefore never leaves the DOM, is never re-created, and is never
+   covered by a flat colour. It is simply the bottom of the stack, and the mesh
+   is a window onto it. See section 4 for the geometry.
+
+   --------------------------------------------------------------------------
+   ISOLATION CONTRACT — read this before editing anything below
+   --------------------------------------------------------------------------
+   Every rule that changes the page is scoped under:
+
+       body.arch-intro:not(.classic-layout):not(.classic-mode)
+
+   `.arch-intro` is added by arch-intro.js at runtime. It is NEVER added when:
+
+     * JavaScript is disabled or arch-intro.js fails to load,
+     * `prefers-reduced-motion: reduce` is set,
+     * the viewport is too short to run the intro,
+     * `<body class="classic-layout">` (or the legacy `classic-mode`) is present.
+
+   `.classic-layout` therefore wins by specificity (it is part of the same
+   compound selector), so adding that ONE class to <body> drops this entire file
+   to zero effect: the curtain never paints, the rise loses its clip and offset,
+   the mesh returns to normal and the navbar returns to its un-gated state.
+   style.css is not modified by this file at all. The one deliberate exception is
+   the `@font-face` block, which declares a face and changes no layout.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. TYPE — NO FONT DECLARATIONS HERE ANY MORE
+   --------------------------------------------------------------------------
+   This file used to declare three @font-face rules of its own: a second
+   'Lemon Editorial Serif' and two 'Lemon Body Sans' faces, the latter two
+   pointing at the exact same two Vazirmatn .woff2 files that style.css already
+   loads.
+
+   They were all redundant. The serif was a byte-identical redeclaration of the
+   one in style.css — same family, same weight, same unicode-range, same file —
+   so the browser held two FontFace entries for one face. The 'Lemon Body Sans'
+   pair was worse: a SECOND family name bound to the SAME two font files as
+   Vazirmatn, so "the brand body font" and "the site body font" were the same
+   typeface under two aliases, and any future weight or subset added to one would
+   silently not apply to the other.
+
+   That is the real unification: one family per typeface, declared once, in
+   style.css. The two rules that used the local aliases now read the site's own
+   tokens -- var(--font-latin) for body text and var(--font-serif) for the wordmark,
+   so the arch intro can never drift out of step with the rest of the site.
+
+   Note the metric-override faces in style.css (`Vazir-fb-noto`, `-naskh`,
+   `-segoe`) are NOT redundant and are deliberately left there: they are
+   `src: local(...)` faces with size-adjust/ascent-override that make an
+   already-installed Persian font metric-match Vazirmatn. They cost no download
+   and they are the only thing keeping the Persian line-height stable. */
+
+
+/* --------------------------------------------------------------------------
+   2. LENIS (reproduced + re-gated)
+   --------------------------------------------------------------------------
+   /vendor/lenis.css is reproduced here rather than via a second <link> so this
+   file stays the single arch-intro dependency, and each rule is re-gated so a
+   stray vendor sheet can never affect classic layout.
+
+   TWO PLUMBING FACTS, both verified against the vendored v1.3.26 build:
+
+   (a) `.lenis` LANDS ON <html>, NOT <body>. Lenis' default `rootElement` is
+       `document.documentElement` and the class list is written there.
+
+   (b) THE GATE CLASS LIVES ON <body>, BUT `scroll-behavior` and the scroll lock
+       must apply to <html> — the scrolling element — so they bridge with
+       `:has()`. `:has()` is already used in style.css. The lock uses
+       `!important` because the reproduced `.lenis-stopped` overflow-clip rule
+       below is far more specific and would otherwise win. */
+html:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)) {
+  scroll-behavior: auto;
+}
+
+html:has(> body.arch-intro:not(.classic-layout):not(.classic-mode).arch-locked),
+html:has(> body.arch-intro:not(.classic-layout):not(.classic-mode).arch-locked) body {
+  overflow: hidden !important;
+}
+
+html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)),
+html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)) body {
+  height: auto;
+}
+
+html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)):not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)) [data-lenis-prevent],
+html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)) [data-lenis-prevent-wheel],
+html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)) [data-lenis-prevent-touch] {
+  overscroll-behavior: contain;
+}
+
+html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)).lenis-smooth iframe {
+  pointer-events: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. PHASE 1 — LAYER 0: THE FIXED CLINIC PHOTO
+   --------------------------------------------------------------------------
+   The photo is NOT a child of the curtain. It is a fixed, viewport-sized base
+   layer that the curtain's arch hole reveals, and it stays mounted for the rest
+   of the session. `object-fit: cover` + a 30% object-position reproduces the
+   top-centre framing the intro zoom ends on, so there is no visible jump at the
+   moment the curtain leaves. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo {
+  position: fixed;
+  inset: 0;
+  /* z-index 0 — the backdrop layer, directly above the mesh wash and directly
+     below the rising hero.
+
+     At -2 the photo sat UNDER the opaque mesh wash, so the only way to see it was
+     through a hole in the mesh. That left the photograph visible everywhere
+     OUTSIDE the arch, so every homepage section after the hero rendered on top of
+     the clinic image — the "content floating loose on the background" symptom,
+     and the reason the containment work below was never enough on its own.
+
+     At 0 it is a plain full-bleed backdrop that the OPAQUE hero (section 8) covers
+     wherever the hero is, and that the opaque post-hero sections (section 8c)
+     cover everywhere else. It is never cut into; see the `.arch-window` note below.
+
+     This is Phase-1 safe. The mesh is at `opacity: 0` for the whole of phase 1,
+     so nothing sits between -2 and 0 to reveal — the curtain still opens onto
+     exactly the same photograph it always did. */
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  /* no colour, no filter, no overlay — this is the photograph, untouched */
+}
+
+
+/* --------------------------------------------------------------------------
+   4. THE MESH MASK
+   --------------------------------------------------------------------------
+   Phase 1 needs the photo, so both mesh layers go to zero opacity instantly (no
+   transition on this rule — a fade here would flash the wash over the arch for
+   a beat). `.arch-mesh-in` brings them back at the Phase 1 → Phase 2 handoff.
+
+   Neither layer is clipped any more. They are the PAGE's background, not the
+   hero's, so the mesh covers the whole viewport and every section below the arch
+   sits on the clinic wash. The photograph survives that handoff simply by being
+   left full-bleed underneath: the opaque rising hero in section 8 covers the part
+   of it that sits under the hero, and the opaque sections in section 8c cover the
+   rest, so it is only ever seen through the two corners the dome's arc leaves
+   open.
+
+   Both mesh layers are viewport-sized fixed boxes (`inset: 0` for the
+   pseudo-element, `top/left: 0; width/height: 100%` for the canvas), so the
+   percentages resolve against the viewport.
+
+   app.js never writes an inline `opacity` on the canvas, so these rules win
+   cleanly and there is no inline-style conflict. On the shader-failure path
+   app.js does hide the canvas, and it stays hidden — which is correct, because
+   `body::before` behind it is a complete background in its own right. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) #lm-bg-mesh,
+body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-bg-mesh,
+body.arch-intro:not(.classic-layout):not(.classic-mode)::before {
+  opacity: 0;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-mesh-in #lm-bg-mesh,
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-mesh-in .lm-bg-mesh,
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-mesh-in::before {
+  opacity: 1;
+  transition: opacity 620ms cubic-bezier(.4, 0, .2, 1);
+}
+
+/* The photograph is NOT clipped any more.
+
+   It used to be, and the clip was the direct cause of the reported symptom.
+   `.arch-window` cut it to a BOTTOM band — `inset(var(--arch-offset) … 0 … round
+   …)` — i.e. exactly the rectangle the hero occupies, with a 120px rounded top.
+   So the photo was painted precisely where the transparent hero sat, the hero
+   added no background of its own, and the result was the clinic photograph
+   showing through the whole opening screen with the copy lying on top of it.
+   The arch was only ever that 120px radius, which is why it read as a rounded
+   rectangle instead of a dome.
+
+   The inversion is now unnecessary as well as wrong. The photo is a fixed,
+   viewport-sized backdrop at z-index 0 and the rising hero is an OPAQUE layer at
+   z-index 1, so the hero occludes the photograph on its own — no window has to be
+   cut for the site to show through. The photograph is simply left full-bleed, and
+   it is visible wherever the hero is not: above the hero's top edge while it rises
+   from below the fold, and inside the two corners the dome's arc leaves open at
+   rest. That is the arched-window read, and it removes the second hand-drawn shape
+   that could drift out of register with the hero.
+
+   Leaving it unclipped through the Phase 1 -> Phase 2 handoff is also
+   byte-for-byte continuous: before `.arch-window` the rule below did nothing, and
+   now there is no rule at all. */
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-window #arch-intro-photo {
+  clip-path: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. PHASE 1 — LAYER 1: THE ARCH CURTAIN
+   --------------------------------------------------------------------------
+   `#arch-intro-overlay` has NO background of its own. All of the darkness is
+   frame.svg's own `#1C1D1C` matte, which covers everything except the arch
+   opening. That is what satisfies "do not insert flat coloured blocks over the
+   background image": there is no CSS colour anywhere in this layer.
+
+   THE GEOMETRY IS MEASURED FROM frame.svg, NOT GUESSED. In viewBox
+   0 0 1920 1080 the matte path is:
+
+     M1900 0 L1900 1080 L1344 1080 L1344 613.5
+     C1344 401.699 1172.3 230 960.5 230
+     C748.699 230 577 401.699 577 613.5
+     L577 1080 L0 1080 L0 0 Z
+
+   so the opening it leaves is a dome-topped region reaching the canvas floor:
+
+     left    577 / 1920   = 30.0521%
+     width   767 / 1920   = 39.9479%
+     top     230 / 1080   = 21.2963%
+     height  850 / 1080   = 78.7037%
+     centreX (577+1344)/2 / 1920 = 50.02%   -> horizontally centred
+     centreY (230+1080)/2 / 1080 = 60.6479% -> BELOW the frame centre by 10.6479%
+
+   The cream hairline is a SEPARATE rect in the SVG at
+   x 564.25 w 792.5 / y 215.25 h 1406.5 rx 396.25 — i.e. ~12.75px OUTSIDE the
+   matte hole on each side and 14.75px above it, running past the canvas floor
+   and being clipped by `clip0`. It is drawn by the SVG itself, so it needs no
+   CSS twin.
+
+   SIZING: `width: max(100vw, 177.7778vh)` with `aspect-ratio: 16/9` is the only
+   combination that COVERS the viewport on both axes while preserving the SVG's
+   own proportions — a plain `100vw` frame is too short on portrait screens and
+   would leave an uncovered strip.
+
+   THE ZOOM ENDPOINT IS ASPECT-INDEPENDENT BY DESIGN. Scaling about the frame
+   centre pushes the hole's centre (which sits 10.6479% low) further down as S
+   grows, so every zoom state carries `translateY(-10.6479%)`, which cancels it
+   exactly and holds the hole centred on the viewport. For the hole to cover the
+   viewport it needs:
+
+     width :  0.399479 * frameW * S >= viewportW   ->  S >= 2.5034
+     height:  0.787037 * frameH * S >= viewportH   ->  S >= 1.2706
+
+   Working both through the `max()` sizing above, the width term dominates for
+   EVERY aspect ratio (it peaks at exactly 2.5034 on a 16:9 screen and falls away
+   on both narrower and wider ones), so a single 2.56 clears the matte
+   everywhere with a small margin. No JS geometry, no per-resize recompute. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  /* no background: the dark IS the SVG */
+}
+
+/* STEP 1 — the curtain enters from the bottom as a small semi-oval. The scale
+   term is what makes it read as "a small arch opening up" rather than "a big
+   arch sliding in". It settles at scale(1) before the zoom begins, so the two
+   transforms never fight over the same property. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay .arch-intro-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  will-change: transform;
+  animation: arch-stage-rise 1300ms cubic-bezier(.16, .84, .44, 1) both;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay .arch-intro-frame {
+  width: max(100vw, 177.7778vh);
+  aspect-ratio: 16 / 9;
+  background: url("/assets/frame.svg") center / 100% 100% no-repeat;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  /* STEP 4 — the dramatic zoom INTO the photograph. `both` holds the final
+     state, so the curtain is fully open (and fully off-screen) between the end
+     of this animation and the moment the JS removes the node. */
+  animation: arch-mask-zoom 1600ms cubic-bezier(.65, 0, .35, 1) 1500ms both;
+}
+
+@keyframes arch-stage-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 105vh, 0) scale(.62);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes arch-mask-zoom {
+  from {
+    transform: scale(1) translateY(-10.6479%);
+  }
+
+  to {
+    transform: scale(2.56) translateY(-10.6479%);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   6. PHASE 1 — LAYER 2: THE BRAND TITLE, ABOVE THE ARCH CEILING
+   --------------------------------------------------------------------------
+   The dome apex sits at 21.2963% of the frame height, which lands ~21vh from
+   the top on every viewport (the `max()` frame is centred, so the apex only
+   rises on ultrawide). The title therefore sits ABOVE that ceiling, not below
+   the arch: eyebrow first, then the title, both centred.
+
+   `.arch-title-in` is added by the JS on a fixed point in the timeline, so the
+   fade can never race the zoom. `.arch-hero-up` fades the whole UI layer out
+   once the hero starts rising, because this layer is ABOVE the hero and would
+   otherwise float over the hero's own content. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-hero-up #arch-intro-ui {
+  opacity: 0;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui .arch-brand-sub {
+  position: absolute;
+  top: clamp(.8rem, 5.6vh, 3.4rem);
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-latin);
+  font-size: clamp(.58rem, 1vw, .7rem);
+  font-weight: 500;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 231, .62);
+  white-space: nowrap;
+  opacity: 0;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui .arch-brand-title {
+  position: absolute;
+  top: clamp(1.4rem, 9.5vh, 6rem);
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.15rem, 2.4vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: .01em;
+  color: #f4efe7;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-title-in #arch-intro-ui .arch-brand-title {
+  animation: arch-title-in 700ms cubic-bezier(.22, .61, .36, 1) forwards;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-title-in #arch-intro-ui .arch-brand-sub {
+  animation: arch-title-in 700ms cubic-bezier(.22, .61, .36, 1) 90ms forwards;
+}
+
+@keyframes arch-title-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   7. PHASE 1 STEP 5 — THE GLASS NAVBAR DROPS IN
+   --------------------------------------------------------------------------
+   Held invisible until the zoom has finished, then sliding DOWN from above the
+   viewport. `-140px` is comfortably clear of the fold, and the transition is
+   long enough to read as a drop rather than a fade.
+
+   The z-index lift to 5 is required, not cosmetic: it puts the pill above the
+   curtain so it is visible the instant it starts animating. `pointer-events:
+   none` on the curtain means clicks still reach the pill underneath. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-header {
+  opacity: 0;
+  transform: translateY(-140px);
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 850ms cubic-bezier(.22, .61, .36, 1),
+    transform 850ms cubic-bezier(.22, .61, .36, 1);
+  /* style.css gives the header its own entrance animation; if it were still in
+     flight it would fight the opacity above, so the arch scope owns the reveal */
+  animation: none !important;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-nav-in .lm-header {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. PHASE 2 — THE SECOND ARCH: .arch-hero RISING FROM THE BOTTOM
+   --------------------------------------------------------------------------
+`.arch-hero` wraps the whole opening screen — `.lm-hero` (copy, buttons,
+     doctor avatars, video card) and, inside it, the `.home-ga` case gallery. The
+     gallery used to be a sibling of the arch and therefore sat outside it, which
+     is precisely the "real cases floating loose on the background photo" that was
+     supposed to be inside the silhouette. It is inside now, and it rides the same
+     dome.
+
+    The wrapper is the SOLID LIGHT LAYER and the photograph sits behind it. That
+    is the whole architecture in one line: a fixed full-bleed photo at z-index 0,
+    an opaque rising panel at z-index 1 whose top edge is a true elliptical dome,
+    and the page below it at z-index 2. The panel occludes the photograph by being
+    opaque, so nothing has to be cut out of the photo to reveal the site.
+
+    The arch shape comes from a `clip-path` ellipse on `::before`, NOT from
+    `overflow` and NOT from `border-radius`. `border-radius` was the previous
+    mechanism and it was the reason the shape read as a rounded rectangle: a radius
+    is a corner treatment, so it could only ever round the top two corners of a
+    box, and a 120px vertical radius on a full-bleed hero is a shallow fillet. A
+    `clip-path` ellipse is an actual curve with an actual centre and two actual
+    radii, which is what "semi-ellipse dome" means. `--arch-ry` is tuned so the
+    arc reads as a segmental arch rather than a knife edge — see the `::before`
+    note for why that ratio is load-bearing and not cosmetic.
+
+    Adding `position: relative` here re-anchors nothing, which was checked
+    rather than assumed: `.lm-hero` has three absolutely positioned descendants
+    (`.visually-hidden` on the h1, `.lm-play-ico`, `.lm-play-label`) and all
+    three resolve against `.lm-play-card`, which is itself `position: relative`.
+    The `position: fixed` header is a sibling of the hero — it closes before
+    `<main>` — so the transform below cannot capture or re-anchor it.
+
+    Four custom properties are published by the JS every frame, on `<body>` so
+    that the hero (by inheritance) and the reduced-motion overrides read the same
+    numbers:
+
+     `--arch-offset`  net Y translate, +62vh at rest decaying to 0, so the hero
+                      starts one viewport-height BELOW the fold and rises into
+                      exactly the position it occupies with no effect applied.
+     `--arch-scale`   0.94 -> 1. The hero is already full-bleed in layout, so
+                      this is what makes it literally *widen* into 100% of the
+                      screen. Scale rather than an animated `width`, because
+                      width reflows the whole hero subtree every frame.
+`--arch-open`    raw 0..1 scroll progress, widening and flattening the dome
+                      ellipse toward a rectangle as you scroll into the hero.
+      `--arch-dome`    static 22vw dome depth — not written by the JS.
+      `--arch-ry`      static 55vw vertical radius of that ellipse — not written
+                      by the JS either. See the `::before` note.
+
+    There is deliberately no `transition` on any of the written three: all three
+    are updated every frame from the rAF loop, and a transition would only add
+    lag behind the scroll. The inner contents in section 8b do have one, because
+    they are not written per frame — they are a single settle once. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  /* v2.2.3 — THE DOME MOVED DOWN TO `.home-ga`. This box used to carry the solid
+     light layer: a slab gradient sized to begin at --arch-dome plus a `::before`
+     cap, together painting "opaque rectangle with a domed top" for the whole of
+     .arch-hero. The brief changed — the hero copy now sits ON the photograph in
+     near-white type, which is only legible over an image if the box is
+     TRANSPARENT — so that geometry was RETARGETED onto `.home-ga` (the cream
+     section that follows the hero) instead of being deleted. Nothing was removed:
+     the slab + cap pair now describe the top edge of the cream section, so as you
+     scroll the dome sweeps up over the photo and takes the hero copy with it.
+
+     What replaced the slab here is the legibility scrim, and it is deliberately
+     a GRADIENT and not a flat wash. Three details make it work:
+       * 90deg, so it darkens the LEFT edge where the text block sits and thins to
+         fully transparent by 100%, leaving the right-hand video column and the
+         photo itself clean. A uniform overlay would grey the whole image.
+       * It is sized to the BOX, which wraps .lm-hero AND .home-ga, rather than
+         to the hero alone. That is harmless rather than wrong: `.home-ga` below is
+         fully opaque (its own slab plus cap cover every pixel of it), so it hides
+         this gradient completely and the scrim only ever becomes visible through
+         the transparent hero. Sizing it to `.lm-hero` instead would be equally
+         correct and would document the intent better; it is left on the wrapper
+         because the wrapper is the element that spans the photograph.
+       * rgba() stops, not hex-with-alpha. --background is an opaque cream, so
+         mixing "cream at 55%" toward transparent would produce a WASHED-OUT
+         overlay, not a darken — the scrim has to darken, and only an explicit
+         rgb(20,14,8) does that.
+     The three stops are the values from the brief, named as tokens in style.css
+     so the hero eyebrow, lead and video border can reuse them without literals
+     drifting apart. */
+  background: linear-gradient(
+    90deg,
+    var(--hero-scrim-0, rgba(20, 14, 8, 0.55)) 0%,
+    var(--hero-scrim-55, rgba(20, 14, 8, 0.15)) 55%,
+    var(--hero-scrim-100, rgba(20, 14, 8, 0)) 100%
+  );
+  /* The dome is NOT here any more, but `.arch-hero::before` still resolves to
+     this element's pseudo. `content: none` retires the cap cleanly at this
+     specificity while the cap's own rule lives on `.home-ga::before`. */
+  --arch-parallax: 0;
+  transform-origin: 50% 0%;
+  transform: translate3d(0, var(--arch-offset, 0px), 0) scale(var(--arch-scale, 1));
+  will-change: transform;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero::before {
+  content: none;
+}
+
+/* THE DOME. `--arch-dome` is how deep the curve travels before it meets the sides
+   of the screen (~22vw — deep enough to read as an arch rather than a rounded
+   corner, shallow enough to stay out of the copy). `--arch-ry` is the ellipse's
+   vertical radius and is set EQUAL to `--arch-dome`, which makes this a true
+   semi-ellipse: the kept region is exactly the lower half of the ellipse, widest
+   (100% of the width) where it meets the slab and narrowing to a point at the top.
+
+   That point is intentional, and it is what makes the shape read as an arch
+   instead of a rounded rectangle. It is safe because the curve is only ever asked
+   to clear INK, not the hero's layout box — see the `--arch-ry` note for the
+   measured clearance per viewport.
+
+   rx is pinned to 50% of the band width, so the curve always meets the edges
+   exactly at --arch-dome rather than floating short of them.
+
+   `--arch-open` widens and flattens both radii together as you scroll in, which
+   relaxes the dome toward a plain rectangle without ever reaching a degenerate
+   zero-radius shape (the old `border-radius` could, and did, collapse to nothing).
+   A non-zero radius is kept at every value, so the clip is always valid. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero .home-ga::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--arch-dome, 22vw);
+  background: var(--background);
+  clip-path: ellipse(
+    calc(50% * (1 + var(--arch-open, 0)))
+    calc(var(--arch-ry, var(--arch-dome, 22vw)) * (1 + var(--arch-open, 0)))
+    at 50% 100%
+  );
+  /* Purely decorative paint behind the gallery — it must never eat a click. */
+  pointer-events: none;
+  /* The cap is a BACKGROUND, never a lid. z-index 0 puts it in the same layer as
+     `.home-ga`'s own content, so tree order alone used to decide whether the
+     cards or the cap won — and tree order is not a contract. Pinning it to 0
+     makes the cap the thing the content is stacked ON TOP of, which is the whole
+     point of it. */
+  z-index: 0;
+}
+
+/* THE CONTENT SITS ON TOP OF THE CAP. This is stated explicitly rather than left
+   to tree order: `.lm-hero` is `position: relative` with `z-index: auto`, which
+   ties it with the `::before` cap, and a tie is exactly the kind of thing a
+   later edit silently inverts. Without this rule the two are decided by which
+   pseudo-element the engine reaches first, and the hero copy can end up painted
+   underneath an opaque panel that covers the top --arch-dome of the screen.
+
+   z-index 1 here, 0 on the cap. Both are inside `.arch-hero`, which is itself the
+   z-index 1 stacking context that sits above the photograph — so this pairing
+   orders copy-above-cap *within* the panel and leaves panel-above-photo alone. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero > .lm-hero,
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero .home-ga {
+  position: relative;
+  z-index: 1;
+}
+
+/* v2.2.3 — THE SCROLL FADE ON THE HERO COPY. `--p` is 0..1 scroll progress over
+   one viewport height, published every frame from arch-intro.js (see the note on
+   `--p` there for why it is not `--arch-open`).
+
+   The brief: "fades slightly and moves up 3vh as --p increases, never disappears
+   before the dome covers it." Two numbers carry that:
+
+     opacity    1 → 0.55. Deliberately NOT 0 and not 0.3. The copy has to still
+                be legible in the last moments before the dome's apex passes it —
+                a fade to zero would make the hero look broken during exactly the
+                scroll where the reader is still trying to read the paragraph.
+                0.55 is enough to read as "receding", not enough to look like a
+                bug.
+     translate  0 → -3vh. The 3vh is literal from the brief. It is `vh`, not `px`,
+                so it scales with the viewport, and it is on the same element as
+                the opacity so the two can never desync.
+
+   `calc()` with the `var(--p, 0)` fallback matters more than usual here: these two
+   selectors are also the stacking/isolation rules above, and they must apply
+   identically on a browser where the JS never ran (JS disabled, script blocked,
+   or `ARCH.classic()` already called). With the fallback the copy simply sits at
+   full opacity and no translate — the correct at-rest state.
+
+   `will-change` is set because both properties are recomputed every frame from a
+   scroll-driven custom property, which otherwise re-rasterises the layer on
+   every scroll tick. Note this is scoped to `.lm-hero > *`, i.e. the two hero
+   columns, so the gallery below does not inherit the fade. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero > .lm-hero > .lm-hero-grid > * {
+  opacity: calc(1 - 0.45 * var(--p, 0));
+  transform: translate3d(0, calc(-3vh * var(--p, 0)), 0);
+  will-change: opacity, transform;
+}
+
+/* First-paint guard. `.arch-intro` only exists once the JS is running, so
+   declaring the rest offset here is safe: if the script never runs the class
+   never lands and the hero sits in its normal position. It removes the one-frame
+   flash of a settled hero before the JS's first rAF write lands.
+
+   These are declared on <body>, not on `.arch-hero`, for two reasons: the mesh
+   clip in section 4 needs to inherit the same values, and a value specified
+   directly on `.arch-hero` would BEAT the value inherited from <body> — which
+   would pin the hero at 62vh forever and freeze the rise. The JS writes them as
+   inline styles on <body>, and inline beats this rule, so first paint matches
+   the first frame of motion exactly.
+
+   62vh MUST match RISE_FRACTION (0.62) in arch-intro.js, and 0.94 MUST match
+   SCALE_FROM. Both are asserted by the verification script. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) {
+  --arch-offset: 62vh;
+  --arch-scale: 0.94;
+  --arch-open: 0;
+  /* Dome depth — how far the curve travels before it meets the sides of the
+     screen. 22vw, NOT a px value and NOT a percentage of the hero's height: the
+     hero is `min-height: 100svh` plus the whole case gallery, so any height-relative
+     unit would make the arch sag deeper on tall viewports and clip the copy there
+     while looking right on short ones. Width-relative holds one silhouette across
+     both. It also matches the ratio the shape was chosen at: ~317px on a
+     1440x900 desktop, ~86px on a 390-wide phone, where the fixed navbar pill
+     occupies the top ~60px and a deeper crown would start crowding it.
+
+     Static (never written by the JS), so it needs no first-paint guard, but it is
+     declared here rather than inline so the hero slab and the dome cap read one
+     number.
+
+     The `min()` is a guard, not a style choice. The depth doubles as the point
+     where the hero's background slab starts, so a depth greater than the hero's
+     own height would drive `calc(100% - var(--arch-dome))` negative — an invalid
+     `background-size`, so the slab would vanish and the photograph would leak
+     straight through the middle of the hero. That is reachable on a landscape
+     phone or a short laptop window, where the viewport is wide but barely 400px
+     tall, so the depth is capped at a third of the viewport height. On every
+     normal portrait viewport the 22vw is what applies. */
+  --arch-dome: min(22vw, 34svh);
+  /* THE DOME IS A TRUE SEMI-ELLIPSE: --arch-ry IS --arch-dome, nothing more.
+
+     An earlier revision ran `--arch-ry` at ~2.5x `--arch-dome` to turn the apex
+     away from a knife edge. That was solving the wrong problem: it was sized to
+     contain the whole `.lm-hero-grid` BOX, which is `max-width: var(--shell-max)`
+     — about 96% of the viewport at 1920. Holding a 96%-wide box inside the curve
+     forces a curve so shallow that only ~8% of the top corners were photograph,
+     which reads as a flat block with slightly rounded corners rather than an arch.
+
+     What actually has to stay inside the curve is INK, not the layout box, and the
+     ink is far narrower than its container. The first child of `.lm-hero-copy` is
+     `.lm-hero-giant`, a flex row of two short spans — "Beauty" / "Clinic" — at
+     `clamp(3rem, 7.6vw, 8rem)` with `-0.03em` tracking: ~600px at 1440, ~694px at
+     1920. Everything below it (kicker, the 48ch lead, the two buttons, the doctor
+     row) sits LOWER in the copy, and the ellipse only widens as y increases, so
+     the title is the single binding element and everything under it is safer.
+
+     Measured with kept(y) = W * sqrt(1 - ((D-y)/ry)^2) at ry == D, the curve is
+     still 1133px wide where the title begins at y=120 on 1440x900 (title ~600px),
+     and ~1420px on 1920x1080 (title ~694px) — over 250px of clearance per side at
+     every tested viewport. On the short and narrow viewports where D < 120px the
+     dome has already closed above the copy entirely.
+
+     `--arch-open` still multiplies both radii as you scroll, so this relaxes
+     toward a plain rectangle and is never a degenerate zero-radius shape. */
+  --arch-ry: var(--arch-dome);
+}
+
+/* The hero keeps its own layout; the wrapper adds no box of its own, so classic
+   and arch modes occupy identical box heights.
+
+   The old `border-radius: inherit` handoff is gone. The dome is a `clip-path`
+   ellipse on the wrapper's `::before` now, which clips whatever it is painted on
+   — so nothing needs to inherit a radius, and `.lm-hero` is left completely
+   untouched. That also means `.lm-hero`'s own `overflow: hidden` can no longer
+   fight a radius it is no longer given. */
+
+/* `.home-ga` used to be a direct child of the page, so it ran the full width of
+   the viewport. Inside `.lm-hero` it inherits the hero's inline padding and would
+   come up ~2.4rem narrow on each side, which visibly inset the carousel and put
+   its faded edges short of the screen edge.
+
+   Cancelling the padding with a matching negative margin puts it back to the
+   viewport width it always had. `.ias` is `overflow: hidden` with a gradient mask
+   and its own `100%` width, so nothing about the row's geometry changes — only
+   which box it is measured against. `.arch-hero`'s permanent `overflow: hidden`
+   then clips it to the panel, which is the point: the gallery now bleeds to the
+   screen edges INSIDE the panel instead of escaping it. It sits far below
+   `--arch-dome`, where the dome's arc has already reached the full screen width,
+   so the full-bleed edge is exactly where the curve has finished — the two
+   never fight. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero .home-ga {
+  margin-inline: calc(-1 * var(--lm-gutter));
+  width: auto;
+  /* v2.2.3 — `.home-ga` INHERITS the solid light layer that used to be painted
+     by `.arch-hero`. It had no background of its own at all: it was opaque purely
+     because it sat inside the hero's slab. When the hero went transparent for the
+     photo, that left this whole gallery band showing the fixed clinic photograph
+     straight through it — which is the original "content floating loose on the
+     background" bug in a new place, so the slab has to arrive here rather than
+     simply being switched off.
+
+     It is the SAME slab recipe as before, still a gradient rather than a bare
+     colour, because `background-position` / `background-size` are inert on a flat
+     colour — a gradient is an image, so it can be sized and anchored. Anchored
+     `bottom` with size `calc(100% - var(--arch-dome))` puts the slab's top edge
+     exactly at --arch-dome, where the `::before` cap above is at full width, so
+     the seam cannot show.
+
+     `isolation: isolate` is what makes the cap's z-index:0 meaningful. Both the
+     cap and the cards live inside this element; without a stacking context of its
+     own the cap would sort against `.arch-hero`'s children and, at z-index 0,
+     could paint over the gallery instead of under it. */
+  isolation: isolate;
+  background: linear-gradient(var(--background), var(--background)) center bottom / 100%
+      calc(100% - var(--arch-dome, 22vw)) no-repeat;
+}
+
+/* The arch is ENCLOSED, permanently. This used to flip `overflow` back to
+   `visible` once the rise finished, on the reasoning that the arch had been
+   dissolved and the hero should rejoin the normal page flow. That was the last
+   leak: with the overflow released, the fixed photograph behind the hero ran on
+   past the fold and every following section painted straight over it.
+
+   `overflow: hidden` is now never released, so the hero and the case gallery now
+   living inside it can never produce a scrollbar or spill past the dome, at any
+   scroll position. Containment is the resting state, not something the animation
+   switches on and off.
+
+   No radius is reset here any more — the silhouette is a `clip-path` ellipse and
+   the resting dome is meant to survive the rise. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero.arch-risen {
+  overflow: hidden;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   8b. PHASE 2 — INNER CONTENT PARALLAX
+   --------------------------------------------------------------------------
+   The container rises FAST, the contents inside it drift SLOWLY, and the two
+   are deliberately decoupled: `--arch-inner` is a fixed multiple of
+   `--arch-offset` rather than a second scroll term, so the hero travels 62vh to
+   its final position while its contents cover barely half that distance. The
+   result is that the hero slides into place and the copy, buttons, doctors and
+   case gallery are still catching up — which is the whole point, and the reason
+   this cannot be one property driving both.
+
+   The 0.55 factor is what makes it read as depth rather than as a single moving
+   block. At 1.0 the contents are welded to the hero and the effect disappears;
+   the inner transform only differs from the outer one by the 45% it has left to
+   travel, which at rest is 27vh of drift against the hero's 62vh.
+
+   All of these are transforms. Nothing here animates width, height, top or
+   margin, so none of it can trigger layout or reflow the subtree — which is what
+   "use hardware-accelerated transitions rather than animating layout properties"
+   actually requires. `will-change` is on the parallax elements and NOT on the
+   hero's own children beyond these, so this adds two composited layers, not one
+   per card.
+
+   One shared transition instead of a per-element duration list, so every layer
+   decelerates on exactly the same curve and the group never separates. 340ms is
+   long enough to absorb a dropped frame without the content visibly rubber-
+   banding behind a fast flick. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-risen .lm-hero-grid,
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-risen .home-ga {
+  transform: translate3d(0, calc(var(--arch-offset, 0px) * var(--arch-parallax, .55)), 0);
+  transition: transform 340ms cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
+}
+
+/* Cancelled during the rise itself. The properties only exist while the hero is
+   transformed (the first-paint guard in section 8 pins them until then), so the
+   inner layer would otherwise be sitting 27vh low from the very first frame and
+   the hero would appear to arrive with its contents hanging below it. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero {
+  --arch-parallax: 0;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .arch-hero {
+  --arch-parallax: .55;
+}
+
+/* Everything below the arch — which, now that `.home-ga` has moved inside it, is
+   everything below `.home-ga` — returns to the normal flat canvas and sits above
+   both background layers.
+
+   `~ *`, not `+ *`, and that is the fix rather than a style choice. `+ *` matched
+   `.home-intro` alone, so `.cluster`, `.trend`, `.cnp` and the five other post-hero
+   sections were left stacking directly on top of the fixed photograph — which is
+   why "content floating loose on the background" kept coming back no matter how
+   the hero itself was fixed. Every following sibling is now lifted above layer 0
+   AND given the opaque page colour, so the photograph is confined to the hero's
+   dome instead of running the whole length of the page.
+
+   The colour is only ever a background. `--background` is the same token `body`
+   already paints, so these sections look identical to the classic page; the
+   dark bands in this page (`.f-bar`, the modal) set their own backgrounds and are
+   unaffected. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero ~ * {
+  position: relative;
+  z-index: 2;
+  background: var(--background);
+}
+
+
+/* --------------------------------------------------------------------------
+   9. REDUCED MOTION
+   --------------------------------------------------------------------------
+   arch-intro.js does not add `.arch-intro` at all under this query, so these
+   are belt-and-braces for the case where the class is already on the body and
+   the preference changes mid-session. */
+@media (prefers-reduced-motion: reduce) {
+  body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay,
+  body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui {
+    display: none !important;
+  }
+
+  /* The photo is no longer clipped, so there is no clip to reset — the hero's own
+     opacity does the work under this query. */
+  body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo {
+    clip-path: none !important;
+  }
+
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-header {
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    transition: none !important;
+  }
+
+  /* Containment is not motion, so it stays: `overflow` remains hidden here even
+     under reduced motion. A hero with overflow released is exactly the leak the
+     arch was built to prevent, and a user who asked for less animation did not
+     ask for less containment.
+
+     `--arch-open` is pinned to 0 here, not 1. It widens and flattens the dome
+     ellipse as you scroll in, so pinning it to 1 would erase the arch entirely —
+     leaving a reduced-motion user with the exact flat, square-cornered hero this
+     change exists to replace. The dome is a static shape, not an animation, so
+     there is nothing about it to suppress. */
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero {
+    --arch-offset: 0px !important;
+    --arch-scale: 1 !important;
+    --arch-open: 0 !important;
+    --arch-parallax: 0 !important;
+    transform: none !important;
+    overflow: hidden !important;
+  }
+
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-grid,
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .home-ga {
+    transform: none !important;
+    transition: none !important;
+  }
+}
