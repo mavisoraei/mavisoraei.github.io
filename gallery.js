@@ -36,6 +36,45 @@
       const nd = document.getElementById('nb-data');
       if (nd) g = JSON.parse(nd.textContent);
     } catch (err) {}
+    const av = {};
+    c.forEach(r => {
+      const k = r.dataset.filter || '';
+      if (k.startsWith('doc:')) {
+        const im = r.querySelector('img');
+        if (im) av[k.slice(4)] = im.src;
+      }
+    });
+    m.forEach((card, idx) => {
+      const t = g[idx];
+      if (!t) return;
+      const tr = card.querySelector('.nb-treat');
+      if (tr && t.t) tr.textContent = t.t;
+      const row = card.querySelector('.nb-doc-info');
+      const old = card.querySelector('.nb-doc-name');
+      if (row && old) {
+        const src = av[card.dataset.doc];
+        if (src) {
+          const im = document.createElement('img');
+          im.className = 'nb-ava';
+          im.src = src;
+          im.width = 24;
+          im.height = 24;
+          im.alt = '';
+          im.loading = 'lazy';
+          im.decoding = 'async';
+          row.insertBefore(im, old);
+        }
+        if (t.dn) {
+          const a = document.createElement('a');
+          a.className = 'nb-doc-name';
+          a.textContent = t.dn;
+          if (t.dh) a.href = t.dh;
+          old.replaceWith(a);
+        }
+      }
+      const view = card.querySelector('.nb-view');
+      if (view && t.url) view.href = t.url;
+    });
     const n = document.getElementById('nb-lightbox');
     if (!n) return;
     const E = n.querySelector('.nb-lb-img');
@@ -82,8 +121,8 @@
       L(l[s]);
     };
     o.querySelectorAll('.nb-media').forEach(e => e.addEventListener('click', () => {
-      const idx = Number(e.dataset.index);
-      if (!isNaN(idx)) w(idx);
+      const idx = m.indexOf(e.closest('.nb-card'));
+      if (idx > -1) w(idx);
     }));
     n.addEventListener('click', e => { if (e.target === n) f(); });
     n.querySelectorAll('.nb-lb-prev').forEach(x => x.addEventListener('click', () => iDir(-1)));

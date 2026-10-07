@@ -406,58 +406,92 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * homepage auto image slider — seamless 20s before/after case row
+   * homepage case row — scroll-snap carousel + before/after compare
    * ------------------------------------------------------------------ */
 
-  /* Replaces the 3D coverflow. Every bit of motion here is one CSS keyframe on
-   * `.ias-track` — `translate3d(0,0,0)` to `translate3d(-50%,0,0)` over
-   * `--ias-dur`, `infinite`, `linear` — so this function's only real job is the
-   * DOM the animation cannot set up by itself. It never writes `transform`,
-   * never restarts the animation, and never measures a card.
+  /* The row is a scroll container now (`.ias`: scroll-snap, hidden scrollbar,
+   * prev/next buttons below it — see the CSS), so this function's old job of
+   * appending a clone of every card, so a `translate3d(-50%)` keyframe could
+   * wrap seamlessly, is gone with the loop it served. What is left is the
+   * part CSS cannot do: bind the two buttons to scroll exactly one card at a
+   * time, and disable each at the end it would run past.
    *
-   * WHY THE CLONES EXIST: a translate of exactly -50% lands the row back on its
-   * first card only if the track is exactly two identical halves long. With the
-   * ten authored cards alone, -50% overshoots into empty space for half of every
-   * cycle, so each card is cloned once and the clone set is appended. That is the
-   * whole trick behind a seamless loop with a single CSS declaration.
+   * The clone set from the loop build is stripped on bind, so a page that
+   * still has one in its markup does not keep a doubled row.
    *
-   * The clones are inert: `aria-hidden` keeps them out of the accessibility tree,
-   * `tabindex="-1"` plus a stripped `href` keeps them out of the tab order, and
-   * `pointer-events:none` keeps them off the pointer entirely. `[data-ias-clone]`
-   * is also the hook the reduced-motion block in CSS uses to hide them outright
-   * once the row degrades to a hand-scrolled container.
-   *
-   * `build()` is re-run on resize so the clone set cannot desync from the authored
-   * cards — it is cheap, idempotent, and guarantees the -50% target stays exact.
-   */
+   * One card is measured as the item's own outer width, because CSS folds the
+   * gap into the item: that stays exact at every breakpoint and after a
+   * resize changes how many cards fit. */
   function initCaseSlider() {
     document.querySelectorAll('.ias').forEach(function (root) {
       if (root.dataset.iasBound) return;
       const track = root.querySelector('.ias-track');
       if (!track) return;
-      const authored = Array.prototype.slice.call(track.querySelectorAll('.ias-item:not([data-ias-clone])'));
-      if (!authored.length) return;
+      const items = Array.prototype.slice.call(track.querySelectorAll('.ias-item:not([data-ias-clone])'));
+      if (!items.length) return;
       root.dataset.iasBound = '1';
 
-      const build = function () {
-        /* Clear the previous clone set first, or a resize compounds the row
-         * instead of replacing it. */
-        track.querySelectorAll('[data-ias-clone]').forEach(function (n) { n.remove(); });
-        authored.forEach(function (item) {
-          const clone = item.cloneNode(true);
-          clone.setAttribute('data-ias-clone', '1');
-          clone.setAttribute('aria-hidden', 'true');
-          clone.style.pointerEvents = 'none';
-          clone.querySelectorAll('a, button, [tabindex]').forEach(function (el) {
-            el.setAttribute('tabindex', '-1');
-            if (el.tagName === 'A') el.removeAttribute('href');
-          });
-          track.appendChild(clone);
+      track.querySelectorAll('[data-ias-clone]').forEach(function (n) { n.remove(); });
+
+      const nav = root.parentElement ? root.parentElement.querySelector('.ias-nav') : null;
+      const prev = nav ? nav.querySelector('[data-ias-prev]') : null;
+      const next = nav ? nav.querySelector('[data-ias-next]') : null;
+
+      const sync = function () {
+        const max = root.scrollWidth - root.clientWidth;
+        if (prev) prev.disabled = root.scrollLeft <= 1;
+        if (next) next.disabled = root.scrollLeft >= max - 1;
+      };
+
+      const nudge = function (dir) {
+        root.scrollBy({
+          left: dir * items[0].getBoundingClientRect().width,
+          behavior: prefersReducedMotion() ? 'auto' : 'smooth'
         });
       };
 
-      build();
-      window.addEventListener('resize', rafThrottle(build), { passive: true });
+      if (prev) prev.addEventListener('click', function () { nudge(-1); });
+      if (next) next.addEventListener('click', function () { nudge(1); });
+
+      root.addEventListener('scroll', rafThrottle(sync), { passive: true });
+      window.addEventListener('resize', rafThrottle(sync), { passive: true });
+      sync();
+    });
+  }
+
+  /* Before/after compare inside one arch frame. The range input sits over the
+   * frame but outside the card's link (a link may not contain one), and every
+   * `input` event writes `--pos` on the frame — the clipped before layer, the
+   * divider line and the handle all read that one variable, so they cannot
+   * drift apart. */
+  function initCaseCompare() {
+    document.querySelectorAll('.ias-media').forEach(function (media) {
+      if (media.dataset.iasCompareBound) return;
+      const item = media.closest('.ias-item');
+      const range = item ? item.querySelector('.ias-ba-range') : null;
+      const ba = media.querySelector('.ias-ba');
+      if (!range || !ba) return;
+      media.dataset.iasCompareBound = '1';
+
+      const apply = function () { media.style.setProperty('--pos', range.value + '%'); };
+      range.addEventListener('input', apply);
+      apply();
+
+      /* The default layout is ONE combined side-by-side photo used by both
+       * layers (frame width, left half / right half). If a case ever ships two
+       * real photos instead, differing srcs flip the layers to frame width. */
+      const imgs = ba.querySelectorAll('.ias-ba-layer img');
+      if (imgs.length === 2 && imgs[0].getAttribute('src') !== imgs[1].getAttribute('src')) {
+        ba.classList.add('ias-ba--two');
+      }
+
+      /* The gesture belongs to the slider: pointer events stop here so the
+       * scroll container never starts a sideways drag from a handle drag.
+       * (`touch-action: pan-y` on the input already gives it the vertical
+       * axis back to the page, for touch.) */
+      ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'].forEach(function (type) {
+        range.addEventListener(type, function (e) { e.stopPropagation(); });
+      });
     });
   }
 
@@ -1197,6 +1231,7 @@
     initCardTilt();
     initSunParallax();
     initCaseSlider();
+    initCaseCompare();
     initMarqueeDrag();
     initReviewMarquee();
     initConsultCta();

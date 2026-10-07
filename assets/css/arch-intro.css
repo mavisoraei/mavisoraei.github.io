@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ARCH INTRO — layered arch-curtain reveal + rising hero arch  (v2.2.3)
+   ARCH INTRO â€” layered arch-curtain reveal + domed sheet  (v2.2.6)
    ==========================================================================
    Paired with /assets/js/arch-intro.js. Loaded on /index.html ONLY, after
    style.css.
@@ -31,16 +31,22 @@ z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
                  the photo consequently ran full-bleed behind every section below
                  the hero.
 
-      z-index   1   .arch-hero         LAYER 2 — the rising hero arch, transparent
-      z-index   2   .arch-hero + *     the content below the hero
+z-index   1   .arch-hero         LAYER 2 â€” the opening screen. EMPTY as of
+     z-index   2   #sheet               v2.2.5, and it keeps one job: reserving
+                                          100svh so the sheet stays one viewport
+                                          down. No type on the photograph.
+     z-index   2   .sheet__bg            .sheet__bg paints the cream base and the
+     z-index   1   .sheet__content       mesh under a domed top edge;
+                                          .sheet__content holds the hero copy and
+                                          every real section.
 
-     z-index   3   #arch-intro-overlay   LAYER 1 — the arch CURTAIN
+     z-index   3   #arch-intro-overlay   LAYER 1 â€” the arch CURTAIN
                 frame.svg only. NO background colour: the darkness IS the SVG's
                 own matte, so there is never a flat block painted over the photo.
 
-     z-index   4   #arch-intro-ui     LAYER 2 — the brand title + sub
+     z-index   4   #arch-intro-ui     LAYER 2 â€” the brand title + sub
 
-     z-index   5   .lm-header         LAYER 2 — the floating glass navbar
+     z-index   5   .lm-header         LAYER 2 â€” the floating glass navbar
 
      z-index 9998  body::after        the site's film grain, above everything
 
@@ -49,7 +55,7 @@ z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
    were ever still on screen it must occlude the hero rather than the reverse.
 
    --------------------------------------------------------------------------
-   THE MESH MASK — how two opaque backdrops share the screen
+   THE MESH MASK â€” how two opaque backdrops share the screen
    --------------------------------------------------------------------------
    `#lm-bg-mesh` is `position: fixed; z-index: -1` with an OPAQUE drawing buffer
    (`gl_FragColor = vec4(col, 1.0)`), and `body::before` is an opaque gradient
@@ -63,20 +69,20 @@ z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
    So the mesh is not merely crossfaded; it is masked to the arch window, and
    the photo is the persistent base layer underneath it for the whole session:
 
-     * Phase 1 hides both mesh layers at `opacity: 0` (free — the curtain is
+     * Phase 1 hides both mesh layers at `opacity: 0` (free â€” the curtain is
        opaque everywhere except the hole), which is what lets the photo show.
      * The handoff restores them and switches on the clip. Because the clip is
        the arch, the 620ms dissolve is only ever visible INSIDE the arch; the
        rest of the screen never pops, it just keeps showing the photograph.
      * As the hero rises, the window tracks it and grows to the full viewport,
-       where it collapses to no clip at all — byte-identical to classic.
+       where it collapses to no clip at all â€” byte-identical to classic.
 
    The photo therefore never leaves the DOM, is never re-created, and is never
    covered by a flat colour. It is simply the bottom of the stack, and the mesh
    is a window onto it. See section 4 for the geometry.
 
    --------------------------------------------------------------------------
-   ISOLATION CONTRACT — read this before editing anything below
+   ISOLATION CONTRACT â€” read this before editing anything below
    --------------------------------------------------------------------------
    Every rule that changes the page is scoped under:
 
@@ -99,7 +105,7 @@ z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
 
 
 /* --------------------------------------------------------------------------
-   1. TYPE — NO FONT DECLARATIONS HERE ANY MORE
+   1. TYPE â€” NO FONT DECLARATIONS HERE ANY MORE
    --------------------------------------------------------------------------
    This file used to declare three @font-face rules of its own: a second
    'Lemon Editorial Serif' and two 'Lemon Body Sans' faces, the latter two
@@ -107,7 +113,7 @@ z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
    loads.
 
    They were all redundant. The serif was a byte-identical redeclaration of the
-   one in style.css — same family, same weight, same unicode-range, same file —
+   one in style.css â€” same family, same weight, same unicode-range, same file â€”
    so the browser held two FontFace entries for one face. The 'Lemon Body Sans'
    pair was worse: a SECOND family name bound to the SAME two font files as
    Vazirmatn, so "the brand body font" and "the site body font" were the same
@@ -139,7 +145,7 @@ z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
        `document.documentElement` and the class list is written there.
 
    (b) THE GATE CLASS LIVES ON <body>, BUT `scroll-behavior` and the scroll lock
-       must apply to <html> — the scrolling element — so they bridge with
+       must apply to <html> â€” the scrolling element â€” so they bridge with
        `:has()`. `:has()` is already used in style.css. The lock uses
        `!important` because the reproduced `.lenis-stopped` overflow-clip rule
        below is far more specific and would otherwise win. */
@@ -173,7 +179,7 @@ html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)).lenis-
 
 
 /* --------------------------------------------------------------------------
-   3. PHASE 1 — LAYER 0: THE FIXED CLINIC PHOTO
+   3. PHASE 1 â€” LAYER 0: THE FIXED CLINIC PHOTO
    --------------------------------------------------------------------------
    The photo is NOT a child of the curtain. It is a fixed, viewport-sized base
    layer that the curtain's arch hole reveals, and it stays mounted for the rest
@@ -183,13 +189,13 @@ html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)).lenis-
 body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo {
   position: fixed;
   inset: 0;
-  /* z-index 0 — the backdrop layer, directly above the mesh wash and directly
+  /* z-index 0 â€” the backdrop layer, directly above the mesh wash and directly
      below the rising hero.
 
      At -2 the photo sat UNDER the opaque mesh wash, so the only way to see it was
      through a hole in the mesh. That left the photograph visible everywhere
      OUTSIDE the arch, so every homepage section after the hero rendered on top of
-     the clinic image — the "content floating loose on the background" symptom,
+     the clinic image â€” the "content floating loose on the background" symptom,
      and the reason the containment work below was never enough on its own.
 
      At 0 it is a plain full-bleed backdrop that the OPAQUE hero (section 8) covers
@@ -197,7 +203,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo {
      cover everywhere else. It is never cut into; see the `.arch-window` note below.
 
      This is Phase-1 safe. The mesh is at `opacity: 0` for the whole of phase 1,
-     so nothing sits between -2 and 0 to reveal — the curtain still opens onto
+     so nothing sits between -2 and 0 to reveal â€” the curtain still opens onto
      exactly the same photograph it always did. */
   z-index: 0;
   overflow: hidden;
@@ -209,7 +215,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo img {
   height: 100%;
   object-fit: cover;
   object-position: center 30%;
-  /* no colour, no filter, no overlay — this is the photograph, untouched */
+  /* no colour, no filter, no overlay â€” this is the photograph, untouched */
 }
 
 
@@ -217,8 +223,8 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo img {
    4. THE MESH MASK
    --------------------------------------------------------------------------
    Phase 1 needs the photo, so both mesh layers go to zero opacity instantly (no
-   transition on this rule — a fade here would flash the wash over the arch for
-   a beat). `.arch-mesh-in` brings them back at the Phase 1 → Phase 2 handoff.
+   transition on this rule â€” a fade here would flash the wash over the arch for
+   a beat). `.arch-mesh-in` brings them back at the Phase 1 â†’ Phase 2 handoff.
 
    Neither layer is clipped any more. They are the PAGE's background, not the
    hero's, so the mesh covers the whole viewport and every section below the arch
@@ -234,7 +240,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo img {
 
    app.js never writes an inline `opacity` on the canvas, so these rules win
    cleanly and there is no inline-style conflict. On the shader-failure path
-   app.js does hide the canvas, and it stays hidden — which is correct, because
+   app.js does hide the canvas, and it stays hidden â€” which is correct, because
    `body::before` behind it is a complete background in its own right. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) #lm-bg-mesh,
 body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-bg-mesh,
@@ -252,8 +258,8 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-mesh-in::before {
 /* The photograph is NOT clipped any more.
 
    It used to be, and the clip was the direct cause of the reported symptom.
-   `.arch-window` cut it to a BOTTOM band — `inset(var(--arch-offset) … 0 … round
-   …)` — i.e. exactly the rectangle the hero occupies, with a 120px rounded top.
+   `.arch-window` cut it to a BOTTOM band â€” `inset(var(--arch-offset) â€¦ 0 â€¦ round
+   â€¦)` â€” i.e. exactly the rectangle the hero occupies, with a 120px rounded top.
    So the photo was painted precisely where the transparent hero sat, the hero
    added no background of its own, and the result was the clinic photograph
    showing through the whole opening screen with the copy lying on top of it.
@@ -262,7 +268,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-mesh-in::before {
 
    The inversion is now unnecessary as well as wrong. The photo is a fixed,
    viewport-sized backdrop at z-index 0 and the rising hero is an OPAQUE layer at
-   z-index 1, so the hero occludes the photograph on its own — no window has to be
+   z-index 1, so the hero occludes the photograph on its own â€” no window has to be
    cut for the site to show through. The photograph is simply left full-bleed, and
    it is visible wherever the hero is not: above the hero's top edge while it rises
    from below the fold, and inside the two corners the dome's arc leaves open at
@@ -278,7 +284,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-window #arch-intro-
 
 
 /* --------------------------------------------------------------------------
-   5. PHASE 1 — LAYER 1: THE ARCH CURTAIN
+   5. PHASE 1 â€” LAYER 1: THE ARCH CURTAIN
    --------------------------------------------------------------------------
    `#arch-intro-overlay` has NO background of its own. All of the darkness is
    frame.svg's own `#1C1D1C` matte, which covers everything except the arch
@@ -303,14 +309,14 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-window #arch-intro-
      centreY (230+1080)/2 / 1080 = 60.6479% -> BELOW the frame centre by 10.6479%
 
    The cream hairline is a SEPARATE rect in the SVG at
-   x 564.25 w 792.5 / y 215.25 h 1406.5 rx 396.25 — i.e. ~12.75px OUTSIDE the
+   x 564.25 w 792.5 / y 215.25 h 1406.5 rx 396.25 â€” i.e. ~12.75px OUTSIDE the
    matte hole on each side and 14.75px above it, running past the canvas floor
    and being clipped by `clip0`. It is drawn by the SVG itself, so it needs no
    CSS twin.
 
    SIZING: `width: max(100vw, 177.7778vh)` with `aspect-ratio: 16/9` is the only
    combination that COVERS the viewport on both axes while preserving the SVG's
-   own proportions — a plain `100vw` frame is too short on portrait screens and
+   own proportions â€” a plain `100vw` frame is too short on portrait screens and
    would leave an uncovered strip.
 
    THE ZOOM ENDPOINT IS ASPECT-INDEPENDENT BY DESIGN. Scaling about the frame
@@ -335,7 +341,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay {
   /* no background: the dark IS the SVG */
 }
 
-/* STEP 1 — the curtain enters from the bottom as a small semi-oval. The scale
+/* STEP 1 â€” the curtain enters from the bottom as a small semi-oval. The scale
    term is what makes it read as "a small arch opening up" rather than "a big
    arch sliding in". It settles at scale(1) before the zoom begins, so the two
    transforms never fight over the same property. */
@@ -354,7 +360,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay .arc
   background: url("/assets/frame.svg") center / 100% 100% no-repeat;
   transform-origin: 50% 50%;
   will-change: transform;
-  /* STEP 4 — the dramatic zoom INTO the photograph. `both` holds the final
+  /* STEP 4 â€” the dramatic zoom INTO the photograph. `both` holds the final
      state, so the curtain is fully open (and fully off-screen) between the end
      of this animation and the moment the JS removes the node. */
   animation: arch-mask-zoom 1600ms cubic-bezier(.65, 0, .35, 1) 1500ms both;
@@ -384,7 +390,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay .arc
 
 
 /* --------------------------------------------------------------------------
-   6. PHASE 1 — LAYER 2: THE BRAND TITLE, ABOVE THE ARCH CEILING
+   6. PHASE 1 â€” LAYER 2: THE BRAND TITLE, ABOVE THE ARCH CEILING
    --------------------------------------------------------------------------
    The dome apex sits at 21.2963% of the frame height, which lands ~21vh from
    the top on every viewport (the `max()` frame is centred, so the apex only
@@ -394,8 +400,73 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay .arc
    `.arch-title-in` is added by the JS on a fixed point in the timeline, so the
    fade can never race the zoom. `.arch-hero-up` fades the whole UI layer out
    once the hero starts rising, because this layer is ABOVE the hero and would
-   otherwise float over the hero's own content. */
+   otherwise float over the hero's own content.
+
+   v2.2.6 - THE TWO OFFSETS ARE NO LONGER `vh`-BASED, AND THAT IS THE FIX FOR
+   "WEST TEHRAN / LEMON AESTHETIC CLINIC PASSES UNDER THE NAVBAR".
+
+   The old values were `clamp(.8rem, 5.6vh, 3.4rem)` and
+   `clamp(1.4rem, 9.5vh, 6rem)`. Both are functions of VIEWPORT HEIGHT, while the
+   navbar's height and position are functions of VIEWPORT WIDTH - `--lm-nav-top` is
+   a `clamp()` on `1.5vw` and the pill's height is set by its tallest child. The two
+   cannot track each other, and they disagree most where it is most visible: at
+   1440x900 the sub sat at 50.4px and the navbar's lower edge at 78.8px, so the pill
+   dropped in ON TOP of it; at 390x844 it was 47.3px against 68.4px.
+
+   Both are now anchored to `--lm-nav-top` + `--lm-nav-clear-h`, and
+   `--lm-nav-clear` adds the 1.5rem the brief asks for as a visible gap. A `vh` value
+   cannot express "below the navbar" - it can only guess at how tall the navbar is - so
+   this is the only form of the rule that is correct by construction rather than by
+   coincidence at one size.
+
+   `--lm-nav-clear-h` is an UPPER BOUND on the pill, not its height, because the pill
+   is content-driven: measured in Chrome at 1440x900 it is 58.53px (`.lm-menu` wraps
+   to two lines and beats the 40px logo at 40.53px). Naming the height and getting it
+   half a pixel wrong turned a 24px gap into a measured 23.5px. See the note on
+   `--lm-nav-clear-h` in style.css for the full reasoning and the residual
+   three-line-menu limitation.
+
+   Which introduces the one place the two requirements genuinely collide. This block has to
+   clear the navbar by 1.5rem AND stay above the arch ceiling, and there is a band of
+   viewports where there is not enough room for both: the ceiling is 21.2963% of
+   frame.svg's height (section 5), and `--lm-arch-ceiling` restates that in viewport
+   units as `max(11.979vw, 21.2963vh)` - the frame is `max(100vw, 177.7778vh)` at 16/9,
+   so 0.212963 * 9/16 * 177.7778vh is 21.2963vh and the 100vw leg gives the other term.
+
+   Read the rendered boxes in Chrome, not the arithmetic. The gap below the pill:
+
+     1440x900   29.5px   brief asks 24   pass
+      390x844   26.0px   brief asks 24   pass
+      360x640    0.6px   brief asks 24   capped, no overlap
+      320x568  -14.7px   brief asks 24   capped, OVERLAPS the pill
+
+   At 320x568 the two wants are 23px further apart than the frame allows: the pill's
+   lower edge is 72.4px (10.4px of `top` plus the measured 62px), so the 1.5rem gap wants
+   96.4px, while the ceiling at 121.0px less 2.2rem plus the title plus .375rem caps
+   the sub at 57.7px. There is no third option that satisfies both, and which one gives
+   is a judgement call rather than a bug: letting the ceiling give puts the wordmark
+   34.7px BELOW the arch's light fill, where cream type on cream is invisible. So the
+   ceiling wins and the sub rides up into the pill's lower edge.
+
+   For scale: v2.2.5 was `top: clamp(.8rem, 5.6vh, 3.4rem)`, measured from the viewport
+   top because it could not see the navbar at all, and it overlapped the pill EVERYWHERE
+   - by 28.9px at 1440x900, 36.6px at 360x640, 25.1px at 390x844. That overlap at every
+   width is the bug this rule exists to fix, so 320x568 is the single remaining size
+   where any overlap survives, and it is 11px better than v2.2.5 was at that same size
+   (v2.2.5: -40.6px). Making it fit would mean either shrinking the brand block or
+   letting it cross the arch fill; both are design changes the brief does not ask for.
+
+   (The v2.2.5 figures are computed from its published rule rather than rendered: the
+   backup snapshot carries only assets/css and assets/js, so its intro never completes
+   and there is nothing to measure.) */
 body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui {
+  --lm-nav-clear: calc(var(--lm-nav-top, .65rem) + var(--lm-nav-clear-h, 4rem) + 1.5rem);
+  --lm-arch-ceiling: max(11.979vw, 21.2963vh);
+  /* 1.2 is this rule's own `line-height`, so the cap knows the title's real height
+     rather than assuming it. */
+  --lm-brand-title-h: calc(1.2 * clamp(1.15rem, 2.4vw, 2rem));
+  --lm-brand-top: min(var(--lm-nav-clear),
+    calc(var(--lm-arch-ceiling) - 2.2rem - var(--lm-brand-title-h) - .375rem));
   position: fixed;
   inset: 0;
   z-index: 4;
@@ -409,7 +480,10 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-hero-up #arch-intro
 
 body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui .arch-brand-sub {
   position: absolute;
-  top: clamp(.8rem, 5.6vh, 3.4rem);
+  /* v2.2.6: was `clamp(.8rem, 5.6vh, 3.4rem)` - a vh offset that the pill's own
+     height could not track, so the navbar dropped in over this line. Now the
+     pill's lower edge plus the 1.5rem gap, capped against the arch ceiling. */
+  top: var(--lm-brand-top);
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
@@ -425,7 +499,13 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui .arch-bra
 
 body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui .arch-brand-title {
   position: absolute;
-  top: clamp(1.4rem, 9.5vh, 6rem);
+  /* v2.2.6: was `clamp(1.4rem, 9.5vh, 6rem)`. Same reason as the sub above, plus
+     the 2.2rem is the ORIGINAL gap between these two elements preserved: the old
+     pair sat 35px apart at 1440x900 and this keeps them 35px apart now that both
+     have moved down together. Deriving the title from the sub rather than from a
+     second independent offset is what guarantees they stay 24px+ clear of the
+     navbar together instead of drifting apart at some third viewport. */
+  top: calc(var(--lm-brand-top) + 2.2rem);
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
@@ -462,7 +542,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-title-in #arch-intr
 
 
 /* --------------------------------------------------------------------------
-   7. PHASE 1 STEP 5 — THE GLASS NAVBAR DROPS IN
+   7. PHASE 1 STEP 5 â€” THE GLASS NAVBAR DROPS IN
    --------------------------------------------------------------------------
    Held invisible until the zoom has finished, then sliding DOWN from above the
    viewport. `-140px` is comfortably clear of the fold, and the transition is
@@ -491,101 +571,84 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-nav-in .lm-header {
 
 
 /* --------------------------------------------------------------------------
-   8. PHASE 2 — THE SECOND ARCH: .arch-hero RISING FROM THE BOTTOM
+   8. PHASE 2 â€” THE HERO, AND THE SHEET'S DOMED TOP EDGE
    --------------------------------------------------------------------------
-`.arch-hero` wraps the whole opening screen — `.lm-hero` (copy, buttons,
-     doctor avatars, video card) and, inside it, the `.home-ga` case gallery. The
-     gallery used to be a sibling of the arch and therefore sat outside it, which
-     is precisely the "real cases floating loose on the background photo" that was
-     supposed to be inside the silhouette. It is inside now, and it rides the same
-     dome.
+`.arch-hero` is now the EMPTY opening screen. The photograph is a separate fixed
+       layer, and every piece of hero copy has moved down into `.sheet__content`
+       (section 8a) so the photo carries nothing but pixels at load. The box is
+       kept for two reasons that are both load-bearing: `min-height: 100svh` is
+       what holds the sheet exactly one viewport down â€” it was `.lm-hero` that
+       used to supply that height, so dropping the box without replacing the
+       height would slide the whole sheet up to y=0 and bury the photograph â€” and
+       the JS still targets the element to toggle `.arch-risen`.
 
-    The wrapper is the SOLID LIGHT LAYER and the photograph sits behind it. That
-    is the whole architecture in one line: a fixed full-bleed photo at z-index 0,
-    an opaque rising panel at z-index 1 whose top edge is a true elliptical dome,
-    and the page below it at z-index 2. The panel occludes the photograph by being
-    opaque, so nothing has to be cut out of the photo to reveal the site.
+     The domed silhouette belongs to the SHEET, not the hero. `#sheet` wraps every
+     real section below the hero in `.sheet__content` and paints its own cream
+     background on `.sheet__bg`, an absolutely-positioned layer whose top edge is
+     the dome. So the geometry reads top-down as: photograph, then a rising
+     transparent hero over it, then the cream sheet sweeping up with an arched top
+     edge and the real page content sitting on that.
 
-    The arch shape comes from a `clip-path` ellipse on `::before`, NOT from
-    `overflow` and NOT from `border-radius`. `border-radius` was the previous
-    mechanism and it was the reason the shape read as a rounded rectangle: a radius
-    is a corner treatment, so it could only ever round the top two corners of a
-    box, and a 120px vertical radius on a full-bleed hero is a shallow fillet. A
-    `clip-path` ellipse is an actual curve with an actual centre and two actual
-    radii, which is what "semi-ellipse dome" means. `--arch-ry` is tuned so the
-    arc reads as a segmental arch rather than a knife edge — see the `::before`
-    note for why that ratio is load-bearing and not cosmetic.
+     The dome is `border-radius`, per the chosen mechanism. It is not
+     `overflow` and not a `clip-path`. `--dome-k` is the scroll multiplier: 1 at
+     rest (full depth dome) decaying to 0 as the sheet scrolls up, which flattens
+     the crown into square top corners without ever reaching a degenerate value.
 
-    Adding `position: relative` here re-anchors nothing, which was checked
-    rather than assumed: `.lm-hero` has three absolutely positioned descendants
-    (`.visually-hidden` on the h1, `.lm-play-ico`, `.lm-play-label`) and all
-    three resolve against `.lm-play-card`, which is itself `position: relative`.
-    The `position: fixed` header is a sibling of the hero — it closes before
-    `<main>` — so the transform below cannot capture or re-anchor it.
+     Adding `position: relative` to `.arch-hero` re-anchors nothing, which was
+     checked rather than assumed: `.lm-hero` has three absolutely positioned
+     descendants (`.visually-hidden` on the h1, `.lm-play-ico`,
+     `.lm-play-label`) and all three resolve against `.lm-play-card`, which is
+     itself `position: relative`. The `position: fixed` header is a sibling of the
+     hero â€” it closes before `<main>` â€” so the transform below cannot capture or
+     re-anchor it.
 
-    Four custom properties are published by the JS every frame, on `<body>` so
-    that the hero (by inheritance) and the reduced-motion overrides read the same
-    numbers:
+     Custom properties published by the JS every frame, on `<body>` so the hero,
+     the sheet and the reduced-motion overrides all read the same numbers:
 
-     `--arch-offset`  net Y translate, +62vh at rest decaying to 0, so the hero
+      `--arch-offset`  net Y translate, +62vh at rest decaying to 0, so the hero
                       starts one viewport-height BELOW the fold and rises into
                       exactly the position it occupies with no effect applied.
-     `--arch-scale`   0.94 -> 1. The hero is already full-bleed in layout, so
+      `--arch-scale`   0.94 -> 1. The hero is already full-bleed in layout, so
                       this is what makes it literally *widen* into 100% of the
                       screen. Scale rather than an animated `width`, because
                       width reflows the whole hero subtree every frame.
-`--arch-open`    raw 0..1 scroll progress, widening and flattening the dome
-                      ellipse toward a rectangle as you scroll into the hero.
-      `--arch-dome`    static 22vw dome depth — not written by the JS.
-      `--arch-ry`      static 55vw vertical radius of that ellipse — not written
-                      by the JS either. See the `::before` note.
+`--p`           raw 0..1 scroll progress over one viewport height. It now
+                        drives `--dome-k` and nothing else: the hero copy no
+                        longer fades or lifts on it, because that copy scrolls
+                        normally inside the sheet instead of riding the rise.
+      `--dome-k`       1 -> 0. The sheet's dome multiplier, same scroll input as
+                      `--p`. It decays faster than `--p` alone would suggest so
+                      the crown is already flattening by the time the sheet's top
+                      edge passes the fold.
+       `--arch-dome`   static dome depth â€” not written by the JS.
 
-    There is deliberately no `transition` on any of the written three: all three
-    are updated every frame from the rAF loop, and a transition would only add
-    lag behind the scroll. The inner contents in section 8b do have one, because
-    they are not written per frame — they are a single settle once. */
+     There is deliberately no `transition` on any of the written ones: they are all
+     updated every frame from the rAF loop, and a transition would only add lag
+     behind the scroll. The inner contents in section 8b do have one, because they
+     are not written per frame â€” they are a single settle once. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero {
   position: relative;
   z-index: 1;
   overflow: hidden;
-  /* v2.2.3 — THE DOME MOVED DOWN TO `.home-ga`. This box used to carry the solid
-     light layer: a slab gradient sized to begin at --arch-dome plus a `::before`
-     cap, together painting "opaque rectangle with a domed top" for the whole of
-     .arch-hero. The brief changed — the hero copy now sits ON the photograph in
-     near-white type, which is only legible over an image if the box is
-     TRANSPARENT — so that geometry was RETARGETED onto `.home-ga` (the cream
-     section that follows the hero) instead of being deleted. Nothing was removed:
-     the slab + cap pair now describe the top edge of the cream section, so as you
-     scroll the dome sweeps up over the photo and takes the hero copy with it.
+  /* v2.2.6 - NO SCRIM. The 90deg legibility wash that used to live here is gone,
+     and it had to go rather than be softened: its whole purpose was to darken the
+     photograph under near-white type, and there is no longer any hero type on the
+     photograph. Left in place it would be a dark band lying across a photo that is
+     supposed to read clean at load, for the sake of text that is not there.
 
-     What replaced the slab here is the legibility scrim, and it is deliberately
-     a GRADIENT and not a flat wash. Three details make it work:
-       * 90deg, so it darkens the LEFT edge where the text block sits and thins to
-         fully transparent by 100%, leaving the right-hand video column and the
-         photo itself clean. A uniform overlay would grey the whole image.
-       * It is sized to the BOX, which wraps .lm-hero AND .home-ga, rather than
-         to the hero alone. That is harmless rather than wrong: `.home-ga` below is
-         fully opaque (its own slab plus cap cover every pixel of it), so it hides
-         this gradient completely and the scrim only ever becomes visible through
-         the transparent hero. Sizing it to `.lm-hero` instead would be equally
-         correct and would document the intent better; it is left on the wrapper
-         because the wrapper is the element that spans the photograph.
-       * rgba() stops, not hex-with-alpha. --background is an opaque cream, so
-         mixing "cream at 55%" toward transparent would produce a WASHED-OUT
-         overlay, not a darken — the scrim has to darken, and only an explicit
-         rgb(20,14,8) does that.
-     The three stops are the values from the brief, named as tokens in style.css
-     so the hero eyebrow, lead and video border can reuse them without literals
-     drifting apart. */
-  background: linear-gradient(
-    90deg,
-    var(--hero-scrim-0, rgba(20, 14, 8, 0.55)) 0%,
-    var(--hero-scrim-55, rgba(20, 14, 8, 0.15)) 55%,
-    var(--hero-scrim-100, rgba(20, 14, 8, 0)) 100%
-  );
+     The `--hero-scrim-*` tokens in style.css are left alone. They are page-scoped
+     values that other rules reference, and deleting them is a change to the shared
+     stylesheet for no gain here. */
+  background: none;
+  /* The one thing this box still has to do: reserve the opening viewport. It was
+     `.lm-hero`'s `min-height: 100svh` that pushed `.sheet` down to y=100svh, and
+     the copy that has moved into the sheet no longer sits in here to carry it.
+     Without this the sheet renders at the top of the document and the photograph
+     is never seen â€” the dome's apex would also sit at y=0 rather than at the fold. */
+  min-height: 100svh;
   /* The dome is NOT here any more, but `.arch-hero::before` still resolves to
      this element's pseudo. `content: none` retires the cap cleanly at this
-     specificity while the cap's own rule lives on `.home-ga::before`. */
+     specificity while the dome's own rule lives on `.sheet__bg` in section 8a. */
   --arch-parallax: 0;
   transform-origin: 50% 0%;
   transform: translate3d(0, var(--arch-offset, 0px), 0) scale(var(--arch-scale, 1));
@@ -596,96 +659,185 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero::before {
   content: none;
 }
 
-/* THE DOME. `--arch-dome` is how deep the curve travels before it meets the sides
-   of the screen (~22vw — deep enough to read as an arch rather than a rounded
-   corner, shallow enough to stay out of the copy). `--arch-ry` is the ellipse's
-   vertical radius and is set EQUAL to `--arch-dome`, which makes this a true
-   semi-ellipse: the kept region is exactly the lower half of the ellipse, widest
-   (100% of the width) where it meets the slab and narrowing to a point at the top.
+/* --------------------------------------------------------------------------
+   8a. THE SHEET â€” ONE BACKGROUND LAYER, DOMED TOP EDGE
+   --------------------------------------------------------------------------
+   `#sheet` wraps every real section below the hero. It has no background of its
+   own: `.sheet__bg` paints the page colour, and `.sheet__content` is a transparent
+   stacking context so the sections sit ON that paint without any of them needing
+   a background of their own.
 
-   That point is intentional, and it is what makes the shape read as an arch
-   instead of a rounded rectangle. It is safe because the curve is only ever asked
-   to clear INK, not the hero's layout box — see the `--arch-ry` note for the
-   measured clearance per viewport.
+   The dome is `border-radius` on `.sheet__bg`, with `50% 50% 0 0 / D D 0 0`:
+   horizontal radius 50% of the sheet's width, vertical radius `--arch-dome`.
+   That pairing is what makes it read as a dome rather than a rounded rectangle â€”
+   a 50% horizontal radius on a full-width box means each top corner curve spans
+   half the viewport, so the two curves meet at the centre to close a single
+   continuous arc. A small horizontal radius would instead leave a flat shelf in
+   the middle and read as a rounded box, which is the exact failure this rule
+   exists to avoid.
 
-   rx is pinned to 50% of the band width, so the curve always meets the edges
-   exactly at --arch-dome rather than floating short of them.
+   `--dome-k` scales the vertical radii only. At 1 the crown is at full depth;
+   as the sheet scrolls up it decays to 0, which flattens the top corners to
+   square. The horizontal 50% is left alone, because that is what keeps the arc a
+   single curve â€” shrinking it as well would reintroduce the shelf.
 
-   `--arch-open` widens and flattens both radii together as you scroll in, which
-   relaxes the dome toward a plain rectangle without ever reaching a degenerate
-   zero-radius shape (the old `border-radius` could, and did, collapse to nothing).
-   A non-zero radius is kept at every value, so the clip is always valid. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero .home-ga::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--arch-dome, 22vw);
-  background: var(--background);
-  clip-path: ellipse(
-    calc(50% * (1 + var(--arch-open, 0)))
-    calc(var(--arch-ry, var(--arch-dome, 22vw)) * (1 + var(--arch-open, 0)))
-    at 50% 100%
-  );
-  /* Purely decorative paint behind the gallery — it must never eat a click. */
-  pointer-events: none;
-  /* The cap is a BACKGROUND, never a lid. z-index 0 puts it in the same layer as
-     `.home-ga`'s own content, so tree order alone used to decide whether the
-     cards or the cap won — and tree order is not a contract. Pinning it to 0
-     makes the cap the thing the content is stacked ON TOP of, which is the whole
-     point of it. */
-  z-index: 0;
+   `--arch-dome` is the resting depth and `--dome-k` the live multiplier, so the
+   two never fight over the same property and the JS only has to write one number.
+
+   The sheet's own background lives here and not on `.sheet__content`, which is
+   why `.faq-item` cards and the footer gradient in style.css keep their own
+   backgrounds and are untouched. Nothing about any real section's paint is
+   changed by this rule â€” they are simply resting on the sheet's cream. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
 }
 
-/* THE CONTENT SITS ON TOP OF THE CAP. This is stated explicitly rather than left
-   to tree order: `.lm-hero` is `position: relative` with `z-index: auto`, which
-   ties it with the `::before` cap, and a tie is exactly the kind of thing a
-   later edit silently inverts. Without this rule the two are decided by which
-   pseudo-element the engine reaches first, and the hero copy can end up painted
-   underneath an opaque panel that covers the top --arch-dome of the screen.
+/* v2.2.6 - THE MESH. The gradient is the base tone and the three `.blob`s are the
+   colour on top of it, in that order: a child's own background always paints above
+   its parent's, so the blobs sit ON the wash and nothing has to be layered by
+   z-index to make that true. The three tones are the brief's warm cream / sand /
+   soft-gold, which are all LIGHTER than the base in the yellow channel and only
+   slightly darker in value â€” that near-equality is the point. At 0.55-0.7 alpha
+   and 80px of blur they read as a warm shift in the paper rather than as shapes,
+   which is what "visible but soft" has to mean.
 
-   z-index 1 here, 0 on the cap. Both are inside `.arch-hero`, which is itself the
-   z-index 1 stacking context that sits above the photograph — so this pairing
-   orders copy-above-cap *within* the panel and leaves panel-above-photo alone. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero > .lm-hero,
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero .home-ga {
+   The drift is `transform` only. `@keyframes` here touch nothing but
+   `translate3d`, so the whole animation is composited and the blur radius is never
+   re-rasterised â€” animating `top`/`left`/`border-radius` on a blurred element
+   re-blurs the entire 80px kernel every frame, which is the single most expensive
+   thing that could be done to this layer. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #faf8f5 0%, #f5f2eb 100%);
+  pointer-events: none;
+  /* `border-radius` clips a box's own background but NOT its children, so without
+     this the three blobs would spill past the dome's shoulders and paint warm
+     colour onto the photograph either side of the arch. The sheet is the only
+     ancestor of these elements and the only thing they can ever be clipped
+     against, so the clip has to live here. */
+  overflow: hidden;
+  border-radius: 50% 50% 0 0
+    / calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
+      calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
+      0 0;
+  will-change: border-radius;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--1 {
+  top: 4%;
+  inset-inline-start: -8%;
+  width: 48vw;
+  height: 48vw;
+  background: #e8e2d5;
+  opacity: .62;
+  animation: arch-blob-drift-1 34s ease-in-out infinite alternate;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--2 {
+  top: 11%;
+  inset-inline-end: -10%;
+  width: 42vw;
+  height: 42vw;
+  background: #efe4c8;
+  opacity: .68;
+  animation: arch-blob-drift-2 41s ease-in-out infinite alternate;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--3 {
+  top: 34%;
+  inset-inline-start: 26%;
+  width: 54vw;
+  height: 54vw;
+  background: #f3ead3;
+  opacity: .55;
+  animation: arch-blob-drift-3 47s ease-in-out infinite alternate;
+}
+
+@keyframes arch-blob-drift-1 {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(4vw, 3vh, 0); }
+}
+
+@keyframes arch-blob-drift-2 {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-5vw, 4vh, 0); }
+}
+
+@keyframes arch-blob-drift-3 {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(3vw, -4vh, 0); }
+}
+
+/* v2.2.6 - the top padding that clears the hero content out of the dome curve.
+
+   The dome is a 50%-horizontal-radius ellipse: at the apex it is a point, and it
+   only reaches the full page width once it has descended a large fraction of its
+   own vertical radius. Content sitting high in the sheet is therefore inside the
+   ARCH OUTLINE but outside the CREAM - over the photograph - which reads as a
+   clipping bug even though nothing is being clipped.
+
+   v2.2.5 paid for clearance with 0.65 * ry, which is 468px of padding at
+   1440x900. That bought a correct-looking result at the cost of the whole point
+   of the arch: the reader had to scroll a further half screen before any of the
+   hero copy appeared. The brief for v2.2.6 is that the content must already be
+   visible when the apex reaches ~35% of the viewport.
+
+   0.3 is derived from the geometry, not chosen, and it is derived twice — once for the
+   copy and once for the badge, and the badge is what actually binds.
+
+   The outermost copy is the video card's right edge. Since v2.2.6 put that edge on the
+   navbar's own right inner edge, at 1440x900 it is 591px from the centre line of a
+   720px radius — 0.821 * rx — and the ellipse is only that wide once it has descended
+   d = ry * (1 - sqrt(1 - 0.821^2)) = 0.429 * ry = 309px. The copy clears at 340px
+   (0.3 * ry + `.lm-hero`'s 7.5rem + the grid's `clamp(1.5rem, 3vw, 3rem)`).
+
+   The badge is tighter. It shares the content column's LEFT edge at 0.807 * rx, so it
+   needs 0.409 * ry = 294px, but it is not inside the grid — it is `top: 6rem` into
+   `.lm-hero`, so its depth is 0.3 * ry + 96px = 312px. That 18px is the whole margin
+   in this rule; at 0.29 * ry the badge would be 8px outside the cream. The 26vh cap is
+   what binds at 1440x900 (234px vs 216px) and on the phone widths, where ry is clamped
+   to 50vw and the requirement is only ~89px.
+
+   The badge used to invalidate this calculation outright. Parked at the viewport gutter
+   its left edge was 0.948 * rx from the centre, which needs 0.68 * ry of descent — more
+   than the 0.65 the rule used to pay, so the badge, not the copy, was setting the floor
+   for the entire hero. It now shares the content column's left edge, which is below the
+   video card's 0.821 and no longer the binding constraint. If the badge is ever moved
+   back out to the viewport edge, 0.3 is the number that breaks first.
+
+   The `.lm-hero` 7.5rem and the grid's `clamp(1.5rem, 3vw, 3rem)` sit on top of
+   this, so the wordmark is 384px below the apex at 1440x900 — visible, with room to
+   spare, when the apex passes 35% of the viewport (at which point the cap height is
+   at y=699 of 900). The brief also asks for a "5-7vh gap under the apex". That is not
+   reachable alongside the other two requirements and this rule is the reason: 309px is
+   34vh, and no amount of tuning gets a navbar-wide content column inside a 720px
+   semicircle any sooner than the ellipse is geometrically that wide. The gap is as
+   small as the dome allows. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__content {
   position: relative;
   z-index: 1;
+  padding-top: min(26vh, calc(var(--arch-dome, 160px) * .3));
 }
 
-/* v2.2.3 — THE SCROLL FADE ON THE HERO COPY. `--p` is 0..1 scroll progress over
-   one viewport height, published every frame from arch-intro.js (see the note on
-   `--p` there for why it is not `--arch-open`).
-
-   The brief: "fades slightly and moves up 3vh as --p increases, never disappears
-   before the dome covers it." Two numbers carry that:
-
-     opacity    1 → 0.55. Deliberately NOT 0 and not 0.3. The copy has to still
-                be legible in the last moments before the dome's apex passes it —
-                a fade to zero would make the hero look broken during exactly the
-                scroll where the reader is still trying to read the paragraph.
-                0.55 is enough to read as "receding", not enough to look like a
-                bug.
-     translate  0 → -3vh. The 3vh is literal from the brief. It is `vh`, not `px`,
-                so it scales with the viewport, and it is on the same element as
-                the opacity so the two can never desync.
-
-   `calc()` with the `var(--p, 0)` fallback matters more than usual here: these two
-   selectors are also the stacking/isolation rules above, and they must apply
-   identically on a browser where the JS never ran (JS disabled, script blocked,
-   or `ARCH.classic()` already called). With the fallback the copy simply sits at
-   full opacity and no translate — the correct at-rest state.
-
-   `will-change` is set because both properties are recomputed every frame from a
-   scroll-driven custom property, which otherwise re-rasterises the layer on
-   every scroll tick. Note this is scoped to `.lm-hero > *`, i.e. the two hero
-   columns, so the gallery below does not inherit the fade. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero > .lm-hero > .lm-hero-grid > * {
-  opacity: calc(1 - 0.45 * var(--p, 0));
-  transform: translate3d(0, calc(-3vh * var(--p, 0)), 0);
-  will-change: opacity, transform;
-}
+/* v2.2.6 - the `--arch-parallax` carrier moved here with the hero copy. The inner
+   drift rule below is a descendant selector on `.lm-hero-grid`, which no longer has
+   `.arch-hero` as an ancestor, so a value set only on `.arch-hero` would no longer
+   reach it and it would fall back to the literal in the rule for the whole
+   animation. Net visual effect is unchanged â€” `--arch-offset` is already 0 by the
+   time `.arch-risen` is set â€” but the mechanism stays wired instead of silently
+   going dead. */
 
 /* First-paint guard. `.arch-intro` only exists once the JS is running, so
    declaring the rest offset here is safe: if the script never runs the class
@@ -694,7 +846,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero > .lm-hero > 
 
    These are declared on <body>, not on `.arch-hero`, for two reasons: the mesh
    clip in section 4 needs to inherit the same values, and a value specified
-   directly on `.arch-hero` would BEAT the value inherited from <body> — which
+   directly on `.arch-hero` would BEAT the value inherited from <body> â€” which
    would pin the hero at 62vh forever and freeze the rise. The JS writes them as
    inline styles on <body>, and inline beats this rule, so first paint matches
    the first frame of motion exactly.
@@ -704,106 +856,107 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero > .lm-hero > 
 body.arch-intro:not(.classic-layout):not(.classic-mode) {
   --arch-offset: 62vh;
   --arch-scale: 0.94;
-  --arch-open: 0;
-  /* Dome depth — how far the curve travels before it meets the sides of the
-     screen. 22vw, NOT a px value and NOT a percentage of the hero's height: the
-     hero is `min-height: 100svh` plus the whole case gallery, so any height-relative
-     unit would make the arch sag deeper on tall viewports and clip the copy there
-     while looking right on short ones. Width-relative holds one silhouette across
-     both. It also matches the ratio the shape was chosen at: ~317px on a
-     1440x900 desktop, ~86px on a 390-wide phone, where the fixed navbar pill
-     occupies the top ~60px and a deeper crown would start crowding it.
+  /* Resting depth of the sheet's dome â€” the VERTICAL radius only. The horizontal
+     one is the 50% in `.sheet__bg`'s shorthand, which is half the viewport at every
+     width, so "how round is this arch" is entirely this number.
+
+     v2.2.5 raised it from `min(22vw, 34svh)` to `min(50vw, 95svh)`. At 22vw the
+     radius was ~317px against a 720px horizontal radius â€” roughly 0.44 * rx, which
+     is a shallow segment, not an arch: it read as a wide box with soft shoulders.
+     At 50vw the two radii are equal at 1440x900, and because `ry = rx` on a 50%
+     horizontal radius IS a semicircle, the top edge becomes a true half-round.
+     It still does not reach the width of the screen partway down, which is the
+     other half of "doesn't span the whole width": at 0.2 * ry the curve is already
+     down to 0.66 * rx, and at 0.5 * ry it is 0.87 * rx.
+
+     The `svh` cap is still doing the job it was introduced for. On a landscape
+     phone or a short window `50vw` would be ~350px of crown over a viewport that is
+     barely 400px tall, and the sheet would open as a half-circle taller than the
+     screen. 95svh keeps the arc inside the viewport it is drawn in.
+
+     NOT a percentage of the sheet's height: the sheet is every section below the
+     hero combined, so a height-relative unit would make the crown sag deeper on
+     tall pages and clip the gallery there while looking right on short ones.
 
      Static (never written by the JS), so it needs no first-paint guard, but it is
-     declared here rather than inline so the hero slab and the dome cap read one
-     number.
+     declared here rather than inline so the hero scope and the sheet read one
+     number. */
+  --arch-dome: min(50vw, 95svh);
+  /* `--dome-k` is the live multiplier on the dome's vertical radii, and v2.2.6
+      changed WHEN it starts decaying, which is the whole point of requirement 1.
 
-     The `min()` is a guard, not a style choice. The depth doubles as the point
-     where the hero's background slab starts, so a depth greater than the hero's
-     own height would drive `calc(100% - var(--arch-dome))` negative — an invalid
-     `background-size`, so the slab would vanish and the photograph would leak
-     straight through the middle of the hero. That is reachable on a landscape
-     phone or a short laptop window, where the viewport is wide but barely 400px
-     tall, so the depth is capped at a third of the viewport height. On every
-     normal portrait viewport the 22vw is what applies. */
-  --arch-dome: min(22vw, 34svh);
-  /* THE DOME IS A TRUE SEMI-ELLIPSE: --arch-ry IS --arch-dome, nothing more.
+      Until now `k` was a function of scroll PROGRESS alone, so the crown began
+      flattening on the very first pixel of scroll and was already down to ~27% of
+      its depth by the time the apex was a third of the way down the viewport. That
+      is the "it looks flat on arrival" symptom: the reader arrives at the arch and
+      it is already on its way to being a square-cornered box.
 
-     An earlier revision ran `--arch-ry` at ~2.5x `--arch-dome` to turn the apex
-     away from a knife edge. That was solving the wrong problem: it was sized to
-     contain the whole `.lm-hero-grid` BOX, which is `max-width: var(--shell-max)`
-     — about 96% of the viewport at 1920. Holding a 96%-wide box inside the curve
-     forces a curve so shallow that only ~8% of the top corners were photograph,
-     which reads as a flat block with slightly rounded corners rather than an arch.
-
-     What actually has to stay inside the curve is INK, not the layout box, and the
-     ink is far narrower than its container. The first child of `.lm-hero-copy` is
-     `.lm-hero-giant`, a flex row of two short spans — "Beauty" / "Clinic" — at
-     `clamp(3rem, 7.6vw, 8rem)` with `-0.03em` tracking: ~600px at 1440, ~694px at
-     1920. Everything below it (kicker, the 48ch lead, the two buttons, the doctor
-     row) sits LOWER in the copy, and the ellipse only widens as y increases, so
-     the title is the single binding element and everything under it is safer.
-
-     Measured with kept(y) = W * sqrt(1 - ((D-y)/ry)^2) at ry == D, the curve is
-     still 1133px wide where the title begins at y=120 on 1440x900 (title ~600px),
-     and ~1420px on 1920x1080 (title ~694px) — over 250px of clearance per side at
-     every tested viewport. On the short and narrow viewports where D < 120px the
-     dome has already closed above the copy entirely.
-
-     `--arch-open` still multiplies both radii as you scroll, so this relaxes
-     toward a plain rectangle and is never a degenerate zero-radius shape. */
-  --arch-ry: var(--arch-dome);
+      The JS now measures where the sheet's top edge actually IS
+      (`sheetBg.getBoundingClientRect().top`) and holds `k = 1` until that apex is
+      within 30vh of the fold, then smoothsteps it down to 0 as the apex reaches the
+      top of the viewport. So the dome is at FULL depth for the entire approach and
+      the user sees a round arch, and the flattening happens in the last third of the
+      travel rather than being spread across all of it. The first-paint guard below
+      matches that: 1, i.e. a full dome, on the very first frame. */
+  --dome-k: 1;
 }
+
+/* v2.2.6 - THE SLOWER SHEET RISE.
+
+   The brief asks for the rise to take 35-40% longer without changing the page
+   height, the sticky behaviour or the footer. `RISE_FRACTION` cannot deliver that:
+   it moves `.arch-hero`, which is an EMPTY spacer (section 8), so the sheet simply
+   scrolls up at whatever speed the scroll wheel supplies. Raising it would change
+   the document height and hand the user a longer dead scroll region after the rise
+   had already finished.
+
+   So the visible sheet gets its own smoothed offset instead. The JS lerps its own
+   copy of progress at `SHEET_LERP` (0.06) toward the real scroll position and
+   publishes the difference as `--sheet-lag`, and this rule is what applies it. At
+   0.06 the sheet trails the scroll by a long, easing tail; the lag runs out to zero
+   exactly when the scroll stops, so it is a rate change and not a permanent offset,
+   and the sheet still comes to rest flush at y=0.
+
+   `translate3d` rather than `translate` so the transform stays on the compositor
+   for the whole rise, matching how `.arch-hero` and the blobs already move.
+
+   The class is the opt-in. The JS adds `arch-rise-lag` only while the lag is more
+   than half a pixel, so the sheet carries NO transform at all at rest and after the
+   rise finishes - which is what keeps this from becoming a permanent compositing
+   layer over the entire page, including the sticky gallery and the footer. */
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-rise-lag .sheet {
+  transform: translate3d(0, var(--sheet-lag, 0px), 0);
+  will-change: transform;
+}
+
+/* The reduced-motion half of this lives in section 9 with the rest of them. It has
+   to be there and not here: section 9 is the last thing in the file, and this
+   override is only load-bearing if it comes AFTER the rule it overrides. Placed
+   here it would sit at line ~915, and section 9's block would win over it by
+   source order at equal specificity — a reduced-motion override that loses to the
+   thing it overrides is worse than no override, because it looks like it works. */
 
 /* The hero keeps its own layout; the wrapper adds no box of its own, so classic
    and arch modes occupy identical box heights.
 
-   The old `border-radius: inherit` handoff is gone. The dome is a `clip-path`
-   ellipse on the wrapper's `::before` now, which clips whatever it is painted on
-   — so nothing needs to inherit a radius, and `.lm-hero` is left completely
-   untouched. That also means `.lm-hero`'s own `overflow: hidden` can no longer
-   fight a radius it is no longer given. */
+   The old `border-radius: inherit` handoff is gone. The dome is now
+   `border-radius` on `.sheet__bg` (section 8a), which paints its own background
+   and so needs no radius inherited from any ancestor â€” `.lm-hero` and every real
+   section are left completely untouched, and nothing can fight a radius they are
+   not given. */
 
-/* `.home-ga` used to be a direct child of the page, so it ran the full width of
-   the viewport. Inside `.lm-hero` it inherits the hero's inline padding and would
-   come up ~2.4rem narrow on each side, which visibly inset the carousel and put
-   its faded edges short of the screen edge.
+/* `.home-ga` no longer needs a full-bleed correction. When it sat inside
+   `.lm-hero` it inherited the hero's inline padding and came up ~2.4rem narrow on
+   each side, which needed a matching negative margin to cancel. It now lives
+   directly inside `.sheet__content`, which has no horizontal padding of its own,
+   so the gallery is back to the viewport width it had on the classic page â€” by
+   inheritance rather than by a negative margin fighting one.
 
-   Cancelling the padding with a matching negative margin puts it back to the
-   viewport width it always had. `.ias` is `overflow: hidden` with a gradient mask
-   and its own `100%` width, so nothing about the row's geometry changes — only
-   which box it is measured against. `.arch-hero`'s permanent `overflow: hidden`
-   then clips it to the panel, which is the point: the gallery now bleeds to the
-   screen edges INSIDE the panel instead of escaping it. It sits far below
-   `--arch-dome`, where the dome's arc has already reached the full screen width,
-   so the full-bleed edge is exactly where the curve has finished — the two
-   never fight. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero .home-ga {
-  margin-inline: calc(-1 * var(--lm-gutter));
-  width: auto;
-  /* v2.2.3 — `.home-ga` INHERITS the solid light layer that used to be painted
-     by `.arch-hero`. It had no background of its own at all: it was opaque purely
-     because it sat inside the hero's slab. When the hero went transparent for the
-     photo, that left this whole gallery band showing the fixed clinic photograph
-     straight through it — which is the original "content floating loose on the
-     background" bug in a new place, so the slab has to arrive here rather than
-     simply being switched off.
-
-     It is the SAME slab recipe as before, still a gradient rather than a bare
-     colour, because `background-position` / `background-size` are inert on a flat
-     colour — a gradient is an image, so it can be sized and anchored. Anchored
-     `bottom` with size `calc(100% - var(--arch-dome))` puts the slab's top edge
-     exactly at --arch-dome, where the `::before` cap above is at full width, so
-     the seam cannot show.
-
-     `isolation: isolate` is what makes the cap's z-index:0 meaningful. Both the
-     cap and the cards live inside this element; without a stacking context of its
-     own the cap would sort against `.arch-hero`'s children and, at z-index 0,
-     could paint over the gallery instead of under it. */
-  isolation: isolate;
-  background: linear-gradient(var(--background), var(--background)) center bottom / 100%
-      calc(100% - var(--arch-dome, 22vw)) no-repeat;
-}
+   Its background is likewise no longer needed here. `.home-ga` had none on the
+   classic page and gained one only because the old architecture put it inside the
+   hero's opaque slab. The sheet's `.sheet__bg` paints the same cream for the whole
+   column now, so this section is left with no background at all and reads exactly
+   as it did before the arch work began. */
 
 /* The arch is ENCLOSED, permanently. This used to flip `overflow` back to
    `visible` once the rise finished, on the reasoning that the arch had been
@@ -811,28 +964,34 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero .home-ga {
    leak: with the overflow released, the fixed photograph behind the hero ran on
    past the fold and every following section painted straight over it.
 
-   `overflow: hidden` is now never released, so the hero and the case gallery now
-   living inside it can never produce a scrollbar or spill past the dome, at any
-   scroll position. Containment is the resting state, not something the animation
-   switches on and off.
+   `overflow: hidden` is now never released, so the opening screen can never
+   produce a scrollbar or spill past the dome, at any scroll position.
+   Containment is the resting state, not something the animation switches on and
+   off. v2.2.5 kept it on the now-empty box for the same reason: it costs nothing,
+   and dropping it would only be a change left around to be re-broken.
 
-   No radius is reset here any more — the silhouette is a `clip-path` ellipse and
-   the resting dome is meant to survive the rise. */
+   No radius is reset here â€” the hero has no dome of its own any more. The
+   silhouette belongs to `.sheet__bg` and is meant to survive the rise untouched. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero.arch-risen {
   overflow: hidden;
   transform: none;
 }
 
 /* --------------------------------------------------------------------------
-   8b. PHASE 2 — INNER CONTENT PARALLAX
+   8b. PHASE 2 â€” INNER CONTENT PARALLAX
    --------------------------------------------------------------------------
    The container rises FAST, the contents inside it drift SLOWLY, and the two
    are deliberately decoupled: `--arch-inner` is a fixed multiple of
    `--arch-offset` rather than a second scroll term, so the hero travels 62vh to
    its final position while its contents cover barely half that distance. The
    result is that the hero slides into place and the copy, buttons, doctors and
-   case gallery are still catching up — which is the whole point, and the reason
+   case gallery are still catching up â€” which is the whole point, and the reason
    this cannot be one property driving both.
+
+   `.home-ga` is NOT in this list. It left the hero for the sheet, so its parallax
+   is no longer part of the rise; it travels with the page like any other section
+   below the fold, which is what keeps the carousel from drifting while the hero
+   animates.
 
    The 0.55 factor is what makes it read as depth rather than as a single moving
    block. At 1.0 the contents are welded to the hero and the effect disappears;
@@ -840,7 +999,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero.arch-risen {
    travel, which at rest is 27vh of drift against the hero's 62vh.
 
    All of these are transforms. Nothing here animates width, height, top or
-   margin, so none of it can trigger layout or reflow the subtree — which is what
+   margin, so none of it can trigger layout or reflow the subtree â€” which is what
    "use hardware-accelerated transitions rather than animating layout properties"
    actually requires. `will-change` is on the parallax elements and NOT on the
    hero's own children beyond these, so this adds two composited layers, not one
@@ -850,8 +1009,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero.arch-risen {
    decelerates on exactly the same curve and the group never separates. 340ms is
    long enough to absorb a dropped frame without the content visibly rubber-
    banding behind a fast flick. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-risen .lm-hero-grid,
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-risen .home-ga {
+body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-risen .lm-hero-grid {
   transform: translate3d(0, calc(var(--arch-offset, 0px) * var(--arch-parallax, .55)), 0);
   transition: transform 340ms cubic-bezier(.22, .61, .36, 1);
   will-change: transform;
@@ -861,35 +1019,45 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-risen .home-ga {
    transformed (the first-paint guard in section 8 pins them until then), so the
    inner layer would otherwise be sitting 27vh low from the very first frame and
    the hero would appear to arrive with its contents hanging below it. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero {
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__content {
   --arch-parallax: 0;
 }
 
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .arch-hero {
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__content {
   --arch-parallax: .55;
 }
 
-/* Everything below the arch — which, now that `.home-ga` has moved inside it, is
-   everything below `.home-ga` — returns to the normal flat canvas and sits above
-   both background layers.
-
-   `~ *`, not `+ *`, and that is the fix rather than a style choice. `+ *` matched
-   `.home-intro` alone, so `.cluster`, `.trend`, `.cnp` and the five other post-hero
-   sections were left stacking directly on top of the fixed photograph — which is
-   why "content floating loose on the background" kept coming back no matter how
-   the hero itself was fixed. Every following sibling is now lifted above layer 0
-   AND given the opaque page colour, so the photograph is confined to the hero's
-   dome instead of running the whole length of the page.
-
-   The colour is only ever a background. `--background` is the same token `body`
-   already paints, so these sections look identical to the classic page; the
-   dark bands in this page (`.f-bar`, the modal) set their own backgrounds and are
-   unaffected. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero ~ * {
-  position: relative;
-  z-index: 2;
-  background: var(--background);
+/* v2.2.6 - MOBILE DOME. `min(50vw, 95svh)` is right for a desktop viewport and
+   wrong for a phone, for one specific reason: the horizontal radius is 50% of the
+   VIEWPORT, so on a 390px screen `50vw` is 195px and `95svh` is 802px â€” the `min`
+   already lands on 195px there, giving a ry of 195px against an rx of 195px. That
+   is round, but it is a 390px-wide arch dropping 195px over content that has to
+   clear it, and `clamp()` pins the band to something that cannot swallow a 844px
+   screen: the 160px floor keeps a visible crown, the 50vw middle tracks the actual
+   width, and the 300px ceiling stops a large phone from opening on a half-circle
+   deeper than its own hero. */
+@media (max-width: 999.98px) {
+  body.arch-intro:not(.classic-layout):not(.classic-mode) {
+    --arch-dome: clamp(160px, 50vw, 300px);
+  }
 }
+
+/* Every real section below the hero now lives inside `#sheet`, which paints the
+   page colour once via `.sheet__bg` and lifts `.sheet__content` above it (section
+   8a). That single wrapper replaces what used to be a `~ *` sibling rule here.
+
+   The reason it was needed at all is worth keeping in mind: `.arch-hero ~ *`
+   matched `.home-intro` with `+ *` but left `.cluster`, `.trend`, `.cnp` and the
+   other post-hero sections stacking straight onto the fixed photograph, which is
+   why "content floating loose on the background" kept returning. One wrapper
+   around all of them cannot have that half-applied failure mode â€” there is no
+   sibling selector left to get wrong, and no section that can be missed.
+
+   No section's own background is touched. `--background` is the same token `body`
+   already paints, so the sheet reads identically to the classic page; the dark
+   bands in this page (`.f-bar`, the modal) and the `.faq-item` cards keep their
+   own backgrounds and are unaffected. `.site-footer` stays outside `#sheet` and
+   outside `</main>`, exactly as it was. */
 
 
 /* --------------------------------------------------------------------------
@@ -904,7 +1072,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero ~ * {
     display: none !important;
   }
 
-  /* The photo is no longer clipped, so there is no clip to reset — the hero's own
+  /* The photo is no longer clipped, so there is no clip to reset â€” the hero's own
      opacity does the work under this query. */
   body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo {
     clip-path: none !important;
@@ -922,11 +1090,12 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero ~ * {
      arch was built to prevent, and a user who asked for less animation did not
      ask for less containment.
 
-     `--arch-open` is pinned to 0 here, not 1. It widens and flattens the dome
-     ellipse as you scroll in, so pinning it to 1 would erase the arch entirely —
-     leaving a reduced-motion user with the exact flat, square-cornered hero this
-     change exists to replace. The dome is a static shape, not an animation, so
-     there is nothing about it to suppress. */
+     `--dome-k` is pinned to 1 here, not 0. It flattens the sheet's dome as you
+     scroll in, so pinning it to 0 would leave a reduced-motion user with square
+     top corners â€” the flat, plain sheet this change exists to replace. The dome
+     is a static shape, not an animation, so there is nothing about it to
+     suppress. `--arch-open` is retired with the clip-path dome; it is kept in
+     this block only so an older cached rule cannot reintroduce it. */
   body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero {
     --arch-offset: 0px !important;
     --arch-scale: 1 !important;
@@ -936,9 +1105,38 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero ~ * {
     overflow: hidden !important;
   }
 
-  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-grid,
-  body.arch-intro:not(.classic-layout):not(.classic-mode) .home-ga {
+  body.arch-intro:not(.classic-layout):not(.classic-mode) {
+    --dome-k: 1 !important;
+  }
+
+  /* v2.2.6 - the mesh stops drifting, but it does not disappear: a permanent
+     `filter: blur(80px)` on a still element costs the same as on a moving one,
+     and the warm wash it paints is part of the sheet's colour rather than motion. */
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob {
+    animation: none !important;
+  }
+
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-grid {
     transform: none !important;
     transition: none !important;
+  }
+
+  /* v2.2.6 - THE SLOWER RISE IS MOTION, SO IT GOES.
+
+     arch-intro.js's `isActive()` gate already tears the whole arch mode down under
+     this query, so `arch-rise-lag` should never reach the body at all. This is here
+     for the case the rest of this section is here for: the class is already on the body
+     and the preference changes mid-session, or a cached script re-adds it.
+
+     It is deliberately NOT scoped to `.arch-rise-lag`. A smoothed offset that trails
+     the scroll is exactly the unrequested motion this setting exists to suppress, so
+     the guarantee wanted is "the sheet never carries a transform under reduced
+     motion", not "the sheet does not carry a transform while lagging". Narrowing it to
+     the class would mean a leaked class still slides the whole page.
+
+     `!important` to match every other rule in this section, and `transform: none`
+     rather than removing the class, so this cannot lose a specificity fight. */
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
+    transform: none !important;
   }
 }

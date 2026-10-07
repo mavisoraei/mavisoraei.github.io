@@ -292,6 +292,74 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
      viewport, so it tracks the navbar pill at every width instead of only
      matching it on very wide screens */
   --shell-max: min(1200px, calc((100vw - 2 * var(--shell-inset)) * .94));
+  /* v2.2.6 — the navbar pill's INNER horizontal padding, named as two tokens so the
+     hero content column can align to it exactly.
+
+     This is the v2.2.6 answer to "hero content width = navbar width": the two
+     columns must land on the logo's left edge and the "Contact Us" button's right
+     edge, and both of those are the pill's OUTER edge plus its own padding. The
+     pill is deliberately asymmetric — 1.2rem on the brand side so the wordmark has
+     room to breathe, .55rem on the CTA side so the button sits closer to the edge —
+     so it is two tokens and not one centred value. Declared here, beside
+     `--shell-max`, because `.lm-hero-grid` (below) and `.lm-nav` (further down)
+     are the only two rules that consume them and they are ~6000 lines apart. */
+  --lm-nav-pad-start: 1.2rem;
+  --lm-nav-pad-end: .55rem;
+  /* v2.2.6 — the pill's border width, as a token, for the same reason as the padding
+     above. `.lm-nav` has `border: 1px solid` on all four sides, so its CONTENT box
+     starts 1px further in than its padding box. A hero grid carrying only the padding
+     tokens therefore lands 1px left of the logo and 1px right of the CTA — measured,
+     not estimated: logo at 132.2px against a copy column at 131.2px. One pixel is
+     invisible and the brief still says "exactly", and it is the sort of discrepancy
+     that reads as a rendering fault once anyone puts a rule or a hairline on that
+     edge and wonders why it does not quite reach. */
+  --lm-nav-border: 1px;
+  /* v2.2.6 — where the pill's CONTENT actually begins, measured from the viewport's
+     left edge. `.lm-nav` gets this as `max-width: var(--shell-max); margin-inline:
+     auto` inside the gutter, which is two lines that cannot be named; this is the
+     same arithmetic written out, and it exists for the one consumer that cannot use
+     those two lines: the absolutely-positioned `.lm-hero-badge`, which has to align
+     to the content column without being IN it (see the badge rule for why).
+
+     The `max(0px, ...)` is the narrow-viewport case, where `--shell-max` falls back
+     to 94% of the gutter-adjusted viewport and the pill stops being centred in a
+     wider box — there is nothing left over, so the term floors at zero rather than
+     going negative and pulling the badge off-screen. `100%` resolves against the
+     containing block at the point of use, which is the full-width `.lm-hero`. */
+  --lm-nav-content-start: calc(var(--lm-gutter)
+    + max(0px, (100% - 2 * var(--lm-gutter) - var(--shell-max)) / 2)
+    + var(--lm-nav-pad-start) + var(--lm-nav-border));
+  /* v2.2.6 — a CONSERVATIVE UPPER BOUND on the pill's height, deliberately not its
+     height. `.lm-header` is `position: fixed` at `--lm-nav-top`, and the preloader
+     brand block (`#arch-intro-ui`, in arch-intro.css) has to clear the pill's lower
+     edge by a fixed gap at EVERY viewport without being able to measure it.
+
+     The pill's height is content-driven and falls into two regimes. Measured in
+     Chrome by sweeping 19 viewport widths (320 → 2560) and reading the rendered
+     `.lm-nav` box:
+
+       320, 360, 375, 390, 414, 430, 480, 540, 600, 768, 834, 900  ->  62.00px
+       1024, 1180, 1280, 1440, 1680, 1920, 2560                   ->  58.00-58.70px
+
+     Mobile is flat at 62px: `.lm-menu` is `display: none` there, so the 44px burger
+     sets the content height instead of the menu. Desktop grows slowly with the
+     menu's line box (39.47px at 1024 → 40.70px at 1920) and saturates at 58.7px.
+
+     So 4rem is the smallest single bound that clears every measured width. The
+     earlier `3.625rem` (58px) was not just wrong, it was wrong in the direction that
+     breaks the brief: it produced a measured 22px gap at 390x844 against the 24px
+     asked for, because it was sizing against the desktop menu and forgetting the
+     burger entirely.
+
+     This is deliberately NOT used to reserve layout space anywhere (nothing reserves
+     it), so over-stating it costs only the fraction of a pixel of extra gap.
+
+     The residual limitation is honest and irreducible in CSS: the pill is 62px
+     because of what is in it, and a width where the menu wraps to three lines would
+     exceed this bound and shrink the gap again. Closing that needs JS to measure,
+     which the brief excludes. */
+  --lm-nav-top: clamp(.65rem, 1.5vw, 1.3rem);
+  --lm-nav-clear-h: 4rem;
   --gutter: 1.5rem;
   --lux-body: #383632;
   --lux-head: #1a1917;
@@ -7596,11 +7664,14 @@ tbody tr:nth-child(2n) {
    intentional when the things around it stay flush left. Centring everything is
    how a page ends up looking like it lost its alignment instead of gaining one.
 
-   `.home-intro`'s body paragraph is deliberately NOT centred. It is a 72ch wall
-   of running text — centring a paragraph that long produces a ragged, hard-to-read
-   block with a wandering left edge, which is strictly worse than the left-aligned
-   original. Only the heading and the genuinely short subtexts are centred, and the
-   short ones get a measure so they cannot creep toward full width.
+   `.home-intro`'s body paragraph was deliberately NOT centred here, for a v1.0.17
+   reason that v2.2.6 has overruled. It was a 72ch wall of running text, and centring
+   a paragraph that long produces a ragged, hard-to-read block with a wandering left
+   edge. v2.2.6 centres it anyway, because the brief asks for the paragraph and its
+   heading to share one centred column - and it fixes the underlying cause rather than
+   ignoring it: both are now 58ch, which is narrow enough that the ragged edge the
+   objection was about never appears. The paragraph therefore joins `.home-services`
+   and `.home-local` in the rule below, and the exclusion is gone.
 
    `text-wrap: balance` is what makes a centred multi-line heading look designed:
    without it the browser fills each line as full as it can, so a three-line title
@@ -7610,17 +7681,45 @@ tbody tr:nth-child(2n) {
 
    Both are progressive enhancements: a browser without them keeps normal wrapping
    and loses only the polish, never the alignment. */
-.home-intro h2, .home-why h2, .home-services h2, .home-local h2 {
+.home-intro > h2,
+.home-why h2,
+.home-services h2,
+.home-local h2 {
   text-align: center;
   text-wrap: balance;
   margin-inline: auto;
   max-width: 26ch;
 }
 
+/* v2.2.6 — `.home-intro`'s heading gives up `max-width: 26ch` so it can share a
+   measure with the paragraph under it. That is the whole of the change: the brief asks
+   for the two to sit in one centred column of the same width, and the only way to get
+   one column out of two elements is for both to resolve to the same value. 58ch is not
+   a new number - it is the measure the two sibling sections already use for exactly
+   this heading-plus-subtext pair (`.home-services`, `.home-local`, two rules below), so
+   the four homepage intros now read as one pattern rather than two.
+
+   26ch would technically also have satisfied "same width", but only by making the
+   paragraph a 26-character measure - roughly four words a line, about seven lines for
+   this text, and the reason the original 72ch was chosen. Widening the heading is the
+   cheaper half of the trade. */
+.home-intro > h2 {
+  max-width: 58ch;
+}
+
 /* The short subtext that sits directly under a section title. Only the first
-   paragraph after the heading — `.home-intro`'s single long body paragraph is
-   excluded on purpose, see the note above. */
-.home-services > h2 + p, .home-local > h2 + p {
+   paragraph after the heading.
+
+   v2.2.6 — `.home-intro` is now IN this rule. It was explicitly excluded, on the
+   grounds that centring a 72ch paragraph gives it a ragged left edge. Centring it
+   without narrowing it would still do that, which is why the exclusion and the measure
+   were the same decision: `max-width` is now 58ch, shared with the heading above it, so
+   the ragged edge the comment warned about does not arise. Font, size and wording are
+   untouched - this is three properties that existed on the two sibling sections already
+   and never on this one. */
+.home-intro > h2 + p,
+.home-services > h2 + p,
+.home-local > h2 + p {
   text-align: center;
   text-wrap: pretty;
   margin-inline: auto;
@@ -7630,10 +7729,16 @@ tbody tr:nth-child(2n) {
 /* Hero copy column: the decorative wordmark, the kicker, the lead paragraph and
    the button row all centre as one unit. */
 .lm-hero-copy {
-  /* v2.2.3 — was `center`. The brief moves the hero text block to LEFT alignment
-     at ~15% from the left edge, and `start` is used rather than `left` so the
-     column still mirrors correctly under `dir="rtl"` (the site carries an RTL
-     path for the Persian pages). */
+  /* v2.2.3 — was `center`. The brief asked for the hero text block to be
+     LEFT-aligned, and `start` is used rather than `left` so the column still mirrors
+     correctly under `dir="rtl"` (the site carries an RTL path for the Persian pages).
+
+     v2.2.6: the alignment is unchanged and still `start`, but the reason has moved.
+     It is no longer "the brief put the block at ~15% from the left" — that positioning
+     is gone, and the block now starts on the navbar's logo. What still requires
+     `start` is that the wordmark, the kicker and the lead all hang from ONE edge
+     (the logo's), so `center` would re-introduce the ragged left edge the next two
+     rules go to some trouble to prevent. */
   text-align: start;
 }
 
@@ -7661,6 +7766,8 @@ tbody tr:nth-child(2n) {
 .lm-hero-copy .lm-buttons {
   justify-content: center;
 }
+
+.lm-hero-copy--new{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;text-align:start;gap:0;}.lm-hero-block{display:flex;flex-direction:column;align-items:flex-start;}.lm-hero-block--docs{gap:1rem;}.lm-hero-block--video{margin-top:0;}.lm-hero-block--text{margin-top:50px;gap:0.5rem;}.lm-hero-block--buttons{margin-top:28px;}.lm-buttons--stacked{flex-direction:column;align-items:flex-start;gap:28px;}.lm-hero-figure--reposition{position:absolute;top:17vh;left:52vw;right:0;bottom:0;width:auto;height:auto;display:flex;align-items:flex-end;justify-content:flex-end;overflow:visible;z-index:1;pointer-events:none;}.lm-hero-figure-img--fade{position:absolute;right:0;bottom:0;left:auto;top:auto;height:83vh;width:auto;max-width:100%;object-fit:contain;object-position:right bottom;-webkit-mask-image:linear-gradient(to bottom,black 80%,transparent 100%),linear-gradient(to right,black 92%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,black 80%,transparent 100%),linear-gradient(to right,black 92%,transparent 100%);mask-composite:intersect;}.lm-hero-figure-label--anchored{position:absolute;right:calc(24px);top:26%;transform:translateY(-50%);font-family:var(--font-body);font-weight:400;font-size:clamp(15px,1.05vw,20px);color:#2a2622;white-space:nowrap;z-index:2;}@media(max-width:900px){.lm-hero-figure--reposition{position:relative;top:auto;left:auto;right:auto;bottom:auto;width:100%;height:auto;margin-top:2rem;align-items:center;justify-content:center;}.lm-hero-figure-img--fade{position:relative;height:auto;width:100%;object-fit:contain;object-position:center bottom;-webkit-mask-image:linear-gradient(to bottom,black 80%,transparent 100%);mask-image:linear-gradient(to bottom,black 80%,transparent 100%);}.lm-hero-figure-label--anchored{display:none;}.lm-buttons--stacked{gap:1rem;}.lm-hero-block--text{margin-top:2rem;}.lm-hero-block--buttons{margin-top:1rem;}}
 
 /* The hero's second column, so its heading reads as part of the same centred
    composition rather than as the one left-flushed thing left in the grid. The
@@ -8053,7 +8160,11 @@ tbody tr:nth-child(2n) {
    -------------------------------------------------------------------------- */
 .lm-header {
   position: fixed;
-  top: clamp(.65rem, 1.5vw, 1.3rem);
+  /* v2.2.6: was the `clamp(.65rem, 1.5vw, 1.3rem)` literal, now `--lm-nav-top`
+     so the preloader brand block's clear line (`--lm-nav-clear`, which adds
+     `--lm-nav-clear-h` on top of this) cannot drift away from where the navbar
+     actually renders. Same value, one source. */
+  top: var(--lm-nav-top);
   /* v1.0.6: wider than `--gutter` so the pill itself can grow toward the page
      edges. The pill's own max-width lives on `.lm-nav`. */
   inset-inline: clamp(.7rem, 2.6vw, 2.4rem);
@@ -8103,7 +8214,10 @@ tbody tr:nth-child(2n) {
      share an edge at every viewport. */
   max-width: var(--shell-max);
   margin-inline: auto;
-  padding: .5rem .55rem .5rem 1.2rem;
+  /* v2.2.6: the literal `.5rem .55rem .5rem 1.2rem` becomes the shared
+     `--lm-nav-pad-end` / `--lm-nav-pad-start`, because the hero content column
+     now aligns to this pill's inner edges and has to read the same numbers. */
+  padding: .5rem var(--lm-nav-pad-end) .5rem var(--lm-nav-pad-start);
   border-radius: 999px;
   background: color-mix(in srgb, var(--card) 46%, transparent);
   -webkit-backdrop-filter: blur(26px) saturate(1.85);
@@ -8632,27 +8746,27 @@ body:has(main:not(.hero-overlap)) .site-header {
   justify-self: start;
   text-align: start;
   font-family: var(--font-display);
-  /* v2.2.3 — THE HERO MOVED ONTO THE PHOTOGRAPH, so this wordmark is now
-     near-white display serif on an image instead of dark ink on cream. Every
-     number below comes from the new brief and the two changes are coupled:
-       * 400, not 500. On cream, 500 gave the thin/thin strokes of a Bodoni
-         enough weight to read as "prominent". On a photograph the strokes sit
-         against a busy mid-tone and a heavier weight turns the hairlines muddy,
-         so the face drops back to true regular and the contrast does the work.
-       * letter-spacing -.02em, not -.03em. At 190px the extra -.01em is 1.9px
-         of lost sidebearing per pair, which visibly closes the aperture in
-         "Beauty" — Bodoni's ball terminals need that room.
-       * line-height .88, up from .84: two lines of a 190px Didone with .84
-         leading overlap the ball terminal of "Beauty" with the cap of "Clinic".
-       * color --hero-ink (#faf8f5), NOT pure white. Pure #fff on a photo
-         clips the highlight and the glyph edges alias; a hair off-white keeps
-         the apparent contrast while staying inside the display range.
+/* v2.2.5 — the wordmark is DARK again. It spent v2.2.3 to v2.2.4 as
+     --hero-ink on the photograph; v2.2.5 moves the copy into the cream sheet
+     (see the note on `.lm-hero` in index.html), so near-white on cream was both
+     wrong and unreadable. #2a2622 rather than --foreground (#1E1E1E): the
+     hero-ink-era weight decision is kept, and a slightly warmer, slightly
+     lighter black is what keeps a 190px Didone from reading as a hole punched
+     in the paper next to the warm sand tones in the sheet's mesh.
+
+     Every number below is unchanged from v2.2.3 and still load-bearing:
+        * 400, not 500 — the hairlines need the contrast the cut gives them.
+        * letter-spacing -.02em, not -.03em. At 190px the extra -.01em is 1.9px
+          of lost sidebearing per pair, which visibly closes the aperture in
+          "Beauty".
+        * line-height .88, up from .84: two lines of a 190px Didone at .84
+          overlap the ball terminal of "Beauty" with the cap of "Clinic".
      `font-optical-sizing: auto` lets Bodoni's opsz axis pick the display cut
      from the rendered size, so the 64px mobile size and the 190px desktop size
      get genuinely different contrast rather than one shape scaled up.
-     `font-feature-settings` and `text-rendering` are the two levers that make
-     a Didone at this size look typeset rather than assembled: standard `liga`
-     and `kern` are on by default, so naming them is really a guarantee that a
+     `font-feature-settings` and `text-rendering` are the two levers that make a
+     Didone at this size look typeset rather than assembled: standard `liga` and
+     `kern` are on by default, so naming them is really a guarantee that a
      later `font-variant` or a text-transform on an ancestor cannot switch them
      off, and `optimizeLegibility` hands kerning + ligatures to the shaper. */
   font-size: clamp(64px, 11vw, 190px);
@@ -8662,7 +8776,7 @@ body:has(main:not(.hero-overlap)) .site-header {
   font-optical-sizing: auto;
   font-feature-settings: "liga", "kern";
   text-rendering: optimizeLegibility;
-  color: var(--hero-ink);
+  color: #2a2622;
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
@@ -8684,12 +8798,12 @@ body:has(main:not(.hero-overlap)) .site-header {
    the type at every size.
 
    `white-space: nowrap` on the spans (above) is now load-bearing in a way it
-   was not before. At 190px "Beauty" is roughly 587px wide; the offset column
-   starts at 15vw, so on a 1440 viewport the word ends around x=800 while the
-   column is only ~42rem wide. Without nowrap the browser would break the word
-   mid-glyph instead of overflowing, which is the one failure mode a display
-   wordmark must never have. Overflow past the column is harmless here because
-   the photo continues to the right and the scrim thins out. */
+   was not before. At 190px "Beauty" is roughly 587px wide; since v2.2.6 the
+   offset column starts on the logo at x=139 on a 1440 viewport, so the word ends
+   around x=760 while the column is ~34rem wide. Without nowrap the browser would
+   break the word mid-glyph instead of overflowing, which is the one failure mode a
+   display wordmark must never have. Overflow past the column is harmless here
+   because the cream sheet continues to the right. */
 .lm-hero-giant span + span {
   margin-inline-start: .06em;
 }
@@ -8734,8 +8848,23 @@ body:has(main:not(.hero-overlap)) .site-header {
   margin-block: auto;
   margin-inline: auto;
   /* v1.0.13: the side padding is the section's job now; leaving it here is what
-     made the grid narrower than the pill. */
-  padding-inline: 0;
+     made the grid narrower than the pill.
+
+     v2.2.6 — NO LONGER ZERO. Requirement 4 is that the hero content column is the
+     navbar's width with its left edge on the LOGO and its right edge on the "Contact
+     Us" button, and the logo and the button are `1.2rem` / `.55rem` inside the pill.
+     Matching only the pill's OUTER edges — which is all this rule did, and all it
+     could do with a literal `0` — left the copy sitting 19.2px outboard of the logo at
+     every width including the phone. So the pill's own inner padding comes here, and
+     the box is now identical to `.lm-nav`'s content box on both axes.
+
+     It lives in the BASE rule, not in the desktop media query, because "the hero lines
+     up with the navbar" cannot be a thing that is true above 1000px and false below it.
+     The desktop block therefore no longer restates it — a value declared twice in two
+     places is one of them eventually going stale, which is the whole reason
+     `--lm-nav-pad-start` / `--lm-nav-pad-end` are named tokens in the first place. */
+  padding-inline: calc(var(--lm-nav-pad-start) + var(--lm-nav-border))
+    calc(var(--lm-nav-pad-end) + var(--lm-nav-border));
   display: grid;
   gap: clamp(1.6rem, 3.5vw, 2.75rem);
   align-items: start;
@@ -8743,12 +8872,17 @@ body:has(main:not(.hero-overlap)) .site-header {
 
 @media(min-width:1000px) {
   /* v2.2.3 — THE HERO GOES FULL-BLEED AND THE COPY BLOCK MOVES TO ~15%.
+     !! REVERTED IN FULL BY v2.2.6. The two-column split below survives; everything
+     !! this block used to say about position, width and inset no longer applies, and
+     !! the media query now contains nothing but the split. Kept as history because the
+     !! reason it was tried is the reason it was undone.
+
      Until now the hero grid was a `.wrap` capped at `--shell-max` (~1200px) and
      centred, which put the copy's left edge at roughly 11% of a 1440 viewport —
      and that was deliberate: the whole v1.0.13/v1.0.15 work exists to keep the
-     hero column, `.wrap` and the navbar pill sharing one edge. The new brief asks
+     hero column, `.wrap` and the navbar pill sharing one edge. The brief asked
      for the text block at ~15% from the left, which is a different composition,
-     so this opts the HERO out of the shell on desktop only.
+     so this opted the HERO out of the shell on desktop only.
 
      The consequence to be aware of: the hero copy no longer aligns with the
      navbar pill's left edge, or with any `.wrap` section below it. That is
@@ -8756,25 +8890,37 @@ body:has(main:not(.hero-overlap)) .site-header {
      an editorial, off-grid hero, and leaving mobile on `--shell-max` keeps the
      phone layout on the same rails as the rest of the site.
 
-     Two details make `15vw` mean exactly 15% of the VIEWPORT:
-       * `.lm-hero`'s own `padding-inline: var(--lm-gutter)` is zeroed here, so
-         the grid's padding is the only inset in play. Left in place it would
-         add ~38px on top of the 15vw and land the copy at ~17.6%.
-       * The second column is a fixed `22rem` rather than a fraction, so the
-         doctors/play-card column parks against the right inset at every width and
-         only the copy column absorbs the leftover. A `1fr 1fr` split would
-         stretch the right column to 50% of a 2560 screen and strand a 260px
-         video card in the middle of nowhere. */
-  .lm-hero {
-    padding-inline: 0;
-  }
+Two details make `15vw` mean exactly 15% of the VIEWPORT:
+     * `.lm-hero`'s own `padding-inline: var(--lm-gutter)` is zeroed here, so
+       the grid's padding is the only inset in play. Left in place it would
+       add ~38px on top of the 15vw and land the copy at ~17.6%.
+     * The second column is a fixed `22rem` rather than a fraction, so the
+       doctors/play-card column parks against the right inset at every width and
+       only the copy column absorbs the leftover. A `1fr 1fr` split would
+       stretch the right column to 50% of a 2560 screen and strand a 260px
+       video card in the middle of nowhere.
 
+   v2.2.6 — ALL OF THAT IS REVERTED, and this is the single most consequential
+   change in the release. The brief asks for the hero content column to be exactly
+   the navbar's width: the title's left edge on the logo, the video column's right
+   edge on the "Contact Us" button. `15vw` cannot do that — at 1440x900 it puts the
+   copy at 216px while the logo's left edge is at 139px, a 77px disagreement that is
+   obvious on any screen where you can see both at once.
+
+   So the desktop opt-out is gone. What remains here is only the column split, which
+   was never the problem: two columns at this width is a layout choice and it stays.
+   `max-width`, `margin-inline` and `padding-inline` all moved to the BASE
+   `.lm-hero-grid` rule, because the width and the alignment are not desktop
+   properties — the phone has a navbar too, and a hero that lines up with it above
+   1000px and drifts 19px outboard of it below is worse than the bug this fixes.
+
+   What this costs, stated plainly: the editorial off-grid hero is gone, and the
+   hero is back on the same rails as `.wrap` and the navbar. That is the trade the
+   brief asked for, and the v1.0.13/v1.0.15 work this rule originally opted out of
+   is what makes it possible to do it with two lines rather than a rewrite. */
   .lm-hero-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
     gap: clamp(1rem, 2.2vw, 2.25rem);
-    max-width: none;
-    margin-inline: 0;
-    padding-inline: 15vw var(--lm-gutter);
   }
 
   .lm-hero-copy {
@@ -8814,13 +8960,30 @@ body:has(main:not(.hero-overlap)) .site-header {
    screens.
 
    Hidden below 1000px, which is the same breakpoint where the hero switches to
-   two columns. The reason is a real collision, not a preference: `.lm-hero`
-   reserves `7.5rem` of top padding, so the copy column starts at y=120px, while
-   the badge occupies 82–154px. On desktop the copy sits at 15vw so there is
-   nothing to its left; on a 390px phone the badge would overlap the top of the
-   64px title. Displaying it on mobile means the overlap; hiding it means the
-   phone layout stays clean. If the badge is wanted on mobile it needs to move
-   into the copy column's own flow, which is a layout change, not a media query.
+   two columns. The reason is a real collision, not a preference: on a 390px phone
+   the badge would sit directly on top of the 64px title. If the badge is wanted on
+   mobile it needs to move into the copy column's own flow, which is a layout
+   change, not a media query.
+
+   v2.2.6 — `inset-inline-start` moves from `var(--lm-gutter)` to
+   `--lm-nav-content-start`, and this is not cosmetic. Parked at the viewport
+   gutter, the badge's left edge is 0.948 * rx from the centre line, so the dome
+   would have to descend ~491px before the cream reached it — against 309px for the
+   content column. That single 182px difference is the entire reason the v2.2.5
+   `0.65 * ry` clearance (468px) could not be reduced: the badge, parked at the far
+   edge of the viewport, was setting the floor for the whole hero.
+
+   Moving it onto the content column's own left edge takes it to 0.807 * rx, the
+   same fraction as the wordmark, so it clears on exactly the same depth as
+   everything else and the clearance drops from 0.65 * ry to 0.24 * ry. It also
+   makes the badge obey the v2.2.6 alignment rule for free: it now starts on the
+   same edge as the logo and the title instead of 82px outboard of them, which is
+   what "everything lines up on the navbar" looks like.
+
+   It still reads as a corner badge because it is ABOVE the title, not beside it.
+   Measured at 1440x900: the badge's top sits 312px below the apex and its bottom
+   at 384px, while the copy column's top is 462px below it, so the badge clears the
+   wordmark by 78px with no horizontal overlap to soften the fact.
 
    `transform-origin: 50% 50%` is explicit because the rotation is on the `<svg>`
    element: without it a rotated replaced element resolves the origin from its
@@ -8830,8 +8993,26 @@ body:has(main:not(.hero-overlap)) .site-header {
    suppress. */
 .lm-hero-badge {
   position: absolute;
-  top: 5.15rem;
-  inset-inline-start: var(--lm-gutter);
+  /* v2.2.7 — THE BADGE IS RETIRED, not deleted. The new hero composition puts a
+     full-height portrait on the right where the ring used to float, and the Figma
+     has no room for it. `display:none` (rather than removing the markup) keeps the
+     element, its id and its textPath target in the DOM for the classic-layout
+     restore path, and keeps it out of the accessibility tree exactly as
+     `aria-hidden="true"` already intended. Every geometry below this line is dead
+     while it is hidden and is kept only so the restore is a one-line change. */
+  display: none;
+  /* v2.2.6: was `5.15rem`. That number was "just under the navbar", and it is the
+     right answer to the wrong question now: at the new inset the badge shares the
+     content column's left edge, which is 0.807 * rx from the centre, so the cream
+     does not reach that edge until 0.409 * ry of descent — 294px at 1440x900 — and
+     82.4px of top padding puts the badge at 255px, 39px short of it. 6rem is
+     121.6px, which is where the curve actually is, and it still clears the navbar's
+     lower edge (78.8px at 1440x900) by 17px. */
+  top: 6rem;
+  /* v2.2.6: was `var(--lm-gutter)`. See the note above — the badge now aligns to
+     the content column's left edge, which is what lets the sheet's dome clearance
+     be a third of what it was. */
+  inset-inline-start: var(--lm-nav-content-start);
   z-index: 2;
   width: 72px;
   height: 72px;
@@ -8846,8 +9027,13 @@ body:has(main:not(.hero-overlap)) .site-header {
   animation: lm-badge-spin 30s linear infinite;
 }
 
+/* v2.2.5 — the badge ring text is DARK. It is `fill`, not `color`, so it needed its
+     own change rather than inheriting the recolour above. #4a423a rather than the
+     #2a2622 of the title: this is 7.5px type, and at that size full-strength ink
+     on a warm sand blob turns the thin strokes into specks. Warm brown at 7.5px is
+     the difference between a wordmark and dirt. */
 .lm-hero-badge text {
-  fill: var(--hero-ink-dim);
+  fill: #4a423a;
   /* v2.2.3: the brand brief puts CURVED TEXT on the display face, not the body
      face — this is display typography, so it follows the same rule as h1–h4 and
      resolves to Bodoni Moda here. At 7.5px the letterspacing is doing the
@@ -8906,7 +9092,11 @@ body:has(main:not(.hero-overlap)) .site-header {
   font-weight: 700;
   letter-spacing: .25em;
   text-transform: uppercase;
-  color: var(--hero-ink-dim);
+  /* v2.2.5 — warm brown, not near-white. --hero-ink-dim was rgba(250,248,245,.85),
+     which is invisible on the cream sheet; this is the eyebrow's own colour now
+     that it is back on paper. Kept out of the --hero-* tokens on purpose — those
+     describe type ON the photograph and must not follow the copy back inside. */
+  color: #8a7a63;
 }
 
 /* The lead is capped in `ch`, not in px or in a percentage of the column: it
@@ -8917,12 +9107,12 @@ body:has(main:not(.hero-overlap)) .site-header {
   margin: 0;
   font-size: clamp(1rem, .95rem + .35vw, 1.15rem);
   line-height: 1.65;
-  /* v2.2.3 — was `color-mix(--foreground 82%, transparent)`, i.e. dark ink at
-     82% on a cream page. That is invisible here: over the photograph it needs a
-     LIGHT value, and --hero-ink-dim is the brief's rgba(250,248,245,.85). The
-     85% alpha also does real work — it keeps the lead from competing with the
-     190px title for the eye. */
-  color: var(--hero-ink-dim);
+  /* v2.2.5 — was --hero-ink (near-white) from v2.2.3, because this column sat on the
+     photograph. It is back on cream now, so it takes the same dark ink as the
+     wordmark and the lead. The .85 alpha it used to carry is gone with it: that
+     value existed to hold a white paragraph back against a busy mid-tone photo,
+     and on paper it only greys the text. */
+  color: #2a2622;
 }
 
 .lm-buttons {
@@ -8930,9 +9120,10 @@ body:has(main:not(.hero-overlap)) .site-header {
   flex-wrap: wrap;
   gap: .7rem;
   margin-top: 1.4rem;
-  /* v2.2.3 — was `justify-content: center`, matching the old centred copy block.
-     The hero text column is left-aligned at ~15% now, so the buttons align to
-     the same edge as the title rather than floating in the middle of it. */
+/* v2.2.3 — was `justify-content: center`, matching the old centred copy block.
+   The hero text column is left-aligned, so the buttons align to the same edge as
+   the title rather than floating in the middle of it. (v2.2.6 moved that edge from
+   ~15% to the navbar's logo; the alignment itself did not change.) */
   justify-content: flex-start;
 }
 
@@ -9050,48 +9241,52 @@ body:has(main:not(.hero-overlap)) .site-header {
 }
 
 /* --------------------------------------------------------------------------
-   v2.2.3 — HERO BUTTONS ON THE PHOTOGRAPH
+   v2.2.5 — HERO BUTTONS BACK ON CREAM
    --------------------------------------------------------------------------
-   The house glass idiom below is built on `color-mix(--card …)`, i.e. a CREAM
-   tint. Over cream that reads as frosted glass. Over the photograph it does not:
-   the scrim has already darkened the left third of the image, so a pale cream
-   pill on an already-dark backdrop loses its edge and both buttons collapse into
-   one indistinct shape. So the hero pair gets its own values while KEEPING the
-   four-part structure that makes glass look like glass (blur + lit top inset +
-   bottom thickness inset + outer lift) — the structure is what was understood
-   from the v1.0.18 note above; only the tint changes.
+   v2.2.3 built this pair for the photograph: a white 18% "hero glass" tier and a
+   14px frost, because white-on-white has nothing to sample on a busy mid-tone
+   image. v2.2.5 moves the copy into the cream sheet, so white glass on white
+   ground would be a button you cannot find.
 
-   "Smart Mirror" becomes the glass tier exactly as briefed:
-   rgba(255,255,255,.18) over blur(14px) with a white 1px border. White on white
-   is low-contrast for the *label*, so the text colour is pinned to --hero-ink
-   rather than left to inherit; the 14px blur is 2px more than the house 12px
-   because the backdrop here is a photograph with real detail in it, and a
-   weaker frost lets that detail read straight through the button.
+   The four-part glass STRUCTURE is kept — blur does the frosting, the lit top
+   inset gives the surface an edge, the bottom inset gives it thickness, the
+   outer shadow lifts it off the ground — and only the tint changes. That
+   structure is what was understood from the v1.0.18 note above; losing it
+   because the backdrop changed colour would be throwing away the part that works
+   over both.
 
-   "Book Appointment" stays DARK, per the brief, and that is now the harder of
-   the two: the scrim's left stop is rgba(20,14,8,.55), so this button sits on
-   the darkest part of the image. It is made fully OPAQUE rather than the 82%/52%
-   translucent mix above — translucency here would let the photograph show through
-   a dark fill and dissolve the button into the backdrop. Separation comes from
-   the lit top inset and the outer shadow instead of from the fill being lighter
-   than its surroundings. This is the one pair worth eyeballing at both 1440 and
-   390: if it still reads as a hole rather than a button, the fix is a 1px
-   rgba(255,255,255,.22) border, not a lighter fill. */
+   "Smart Mirror" is now the LIGHT outline/glass tier, per the brief:
+     fill    rgba(255,255,255,.55) over blur(10px) — white on warm cream, so it
+             reads as a pale plate rather than as a hole.
+     border  rgba(42,38,34,.22) — a warm DARK hairline. A white border here would
+             vanish into the fill it is supposed to be edging, which is the same
+             mistake the v2.2.3 note recorded about the dark hairline over the
+             photo, just inverted.
+     text    #2a2622. Dark on a pale plate; the glass never needed the label to
+             be light, only the photograph to be behind it.
+
+   The frost drops from 14px to 10px because the backdrop is no longer a
+   photograph. 14px existed so photographic detail could not read straight through
+   the button; against a smooth cream wash there is no detail to blur away, and
+   the heavier frost just muddied the fill.
+
+   "Book Appointment" is unchanged: dark fill, white label. It was already correct
+   on cream and is correct on paper. */
 .lm-hero .lm-btn {
-  background: var(--hero-glass);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--hero-glass-line);
-  color: var(--hero-ink);
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(42, 38, 34, 0.22);
+  color: #2a2622;
   box-shadow:
     inset 0 1px 1px #ffffff8c,
-    inset 0 -3px 6px #00000026,
-    0 10px 26px #0000002e;
+    inset 0 -3px 6px #00000014,
+    0 10px 26px #0000001a;
 }
 
 .lm-hero .lm-btn:hover {
-  background: rgba(255, 255, 255, 0.26);
-  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(42, 38, 34, 0.4);
 }
 
 .lm-hero .lm-btn-fill,
@@ -9182,12 +9377,11 @@ body:has(main:not(.hero-overlap)) .site-header {
   line-height: 1.18;
   margin: 0;
   text-align: start;
-  /* v2.2.3 — was inheriting --foreground (near-black) from the h2,h3,h4 rule.
-     The right column now sits on the photograph, where a dark heading over a
-     mid-tone photo is unreadable. --hero-ink, full strength rather than the
-     .85 dim, because this is the only label in that column and it anchors the
-     avatars and the play card beneath it. */
-  color: var(--hero-ink);
+  /* v2.2.5 — was --hero-ink, for the same reason the lead changed: this column is on
+     the cream sheet again, so a near-white heading would be invisible. Full
+     strength, no alpha — it is the only label in this column and it has to hold
+     the avatars and the video card beneath it. */
+  color: #2a2622;
   /* It inherits `var(--font-display)` from the global h1–h4 rule as of v2.2.3.
      The heading is a serif at up to 1.8rem over a photograph now, so it needs
      the same optical treatment as the title or it renders in the text cut while
@@ -9445,11 +9639,12 @@ body.lm-modal-open {
    time uniform is the only thing that would need animating, so there is
    nothing to add a `prefers-reduced-motion` override FOR on the CSS side.
 
-   ⚠️ The homepage auto image slider is the exception: it reads the same query but
-   does not hide its content. Under `reduce` the track animation is switched off
-   outright and `.ias` becomes a scroll container with snap points instead — see
-   the `prefers-reduced-motion` block in the HOMEPAGE AUTO IMAGE SLIDER section
-   below. Every case stays reachable and nothing moves on its own.
+   ⚠️ The homepage case row is the exception: it reads the same query but does
+   not hide or disable its content. The row is a scroll container either way
+   (snap points, hidden scrollbar, prev/next buttons), so `reduce` only relaxes
+   the presentation — see the `prefers-reduced-motion` block in the HOMEPAGE
+   CASE ROW section below. Every case stays reachable and nothing moves on its
+   own.
 
    The button/card hovers below are the effects this page does author in CSS.
    -------------------------------------------------------------------------- */
@@ -9467,36 +9662,51 @@ body.lm-modal-open {
 }
 
 /* ==========================================================================
-   HOMEPAGE AUTO IMAGE SLIDER  (v1.0.13) — replaces the 3D coverflow
+   HOMEPAGE CASE ROW — SCROLL-SNAP CAROUSEL + BEFORE/AFTER COMPARE
    --------------------------------------------------------------------------
-   Ten real before/after cases in one row, translated from 0 to -50% over 20s
-   and looping forever. `.ias-track` holds TWO identical halves: the ten
-   authored `.ias-item`s plus a clone of each, appended by `initCaseSlider()`
-   in app.js and marked `aria-hidden` + `tabindex="-1"` so the loop costs
-   nothing for assistive tech or the tab order. With only one set, -50% would
-   show an empty gap for half of every cycle — the clone is what makes it
-   seamless. Clones are rebuilt on resize so the row cannot desync from the
-   authored items.
+   `.ias` is the scroll container: `scroll-snap-type: x mandatory`, one card
+   per snap stop, the scrollbar hidden, and prev/next buttons driven by
+   `initCaseSlider()` in app.js. The row used to be a `translate3d(-50%)`
+   keyframe running over a doubled track; the clones that made that loop
+   seamless are gone, because a scroll container cannot wrap around — the two
+   buttons and their disabled end states are what replace the loop.
 
-   The mask is the requested 90deg horizontal gradient, so cards fade at both
-   edges rather than being sliced by the panel edge.
+   Card width comes from the container instead of a clamped rem value, so the
+   count is exact at any viewport: 4 cards at desktop, 2 at tablet, ~1.15 on a
+   phone. The trailing gap stays folded into each item (`padding-inline-end`),
+   which keeps the card+gap unit equal to `(100% + gap) / n` and makes
+   "one card" for the buttons a single `item.offsetWidth`.
 
-   `will-change:transform` is on the TRACK only, never on the cards: promoting
-   each card would create 20 composited layers for something off-screen most of
-   the time. The hover scale is on the inner image, so the card box — and hence
-   the row's geometry — never changes.
+   The mask is the 90deg horizontal gradient, so cards fade at both edges
+   rather than being sliced by the panel edge.
+
+   `--ias-frame-h` is shared by the arch frame in the section styles and by the
+   range input that covers it: the input sits outside the frame's element (it
+   may not be nested in the card's link), so the height has to be inherited
+   from a common ancestor rather than measured.
    ========================================================================== */
 .ias {
-  --ias-card-w: clamp(15rem, 24vw, 20rem);
-  --ias-gap: clamp(.75rem, 1.4vw, 1.25rem);
-  --ias-dur: 20s;
+  --ias-gap: 28px;
+  --ias-frame-h: 360px;
+  /* How many cards the row wants across: 4 on desktop, 2 at tablet, ~1.15 on
+     a phone. This number IS the card count — `.ias-item` divides by it — so
+     the responsive rules below only reassign the variable. */
+  --ias-count: 4;
   position: relative;
   display: flex;
   width: 100%;
   padding-block: clamp(1.5rem, 3vw, 2.5rem);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.ias::-webkit-scrollbar {
+  display: none;
 }
 
 .ias-track {
@@ -9505,25 +9715,32 @@ body.lm-modal-open {
   margin: 0;
   padding: 0;
   list-style: none;
-  width: max-content;
-  will-change: transform;
-  animation: ias-scroll var(--ias-dur) linear infinite;
-}
-
-@keyframes ias-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+  width: 100%;
+  min-width: 0;
 }
 
 /* One item is one card PLUS its trailing gap. Folding the gap into the item
-   instead of using `gap` on the track is what makes -50% exact: a flex `gap`
-   inserts N-1 gaps across a row, so half of a 2N-item track falls half a gap
-   short of one full set and the loop visibly hitches once per cycle. */
+   instead of using `gap` on the track keeps each snap stop on the card's own
+   start edge, and makes the card+gap unit exactly `(100% + gap) / n` — so n
+   cards fill the viewport with no rounding drift left over at the end.
+   `position: relative` is the containing block for the compare range input,
+   which sits outside the card because a link may not contain one. */
 .ias-item {
-  flex: 0 0 auto;
+  position: relative;
+  flex: 0 0 calc((100% + var(--ias-gap)) / var(--ias-count));
   display: flex;
-  width: calc(var(--ias-card-w) + var(--ias-gap));
   padding-inline-end: var(--ias-gap);
+  scroll-snap-align: start;
+}
+
+/* The last item's gap has no card after it to separate. Keeping it would push
+   max scroll past the final snap stop, leaving the last card short of the
+   right edge — so it is dropped, and the basis loses the gap with it. Because
+   sizing is border-box, the basis has to shrink too, or the last card would
+   simply be one gap wider than its neighbours. */
+.ias-item:last-child {
+  flex-basis: calc((100% + var(--ias-gap)) / var(--ias-count) - var(--ias-gap));
+  padding-inline-end: 0;
 }
 
 .ias-card {
@@ -9547,6 +9764,9 @@ body.lm-modal-open {
   aspect-ratio: 5 / 4;
   overflow: hidden;
   background: color-mix(in srgb, var(--foreground) 6%, transparent);
+  /* Split position of the compare slider, 0-100%. Written as an inline style
+     by initCaseCompare() on every input event; 50% is the resting state. */
+  --pos: 50%;
 }
 
 .ias-media img {
@@ -9638,12 +9858,143 @@ body.lm-modal-open {
   white-space: nowrap;
 }
 
+/* --------------------------------------------------------------------------
+   BEFORE / AFTER COMPARE, INSIDE THE ARCH FRAME
+   --------------------------------------------------------------------------
+   Two stacked layers: the AFTER image fills the frame, the BEFORE image sits
+   on top of it and is clipped back from the right by `--pos`. The line and
+   the handle read that same variable, so the three can never drift apart.
+
+   ONE COMBINED IMAGE (the shape every case currently ships in): the frame
+   holds the side-by-side photo at twice its own width, so the before layer
+   shows its left half and the after layer its right half — `margin-left`
+   slides the after layer onto the second half, and `transform-origin: 75%`
+   puts the hover zoom on the frame's centre so both halves scale as one.
+   Two separate photos need neither trick: `.ias-ba--two` (set by
+   initCaseCompare() when the two srcs differ) puts each image at frame width.
+
+   The range input may not be a descendant of the card — an `<a>` cannot
+   contain interactive content — so it is a sibling positioned over the frame
+   by initCaseCompare()'s geometry: top 0, width minus the item's folded gap.
+   `touch-action: pan-y` keeps a vertical drag scrolling the page (and only
+   the horizontal component belongs to the slider), while the pointer-event
+   listeners in JS keep the drag from reaching the scroll container sideways.
+   -------------------------------------------------------------------------- */
+.ias-ba {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.ias-ba-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.ias-ba-after { z-index: 1; }
+
+.ias-ba-before {
+  z-index: 2;
+  clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+}
+
+.ias-ba-layer img {
+  display: block;
+  width: 200%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ias-ba-after img {
+  margin-left: -100%;
+  transform-origin: 75% 50%;
+}
+
+.ias-ba--two .ias-ba-layer img {
+  width: 100%;
+  margin-left: 0;
+  transform-origin: 50% 50%;
+}
+
+.ias-ba-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  z-index: 3;
+  width: 2px;
+  margin-left: -1px;
+  background: #faf8f5;
+  pointer-events: none;
+}
+
+.ias-ba-handle {
+  position: absolute;
+  top: 50%;
+  left: var(--pos);
+  z-index: 4;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #faf8f5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .28);
+  color: #2a2622;
+  font-size: 14px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.ias-ba-range {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - var(--ias-gap));
+  height: var(--ias-frame-h);
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* The input itself is invisible, so keyboard focus is shown on the handle
+   it drives. `:has()` is the only way across from a sibling input to a
+   descendant of the neighbouring link. */
+.ias-item:has(.ias-ba-range:focus-visible) .ias-ba-handle {
+  outline: 2px solid #2a2622;
+  outline-offset: 2px;
+}
+
+/* Two cards across at tablet width: the count drops to 2 and the item rule
+   does the rest — no measuring, no per-breakpoint widths. */
+@media(max-width: 999px) {
+  .ias {
+    --ias-count: 2;
+  }
+}
+
 /* Narrow phones: a 10%/90% fade band eats most of a 320px-wide first card, so
    the transparent zone widens as the screen narrows. */
 @media(max-width: 560px) {
   .ias {
     -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 16%, black 84%, transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0%, black 16%, black 84%, transparent 100%);
+  }
+
+  /* ~1.15 cards: one full card plus a sliver of the next, which is the hint
+     that the row scrolls now that the scrollbar is gone. */
+  .ias {
+    --ias-count: 1.15;
   }
 
   .ias-hint {
@@ -9656,36 +10007,71 @@ body.lm-modal-open {
   }
 }
 
-/* v1.0.13: reduced motion. The track animation IS the component, so under
-   `prefers-reduced-motion` it is removed outright and the row becomes a plain
-   scroll container with snap points — the same fallback shape the reviews
-   marquee uses. The cloned set is hidden so the loop seam is not visible when
-   the user scrolls by hand. */
+/* v1.0.13: reduced motion. The row is a scroll container either way now, so
+   what is left to relax is presentation: the edge mask goes (it reads as
+   motion, and there is no loop seam left to hide), snapping loosens to
+   proximity so a hand flick stops where the user let go instead of being
+   pulled onto a stop, and the hover/transition polish is dropped. The
+   prev/next buttons scroll without animation too — initCaseSlider() asks
+   prefersReducedMotion() for the behaviour. */
 @media(prefers-reduced-motion: reduce) {
   .ias {
-    overflow-x: auto;
     scroll-snap-type: x proximity;
     -webkit-mask-image: none;
     mask-image: none;
-  }
-
-  .ias-track {
-    animation: none;
-    will-change: auto;
-  }
-
-  .ias-item {
-    scroll-snap-align: start;
-  }
-
-  .ias-item[data-ias-clone] {
-    display: none;
   }
 
   .ias-media img,
   .ias-card {
     transition: none;
   }
+}
+
+/* --------------------------------------------------------------------------
+   CASE ROW CONTROLS — PREV / NEXT
+   --------------------------------------------------------------------------
+   Two 44px outline circles centred under the track, one card per press. They
+   are disabled at the matching end rather than wrapping, because a scroll
+   container with mandatory snapping has no seam-free way back to the start.
+   `.ias-nav` is a sibling of `.ias` so it cannot scroll away with the cards.
+   -------------------------------------------------------------------------- */
+.ias-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: clamp(.75rem, 1.5vw, 1.1rem);
+}
+
+.ias-nav-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--foreground) 32%, transparent);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, opacity .2s ease;
+}
+
+.ias-nav-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+  border-color: color-mix(in srgb, var(--foreground) 55%, transparent);
+}
+
+.ias-nav-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.ias-nav-btn:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.ias-nav-btn svg {
+  display: block;
 }
 
 /* --------------------------------------------------------------------------
