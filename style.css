@@ -9823,27 +9823,66 @@ body.lm-modal-open {
    seamless are gone, because a scroll container cannot wrap around — the two
    buttons and their disabled end states are what replace the loop.
 
-   Card width comes from the container instead of a clamped rem value, so the
-   count is exact at any viewport: 4 cards at desktop, 2 at tablet, ~1.15 on a
-   phone. The trailing gap stays folded into each item (`padding-inline-end`),
-   which keeps the card+gap unit equal to `(100% + gap) / n` and makes
-   "one card" for the buttons a single `item.offsetWidth`.
+   `.ias-viewport` is the shell-width viewport wrapper the row scrolls inside.
+   It carries the navbar's own `--shell-max` as its `max-width`, so the row's
+   outer edge lands on the pill's outer edge at every width, and `overflow:
+   hidden` is what turns its two pseudo-elements into an edge treatment that
+   clips rather than overflows. The fades are `::before` / `::after` — 80px
+   wide, absolutely positioned, `linear-gradient` from the sheet's flat cream
+   to transparent — NOT `mask-image`: a mask would fade the scroll container's
+   own content invisibly at runtime and cannot be inspected or toggled, while
+   these sit above the row, ignore pointer events, and read as the page colour
+   eating the first and last card.
 
-   The mask is the 90deg horizontal gradient, so cards fade at both edges
-   rather than being sliced by the panel edge.
+   Card width is a fixed `--ias-card-w` (280px desktop, 240px on a phone) with
+   the 24px trailing gap folded into each item (`padding-inline-end`), so the
+   card+gap unit is one item box and "one card" for the buttons is a single
+   `item.offsetWidth`. The gap stays folded rather than becoming `gap` on the
+   track so every snap stop still lands on the card's own start edge.
 
    `--ias-frame-h` is shared by the arch frame in the section styles and by the
    range input that covers it: the input sits outside the frame's element (it
    may not be nested in the card's link), so the height has to be inherited
    from a common ancestor rather than measured.
    ========================================================================== */
+.ias-viewport {
+  /* The sheet paints `#faf8f5 -> #f5f2eb` and this row sits within the first
+     few percent of that ramp, so the flat cream the fades dissolve into is the
+     top stop. Named here because it is the one number to change if the sheet
+     ever gets a new base colour. */
+  --ias-fade: #faf8f5;
+  position: relative;
+  isolation: isolate;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+.ias-viewport::before,
+.ias-viewport::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  width: 80px;
+  pointer-events: none;
+}
+
+.ias-viewport::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--ias-fade) 0%, transparent 100%);
+}
+
+.ias-viewport::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--ias-fade) 0%, transparent 100%);
+}
+
 .ias {
-  --ias-gap: 28px;
-  --ias-frame-h: 300px;
-  /* How many cards the row wants across: 5 on desktop, 2 at tablet, ~1.15 on
-     a phone. This number IS the card count - `.ias-item` divides by it - so
-     the responsive rules below only reassign the variable. */
-  --ias-count: 5;
+  --ias-gap: 24px;
+  --ias-frame-h: 340px;
+  --ias-card-w: 280px;
   position: relative;
   display: flex;
   width: 100%;
@@ -9853,8 +9892,6 @@ body.lm-modal-open {
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 
 .ias::-webkit-scrollbar {
@@ -9873,13 +9910,14 @@ body.lm-modal-open {
 
 /* One item is one card PLUS its trailing gap. Folding the gap into the item
    instead of using `gap` on the track keeps each snap stop on the card's own
-   start edge, and makes the card+gap unit exactly `(100% + gap) / n` — so n
-   cards fill the viewport with no rounding drift left over at the end.
+   start edge, and makes the card+gap unit exactly `--ias-card-w + gap` — so
+   "one card" for the prev/next buttons is one `item.offsetWidth`, with no
+   measuring and no per-breakpoint card count to keep in sync.
    `position: relative` is the containing block for the compare range input,
    which sits outside the card because a link may not contain one. */
 .ias-item {
   position: relative;
-  flex: 0 0 calc((100% + var(--ias-gap)) / var(--ias-count));
+  flex: 0 0 calc(var(--ias-card-w) + var(--ias-gap));
   display: flex;
   padding-inline-end: var(--ias-gap);
   scroll-snap-align: start;
@@ -9887,11 +9925,11 @@ body.lm-modal-open {
 
 /* The last item's gap has no card after it to separate. Keeping it would push
    max scroll past the final snap stop, leaving the last card short of the
-   right edge — so it is dropped, and the basis loses the gap with it. Because
-   sizing is border-box, the basis has to shrink too, or the last card would
-   simply be one gap wider than its neighbours. */
+   right edge — so it is dropped, and because sizing is border-box the basis
+   has to lose the gap with it, or the last card would simply be one gap wider
+   than its neighbours. */
 .ias-item:last-child {
-  flex-basis: calc((100% + var(--ias-gap)) / var(--ias-count) - var(--ias-gap));
+  flex-basis: var(--ias-card-w);
   padding-inline-end: 0;
 }
 
@@ -10019,7 +10057,7 @@ body.lm-modal-open {
 
    ONE COMBINED IMAGE (the shape every case currently ships in): the frame
    holds the side-by-side photo at twice its own width, so the before layer
-   shows its left half and the after layer its right half — `margin-left`
+   shows its left half and the after layer its right half — `left: -100%`
    slides the after layer onto the second half, and `transform-origin: 75%`
    puts the hover zoom on the frame's centre so both halves scale as one.
    Two separate photos need neither trick: `.ias-ba--two` (set by
@@ -10042,6 +10080,12 @@ body.lm-modal-open {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  /* Neither layer may carry its own box decoration: any padding or margin
+     would open a seam at the frame edge and let `.ias-media`'s cream show
+     through between the photo and the arch. */
+  margin: 0;
+  padding: 0;
+  background: none;
 }
 
 .ias-ba-after { z-index: 1; }
@@ -10051,22 +10095,34 @@ body.lm-modal-open {
   clip-path: inset(0 calc(100% - var(--pos)) 0 0);
 }
 
+/* BOTH layers take the identical fill rule — same box, same fit, same
+   `object-position` — so the two halves of the composite crop to the same
+   pixels and the split cannot drift vertically as the frame changes size.
+   `position: absolute` rather than a negative margin on the after layer: a
+   margin would be an "inner margin" on a layer that has to fill the frame
+   edge to edge, and it would fight the hover scale on `.ias-media img`. */
 .ias-ba-layer img {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
   width: 200%;
   height: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   object-fit: cover;
-  object-position: center;
+  object-position: center 30%;
 }
 
 .ias-ba-after img {
-  margin-left: -100%;
+  left: -100%;
   transform-origin: 75% 50%;
 }
 
 .ias-ba--two .ias-ba-layer img {
   width: 100%;
-  margin-left: 0;
+  left: 0;
   transform-origin: 50% 50%;
 }
 
@@ -10127,26 +10183,13 @@ body.lm-modal-open {
   outline-offset: 2px;
 }
 
-/* Two cards across at tablet width: the count drops to 2 and the item rule
-   does the rest — no measuring, no per-breakpoint widths. */
-@media(max-width: 999px) {
-  .ias {
-    --ias-count: 2;
-  }
-}
-
-/* Narrow phones: a 10%/90% fade band eats most of a 320px-wide first card, so
-   the transparent zone widens as the screen narrows. */
+/* Phones: the card drops to 240px. The wrapper's own `--shell-max` keeps the
+   row to the navbar's width, so one full card plus a sliver of the next is
+   what is left over — the hint that the row scrolls now that the scrollbar is
+   gone. */
 @media(max-width: 560px) {
   .ias {
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 16%, black 84%, transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, black 16%, black 84%, transparent 100%);
-  }
-
-  /* ~1.15 cards: one full card plus a sliver of the next, which is the hint
-     that the row scrolls now that the scrollbar is gone. */
-  .ias {
-    --ias-count: 1.15;
+    --ias-card-w: 240px;
   }
 
   .ias-hint {
@@ -10160,17 +10203,20 @@ body.lm-modal-open {
 }
 
 /* v1.0.13: reduced motion. The row is a scroll container either way now, so
-   what is left to relax is presentation: the edge mask goes (it reads as
-   motion, and there is no loop seam left to hide), snapping loosens to
-   proximity so a hand flick stops where the user let go instead of being
-   pulled onto a stop, and the hover/transition polish is dropped. The
-   prev/next buttons scroll without animation too — initCaseSlider() asks
-   prefersReducedMotion() for the behaviour. */
+   what is left to relax is presentation: the edge fades go with the mask they
+   replaced (they read as motion, and there is no loop seam left to hide),
+   snapping loosens to proximity so a hand flick stops where the user let go
+   instead of being pulled onto a stop, and the hover/transition polish is
+   dropped. The prev/next buttons scroll without animation too —
+   initCaseSlider() asks prefersReducedMotion() for the behaviour. */
 @media(prefers-reduced-motion: reduce) {
   .ias {
     scroll-snap-type: x proximity;
-    -webkit-mask-image: none;
-    mask-image: none;
+  }
+
+  .ias-viewport::before,
+  .ias-viewport::after {
+    display: none;
   }
 
   .ias-media img,
