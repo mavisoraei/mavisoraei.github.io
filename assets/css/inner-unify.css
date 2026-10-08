@@ -1,0 +1,197 @@
+.cnp-card,
+.cnp-text,
+.team-card {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+
+.svc-hero :is(p, ul, ol, h1, h2, h3, h4),
+.svc-body :is(p, ul, ol, h1, h2, h3, h4),
+.svc-side :is(p, ul, ol, h1, h2, h3, h4),
+.pr-main :is(p, ul, ol, h1, h2, h3, h4),
+.pr-hero :is(p, ul, ol, h1, h2, h3, h4),
+.docs-hero :is(p, ul, ol, h1, h2, h3, h4) {
+  text-align: start;
+}
+
+figure figcaption,
+.cnp-head,
+.cnp-head :is(p, ul, ol, h1, h2, h3, h4),
+.cnp-cta,
+.cnp-cta :is(p, ul, ol, h1, h2, h3, h4),
+.cta-full,
+.cta-full :is(p, ul, ol, h1, h2, h3, h4),
+.tel-full,
+.tel-full :is(p, ul, ol, h1, h2, h3, h4) {
+  text-align: center;
+}
+
+.pr-table :is(th, td):not(:first-child),
+.price-rows .pr-p {
+  text-align: end;
+}
+
+.pr-table :is(th, td):first-child {
+  text-align: start;
+}
+
+.svc-body p {
+  max-width: 68ch;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #4a443d;
+}
+
+.svc-hero h1,
+.pr-hero h1,
+.pg-hero h1,
+.docs-hero h1,
+.ai-hero h1,
+.ct-hero h1 {
+  font-size: clamp(36px, 4.6vw, 60px);
+  line-height: 1.05;
+}
+
+.svc-eyebrow,
+.eyebrow,
+.cnp-eyebrow,
+.ai-eyebrow {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--muted-foreground);
+}
+
+.reviewer-badge,
+.svc-toc,
+.price-card,
+.cnp-card,
+.faq-item,
+.svc-related {
+  background: #fbf9f5;
+  border: 1px solid rgba(42, 38, 34, .08);
+  border-radius: 20px;
+  padding: 24px 28px;
+  box-shadow: none;
+}
+
+.cnp-card:hover,
+.faq-item[open] {
+  box-shadow: none;
+}
+
+.svc-related a {
+  background: transparent;
+  border: 1px solid rgba(42, 38, 34, .1);
+}
+
+.svc-related a:hover {
+  background: rgba(42, 38, 34, .05);
+  box-shadow: none;
+}
+
+.faq-item summary {
+  padding: 0;
+}
+
+.faq-item p {
+  padding: 0;
+  margin-top: .7rem;
+}
+
+.reviewer-badge {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 760px;
+}
+
+.reviewer-badge picture,
+.reviewer-badge img {
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.reviewer-badge__text {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  min-width: 0;
+}
+
+.reviewer-badge__text p.reviewer-badge__eyebrow {
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.reviewer-badge__text p:not(.reviewer-badge__eyebrow) {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #6b6258;
+  margin: 0;
+}
+
+.reviewer-badge__text a {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--lux-head);
+  margin-bottom: 2px;
+}
+
+.svc-toc .toc-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 12px;
+}
+
+.svc-toc ol {
+  gap: 8px;
+}
+
+.svc-toc li:before {
+  font-size: 15px;
+}
+
+.svc-toc a {
+  font-size: 15px;
+}
+
+.svc-toc a:hover,
+.svc-toc a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: .22em;
+}
+
+.reviewer-badge,
+.svc-lead {
+  margin-inline: 0;
+}
+
+.reviewer-badge + .svc-lead {
+  margin-top: 1.1rem;
+}
+
+@media (max-width: 520px) {
+  .reviewer-badge,
+  .svc-toc,
+  .price-card,
+  .cnp-card,
+  .faq-item,
+  .svc-related {
+    padding: 20px;
+  }
+}
