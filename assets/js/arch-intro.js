@@ -133,6 +133,21 @@ var SHEET_LAG_CLASS = 'arch-rise-lag';
 var sheetBg = null;            /* .sheet__bg â€” carries the border-radius  */
   var pSmooth = 0;               /* SHEET_LERP's smoothed rise progress      */
   var lagOn = false;             /* is SHEET_LAG_CLASS currently on?        */
+
+  /* The last string actually written for each scroll-driven property. A frame
+     that derives the same numbers writes nothing at all: setProperty is a
+     style invalidation even when the value is identical, so comparing first is
+     what turns a static frame into a no-op. `null` means "nothing on <body>
+     right now", which is the state teardown restores. */
+  var lastOffset = null;
+  var lastScale = null;
+  var lastDomeK = null;
+  var lastLag = null;
+  var risenOn = false;           /* is RISEN_CLASS on the hero right now?     */
+  var lastScroll = null;         /* scrollY the last frame that did work      */
+  var lastPhase = null;          /* phase   the last frame that did work      */
+  var lastDocH = null;           /* document height the last frame that worked */
+
   var lenis = null;
   var rafId = 0;
   var timers = [];
@@ -195,6 +210,26 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
     if (node && node.parentNode) node.parentNode.removeChild(node);
   }
 
+  /* True when Lenis has no scroll animation in flight, i.e. it will not move
+     the page on the next frame. The public shape of that state differs across
+     Lenis majors, so the three known ones are probed in order; an unrecognised
+     build falls through to `true`, which is safe because the caller also
+     requires an unchanged scrollY and a settled sheet lag before it skips. */
+  function lenisIdle() {
+    if (!lenis) return true;
+    try {
+      var probe = lenis.isScrolling;
+      if (typeof probe === 'function') return !probe.call(lenis);
+      if (typeof probe === 'boolean') return !probe;
+      probe = lenis.isRunning;
+      if (typeof probe === 'function') return !probe.call(lenis);
+      if (typeof probe === 'boolean') return !probe;
+      var inner = lenis.animated || lenis._animated;
+      if (inner && typeof inner.isRunning === 'boolean') return !inner.isRunning;
+    } catch (e) { /* unknown shape: fall back to the scrollY test */ }
+    return true;
+  }
+
   /* --------------------------------------------------------------- teardown */
 
   /* Removes every trace of the effect: all three layers, every body class, the
@@ -222,18 +257,14 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
          They live on <body> because the mesh clip reads them too; leaving any of
          them set would keep a stale arch window over the wash.
 
-v2.2.3: `--p` joins that list. It is not an arch value and nothing else
-         reads it, but it is published from the same loop and this teardown kills
-         that loop (see `cancelAnimationFrame` above) - so leaving it behind would
-         freeze the hero copy at whatever opacity and translate the reader had
-         scrolled to, permanently, with no way to recover short of a reload.
+         `--p` is deliberately absent: nothing ever read it, so this file no
+         longer publishes it and has nothing to clean up.
 
-         v2.2.4: `--dome-k` joins it for the same reason, and its case is stronger
+         v2.2.4: `--dome-k` joins the list for the same reason, and its case is stronger
          - see the note on its removal below. */
       if (archHero) {
         body.style.removeProperty('--arch-offset');
         body.style.removeProperty('--arch-scale');
-        body.style.removeProperty('--p');
         /* v2.2.4: `--dome-k` joins the list, and its removal matters MORE than the
            others. It is not an arch value and nothing else reads it, but it
            multiplies the sheet dome's radii, so leaving it behind would pin the
@@ -272,6 +303,11 @@ v2.2.3: `--p` joins that list. It is not an arch value and nothing else
     sheetBg = null;
     pSmooth = 0;
     lagOn = false;
+    lastOffset = lastScale = lastDomeK = lastLag = null;
+    risenOn = false;
+    lastScroll = null;
+    lastPhase = null;
+    lastDocH = null;
     booted = false;
     introRunning = false;
     phase = 'boot';
@@ -384,7 +420,6 @@ function buildLayers() {
     if (!introRunning) return;
     introRunning = false;
 
-    body.classList.add('arch-intro-done');
     releaseScroll();
 
     /* The curtain's matte is entirely off-screen by now, so it has nothing left
@@ -499,6 +534,32 @@ function buildLayers() {
          rAF loop (see tick()). Stated explicitly so the invariant is visible. */
       autoRaf: false
     });
+
+    /* While Lenis is live the page must not smooth-scroll twice (style.css sets
+       `html:has(body.arch-intro) { scroll-behavior: auto }`; this inline rule is
+       the same guarantee without needing `:has` support). Reverted on teardown. */
+    doc.documentElement.style.scrollBehavior = 'auto';
+    cleanups.push(function () { doc.documentElement.style.scrollBehavior = ''; });
+
+    /* Hash links keep scrolling smoothly through Lenis now that native CSS
+       smoothing is off: same landing (target flush with the viewport top, no
+       offset) as a native anchor jump, and the URL hash is still updated. */
+    own(doc, 'click', function (e) {
+      if (!lenis || typeof lenis.scrollTo !== 'function') return;
+      var node = e.target;
+      while (node && node.nodeType !== 1) node = node.parentNode;
+      if (!node || !node.closest) return;
+      var a = node.closest('a[href^="#"]');
+      if (!a) return;
+      var id;
+      try { id = decodeURIComponent(a.hash.slice(1)); } catch (err) { return; }
+      if (!id) return;
+      var target = doc.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { duration: 1.2 });
+      if (window.history && window.history.pushState) window.history.pushState(null, '', a.hash);
+    });
   }
 
   /* Travel distance scales with the viewport so short and tall screens finish
@@ -516,8 +577,41 @@ function buildLayers() {
        gate below is defined against, so it must be the same node every frame. */
     sheetBg = doc.querySelector('.sheet__bg');
 
-    var apply = function (rawScroll) {
+    var apply = function (rawScroll, force) {
       if (!archHero) return;
+
+      /* IDLE FRAME â€” one early return buys the whole frame.
+
+         `lastScroll`/`lastPhase` remember what the last frame that did work saw.
+         When neither has moved, Lenis has no animation in flight and the sheet's
+         lag has already settled (`lagOn` false means no write can come out of
+         this function any more), there is nothing left to publish: the rect read
+         below, the easing maths and every style write are all skipped together.
+
+         `lagOn` is the third condition rather than an optimisation: the lag is a
+         smoothed chase, so it keeps closing for ~50 frames after the scroll
+         position itself has stopped. Skipping while it is still open would freeze
+         `#sheet` mid-settle with the compositing layer held, so those frames are
+         real work and are not skipped.
+
+         `force` is the resize path, which must re-measure even when the scroll
+         position has not moved, because the rise distance and the dome band are
+         both expressed in viewport height.
+
+         Document height is the fourth condition, and it is what keeps the skip
+         visually identical to running: `--dome-k` is read off a rect, so a late
+         image or a font swap that moves the sheet has to re-publish it even
+         though nobody scrolled. `scrollHeight` sees all of those (they all grow
+         or shrink the document), it never moves from this file's own output
+         (every property here is a transform), and when nothing wrote styles
+         last frame it costs no forced reflow at all. */
+      var seen = rawScroll || 0;
+      var docH = doc.documentElement.scrollHeight;
+      if (!force && seen === lastScroll && phase === lastPhase &&
+          docH === lastDocH && lenisIdle() && !lagOn) return;
+      lastScroll = seen;
+      lastPhase = phase;
+      lastDocH = docH;
 
       /* PHASE 1 IGNORES SCROLL. If the browser restored a scroll position, or
          the user hit a hash link, the hero would otherwise begin its rise while
@@ -564,37 +658,42 @@ function buildLayers() {
          `--arch-open` used to be published here too and is not any more. It was
          the clip-path dome's widening term; v2.2.4 replaced that dome with a
          `border-radius` on `.sheet__bg` driven by `--dome-k`, which is written
-         below alongside `--p`. Nothing writes or reads `--arch-open` any more. */
-      body.style.setProperty('--arch-offset', (m - eased).toFixed(2) + 'px');
-      body.style.setProperty('--arch-scale', (SCALE_FROM + (1 - SCALE_FROM) * sc).toFixed(4));
+         below. Nothing writes or reads `--arch-open` any more.
 
-      /* v2.2.4 â€” `--p`, the hero copy's scroll fade, published from THIS function
-         rather than from a second scroll listener. The one-scroll-read-per-frame
-         rule stated above is the reason: a separate `scroll` handler would be a
-         second read of the same value on the same frame, and the two would be
-         free to disagree by a frame at exactly the moment that matters â€” while
-         the dome is sweeping over the copy.
+         Both writes are guarded: a static frame derives the identical string and
+         performs no style invalidation at all. */
+      var offsetStr = (m - eased).toFixed(2) + 'px';
+      if (offsetStr !== lastOffset) {
+        lastOffset = offsetStr;
+        body.style.setProperty('--arch-offset', offsetStr);
+      }
+      var scaleStr = (SCALE_FROM + (1 - SCALE_FROM) * sc).toFixed(4);
+      if (scaleStr !== lastScale) {
+        lastScale = scaleStr;
+        body.style.setProperty('--arch-scale', scaleStr);
+      }
 
-         It is deliberately NOT the rise progress `t`. That saturates at 1 once the
-         hero has finished rising, i.e. at 62% of a viewport height â€” well before
-         the sheet's domed top edge (which sits directly below this 100svh hero)
-         has travelled up to meet the copy. Using it here would have the hero copy
-         fully faded with a third of the hero still on screen, which is the "text
-         vanishes too early" failure the brief explicitly rules out.
+      /* `p` is deliberately NOT the rise progress `t`. `t` saturates at 1 once
+         the hero has finished rising, i.e. at 62% of a viewport height â€” well
+         before the sheet's domed top edge (which sits directly below this
+         100svh hero) has travelled up to meet the copy â€” so anything smoothed
+         on `t` settles while a third of the hero is still on screen, which is
+         the "text vanishes too early" failure the brief explicitly rules out.
 
-         So `--p` is measured over a FULL viewport height: it reaches 1 exactly as
+         So `p` is measured over a FULL viewport height: it reaches 1 exactly as
          the sheet's dome arrives at the top of the viewport, which is the moment
          the copy stops being visible anyway. Past that it clamps, so it cannot
          overshoot into negative opacity or a runaway translate.
 
          `window.innerHeight` rather than the hero's own `offsetHeight`, because
-         measuring the element would mean a layout read every frame. The cost is
-         that on a phone, where the stacked hero can exceed 100svh, `--p` reaches 1
-         slightly before the dome arrives and the copy is a little more faded by
-         the time it is covered â€” the safe direction to be wrong in. */
+         measuring the element would mean a layout read every frame.
+
+         v2.2.4 published this as `--p` for the hero copy's scroll fade. Nothing
+         reads that custom property (the stylesheets only ever mention it in
+         comments), so the per-frame write is dropped and `p` is kept as the pure
+         local it always was: the sheet lag below is `p - pSmooth`. */
       var heroSpan = vh;
       var p = Math.min(Math.max(scroll, 0) / heroSpan, 1);
-      body.style.setProperty('--p', p.toFixed(4));
 
       /* v2.2.6 â€” `--dome-k` NOW READS THE APEX'S REAL POSITION.
 
@@ -644,7 +743,11 @@ function buildLayers() {
       if (apex === null) apex = heroSpan - scroll;
       var u = Math.min(Math.max(apex / (heroSpan * DOME_HOLD_VH), 0), 1);
       var domeK = u * u * (3 - 2 * u);
-      body.style.setProperty('--dome-k', domeK.toFixed(4));
+      var domeStr = domeK.toFixed(4);
+      if (domeStr !== lastDomeK) {
+        lastDomeK = domeStr;
+        body.style.setProperty('--dome-k', domeStr);
+      }
 
       /* v2.2.6 â€” THE SLOWER RISE. `pSmooth` chases `p` at SHEET_LERP per frame and
          always trails it, so `lag` is never negative: the sheet is only ever held
@@ -669,24 +772,39 @@ function buildLayers() {
       pSmooth += (p - pSmooth) * SHEET_LERP;
       var lag = (p - pSmooth) * heroSpan;
       var wantLag = lag > 0.5;
-      if (wantLag) body.style.setProperty('--sheet-lag', lag.toFixed(1) + 'px');
-      else body.style.removeProperty('--sheet-lag');
+      if (wantLag) {
+        var lagStr = lag.toFixed(1) + 'px';
+        if (lagStr !== lastLag) {
+          lastLag = lagStr;
+          body.style.setProperty('--sheet-lag', lagStr);
+        }
+      } else if (lastLag !== null) {
+        /* On the transition only. Removing a property that is not there is
+           still a style write, and it used to run on every settled frame. */
+        lastLag = null;
+        body.style.removeProperty('--sheet-lag');
+      }
       if (wantLag !== lagOn) {
         lagOn = wantLag;
         body.classList.toggle(SHEET_LAG_CLASS, wantLag);
       }
 
-      archHero.classList.toggle(RISEN_CLASS, t >= 0.999);
-      body.classList.toggle('arch-scrolling', scroll > 4);
+      /* State change only: the class is either on or off, so a forced toggle
+         every frame is pure invalidation of a class list that did not move. */
+      var risen = t >= 0.999;
+      if (risen !== risenOn) {
+        risenOn = risen;
+        archHero.classList.toggle(RISEN_CLASS, risen);
+      }
 
       /* Any real scroll intent means the reader is driving, so drop the
          auto-complete safety net. */
       if (t > 0.02 && idleId) { clearTimeout(idleId); idleId = 0; }
     };
 
-    apply(window.scrollY || 0);
+    apply(window.scrollY || 0, true);
 
-    own(window, 'resize', function () { apply(window.scrollY || 0); }, { passive: true });
+    own(window, 'resize', function () { apply(window.scrollY || 0, true); }, { passive: true });
 
     return apply;
   }
@@ -742,6 +860,18 @@ function buildLayers() {
     rafId = requestAnimationFrame(tick);
 
     runIntro();
+
+    /* Pause the ambient blob drift while the tab is hidden so the compositor
+       has nothing to animate; resume it on return. */
+    var driftBlobs = doc.querySelectorAll('.sheet__bg .blob');
+    if (driftBlobs.length) {
+      own(doc, 'visibilitychange', function () {
+        var paused = doc.hidden;
+        for (var i = 0; i < driftBlobs.length; i++) {
+          driftBlobs[i].style.animationPlayState = paused ? 'paused' : '';
+        }
+      });
+    }
   }
 
   /* `defer` guarantees DOMContentLoaded has fired, but this is written to be

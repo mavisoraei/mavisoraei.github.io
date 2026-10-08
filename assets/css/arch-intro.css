@@ -612,14 +612,11 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-nav-in .lm-header {
                       this is what makes it literally *widen* into 100% of the
                       screen. Scale rather than an animated `width`, because
                       width reflows the whole hero subtree every frame.
-`--p`           raw 0..1 scroll progress over one viewport height. It now
-                        drives `--dome-k` and nothing else: the hero copy no
-                        longer fades or lifts on it, because that copy scrolls
-                        normally inside the sheet instead of riding the rise.
-      `--dome-k`       1 -> 0. The sheet's dome multiplier, same scroll input as
-                      `--p`. It decays faster than `--p` alone would suggest so
-                      the crown is already flattening by the time the sheet's top
-                      edge passes the fold.
+`--dome-k`       1 -> 0. The sheet's dome multiplier, gated on the MEASURED
+                      position of the dome's apex rather than on scroll progress,
+                      so it decays over the band between apex y = 30vh and y = 0
+                      and the crown is already flattening by the time the sheet's
+                      top edge passes the fold.
        `--arch-dome`   static dome depth â€” not written by the JS.
 
      There is deliberately no `transition` on any of the written ones: they are all
@@ -724,43 +721,48 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
     / calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
       calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
       0 0;
-  will-change: border-radius;
 }
 
+/* The three blobs were `filter: blur(80px)` disks re-rasterized whenever the
+   dome radius changed on scroll. Each is now a soft radial-gradient painted
+   once instead: the box is grown by 80px on each side (the old blur's
+   footprint) with the position countershifted so the glow centre is
+   identical, the solid core keeps the disk's original radius and the outer
+   80px feather fades to transparent. Same colour, size, softness, opacity and
+   drift; nothing re-rasterizes on scroll or on tab visibility. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob {
   position: absolute;
   display: block;
   border-radius: 50%;
-  filter: blur(80px);
   will-change: transform;
 }
 
 body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--1 {
-  top: 4%;
-  inset-inline-start: -8%;
-  width: 48vw;
-  height: 48vw;
-  background: #e8e2d5;
+  top: calc(4% - 80px);
+  inset-inline-start: calc(-8% - 80px);
+  width: calc(48vw + 160px);
+  height: calc(48vw + 160px);
+  background: radial-gradient(circle closest-side at 50% 50%, #e8e2d5 0%, #e8e2d5 calc(100% - 80px), rgba(232, 226, 213, 0) 100%);
   opacity: .62;
   animation: arch-blob-drift-1 34s ease-in-out infinite alternate;
 }
 
 body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--2 {
-  top: 11%;
-  inset-inline-end: -10%;
-  width: 42vw;
-  height: 42vw;
-  background: #efe4c8;
+  top: calc(11% - 80px);
+  inset-inline-end: calc(-10% - 80px);
+  width: calc(42vw + 160px);
+  height: calc(42vw + 160px);
+  background: radial-gradient(circle closest-side at 50% 50%, #efe4c8 0%, #efe4c8 calc(100% - 80px), rgba(239, 228, 200, 0) 100%);
   opacity: .68;
   animation: arch-blob-drift-2 41s ease-in-out infinite alternate;
 }
 
 body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--3 {
-  top: 34%;
-  inset-inline-start: 26%;
-  width: 54vw;
-  height: 54vw;
-  background: #f3ead3;
+  top: calc(34% - 80px);
+  inset-inline-start: calc(26% - 80px);
+  width: calc(54vw + 160px);
+  height: calc(54vw + 160px);
+  background: radial-gradient(circle closest-side at 50% 50%, #f3ead3 0%, #f3ead3 calc(100% - 80px), rgba(243, 234, 211, 0) 100%);
   opacity: .55;
   animation: arch-blob-drift-3 47s ease-in-out infinite alternate;
 }

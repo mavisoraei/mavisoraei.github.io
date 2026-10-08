@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 
 const ROOT = 'F:/Webflow/Lemon';
 const PORT = 8000;
@@ -29,17 +30,63 @@ const MIME = {
   '.txt': 'text/plain; charset=utf-8'
 };
 
+const COMPRESSIBLE = new Set(['.html', '.css', '.js', '.mjs', '.json', '.svg', '.xml']);
+const LONG_CACHE = new Set(['.png', '.jpg', '.jpeg', '.webp', '.avif', '.gif', '.svg', '.ico', '.woff2', '.woff', '.ttf']);
+
+// in-memory gzip cache: file path + mtimeMs -> compressed Buffer
+const gzipCache = new Map();
+function gzipFor(fp, mtimeMs) {
+  const key = fp + '@' + mtimeMs;
+  let buf = gzipCache.get(key);
+  if (buf) return buf;
+  buf = zlib.gzipSync(fs.readFileSync(fp));
+  if (gzipCache.size > 256) gzipCache.clear();
+  gzipCache.set(key, buf);
+  return buf;
+}
+
 function send(res, code, type, body) {
   res.writeHead(code, { 'Content-Type': type || 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
   res.end(body);
 }
 
-function serveFile(fp, res) {
+function serveFile(fp, res, req) {
   const ext = path.extname(fp).toLowerCase();
   if (!MIME[ext]) return false;
-  let data;
-  try { data = fs.readFileSync(fp); } catch (e) { return false; }
-  send(res, 200, MIME[ext], data);
+  let stat, data;
+  try { stat = fs.statSync(fp); data = fs.readFileSync(fp); } catch (e) { return false; }
+
+  const cacheControl = LONG_CACHE.has(ext) ? 'public, max-age=604800'
+    : ext === '.html' ? 'no-cache'
+    : (ext === '.css' || ext === '.js' || ext === '.mjs') ? 'no-cache'
+    : 'no-store';
+
+  const headers = { 'Content-Type': MIME[ext], 'Cache-Control': cacheControl };
+
+  const isText = COMPRESSIBLE.has(ext);
+  if (isText) headers['Vary'] = 'Accept-Encoding';
+
+  // css/js revalidate on every request so edits appear immediately
+  if (ext === '.css' || ext === '.js' || ext === '.mjs') {
+    const etag = '"' + stat.mtimeMs.toString(16) + '-' + stat.size.toString(16) + '"';
+    headers['ETag'] = etag;
+    headers['Last-Modified'] = stat.mtime.toUTCString();
+    if (req.headers['if-none-match'] === etag || req.headers['if-modified-since'] === stat.mtime.toUTCString()) {
+      res.writeHead(304, headers);
+      res.end();
+      return true;
+    }
+  }
+
+  if (isText && /\bgzip\b/.test(req.headers['accept-encoding'] || '')) {
+    headers['Content-Encoding'] = 'gzip';
+    res.writeHead(200, headers);
+    res.end(gzipFor(fp, stat.mtimeMs));
+    return true;
+  }
+
+  res.writeHead(200, headers);
+  res.end(data);
   return true;
 }
 
@@ -86,14 +133,14 @@ const http_ = http.createServer((req, res) => {
   // extensionless page requests: /services -> services.html
   const noExt = decoded.replace(/^\//, '');
   if (noExt && !noExt.includes('/') && PAGES.includes(noExt)) {
-    if (serveFile(path.join(ROOT, noExt + '.html'), res)) return;
+    if (serveFile(path.join(ROOT, noExt + '.html'), res, req)) return;
   }
 
   // plain asset requests
   if (MIME[path.extname(decoded).toLowerCase()]) {
     const safe = path.normalize(path.join(ROOT, decoded));
     if (safe.startsWith(path.normalize(ROOT))) {
-      if (serveFile(safe, res)) return;
+      if (serveFile(safe, res, req)) return;
     }
   }
 
@@ -108,7 +155,7 @@ const http_ = http.createServer((req, res) => {
   const ext = path.extname(decoded).toLowerCase();
   const looksLikeAsset = Boolean(MIME[ext]);
 
-  if (!looksLikeAsset && serveFile(path.join(ROOT, 'index.html'), res)) return;
+  if (!looksLikeAsset && serveFile(path.join(ROOT, 'index.html'), res, req)) return;
 
   send(res, 404, 'text/plain; charset=utf-8', 'Not found: ' + decoded);
 });

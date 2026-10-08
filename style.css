@@ -396,6 +396,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis owns the wheel smoothing while the arch intro is live, so let the
+   native `html { scroll-behavior: smooth }` opt out then; re-engaging it
+   on top of Lenis made every anchor/idle scroll ease twice. Anchor links
+   stay smooth because arch-intro.js routes them through lenis.scrollTo. */
+html:has(body.arch-intro) {
+  scroll-behavior: auto;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -896,6 +904,46 @@ main:not(.hero-overlap) {
 
 .btn-ghost:active {
   transform: translateY(-1px) scale(.97);
+}
+
+/* Shared secondary pill for the three grid-section CTAs ("See all cases",
+   "All Magazine Articles", "Lemon Doctors"): a flat warm-dark outline, no glass,
+   no inner/thickness shadow, no drop shadow; fills espresso on hover. Centred
+   under its section via `width: max-content` + auto inline margins, so it does
+   not depend on any parent's alignment. */
+.btn-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  width: max-content;
+  margin-inline: auto;
+  height: 48px;
+  padding: 0 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(42, 38, 34, 0.3);
+  background: transparent;
+  box-shadow: none;
+  color: #2a2622;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.btn-pill:hover {
+  background: #2a2622;
+  color: #faf8f5;
+}
+
+.trend .btn-pill {
+  display: flex;
+  width: max-content;
+  margin-inline: auto;
+  margin-block-start: clamp(1.2rem, 3vw, 1.8rem);
 }
 
 @media(prefers-reduced-motion:reduce) {
@@ -2736,11 +2784,21 @@ main:not(.hero-overlap) {
    -------------------------------------------------------------------------- */
 .sun-layer {
   position: fixed;
-  inset: 0;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
   pointer-events: none;
   z-index: 9999;
-  background: radial-gradient(ellipse 80% 60% at var(--sun-x, 22%) var(--sun-y, 18%),rgba(237,228,211,.18) 0%,rgba(201,168,106,.07) 40%,transparent 70%);
-  will-change: background;
+  /* Larger box + translate3d so the glow's drift is a composited move instead of
+     a per-frame full-screen repaint. Baseline layout (translate 0) puts the
+     radial centre exactly where `at 22% 18%` was on a viewport box, and the
+     gradient radii (80% x 60% of the viewport) become 57.1429% x 42.8571% of
+     this 140% box. The travel range (+12vw, +8vh right/down) stays inside the
+     enlarged box, so at every progress value the on-screen picture is identical
+     to the old `--sun-x`/`--sun-y` rewrite. */
+  background: radial-gradient(ellipse 57.1429% 42.8571% at 30% 27.1429%,rgba(237,228,211,.18) 0%,rgba(201,168,106,.07) 40%,transparent 70%);
+  will-change: transform;
 }
 
 /* --------------------------------------------------------------------------
@@ -7042,7 +7100,7 @@ tbody tr:nth-child(2n) {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(38% 42% at 82% 8%,color-mix(in srgb,var(--muted) 40%,transparent),transparent 70%),radial-gradient(34% 40% at 12% 92%,color-mix(in srgb,var(--primary) 34%,transparent),transparent 70%),radial-gradient(30% 34% at 55% 50%,color-mix(in srgb,var(--primary-foreground) 24%,transparent),transparent 72%);
+  background: radial-gradient(34% 34% at 82% 10%,color-mix(in srgb,#f5f2eb 55%,transparent),transparent 60%),radial-gradient(30% 36% at 12% 90%,color-mix(in srgb,#e8e2d5 45%,transparent),transparent 60%),radial-gradient(30% 34% at 55% 50%,color-mix(in srgb,#f5f2eb 28%,transparent),transparent 72%);
   filter: saturate(1.05);
 }
 
@@ -7054,6 +7112,7 @@ tbody tr:nth-child(2n) {
 .trend-head {
   max-width: 60ch;
   margin-bottom: clamp(1.3rem,3vw,2rem);
+  text-align: start;
 }
 
 .trend-head .eyebrow {
@@ -7087,22 +7146,18 @@ tbody tr:nth-child(2n) {
   display: flex;
   flex-direction: column;
   height: 100%;
-  border-radius: var(--radius-lg);
+  border-radius: 20px;
   overflow: hidden;
-  background: color-mix(in srgb,#fff 16%,transparent);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  backdrop-filter: blur(18px) saturate(1.4);
-  border: 1px solid rgba(255,255,255,.5);
-  box-shadow: 0 12px 34px color-mix(in srgb,var(--primary) 12%,transparent),inset 0 1px #fff9;
+  background: #fbf9f5;
+  border: 1px solid rgba(42, 38, 34, .08);
+  box-shadow: none;
   color: inherit;
   text-decoration: none;
-  transition: transform .28s ease,box-shadow .28s ease,border-color .28s ease;
+  transition: border-color .28s ease;
 }
 
 .trend-card:hover {
-  transform: translateY(-5px);
-  border-color: #ffffffbf;
-  box-shadow: 0 20px 46px color-mix(in srgb,var(--primary) 20%,transparent),inset 0 1px #ffffffb3;
+  border-color: rgba(42, 38, 34, .32);
 }
 
 .trend-card:focus-visible {
@@ -7112,40 +7167,45 @@ tbody tr:nth-child(2n) {
 
 .tc-media {
   position: relative;
-  height: 150px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
   flex: 0 0 auto;
-  display: grid;
-  place-items: end center;
-  background: radial-gradient(70% 90% at 50% 120%,var(--tint-strong),transparent 70%),var(--tint-soft);
+  overflow: hidden;
+  background: #f3efe5;
 }
 
 .tc-media img {
-  height: 138px;
-  width: auto;
-  max-width: 60%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 16px 14px 0;
   object-fit: contain;
-  filter: drop-shadow(0 8px 12px rgba(36,34,26,.16));
+  object-position: center bottom;
 }
 
 .tc-body {
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  padding: 1rem 1.1rem .9rem;
+  padding: 18px 22px;
   flex: 1;
 }
 
 .tc-title {
-  font-family: var(--font-fa);
-  font-size: var(--step-0);
-  line-height: 1.5;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.2;
   color: var(--foreground);
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .tc-blurb {
-  color: var(--muted-foreground);
-  font-size: var(--step--1);
+  color: #6b6258;
+  font-size: 15px;
   line-height: 1.7;
   margin: 0;
   display: -webkit-box;
@@ -7159,38 +7219,29 @@ tbody tr:nth-child(2n) {
   align-items: center;
   justify-content: space-between;
   gap: .6rem;
-  padding: .6rem 1.1rem;
-  background: var(--tint-bar);
-  border-top: 1px solid color-mix(in srgb,var(--tint-line) 60%,transparent);
+  padding: 14px 22px;
+  background: transparent;
+  border-top: 1px solid rgba(42, 38, 34, .08);
   margin-top: auto;
 }
 
 .tc-tag {
-  font-size: var(--step--1);
-  font-weight: 800;
-  letter-spacing: .02em;
-  color: var(--tint-ink);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #6b6258;
 }
 
 .tc-more {
   display: inline-flex;
   align-items: center;
   gap: .35rem;
-  font-size: var(--step--1);
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.tc-more span {
-  transition: transform .3s ease;
-}
-
-.trend-card:hover .tc-more span {
-  transform: translate(-4px);
-}
-
-.trend-card:hover .tc-title {
-  color: var(--primary);
+  font-size: 14px;
+  font-weight: 500;
+  color: #2a2622;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .tint-hot {
@@ -7787,34 +7838,74 @@ tbody tr:nth-child(2n) {
   font-weight: 700;
 }
 
+.home-why.wrap > h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(36px, 4.2vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  text-align: start;
+  text-wrap: balance;
+  margin-inline: 0;
+  max-width: none;
+  color: var(--lux-head);
+}
+
 .why-list {
+  counter-reset: why;
   display: grid;
-  gap: .8rem;
-  max-width: 820px;
-}
-
-.why-list li {
+  gap: 0;
+  max-width: none;
   list-style: none;
-  position: relative;
-  padding-inline-start: 1.7rem;
-  color: var(--muted-foreground);
-  line-height: 1.85;
+  padding: 0;
 }
 
-.why-list li:before {
-  content: "";
-  position: absolute;
-  inset-inline-start: 0;
-  inset-block-start: .6em;
-  width: .7rem;
-  height: .4rem;
-  border-inline-start: 2px solid var(--primary);
-  border-block-end: 2px solid var(--primary);
-  transform: rotate(-45deg);
+.why-list > li {
+  list-style: none;
+  counter-increment: why;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: clamp(.9rem, 2vw, 1.5rem);
+  padding: 28px 0;
+  color: #6b6258;
+  font-size: 16px;
+  line-height: 1.7;
+  letter-spacing: 0;
 }
 
-.why-list strong {
-  color: var(--foreground);
+.why-list > li + li {
+  border-top: 1px solid rgba(42, 38, 34, .12);
+}
+
+.why-list > li::before {
+  content: counter(why, decimal-leading-zero);
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  padding-top: .2em;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #b8a98f;
+}
+
+.why-list > li > h3 {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.why-list > li > p {
+  grid-column: 2;
+  grid-row: 2;
+  margin: .4rem 0 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #6b6258;
 }
 
 .svc-links {
@@ -7953,12 +8044,6 @@ tbody tr:nth-child(2n) {
     gap: var(--lux-gap);
   }
 
-  /* v1.0.15 — Why Lemon Clinic: a 1:2 label/content split with the heading
-     held in a narrow sticky column and the four points set as hairline rows.
-     `.why-list` was a single 820px column of `<li>` with `.8rem` gaps, so the
-     block read as a bulleted blob and left a third of the 1200px column empty
-     on the right. The heading is a sibling of the list inside `.home-why.wrap`,
-     so the two can be split into columns without touching the HTML. */
   .home-why.wrap {
     display: grid;
     grid-template-columns: minmax(0,1fr) minmax(0,2fr);
@@ -7968,42 +8053,8 @@ tbody tr:nth-child(2n) {
 
   .home-why.wrap > h2 {
     position: sticky;
-    top: 7.5rem;
+    top: 120px;
     margin-top: 0;
-  }
-
-  .why-list {
-    max-width: none;
-    gap: 0;
-  }
-
-  .why-list > li {
-    padding-block: 1.25rem;
-    border-top: 1px solid var(--lux-hair);
-    font-size: 1.05rem;
-    line-height: 1.8;
-    letter-spacing: -.01em;
-    color: var(--lux-body);
-  }
-
-  .why-list > li:first-child {
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .why-list > li:last-child {
-    padding-bottom: 0;
-  }
-
-  .why-list > li strong {
-    color: var(--lux-head);
-    font-weight: 500;
-  }
-
-  .home-why.wrap > p {
-    grid-column: 2;
-    margin-top: 1.25rem;
-    margin-bottom: 0;
   }
 }
 
@@ -8104,6 +8155,86 @@ tbody tr:nth-child(2n) {
   color: var(--clay-700);
   background: color-mix(in srgb,var(--muted) 16%,transparent);
   font-variant-numeric: normal;
+}
+
+/* ==========================================================================
+   v1.0.20 - HOME "LEMON DOCTORS" CAROUSEL (presentation only)
+   --------------------------------------------------------------------------
+   Scoped to .home-team so nothing below can reach the other sections that
+   share style.css. Content, links and the initMarqueeDrag() behaviour in
+   app.js are unchanged; only how the existing cards are drawn differs.
+
+   Hover clipping: `.ga-marquee` keeps `overflow: hidden` (which clips both
+   axes), so the lift is given room *inside* the clip by padding the marquee
+   itself. The negative margin cancels the added height, so the row still
+   occupies one card's height and nothing below shifts.
+   ========================================================================== */
+.home-team .ga-marquee {
+  padding-block: 24px;
+  margin-block: -24px;
+  /* The 24px bottom padding would otherwise add to the marquee's original
+     bottom margin; subtract it back so the gap to the button is unchanged. */
+  margin-block-end: calc(clamp(1.2rem, 3vw, 1.8rem) - 24px);
+}
+
+.home-team .team-card {
+  background: #fbf9f5;
+  border: 1px solid rgba(42, 38, 34, .08);
+  border-radius: 20px;
+}
+
+/* At most 6px of lift, all of it inside the 24px padding above. */
+.home-team .team-card:hover {
+  transform: translateY(-6px);
+}
+
+.home-team .team-meta {
+  align-items: center;
+  text-align: center;
+  padding: 1.1rem 1rem 1.2rem;
+}
+
+/* Name: display serif, 22px/1.15, two lines of height reserved so every
+   card's text block starts and aligns identically. */
+.home-team .team-meta h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 500;
+  min-height: 2.3em;
+  margin: 0;
+}
+
+/* Role: 14px, two lines reserved. */
+.home-team .team-role {
+  color: #6b6258;
+  font-size: 14px;
+  line-height: 1.4;
+  min-height: 2.8em;
+  margin: .35rem 0 0;
+  -webkit-line-clamp: 2;
+}
+
+/* License: a hairline, then one uppercase line. No pill, no fill. */
+.home-team .team-lic {
+  display: block;
+  width: 100%;
+  margin-top: auto;
+  padding: .7rem 0 0;
+  border-top: 1px solid rgba(42, 38, 34, .08);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #6b6258;
+  background: none;
+  border-radius: 0;
+  font-variant-numeric: normal;
+}
+
+.home-team .btn-pill {
+  margin-inline: auto;
 }
 
 /* --------------------------------------------------------------------------
@@ -9687,11 +9818,11 @@ body.lm-modal-open {
    ========================================================================== */
 .ias {
   --ias-gap: 28px;
-  --ias-frame-h: 360px;
-  /* How many cards the row wants across: 4 on desktop, 2 at tablet, ~1.15 on
-     a phone. This number IS the card count — `.ias-item` divides by it — so
+  --ias-frame-h: 300px;
+  /* How many cards the row wants across: 5 on desktop, 2 at tablet, ~1.15 on
+     a phone. This number IS the card count - `.ias-item` divides by it - so
      the responsive rules below only reassign the variable. */
-  --ias-count: 4;
+  --ias-count: 5;
   position: relative;
   display: flex;
   width: 100%;
@@ -10027,52 +10158,7 @@ body.lm-modal-open {
   }
 }
 
-/* --------------------------------------------------------------------------
-   CASE ROW CONTROLS — PREV / NEXT
-   --------------------------------------------------------------------------
-   Two 44px outline circles centred under the track, one card per press. They
-   are disabled at the matching end rather than wrapping, because a scroll
-   container with mandatory snapping has no seam-free way back to the start.
-   `.ias-nav` is a sibling of `.ias` so it cannot scroll away with the cards.
-   -------------------------------------------------------------------------- */
-.ias-nav {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: clamp(.75rem, 1.5vw, 1.1rem);
-}
 
-.ias-nav-btn {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid color-mix(in srgb, var(--foreground) 32%, transparent);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--foreground);
-  cursor: pointer;
-  transition: background .2s ease, border-color .2s ease, opacity .2s ease;
-}
-
-.ias-nav-btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--foreground) 6%, transparent);
-  border-color: color-mix(in srgb, var(--foreground) 55%, transparent);
-}
-
-.ias-nav-btn:active:not(:disabled) {
-  transform: translateY(1px);
-}
-
-.ias-nav-btn:disabled {
-  opacity: .35;
-  cursor: default;
-}
-
-.ias-nav-btn svg {
-  display: block;
-}
 
 /* --------------------------------------------------------------------------
    SERVICES MEGA-MENU — NARROW-VIEWPORT COLUMNS  (v1.0.13)

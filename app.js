@@ -395,13 +395,21 @@
   function initSunParallax() {
     const sun = document.querySelector('.sun-layer');
     if (!sun) return;
+    let last = '';
     const update = rafThrottle(function () {
       const scrollable = document.body.scrollHeight - window.innerHeight || 1;
       const progress = window.scrollY / scrollable;
-      sun.style.setProperty('--sun-x', (22 + progress * 12) + '%');
-      sun.style.setProperty('--sun-y', (18 + progress * 8) + '%');
+      // same .sun-layer travel as the old `--sun-x/--sun-y` (22->34, 18->26)
+      const tx = Math.round(progress * 12 * window.innerWidth / 100);
+      const ty = Math.round(progress * 8 * window.innerHeight / 100);
+      const next = 'translate3d(' + tx + 'px, ' + ty + 'px, 0)';
+      if (next !== last) {
+        last = next;
+        sun.style.transform = next;
+      }
     });
     window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
     update();
   }
 
@@ -1140,13 +1148,19 @@
       gl.uniform2f(u.res, canvas.width, canvas.height);
       gl.uniform1f(u.time, time);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      lastTime = time;
     };
 
     /* t is in seconds since start, so the phase is identical on reload
        regardless of frame rate */
-    const started = performance.now();
+    let started = performance.now();
+    /* Seconds of shader time of the last frame actually drawn. When the loop
+       is stopped because the canvas is off-screen, `started` is rewound to
+       this timestamp on resume, so the shader phase continues from the last
+       painted frame instead of leaping to a new pattern. */
+    let lastTime = 0;
     const tick = function (now) {
-      draw((now - started) / 1000);
+      if (program) draw((now - started) / 1000);
       raf = requestAnimationFrame(tick);
     };
 
@@ -1161,6 +1175,9 @@
 
     const start = function () {
       if (raf || !running()) return;
+      /* First frame back: pick up exactly where the last drawn frame left off
+         so pausing for off-screen coverage is never seen as a jump. */
+      if (lastTime > 0) started = performance.now() - lastTime * 1000;
       raf = requestAnimationFrame(tick);
     };
     const stop = function () {
@@ -1169,11 +1186,35 @@
       raf = 0;
     };
 
+    /* The wash is only ever visible while the transparent arch-hero band is in
+       the viewport: `.arch-hero` is an empty, `background: none`, min-height
+       100svh box, so the canvas shows through it (and through the arch photo's
+       cutout) until that band has fully scrolled past. From then on the opaque
+       `.sheet` cream covers every pixel of the screen and the canvas cannot be
+       seen anywhere for the rest of the page, so the loop is stopped and
+       resumed as the band re-enters. Pages without `.arch-hero` keep the canvas
+       running as the plain backdrop they have always had. */
+    const arch = document.querySelector('.arch-hero');
+    let archBottom = 0;
+    const measureCoverage = function () {
+      archBottom = arch ? arch.offsetTop + arch.offsetHeight : 0;
+    };
+    const covered = function () {
+      return archBottom > 0 && window.scrollY >= archBottom;
+    };
+    const decide = function () {
+      if (covered()) stop();
+      else start();
+    };
+    measureCoverage();
+    window.addEventListener('resize', measureCoverage);
+    window.addEventListener('scroll', decide, { passive: true });
+
     const relayout = rafThrottle(function () {
       resize();
       /* a resize while paused still has to repaint, or the canvas is left
          showing a stretched old frame */
-      if (!raf) draw((performance.now() - started) / 1000);
+      if (!raf) draw(lastTime || (performance.now() - started) / 1000);
     });
     window.addEventListener('resize', relayout);
     window.addEventListener('orientationchange', relayout);
@@ -1198,7 +1239,7 @@
       if (!setup()) return bail();
       canvas.width = 0;      // force `resize` to re-apply the viewport
       resize();
-      draw((performance.now() - started) / 1000);
+      draw(lastTime || (performance.now() - started) / 1000);
       start();
     });
 
@@ -1208,7 +1249,7 @@
       if (running()) start();
       else {
         stop();
-        draw((performance.now() - started) / 1000);
+        draw(lastTime || (performance.now() - started) / 1000);
       }
     };
     if (typeof motionQuery.addEventListener === 'function') motionQuery.addEventListener('change', onMotionChange);
