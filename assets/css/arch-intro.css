@@ -1,89 +1,48 @@
 /* ==========================================================================
-   ARCH INTRO â€” layered arch-curtain reveal + domed sheet  (v2.2.6)
+   ARCH INTRO — page-load intro + domed sheet  (v3.0.0)
    ==========================================================================
    Paired with /assets/js/arch-intro.js. Loaded on /index.html ONLY, after
    style.css.
 
-   This is a re-architecture. The intro is no longer "an opaque box that fades
-   away"; it is a real layer stack, and the photo is a persistent base layer
-   rather than a guest of the overlay.
+   THE INTRO IS NOT IN THIS FILE ANY MORE, and that is deliberate. Its markup,
+   its critical CSS and its play/skip gate are inline in index.html, because the
+   dark screen has to be painted on the first frame — before any stylesheet or
+   script has run. There the arch is a plain clip-path keyframe on
+   `.intro__photo`, not a shape in a file: no frame.svg, no curtain layer, no
+   brand-title layer, and no mesh crossfade for them to hand over to.
+
+   What is left here is the page the intro hands the screen over to.
 
    --------------------------------------------------------------------------
    THE LAYER STACK (bottom -> top)
    --------------------------------------------------------------------------
-z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
-                   ::before           (see THE MESH CROSSFADE note below). This is
-                                       the BACKGROUND of everything outside the arch,
-                                       so it is never clipped.
+   z-index  -1   #lm-bg-mesh +      the site's own page wash, untouched
+                ::before
 
-      z-index   0   #arch-intro-photo   LAYER 0
-                 The clinic photo, `position: fixed`, full viewport, MOUNTED FOR
-                 THE WHOLE SESSION and never removed or re-created. It is the
-                 thing you have "zoomed into"; everything after Phase 1 happens
-                 in front of it.
+   z-index   0   #arch-intro-photo   the clinic photo, `position: fixed`, full
+                                    viewport, MOUNTED FOR THE WHOLE SESSION and
+                                    never removed. `#intro` hands the screen to
+                                    this one: its `.intro__photo` is a pixel
+                                    twin of it — same file, same box, same fit —
+                                    so dropping `#intro` at the end of the intro
+                                    cannot move a pixel.
 
-                 Above the mesh, not below it, and clipped to the arch silhouette
-                 from the moment of the Phase 1 -> Phase 2 handoff. That ordering
-                 is the whole containment story: the photo is what gets the arch
-                 cut into it, so it can only ever be visible INSIDE the arch, and
-                 the wash owns the rest of the page. The previous arrangement had
-                 it inverted, which meant the wash had to be the clipped layer and
-                 the photo consequently ran full-bleed behind every section below
-                 the hero.
+   z-index   1   .arch-hero         the opening screen. EMPTY as of v2.2.5, and
+                z-index   2   #sheet   it keeps one job: reserving 100svh so the
+                                      sheet stays one viewport down. No type on
+                                      the photograph.
+                z-index   3   .sheet__bg        the cream base, the top-right
+                                                glow and the domed top edge
+                z-index   1   .sheet__content   the hero copy and every real
+                                                section
 
-z-index   1   .arch-hero         LAYER 2 â€” the opening screen. EMPTY as of
-     z-index   2   #sheet               v2.2.5, and it keeps one job: reserving
-                                          100svh so the sheet stays one viewport
-                                          down. No type on the photograph.
-     z-index   2   .sheet__bg            .sheet__bg paints the cream base, the
-     z-index   1   .sheet__content       top-right glow and the arc ornament under
-                                          a domed top edge;
-                                          .sheet__content holds the hero copy and
-                                          every real section.
-
-     z-index   3   #arch-intro-overlay   LAYER 1 â€” the arch CURTAIN
-                frame.svg only. NO background colour: the darkness IS the SVG's
-                own matte, so there is never a flat block painted over the photo.
-
-     z-index   4   #arch-intro-ui     LAYER 2 â€” the brand title + sub
-
-     z-index   5   .lm-header         LAYER 2 â€” the floating glass navbar
-
-     z-index 9998  body::after        the site's film grain, above everything
-
-   The curtain (3) sits ABOVE the hero (1) on purpose: during Phase 2 the hero
-   rises behind a curtain that has already left the viewport, and if the curtain
-   were ever still on screen it must occlude the hero rather than the reverse.
+   z-index   100 .lm-header         the floating glass navbar
+   z-index  9998 body::after        the site's film grain
+   z-index 10000 #intro             the page-load intro — defined inline in
+                                    index.html, above the grain on purpose
 
    --------------------------------------------------------------------------
-   THE MESH MASK â€” how two opaque backdrops share the screen
-   --------------------------------------------------------------------------
-   `#lm-bg-mesh` is `position: fixed; z-index: -1` with an OPAQUE drawing buffer
-   (`gl_FragColor = vec4(col, 1.0)`), and `body::before` is an opaque gradient
-   fallback. The photo is opaque too. Three opaque full-viewport layers cannot be
-   visible at once, yet the brief asks for two different backdrops:
-
-     * Phase 1  -> the PHOTO, seen only through the arch hole
-     * Phase 2  -> the MESH, inside the hero arch, WITH THE PHOTO STILL VISIBLE
-                  everywhere the arch is not
-
-   So the mesh is not merely crossfaded; it is masked to the arch window, and
-   the photo is the persistent base layer underneath it for the whole session:
-
-     * Phase 1 hides both mesh layers at `opacity: 0` (free â€” the curtain is
-       opaque everywhere except the hole), which is what lets the photo show.
-     * The handoff restores them and switches on the clip. Because the clip is
-       the arch, the 620ms dissolve is only ever visible INSIDE the arch; the
-       rest of the screen never pops, it just keeps showing the photograph.
-     * As the hero rises, the window tracks it and grows to the full viewport,
-       where it collapses to no clip at all â€” byte-identical to classic.
-
-   The photo therefore never leaves the DOM, is never re-created, and is never
-   covered by a flat colour. It is simply the bottom of the stack, and the mesh
-   is a window onto it. See section 4 for the geometry.
-
-   --------------------------------------------------------------------------
-   ISOLATION CONTRACT â€” read this before editing anything below
+   ISOLATION CONTRACT — read this before editing anything below
    --------------------------------------------------------------------------
    Every rule that changes the page is scoped under:
 
@@ -98,10 +57,8 @@ z-index   1   .arch-hero         LAYER 2 â€” the opening screen. EMPTY as o
 
    `.classic-layout` therefore wins by specificity (it is part of the same
    compound selector), so adding that ONE class to <body> drops this entire file
-   to zero effect: the curtain never paints, the rise loses its clip and offset,
-   the mesh returns to normal and the navbar returns to its un-gated state.
-   style.css is not modified by this file at all. The one deliberate exception is
-   the `@font-face` block, which declares a face and changes no layout.
+   to zero effect: the rise loses its clip and its offset and the navbar returns
+   to its un-gated state. style.css is not modified by this file at all.
    ========================================================================== */
 
 
@@ -145,18 +102,17 @@ z-index   1   .arch-hero         LAYER 2 â€” the opening screen. EMPTY as o
    (a) `.lenis` LANDS ON <html>, NOT <body>. Lenis' default `rootElement` is
        `document.documentElement` and the class list is written there.
 
-   (b) THE GATE CLASS LIVES ON <body>, BUT `scroll-behavior` and the scroll lock
-       must apply to <html> â€” the scrolling element â€” so they bridge with
-       `:has()`. `:has()` is already used in style.css. The lock uses
-       `!important` because the reproduced `.lenis-stopped` overflow-clip rule
-       below is far more specific and would otherwise win. */
+   (b) THE GATE CLASS LIVES ON <body>, BUT `scroll-behavior` must apply to
+       <html> — the scrolling element — so it bridges with `:has()`. `:has()`
+       is already used in style.css.
+
+   THE SCROLL LOCK IS NOT IN THIS FILE ANY MORE. It belongs to the page-load
+   intro and lives inline in index.html as `html.intro-play { overflow: hidden
+   !important }`, because it has to be in force before this file has even been
+   parsed. That `!important` is also what beats the reproduced
+   `.lenis-stopped` overflow-clip rule below, which is far more specific. */
 html:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)) {
   scroll-behavior: auto;
-}
-
-html:has(> body.arch-intro:not(.classic-layout):not(.classic-mode).arch-locked),
-html:has(> body.arch-intro:not(.classic-layout):not(.classic-mode).arch-locked) body {
-  overflow: hidden !important;
 }
 
 html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)),
@@ -180,32 +136,21 @@ html.lenis:has(> body.arch-intro:not(.classic-layout):not(.classic-mode)).lenis-
 
 
 /* --------------------------------------------------------------------------
-   3. PHASE 1 â€” LAYER 0: THE FIXED CLINIC PHOTO
+   3. LAYER 0 — THE FIXED CLINIC PHOTO
    --------------------------------------------------------------------------
-   The photo is NOT a child of the curtain. It is a fixed, viewport-sized base
-   layer that the curtain's arch hole reveals, and it stays mounted for the rest
-   of the session. `object-fit: cover` + a 30% object-position reproduces the
-   top-centre framing the intro zoom ends on, so there is no visible jump at the
-   moment the curtain leaves. */
+   A fixed, viewport-sized base layer that stays mounted for the rest of the
+   session. `object-fit: cover` plus a 30% object-position is exactly what
+   `#intro`'s `.intro__photo` copies in index.html — and that is what makes the
+   hand-off at the end of the intro invisible: the two layers are the same
+   pixels in the same box, so removing one of them cannot be seen. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo {
   position: fixed;
   inset: 0;
-  /* z-index 0 â€” the backdrop layer, directly above the mesh wash and directly
-     below the rising hero.
-
-     At -2 the photo sat UNDER the opaque mesh wash, so the only way to see it was
-     through a hole in the mesh. That left the photograph visible everywhere
-     OUTSIDE the arch, so every homepage section after the hero rendered on top of
-     the clinic image â€” the "content floating loose on the background" symptom,
-     and the reason the containment work below was never enough on its own.
-
-     At 0 it is a plain full-bleed backdrop that the OPAQUE hero (section 8) covers
-     wherever the hero is, and that the opaque post-hero sections (section 8c)
-     cover everywhere else. It is never cut into; see the `.arch-window` note below.
-
-     This is Phase-1 safe. The mesh is at `opacity: 0` for the whole of phase 1,
-     so nothing sits between -2 and 0 to reveal â€” the curtain still opens onto
-     exactly the same photograph it always did. */
+  /* z-index 0 — the backdrop layer, directly above the mesh wash and directly
+     below the rising hero. The photo is opaque and viewport-sized, so it is
+     what the page shows everywhere the hero and the sheet are not: above the
+     hero's top edge while it rises from below the fold, and inside the two
+     corners the dome's arc leaves open at rest. Nothing ever clips it. */
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
@@ -221,353 +166,29 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo img {
 
 
 /* --------------------------------------------------------------------------
-   4. THE MESH MASK
+   7. THE INTRO HAND-OFF — NAVBAR AND HELD BACK UNTIL IT IS DONE
    --------------------------------------------------------------------------
-   Phase 1 needs the photo, so both mesh layers go to zero opacity instantly (no
-   transition on this rule â€” a fade here would flash the wash over the arch for
-   a beat). `.arch-mesh-in` brings them back at the Phase 1 â†’ Phase 2 handoff.
+   `intro-active` is added by arch-intro.js when it takes the intro over, and
+   `arch-intro-done` lands in the same frame that lifts `#intro` out of the DOM.
+   While `intro-active` is on, the two things that would otherwise be revealed
+   as the intro leaves — the navbar and the hero — are held at zero opacity, and
+   `arch-intro-done` is what carries them back, over 400ms.
 
-   Neither layer is clipped any more. They are the PAGE's background, not the
-   hero's, so the mesh covers the whole viewport and every section below the arch
-   sits on the clinic wash. The photograph survives that handoff simply by being
-   left full-bleed underneath: the opaque rising hero in section 8 covers the part
-   of it that sits under the hero, and the opaque sections in section 8c cover the
-   rest, so it is only ever seen through the two corners the dome's arc leaves
-   open.
+   The transition is declared on the AFTER state and not on the hidden one: that
+   is what makes the reveal a fade rather than a pop, and it means adding
+   `intro-active` costs one class and cannot start a transition backwards.
 
-   Both mesh layers are viewport-sized fixed boxes (`inset: 0` for the
-   pseudo-element, `top/left: 0; width/height: 100%` for the canvas), so the
-   percentages resolve against the viewport.
-
-   app.js never writes an inline `opacity` on the canvas, so these rules win
-   cleanly and there is no inline-style conflict. On the shader-failure path
-   app.js does hide the canvas, and it stays hidden â€” which is correct, because
-   `body::before` behind it is a complete background in its own right. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) #lm-bg-mesh,
-body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-bg-mesh,
-body.arch-intro:not(.classic-layout):not(.classic-mode)::before {
+   Nothing is transformed and nothing is re-timed. style.css gives `.lm-header`
+   no entrance animation of its own, so opacity alone is the whole hand-off. */
+body.arch-intro:not(.classic-layout):not(.classic-mode).intro-active .lm-header,
+body.arch-intro:not(.classic-layout):not(.classic-mode).intro-active .lm-hero {
   opacity: 0;
+  transition: none;
 }
 
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-mesh-in #lm-bg-mesh,
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-mesh-in .lm-bg-mesh,
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-mesh-in::before {
-  opacity: 1;
-  transition: opacity 620ms cubic-bezier(.4, 0, .2, 1);
-}
-
-/* The photograph is NOT clipped any more.
-
-   It used to be, and the clip was the direct cause of the reported symptom.
-   `.arch-window` cut it to a BOTTOM band â€” `inset(var(--arch-offset) â€¦ 0 â€¦ round
-   â€¦)` â€” i.e. exactly the rectangle the hero occupies, with a 120px rounded top.
-   So the photo was painted precisely where the transparent hero sat, the hero
-   added no background of its own, and the result was the clinic photograph
-   showing through the whole opening screen with the copy lying on top of it.
-   The arch was only ever that 120px radius, which is why it read as a rounded
-   rectangle instead of a dome.
-
-   The inversion is now unnecessary as well as wrong. The photo is a fixed,
-   viewport-sized backdrop at z-index 0 and the rising hero is an OPAQUE layer at
-   z-index 1, so the hero occludes the photograph on its own â€” no window has to be
-   cut for the site to show through. The photograph is simply left full-bleed, and
-   it is visible wherever the hero is not: above the hero's top edge while it rises
-   from below the fold, and inside the two corners the dome's arc leaves open at
-   rest. That is the arched-window read, and it removes the second hand-drawn shape
-   that could drift out of register with the hero.
-
-   Leaving it unclipped through the Phase 1 -> Phase 2 handoff is also
-   byte-for-byte continuous: before `.arch-window` the rule below did nothing, and
-   now there is no rule at all. */
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-window #arch-intro-photo {
-  clip-path: none;
-}
-
-
-/* --------------------------------------------------------------------------
-   5. PHASE 1 â€” LAYER 1: THE ARCH CURTAIN
-   --------------------------------------------------------------------------
-   `#arch-intro-overlay` has NO background of its own. All of the darkness is
-   frame.svg's own `#1C1D1C` matte, which covers everything except the arch
-   opening. That is what satisfies "do not insert flat coloured blocks over the
-   background image": there is no CSS colour anywhere in this layer.
-
-   THE GEOMETRY IS MEASURED FROM frame.svg, NOT GUESSED. In viewBox
-   0 0 1920 1080 the matte path is:
-
-     M1900 0 L1900 1080 L1344 1080 L1344 613.5
-     C1344 401.699 1172.3 230 960.5 230
-     C748.699 230 577 401.699 577 613.5
-     L577 1080 L0 1080 L0 0 Z
-
-   so the opening it leaves is a dome-topped region reaching the canvas floor:
-
-     left    577 / 1920   = 30.0521%
-     width   767 / 1920   = 39.9479%
-     top     230 / 1080   = 21.2963%
-     height  850 / 1080   = 78.7037%
-     centreX (577+1344)/2 / 1920 = 50.02%   -> horizontally centred
-     centreY (230+1080)/2 / 1080 = 60.6479% -> BELOW the frame centre by 10.6479%
-
-   The cream hairline is a SEPARATE rect in the SVG at
-   x 564.25 w 792.5 / y 215.25 h 1406.5 rx 396.25 â€” i.e. ~12.75px OUTSIDE the
-   matte hole on each side and 14.75px above it, running past the canvas floor
-   and being clipped by `clip0`. It is drawn by the SVG itself, so it needs no
-   CSS twin.
-
-   SIZING: `width: max(100vw, 177.7778vh)` with `aspect-ratio: 16/9` is the only
-   combination that COVERS the viewport on both axes while preserving the SVG's
-   own proportions â€” a plain `100vw` frame is too short on portrait screens and
-   would leave an uncovered strip.
-
-   THE ZOOM ENDPOINT IS ASPECT-INDEPENDENT BY DESIGN. Scaling about the frame
-   centre pushes the hole's centre (which sits 10.6479% low) further down as S
-   grows, so every zoom state carries `translateY(-10.6479%)`, which cancels it
-   exactly and holds the hole centred on the viewport. For the hole to cover the
-   viewport it needs:
-
-     width :  0.399479 * frameW * S >= viewportW   ->  S >= 2.5034
-     height:  0.787037 * frameH * S >= viewportH   ->  S >= 1.2706
-
-   Working both through the `max()` sizing above, the width term dominates for
-   EVERY aspect ratio (it peaks at exactly 2.5034 on a 16:9 screen and falls away
-   on both narrower and wider ones), so a single 2.56 clears the matte
-   everywhere with a small margin. No JS geometry, no per-resize recompute. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  overflow: hidden;
-  pointer-events: none;
-  /* no background: the dark IS the SVG */
-}
-
-/* STEP 1 â€” the curtain enters from the bottom as a small semi-oval. The scale
-   term is what makes it read as "a small arch opening up" rather than "a big
-   arch sliding in". It settles at scale(1) before the zoom begins, so the two
-   transforms never fight over the same property. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay .arch-intro-stage {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  will-change: transform;
-  animation: arch-stage-rise 1300ms cubic-bezier(.16, .84, .44, 1) both;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay .arch-intro-frame {
-  width: max(100vw, 177.7778vh);
-  aspect-ratio: 16 / 9;
-  background: url("/assets/frame.svg") center / 100% 100% no-repeat;
-  transform-origin: 50% 50%;
-  will-change: transform;
-  /* STEP 4 â€” the dramatic zoom INTO the photograph. `both` holds the final
-     state, so the curtain is fully open (and fully off-screen) between the end
-     of this animation and the moment the JS removes the node. */
-  animation: arch-mask-zoom 1600ms cubic-bezier(.65, 0, .35, 1) 1500ms both;
-}
-
-@keyframes arch-stage-rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 105vh, 0) scale(.62);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
-@keyframes arch-mask-zoom {
-  from {
-    transform: scale(1) translateY(-10.6479%);
-  }
-
-  to {
-    transform: scale(2.56) translateY(-10.6479%);
-  }
-}
-
-
-/* --------------------------------------------------------------------------
-   6. PHASE 1 â€” LAYER 2: THE BRAND TITLE, ABOVE THE ARCH CEILING
-   --------------------------------------------------------------------------
-   The dome apex sits at 21.2963% of the frame height, which lands ~21vh from
-   the top on every viewport (the `max()` frame is centred, so the apex only
-   rises on ultrawide). The title therefore sits ABOVE that ceiling, not below
-   the arch: eyebrow first, then the title, both centred.
-
-   `.arch-title-in` is added by the JS on a fixed point in the timeline, so the
-   fade can never race the zoom. `.arch-hero-up` fades the whole UI layer out
-   once the hero starts rising, because this layer is ABOVE the hero and would
-   otherwise float over the hero's own content.
-
-   v2.2.6 - THE TWO OFFSETS ARE NO LONGER `vh`-BASED, AND THAT IS THE FIX FOR
-   "WEST TEHRAN / LEMON AESTHETIC CLINIC PASSES UNDER THE NAVBAR".
-
-   The old values were `clamp(.8rem, 5.6vh, 3.4rem)` and
-   `clamp(1.4rem, 9.5vh, 6rem)`. Both are functions of VIEWPORT HEIGHT, while the
-   navbar's height and position are functions of VIEWPORT WIDTH - `--lm-nav-top` is
-   a `clamp()` on `1.5vw` and the pill's height is set by its tallest child. The two
-   cannot track each other, and they disagree most where it is most visible: at
-   1440x900 the sub sat at 50.4px and the navbar's lower edge at 78.8px, so the pill
-   dropped in ON TOP of it; at 390x844 it was 47.3px against 68.4px.
-
-   Both are now anchored to `--lm-nav-top` + `--lm-nav-clear-h`, and
-   `--lm-nav-clear` adds the 1.5rem the brief asks for as a visible gap. A `vh` value
-   cannot express "below the navbar" - it can only guess at how tall the navbar is - so
-   this is the only form of the rule that is correct by construction rather than by
-   coincidence at one size.
-
-   `--lm-nav-clear-h` is an UPPER BOUND on the pill, not its height, because the pill
-   is content-driven: measured in Chrome at 1440x900 it is 58.53px (`.lm-menu` wraps
-   to two lines and beats the 40px logo at 40.53px). Naming the height and getting it
-   half a pixel wrong turned a 24px gap into a measured 23.5px. See the note on
-   `--lm-nav-clear-h` in style.css for the full reasoning and the residual
-   three-line-menu limitation.
-
-   Which introduces the one place the two requirements genuinely collide. This block has to
-   clear the navbar by 1.5rem AND stay above the arch ceiling, and there is a band of
-   viewports where there is not enough room for both: the ceiling is 21.2963% of
-   frame.svg's height (section 5), and `--lm-arch-ceiling` restates that in viewport
-   units as `max(11.979vw, 21.2963vh)` - the frame is `max(100vw, 177.7778vh)` at 16/9,
-   so 0.212963 * 9/16 * 177.7778vh is 21.2963vh and the 100vw leg gives the other term.
-
-   Read the rendered boxes in Chrome, not the arithmetic. The gap below the pill:
-
-     1440x900   29.5px   brief asks 24   pass
-      390x844   26.0px   brief asks 24   pass
-      360x640    0.6px   brief asks 24   capped, no overlap
-      320x568  -14.7px   brief asks 24   capped, OVERLAPS the pill
-
-   At 320x568 the two wants are 23px further apart than the frame allows: the pill's
-   lower edge is 72.4px (10.4px of `top` plus the measured 62px), so the 1.5rem gap wants
-   96.4px, while the ceiling at 121.0px less 2.2rem plus the title plus .375rem caps
-   the sub at 57.7px. There is no third option that satisfies both, and which one gives
-   is a judgement call rather than a bug: letting the ceiling give puts the wordmark
-   34.7px BELOW the arch's light fill, where cream type on cream is invisible. So the
-   ceiling wins and the sub rides up into the pill's lower edge.
-
-   For scale: v2.2.5 was `top: clamp(.8rem, 5.6vh, 3.4rem)`, measured from the viewport
-   top because it could not see the navbar at all, and it overlapped the pill EVERYWHERE
-   - by 28.9px at 1440x900, 36.6px at 360x640, 25.1px at 390x844. That overlap at every
-   width is the bug this rule exists to fix, so 320x568 is the single remaining size
-   where any overlap survives, and it is 11px better than v2.2.5 was at that same size
-   (v2.2.5: -40.6px). Making it fit would mean either shrinking the brand block or
-   letting it cross the arch fill; both are design changes the brief does not ask for.
-
-   (The v2.2.5 figures are computed from its published rule rather than rendered: the
-   backup snapshot carries only assets/css and assets/js, so its intro never completes
-   and there is nothing to measure.) */
-body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui {
-  --lm-nav-clear: calc(var(--lm-nav-top, .65rem) + var(--lm-nav-clear-h, 4rem) + 1.5rem);
-  --lm-arch-ceiling: max(11.979vw, 21.2963vh);
-  /* 1.2 is this rule's own `line-height`, so the cap knows the title's real height
-     rather than assuming it. */
-  --lm-brand-title-h: calc(1.2 * clamp(1.15rem, 2.4vw, 2rem));
-  --lm-brand-top: min(var(--lm-nav-clear),
-    calc(var(--lm-arch-ceiling) - 2.2rem - var(--lm-brand-title-h) - .375rem));
-  position: fixed;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-header,
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-hero {
   transition: opacity 400ms ease;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-hero-up #arch-intro-ui {
-  opacity: 0;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui .arch-brand-sub {
-  position: absolute;
-  /* v2.2.6: was `clamp(.8rem, 5.6vh, 3.4rem)` - a vh offset that the pill's own
-     height could not track, so the navbar dropped in over this line. Now the
-     pill's lower edge plus the 1.5rem gap, capped against the arch ceiling. */
-  top: var(--lm-brand-top);
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  font-family: var(--font-latin);
-  font-size: clamp(.58rem, 1vw, .7rem);
-  font-weight: 500;
-  letter-spacing: .34em;
-  text-transform: uppercase;
-  color: rgba(244, 239, 231, .62);
-  white-space: nowrap;
-  opacity: 0;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui .arch-brand-title {
-  position: absolute;
-  /* v2.2.6: was `clamp(1.4rem, 9.5vh, 6rem)`. Same reason as the sub above, plus
-     the 2.2rem is the ORIGINAL gap between these two elements preserved: the old
-     pair sat 35px apart at 1440x900 and this keeps them 35px apart now that both
-     have moved down together. Deriving the title from the sub rather than from a
-     second independent offset is what guarantees they stay 24px+ clear of the
-     navbar together instead of drifting apart at some third viewport. */
-  top: calc(var(--lm-brand-top) + 2.2rem);
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: clamp(1.15rem, 2.4vw, 2rem);
-  line-height: 1.2;
-  letter-spacing: .01em;
-  color: #f4efe7;
-  text-align: center;
-  white-space: nowrap;
-  opacity: 0;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-title-in #arch-intro-ui .arch-brand-title {
-  animation: arch-title-in 700ms cubic-bezier(.22, .61, .36, 1) forwards;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-title-in #arch-intro-ui .arch-brand-sub {
-  animation: arch-title-in 700ms cubic-bezier(.22, .61, .36, 1) 90ms forwards;
-}
-
-@keyframes arch-title-in {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-
-/* --------------------------------------------------------------------------
-   7. PHASE 1 STEP 5 â€” THE GLASS NAVBAR DROPS IN
-   --------------------------------------------------------------------------
-   Held invisible until the zoom has finished, then sliding DOWN from above the
-   viewport. `-140px` is comfortably clear of the fold, and the transition is
-   long enough to read as a drop rather than a fade.
-
-   The z-index lift to 5 is required, not cosmetic: it puts the pill above the
-   curtain so it is visible the instant it starts animating. `pointer-events:
-   none` on the curtain means clicks still reach the pill underneath. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-header {
-  opacity: 0;
-  transform: translateY(-140px);
-  pointer-events: none;
-  z-index: 5;
-  transition: opacity 850ms cubic-bezier(.22, .61, .36, 1),
-    transform 850ms cubic-bezier(.22, .61, .36, 1);
-  /* style.css gives the header its own entrance animation; if it were still in
-     flight it would fight the opacity above, so the arch scope owns the reveal */
-  animation: none !important;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-nav-in .lm-header {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
 }
 
 
@@ -1063,10 +684,6 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__conte
    are belt-and-braces for the case where the class is already on the body and
    the preference changes mid-session. */
 @media (prefers-reduced-motion: reduce) {
-  body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-overlay,
-  body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-ui {
-    display: none !important;
-  }
 
   /* The photo is no longer clipped, so there is no clip to reset â€” the hero's own
      opacity does the work under this query. */
@@ -1074,7 +691,12 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__conte
     clip-path: none !important;
   }
 
-  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-header {
+  /* v3.0.0 - the intro's hand-off holds the navbar and hero at zero opacity
+     until `arch-intro-done` lands; a user who asked for less motion gets them
+     directly. The page-load intro itself is skipped by the gate in index.html,
+     so this only matters if the preference changes mid-session. */
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-header,
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero {
     opacity: 1 !important;
     transform: none !important;
     pointer-events: auto !important;

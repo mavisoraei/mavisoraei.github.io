@@ -1,35 +1,45 @@
 /* ==========================================================================
-   ARCH INTRO â€” layered arch-curtain reveal + domed sheet  (v2.2.6)
+   ARCH INTRO â€” page-load intro + domed sheet rise  (v3.0.0)
    ==========================================================================
    Paired with /assets/css/arch-intro.css. Loaded on /index.html only, after
    /vendor/lenis.min.js and /app.js, with `defer`.
 
-   Builds and owns four things:
+   The SVG curtain (frame.svg), the .arch-intro-frame "rounded frame", the
+   brand-title layer and the mesh crossfade they needed are GONE. Two things
+   remain, and only the first one is the intro:
 
-     LAYER 0  #arch-intro-photo   the clinic photo, position:fixed, z-index:-2.
-                                 MOUNTED FOR THE WHOLE SESSION. It is the base
-                                 layer the curtain's arch hole reveals, and it is
-                                 never removed or re-created mid-page â€” that is
-                                 what makes "zoom into the image" land on
-                                 something instead of on a blank layer.
-     LAYER 1  #arch-intro-overlay the curtain: frame.svg and nothing else. No CSS
-                                 background anywhere, so the darkness is the
-                                 SVG's own matte rather than a flat block over
-                                 the photograph.
-     LAYER 2  #arch-intro-ui      the brand title + sub, above the arch ceiling.
+     PHASE 1  THE PAGE-LOAD INTRO. Its markup, its critical CSS and its
+              play/skip decision are inline in index.html, because the dark
+              screen has to be painted on the FIRST frame â€” before any
+              stylesheet or deferred script has run. The arch is a plain
+              `clip-path: inset(... round ...)` keyframe on `.intro__photo`
+              (see index.html), not a shape in a file. This file only
+              orchestrates: it locks the scroll, waits for that CSS timeline
+              to end, then lifts `#intro` out of the DOM and reports done.
+
+              `.intro__photo` is a pixel twin of `#arch-intro-photo` (same
+              file, same box, same object-fit/object-position, same global
+              `img` filter), so removing `#intro` cannot move a single pixel.
+
+     LAYER 0  #arch-intro-photo   the real hero photo. position:fixed, inset:0,
+                                 z-index:0, MOUNTED FOR THE WHOLE SESSION and
+                                 never removed. It is what the intro hands off
+                                 to, and it is what the page shows behind the
+                                 hero for as long as the arch layout is on.
 
      PHASE 2  .arch-hero          the existing wrapper around .lm-hero, driven
                                  by scroll. Nothing inside it is touched.
 
-   PHASE 1 timeline (all on the curtain except the title and navbar):
-       0ms        curtain + photo mounted, page scroll locked
-       0-1300ms   STEP 1  curtain rises from the bottom as a small semi-oval
-       950-1700ms STEP 3  title + sub fade in above the arch ceiling
-       1500-3100ms STEP 4  curtain zooms dramatically into the photograph until
-                          the matte is entirely off-screen
-       3100ms     STEP 5  navbar drops in, immediately after the zoom
-       4120ms     phase 1 closes: curtain removed, mesh crossfaded back in,
-                   title faded, phase 2 armed
+   PHASE 1 timeline (owned by the keyframes in index.html; this file only
+   reacts to it, plus click/keypress to skip):
+       0ms       #intro already painted, scroll locked, Lenis stopped
+       0-1200ms  the arch rises out of the bottom of the screen
+       1200-1450ms  hold
+       1450-2550ms  the arch opens to full screen while #intro fades out
+       2550ms    #intro removed, `arch-intro-done` lands, navbar + hero fade
+                 in over 400ms
+       5000ms    hard fail-safe (inline in index.html): #intro is dropped even
+                 if this file never ran
 
    PHASE 2 timeline is continuous scroll, driven from a single rAF loop.
 
@@ -52,15 +62,12 @@
 
   /* ---------------------------------------------------------------- consts */
 
-  /* PHASE 1. These MUST match the CSS durations of the same name in
-     arch-intro.css (arch-stage-rise, arch-mask-zoom, arch-title-in). */
-  var RISE_MS = 1300;           /* curtain enters from the bottom          */
-  var TITLE_AT = 800;            /* title starts fading in                  */
-  var TITLE_MS = 700;            /* title fade duration                     */
-  var ZOOM_DELAY = 1500;        /* dramatic zoom starts                    */
-  var ZOOM_MS = 1600;           /* dramatic zoom duration                  */
-  var NAV_MS = 850;             /* navbar drop duration (matches the CSS)  */
-  var FINISH_MS = ZOOM_DELAY + ZOOM_MS + NAV_MS + 170;
+  /* PHASE 1. MUST match the `intro-arch` / `intro-dim` durations declared in
+     index.html's critical block: 2.55s, built from the 47.06% / 56.86% /
+     87.06% stops that are the rise / hold / open beats. */
+  var INTRO_MS = 2550;           /* when the CSS timeline says "open"         */
+  var INTRO_DONE = 'arch-intro-done';
+  var INTRO_ACTIVE = 'intro-active';
 
   /* PHASE 2. The hero travels 62% of the viewport height so the transition
      completes inside one natural gesture on every screen. */
@@ -98,23 +105,23 @@ var DOME_HOLD_VH = 0.30;
 var SHEET_LERP = 0.06;
 var SHEET_LAG_CLASS = 'arch-rise-lag';
 
-  var IDLE_COMPLETE_MS = 2600;   /* never leave a reader stuck below the fold */
+var IDLE_COMPLETE_MS = 2600;   /* never leave a reader stuck below the fold */
   var MIN_VIEWPORT_H = 520;      /* below this, skip the intro                */
   var ROOT_CLASS = 'arch-intro';
-  var LOCK_CLASS = 'arch-locked';
   var RISEN_CLASS = 'arch-risen';
-  var FRAME_SVG = '/assets/frame.svg';
   var INTRO_IMAGE = '/assets/Luxe.webp';
   var IMAGE_W = 1881;            /* true VP8X header dimensions; the layer  */
   var IMAGE_H = 836;             /* crops this, but do not lie              */
 
   /* Every class this file can leave on <body>. One list, so teardown cannot
-     miss one â€” a stale `arch-locked` would freeze the page and a stale
-     `arch-mesh-in`/`arch-hero-up` would fight the next run. */
+     miss one — a stale `intro-active` would leave the navbar and hero hidden
+     and a stale `arch-rise-lag` would hold a page-height compositing layer.
+
+     v3.0.0: the curtain/title/mesh/nav classes went with the layers they
+     belonged to. `arch-intro-done` and `intro-active` are the two the
+     page-load intro reports through. */
   var BODY_CLASSES = [
-    ROOT_CLASS, LOCK_CLASS, RISEN_CLASS, SHEET_LAG_CLASS,
-    'arch-intro-done', 'arch-nav-in', 'arch-scrolling',
-    'arch-title-in', 'arch-mesh-in', 'arch-hero-up', 'arch-window'
+    ROOT_CLASS, RISEN_CLASS, SHEET_LAG_CLASS, INTRO_ACTIVE, INTRO_DONE
   ];
 
   var doc = document;
@@ -124,11 +131,10 @@ var SHEET_LAG_CLASS = 'arch-rise-lag';
 
   /* ------------------------------------------------------------------ refs */
 
-  var photo = null;              /* #arch-intro-photo      (layer 0)        */
+  var photo = null;              /* #arch-intro-photo — the real hero photo  */
   var photoImg = null;
-  var overlay = null;            /* #arch-intro-overlay    (layer 1)        */
-  var frameEl = null;            /* the .arch-intro-frame that zooms        */
-  var ui = null;                 /* #arch-intro-ui         (layer 2)        */
+  var intro = null;              /* #intro — the page-load intro, if playing */
+  var introPhoto = null;         /* .intro__photo inside it                  */
   var archHero = null;           /* .arch-hero             (phase 2)        */
 var sheetBg = null;            /* .sheet__bg â€” carries the border-radius  */
   var pSmooth = 0;               /* SHEET_LERP's smoothed rise progress      */
@@ -152,15 +158,13 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
   var rafId = 0;
   var timers = [];
   var cleanups = [];
+  var introOffs = [];            /* listeners that only live while #intro does */
   var idleId = 0;
 
-  /* 'boot'   phase 1 is running and scroll is ignored entirely, so a restored
-             scroll position cannot start the hero rising behind the curtain
-     'scroll' phase 2: the hero rise is driven by scroll
-     The old code had a third 'done' phase because the curtain used to survive
-     into the scroll step. It no longer does â€” the curtain is fully off-screen
-     by the time phase 1 closes and is removed then, so two phases is all there
-     is. */
+/* 'boot'   phase 1 — the page-load intro owns the screen and scroll is
+             ignored entirely, so a restored position cannot start the hero
+             rising behind it. Only reachable while #intro is playing.
+     'scroll' phase 2: the hero rise is driven by scroll. */
   var phase = 'boot';
 
   /* Two distinct states, deliberately NOT one flag:
@@ -191,6 +195,10 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
     var id = window.setTimeout(fn, ms);
     timers.push(id);
     return id;
+  }
+
+  function now() {
+    return (window.performance && performance.now) ? performance.now() : Date.now();
   }
 
   function isActive() {
@@ -232,11 +240,11 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
 
   /* --------------------------------------------------------------- teardown */
 
-  /* Removes every trace of the effect: all three layers, every body class, the
-     three scroll-driven custom properties, the rAF loop, the timers, the
-     listeners and Lenis. Safe to call more than once, and safe to call
-     mid-intro â€” which is the case that matters, because toggling during the
-     zoom is exactly when leaked listeners would be hardest to notice. */
+/* Removes every trace of the effect: the photo, the intro node if it is still
+     up, every body class, the three scroll-driven custom properties, the rAF
+     loop, the timers, the listeners and Lenis. Safe to call more than once, and
+     safe to call mid-intro — which is the case that matters, because toggling
+     mid-animation is exactly when leaked listeners would be hardest to notice. */
   function teardown() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     if (idleId) { clearTimeout(idleId); idleId = 0; }
@@ -246,6 +254,7 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
 
     cleanups.forEach(function (off) { off(); });
     cleanups = [];
+    introOffs = [];
 
     if (lenis) {
       try { lenis.destroy(); } catch (e) { /* signature differs across majors */ }
@@ -288,17 +297,20 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
     /* All effect state lives on <body>, so it all goes in one call. */
     body.classList.remove.apply(body.classList, BODY_CLASSES);
 
-    /* All three layers were created by this file, so all three are removed by
-       name. No wrapper is left stranded around the real page content. */
-    dropNode(ui);
-    dropNode(overlay);
+    /* The photo is the effect's backdrop; `#intro` belongs to the page-load
+       intro and is only still here if it was mid-play when this ran. Removing
+       the node also stops its animation, so there is no residue to clean up. */
     dropNode(photo);
+    dropNode(intro);
 
-    ui = null;
-    overlay = null;
-    frameEl = null;
+    /* Releases the intro's scroll lock, which the gate in index.html put on
+       <html> before this file ever ran. */
+    doc.documentElement.classList.remove('intro-play');
+
     photo = null;
     photoImg = null;
+    intro = null;
+    introPhoto = null;
     archHero = null;
     sheetBg = null;
     pSmooth = 0;
@@ -322,14 +334,17 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
     isRunning: function () { return booted; }
   };
 
-  /* --------------------------------------------------------- 1. build layers */
+  /* ------------------------------------------------------- 1. mount the photo */
 
-function buildLayers() {
-    /* ---- LAYER 0: THE FIXED CLINIC PHOTO -------------------------------
-       Deliberately NOT a child of the curtain. It is the base layer for the
-       whole session: the curtain's arch hole reveals it during phase 1, and it
-       is still mounted (behind the mesh, at z-index -2) once the hero has taken
-       over as the page's backdrop. */
+  /* LAYER 0 — the real hero photo. Fixed, viewport-sized, MOUNTED FOR THE WHOLE
+     SESSION and never removed or re-created. It is the backdrop the page shows
+     wherever the hero and the sheet are not, and it is what `#intro` hands the
+     screen over to: `.intro__photo` in index.html is a pixel twin of this node,
+     so removing `#intro` reveals nothing that was not already there.
+
+     It is deliberately created here rather than in the markup: it is arch-mode
+     state, and teardown has to be able to take it away again. */
+  function mountPhoto() {
     photo = doc.createElement('div');
     photo.id = 'arch-intro-photo';
     photo.setAttribute('aria-hidden', 'true');
@@ -340,115 +355,73 @@ function buildLayers() {
     photoImg.width = IMAGE_W;
     photoImg.height = IMAGE_H;
     /* eager + high priority: this image IS the first paint of the page. Without
-       `fetchpriority="high"` it queues behind the hero poster and the arch
-       opens onto an empty layer â€” the one failure that makes the intro look
-       broken rather than merely slow. */
+       `fetchpriority="high"` it queues behind the hero poster and the arch opens
+       onto an empty layer — the one failure that makes the intro look broken
+       rather than merely slow. */
     photoImg.loading = 'eager';
     photoImg.decoding = 'async';
     try { photoImg.setAttribute('fetchpriority', 'high'); } catch (e) { /* older UA */ }
 
-    /* If the photo is missing, the arch opens onto nothing at all. Skip the
-       intro instead of showing an empty hole for the whole splash. */
-    own(photoImg, 'error', function () { finishIntro(true); });
+    /* If the file is missing there is no backdrop at all, and `.intro__photo`
+       is loading the same file — so do not leave the intro playing over an
+       empty screen. `finishIntro` is idempotent, so a skip visit is safe. */
+    own(photoImg, 'error', function () { finishIntro(); });
 
     photo.appendChild(photoImg);
     body.insertBefore(photo, body.firstChild);
-
-    /* ---- LAYER 1: the arch curtain --------------------------------------
-       frame.svg only. No background colour is set on this element or on the
-       frame, so the darkness is the SVG's own matte and the photograph is
-       never covered by a flat block. */
-    overlay = doc.createElement('div');
-    overlay.id = 'arch-intro-overlay';
-    /* Purely decorative: the real <header> and <main> are already in the
-       accessibility tree. It holds no focusable descendants. */
-    overlay.setAttribute('aria-hidden', 'true');
-
-    var stage = doc.createElement('div');
-    stage.className = 'arch-intro-stage';
-
-    frameEl = doc.createElement('div');
-    frameEl.className = 'arch-intro-frame';
-    frameEl.style.backgroundImage = 'url("' + FRAME_SVG + '")';
-
-    stage.appendChild(frameEl);
-    overlay.appendChild(stage);
-    body.insertBefore(overlay, body.firstChild);
-
-    /* ---- LAYER 2: the brand title, above the arch ceiling ---------------- */
-    ui = doc.createElement('div');
-    ui.id = 'arch-intro-ui';
-    ui.setAttribute('aria-hidden', 'true');
-
-    var sub = doc.createElement('p');
-    sub.className = 'arch-brand-sub';
-    sub.textContent = 'West Tehran';
-
-    var title = doc.createElement('p');
-    title.className = 'arch-brand-title';
-    title.textContent = 'Lemon Aesthetic Clinic';
-
-    ui.appendChild(sub);
-    ui.appendChild(title);
-    body.insertBefore(ui, body.firstChild);
-
-    return frameEl;
   }
 
   /* --------------------------------------------------------- 2. phase 1 run */
 
   function lockScroll() {
-    /* Two layers, because each covers a hole in the other:
-       - `lenis.stop()` stops Lenis driving window.scrollTo;
-       - `overflow:hidden` on <html> stops *native* scrolling (keyboard,
-         scrollbar drag, find-in-page) and hides the scrollbar so there is no
-         reflow jump. Neither alone is sufficient. */
-    body.classList.add(LOCK_CLASS);
+    /* There is nothing to add here: the overflow lock is `html.intro-play`,
+       which the gate in index.html set before this file ran, and it is what
+       reserves the scrollbar gutter too. Lenis is the part CSS cannot do — it
+       drives `window.scrollTo` itself, so `overflow: hidden` alone would not
+       stop it moving the page. */
     if (lenis && typeof lenis.stop === 'function') lenis.stop();
   }
 
   function releaseScroll() {
-    body.classList.remove(LOCK_CLASS);
+    /* Takes the lock off <html> and hands the wheel back. Both happen in the
+       same frame as removing `#intro`, so the scrollbar the gutter reserved
+       reappears over the page the intro was already showing. */
+    doc.documentElement.classList.remove('intro-play');
     if (lenis && typeof lenis.start === 'function') lenis.start();
   }
 
-  /* Close phase 1 and hand over to phase 2.
-     `immediate` means the intro was abandoned (a missing asset), so nothing is
-     animated: the curtain is dropped, the mesh comes straight back and the
-     title is dismissed. */
-  function finishIntro(immediate) {
+  /* Close the page-load intro and hand the screen to the photo already mounted
+     behind it. Idempotent, because four things can reach it: the CSS animation
+     ending, the deadline timer below, a click or keypress to skip, and — if
+     this file races — the fail-safe in index.html. */
+  function finishIntro() {
     if (!introRunning) return;
     introRunning = false;
 
+    timers.forEach(function (id) { clearTimeout(id); });
+    timers = [];
+
+    introOffs.forEach(function (off) { off(); });
+    introOffs = [];
+
+    /* The node goes first: removing it cancels the animation, so there is no
+       half-faded residue left over the page. Everything it was showing is
+       already underneath it, pixel for pixel. */
+    dropNode(intro);
+    intro = null;
+    introPhoto = null;
+
     releaseScroll();
 
-    /* The curtain's matte is entirely off-screen by now, so it has nothing left
-       to contribute. Removing it HERE â€” rather than holding it until scroll
-       progress 1 â€” is what keeps phase 2 to a single moving part (the hero) and
-       leaves no full-screen wrapper stranded over the page. */
-    dropNode(overlay);
-    overlay = null;
-    frameEl = null;
+    /* The intro always ends at the top of the page, so make that true even if
+       something scrolled underneath it. `scroll-behavior` is forced to `auto`
+       while Lenis is alive, so this is an instant jump, not a smooth one. */
+    try { window.scrollTo(0, 0); } catch (e) {}
 
-    /* Hand the backdrop over: fade the site's real mesh back in as the page's
-       own background, cut the photograph down to the arch silhouette, and
-       dismiss the title layer, which sits above the hero and would otherwise
-       float over the hero's own content.
-
-       The order matters only in that all three land in the same frame. Nothing
-       animates here, so the photograph is visible in its new clipped position on
-       the very first frame after the curtain goes â€” no flash of the full-bleed
-       image outside the arch, and no jump, because the photo node is the same
-       node in the same fixed box it was during phase 1. Only its z-order and its
-       clip changed, and both of those were already invisible behind an opaque
-       curtain. */
-    body.classList.add('arch-mesh-in');
-    body.classList.add('arch-window');
-    body.classList.add('arch-hero-up');
+    body.classList.remove(INTRO_ACTIVE);
+    body.classList.add(INTRO_DONE);
 
     phase = 'scroll';
-
-    if (immediate) return;
 
     /* A reader who never scrolls would be left looking at a hero that is still
        one viewport-height below the fold, so after a short grace period the rise
@@ -465,53 +438,64 @@ function buildLayers() {
   }
 
   function runIntro() {
-    /* Set before anything that can settle it, so the image-error path inside
-       buildLayers() finds `introRunning` already true. */
+    intro = doc.getElementById('intro');
+    introPhoto = intro ? intro.querySelector('.intro__photo') : null;
+
+    /* The gate in index.html adds `intro-play` to <html> only when it decided
+       to play. */
+    var playing = !!(intro && doc.documentElement.classList.contains('intro-play'));
+
+    /* The photo is mounted either way: it is the page's backdrop for the whole
+       session and the intro's hand-off target. */
+    if (!playing) {
+      /* A repeat visit, reduced motion, a short viewport, or a page with no
+         #intro. There is nothing to play, so report done at once and throw the
+         unused node away. */
+      dropNode(intro);
+      intro = null;
+      mountPhoto();
+      body.classList.add(INTRO_DONE);
+      phase = 'scroll';
+      idleId = later(function () { idleId = 0; idleComplete(); }, IDLE_COMPLETE_MS);
+      return;
+    }
+
+    /* Set before mountPhoto() so its image-error handler finds the intro ours
+       and can close it. */
     introRunning = true;
 
-    var zoomTarget = buildLayers();
+    mountPhoto();
+    if (!introRunning) return; /* the photo failed and already closed it */
+
+    /* Held back from the first frame the intro is ours. The critical CSS in
+       index.html covers them while #intro is opaque; this is what carries them
+       back, over the 400ms declared in arch-intro.css. */
+    body.classList.add(INTRO_ACTIVE);
 
     lockScroll();
 
-    /* STEP 3 â€” the title fades in above the arch ceiling while the curtain is
-       still settling. Timed, not event-driven, so it lands at the same beat
-       whatever the tab is doing. */
-    later(function () {
-      if (!introRunning) return;
-      body.classList.add('arch-title-in');
-    }, TITLE_AT);
+    /* A restored scroll position must not be revealed when the intro lifts. The
+       gate already asked the browser not to restore one; this is the guarantee. */
+    try { window.scrollTo(0, 0); } catch (e) {}
 
-    /* STEP 5 â€” the navbar drops in immediately after the zoom has finished. */
-    later(function () {
-      if (!introRunning) return;
-      body.classList.add('arch-nav-in');
-    }, ZOOM_DELAY + ZOOM_MS);
+    /* Any interaction skips straight to the end state. */
+    var skip = function () { finishIntro(); };
+    introOffs.push(own(doc, 'click', skip, true));
+    introOffs.push(own(doc, 'keydown', skip, true));
 
-    /* The authoritative close. */
-    later(function () { finishIntro(false); }, FINISH_MS);
+    /* The CSS animation is the authority. `window.__lmIntroAt` is when the gate
+       added `intro-play`, i.e. when the animation actually started, so this
+       deadline is measured from first paint and not from this deferred script.
+       It exists for the case `animationend` never arrives — a backgrounded tab,
+       a cancelled animation — and fires a beat after the animation would. */
+    var started = (typeof window.__lmIntroAt === 'number') ? window.__lmIntroAt : now();
+    later(function () { finishIntro(); }, Math.max(0, started + INTRO_MS - now()) + 120);
 
-    /* Safety net only. `arch-mask-zoom` really is the zoom, so its end is a
-       genuine "the curtain is open" signal â€” but it is floored at FINISH_MS so
-       it can never cut the navbar's drop short. If the animation never fires
-       (a skipped animation, a backgrounded tab) the FINISH_MS timer above
-       still closes the phase on its own. */
-    if (zoomTarget) {
-      own(zoomTarget, 'animationend', function (e) {
-        if (e.target !== zoomTarget || e.animationName !== 'arch-mask-zoom') return;
-        if (immediateGuardPassed()) finishIntro(false);
+    if (introPhoto) {
+      own(introPhoto, 'animationend', function (e) {
+        if (e.animationName === 'intro-arch') finishIntro();
       });
     }
-  }
-
-  /* Floors the animation-driven close so it can never run before the timeline
-     says it should. */
-  function immediateGuardPassed() {
-    return elapsed() >= FINISH_MS - 40;
-  }
-
-  var startedAt = 0;
-  function elapsed() {
-    return (window.performance && performance.now ? performance.now() : Date.now()) - startedAt;
   }
 
   /* ------------------------------------------------ 3. phase 2 + lenis */
@@ -820,7 +804,6 @@ function buildLayers() {
 
     booted = true;
     body.classList.add(ROOT_CLASS);
-    startedAt = window.performance && performance.now ? performance.now() : Date.now();
 
     /* Watch for `classic-layout` appearing on <body> after load so the switch is
        instant and needs no reload. */
@@ -833,8 +816,8 @@ function buildLayers() {
     }
 
     /* The hero is positioned BEFORE Lenis exists, so the first paint already has
-       the correct at-rest offset and the curtain never reveals a settled hero
-       for a frame. */
+       the correct at-rest offset and `#intro` never hands over to a hero that
+       still has to settle. */
     var apply = initArchRise();
     initLenis();
 
@@ -852,9 +835,9 @@ function buildLayers() {
        animation clock stalls when the user is not scrolling and smooth scroll
        feels like it randomly drops. The rAF timestamp is literally what Lenis
        passes to itself in autoRaf mode. */
-    var tick = function (now) {
+    var tick = function (ts) {
       rafId = requestAnimationFrame(tick);
-      if (lenis) lenis.raf(now);
+      if (lenis) lenis.raf(ts);
       if (apply) apply(window.scrollY || 0);
     };
     rafId = requestAnimationFrame(tick);
