@@ -1,3 +1,228 @@
+/* ==========================================================================
+   INNER PAGES — UNIFIED TYPE SYSTEM
+   areas / blog / contact / doctors / facial / face-analysis /
+   gallery / gallery_new / laser / prices / services
+
+   Two families only: the display face Bodoni Moda for headings and the body
+   face Jost for everything else. --font-display is inherited from style.css
+   ("Ambroise Std Francois", "Bodoni Moda", Georgia, serif) — Ambroise has no
+   file and no @font-face here, so it resolves to Bodoni Moda with the Georgia
+   fallback kept. On these pages Vazirmatn has no glyph scope (no Persian
+   text), so --font-fa and --font-latin point at the body stack instead.
+
+   Specificity: inner-unify.css is linked AFTER style.css, but a tie in
+   specificity still loses to style.css, whose rules are mostly class-based.
+   Every rule below therefore carries `:not(#_)` — an ID-weighted :not() that
+   makes each selector out-rank any class rule in style.css without a single
+   !important.
+
+   Layout utilities, card boxes, the reviewer badge and the TOC are scoped to
+   `main`, so the shared chrome (header, footer, mobile drawer, the instant
+   consult widget) keeps its own typography untouched.
+   ========================================================================== */
+
+/* --- 1. Two families only ------------------------------------------------ */
+:root {
+  --font-body: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-fa: var(--font-body);
+  --font-latin: var(--font-body);
+}
+
+/* --- 2. Headings ---------------------------------------------------------
+   h1 400 clamp(40px,4.8vw,64px)/1.05  · h2 clamp(30px,3.2vw,44px)/1.1
+   h3 clamp(22px,2vw,28px)/1.2         · h4 20px/1.25
+   An h2 averages 40px+ only from 1250px wide; below that the scale rule says
+   the weight must be 500, so the 400 swap lives in a breakpoint.
+   All headings start-aligned; --font-display already sets optical sizing.  - */
+main h1:not(#_), main h2:not(#_), main h3:not(#_), main h4:not(#_) {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  text-align: start;
+  margin-inline: 0;
+}
+
+main h1:not(#_) {
+  font-weight: 400;
+  font-size: clamp(40px, 4.8vw, 64px);
+  line-height: 1.05;
+  margin: 0 0 20px;
+}
+
+main h2:not(#_) {
+  font-weight: 500;
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 1.1;
+}
+
+main h3:not(#_) {
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.2;
+}
+
+main h4:not(#_) {
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+@media (min-width: 1250px) {
+  main h2:not(#_) {
+    font-weight: 400;
+  }
+}
+
+/* --- 3. Card titles (h4 level) ------------------------------------------- */
+main .card-title:not(#_),
+main .svc-card-title:not(#_),
+main .team-card h3:not(#_),
+main .ct-done-title:not(#_),
+main .price-card h2:not(#_),
+main .svc-related h2:not(#_) {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.25;
+  text-align: start;
+}
+
+/* --- 4. Body ------------------------------------------------------------- */
+main p:not(#_), main li:not(#_) {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+main li:not(#_) {
+  margin-bottom: .5em;
+}
+
+main .svc-body p:not(#_) {
+  max-width: 68ch;
+}
+
+/* --- 5. Lead -------------------------------------------------------------
+   The paragraph that opens a page: .lead, .ai-lead and .svc-lead all sit on
+   the h1's left edge — margin-inline:0 kills the centred-box trick, and the
+   svc-lead border + padding offset is dropped. .svc-lead.wrap keeps the 1.5rem
+   .wrap padding on both sides, which is what puts its text on that edge.  -- */
+main .lead:not(#_), main .ai-lead:not(#_), main .svc-lead:not(#_) {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.65;
+  color: #4a443d;
+  max-width: 60ch;
+  text-align: start;
+}
+
+main .lead:not(#_), main .ai-lead:not(#_), main .svc-lead:not(#_) {
+  margin-inline: 0;
+  border-inline-start: 0;
+  padding-inline-start: 0;
+}
+
+main .svc-lead.wrap:not(#_) {
+  padding-inline-start: 1.5rem;
+}
+
+/* --- 6. Eyebrows / labels ------------------------------------------------- */
+main .eyebrow:not(#_),
+main .svc-eyebrow:not(#_),
+main .ai-eyebrow:not(#_),
+main .cnp-eyebrow:not(#_),
+main .reviewer-badge__eyebrow:not(#_),
+main .toc-title:not(#_) {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: #6b6258;
+}
+
+/* --- 7. Small / meta ------------------------------------------------------- */
+main .crumbs:not(#_), main .crumbs li:not(#_),
+main .ai-note:not(#_), main .cat-blurb:not(#_),
+main .card-excerpt:not(#_), main .card-meta:not(#_),
+main .area-desc:not(#_),
+main .role:not(#_), main .doc-hours-line:not(#_),
+main .svc-subtitle:not(#_), main .svc-review:not(#_),
+main .pr-sub:not(#_), main .pr-desc:not(#_), main .pr-extra:not(#_),
+main .pr-currency:not(#_), main .pr-index-link:not(#_),
+main .dose-note:not(#_), main .lp-unit:not(#_),
+main .price-note:not(#_), main .price-installment:not(#_), main .price-year:not(#_),
+main .cnp-meta:not(#_), main .cnp-date:not(#_),
+main .bk-hint:not(#_), main .bk-pane-sub:not(#_), main .bk-recap:not(#_),
+main .bk-done-addr:not(#_), main .bk-done-note:not(#_), main .bk-empty:not(#_),
+main .bk-boot:not(#_), main .bk-nap p:not(#_), main .bk-nap-h:not(#_), main .bk-ticket-h:not(#_),
+main .ct-hint:not(#_), main .ct-done-text:not(#_),
+main figure:not(#_) figcaption:not(#_) {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #6b6258;
+}
+
+/* --- 8. Strong / bold ------------------------------------------------------ */
+main strong:not(#_), main b:not(#_) {
+  font-size: inherit;
+  font-weight: 600;
+  color: #2a2622;
+}
+
+/* --- 9. Inline links ------------------------------------------------------- */
+main p:not(#_):not(:has(a img)) a:not(#_):not([class*="btn"]) {
+  color: #2a2622;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+main p:not(#_):not(:has(a img)) a:not(#_):not([class*="btn"]):hover {
+  color: var(--primary);
+}
+
+/* --- 10. Forms -----------------------------------------------------------
+   Buttons, inputs and selects inherit the surrounding face instead of the
+   UA default. */
+button:not(#_), input:not(#_), select:not(#_) {
+  font: inherit;
+}
+
+/* --- 11. One left edge ---------------------------------------------------
+   The face-analysis and doctors heroes were centred; heading-level rules
+   above already left-align their h1s, and these overrides pull the whole
+   hero column (mascot, lead, CTA) onto the same edge. */
+
+main .ai-hero:not(#_), main .docs-hero:not(#_) {
+  text-align: start;
+}
+
+main .ai-hero-mascot:not(#_) {
+  margin-inline: 0;
+}
+
+main .ai-cta-group:not(#_) {
+  justify-content: flex-start;
+}
+
+main .faq:not(#_) {
+  margin-inline: 0;
+}
+
+main .cnp-head:not(#_) {
+  text-align: start;
+  margin-inline: 0;
+}
+
+/* ==========================================================================
+   LAYOUT / COMPONENT RULES (kept from the earlier pass)
+   ========================================================================== */
+
 .cnp-card,
 .cnp-text,
 .team-card {
@@ -16,8 +241,6 @@
 }
 
 figure figcaption,
-.cnp-head,
-.cnp-head :is(p, ul, ol, h1, h2, h3, h4),
 .cnp-cta,
 .cnp-cta :is(p, ul, ol, h1, h2, h3, h4),
 .cta-full,
@@ -34,33 +257,6 @@ figure figcaption,
 
 .pr-table :is(th, td):first-child {
   text-align: start;
-}
-
-.svc-body p {
-  max-width: 68ch;
-  font-size: 17px;
-  line-height: 1.7;
-  color: #4a443d;
-}
-
-.svc-hero h1,
-.pr-hero h1,
-.pg-hero h1,
-.docs-hero h1,
-.ai-hero h1,
-.ct-hero h1 {
-  font-size: clamp(36px, 4.6vw, 60px);
-  line-height: 1.05;
-}
-
-.svc-eyebrow,
-.eyebrow,
-.cnp-eyebrow,
-.ai-eyebrow {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  color: var(--muted-foreground);
 }
 
 .reviewer-badge,
@@ -123,39 +319,21 @@ figure figcaption,
   min-width: 0;
 }
 
-.reviewer-badge__text p.reviewer-badge__eyebrow {
-  font-size: 11px;
-  line-height: 1.4;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-  margin: 0;
-}
-
-.reviewer-badge__text p:not(.reviewer-badge__eyebrow) {
+main .reviewer-badge__text p:not(#_):not(.reviewer-badge__eyebrow) {
   font-size: 14px;
   line-height: 1.55;
   color: #6b6258;
   margin: 0;
 }
 
-.reviewer-badge__text a {
+main .reviewer-badge__text a:not(#_) {
   display: block;
   font-size: 16px;
   font-weight: 600;
   line-height: 1.35;
   color: var(--lux-head);
+  text-decoration: none;
   margin-bottom: 2px;
-}
-
-.svc-toc .toc-title {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-  margin-bottom: 12px;
 }
 
 .svc-toc ol {

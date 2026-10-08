@@ -113,6 +113,7 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
   font-weight: 400 900;
   font-style: normal;
   font-display: swap;
+  font-optical-sizing: auto;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
     U+2212, U+2215, U+FEFF, U+FFFD;
@@ -7122,7 +7123,7 @@ tbody tr:nth-child(2n) {
 }
 
 .trend-head h2 {
-  font-family: var(--font-fa);
+  font-family: var(--font-display);
   font-size: var(--step-2);
   color: var(--foreground);
   margin: .3rem 0 .4rem;
@@ -7570,7 +7571,7 @@ tbody tr:nth-child(2n) {
 }
 
 .room-copy h2 {
-  font-family: var(--font-fa);
+  font-family: var(--font-display);
   color: var(--foreground);
   font-size: var(--step-2);
 }
@@ -7698,7 +7699,7 @@ tbody tr:nth-child(2n) {
 }
 
 .home-intro h2, .home-why h2, .home-services h2, .home-local h2 {
-  font-family: var(--font-fa);
+  font-family: var(--font-display);
   font-size: var(--step-2);
   color: var(--foreground);
   margin-bottom: .8rem;
@@ -7840,8 +7841,8 @@ tbody tr:nth-child(2n) {
 
 .home-why.wrap > h2 {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(36px, 4.2vw, 56px);
+  font-weight: 500;
+  font-size: var(--step-2);
   line-height: 1.08;
   letter-spacing: -.02em;
   text-align: start;
