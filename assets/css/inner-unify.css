@@ -373,3 +373,60 @@ main .reviewer-badge__text a:not(#_) {
     padding: 20px;
   }
 }
+
+/* ==========================================================================
+   PATIENT REVIEWS — the .cnp card grid on inner pages
+
+   Markup is the laser.html one, shipped unchanged:
+     section.cnp > .cnp-head.wrap (.cnp-eyebrow, h2, .cnp-meta)
+                 > .cnp-rows > .cnp-row > .cnp-group
+                    > a.cnp-card (img.cnp-ava | span.cnp-ava.cnp-mono
+                       + .cnp-body > .cnp-top (.cnp-name + .cnp-stars)
+                                  + .cnp-date + .cnp-text)
+
+   Every .cnp-row becomes a two-column grid with a 24px gap, one column
+   below 700px — the same breakpoint style.css uses for .cnp-cols. The
+   .cnp-group wrappers dissolve with display:contents, and the second group
+   of each row is the marquee's loop copy (identical reviews behind
+   aria-hidden), so it is dropped and each review shows exactly once.
+   .cnp-rows copies the .wrap box so the grid starts on the head's left
+   edge. Card text stays on the start edge and the review copy clamps at
+   five lines. No review text is edited here — markup and copy are laser's.
+   ========================================================================== */
+.cnp-rows:not(#_) {
+  display: grid;
+  gap: 24px;
+  width: 100%;
+  max-width: min(1200px, calc((100vw - 2 * var(--shell-inset)) * .94));
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.cnp-row:not(#_) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.cnp-group:not(#_) {
+  display: contents;
+}
+
+.cnp-group[aria-hidden="true"]:not(#_) {
+  display: none;
+}
+
+.cnp-card:not(#_) {
+  text-align: start;
+}
+
+.cnp-text:not(#_) {
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+}
+
+@media (max-width: 700px) {
+  .cnp-row:not(#_) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
