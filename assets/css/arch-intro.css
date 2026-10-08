@@ -35,8 +35,9 @@ z-index   1   .arch-hero         LAYER 2 â€” the opening screen. EMPTY as o
      z-index   2   #sheet               v2.2.5, and it keeps one job: reserving
                                           100svh so the sheet stays one viewport
                                           down. No type on the photograph.
-     z-index   2   .sheet__bg            .sheet__bg paints the cream base and the
-     z-index   1   .sheet__content       mesh under a domed top edge;
+     z-index   2   .sheet__bg            .sheet__bg paints the cream base, the
+     z-index   1   .sheet__content       top-right glow and the arc ornament under
+                                          a domed top edge;
                                           .sheet__content holds the hero copy and
                                           every real section.
 
@@ -657,10 +658,12 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero::before {
 }
 
 /* --------------------------------------------------------------------------
-   8a. THE SHEET â€” ONE BACKGROUND LAYER, DOMED TOP EDGE
+   8a. THE SHEET â€” CREAM + ONE WARM GLOW, DOMED TOP EDGE, 1px HAIRLINE
    --------------------------------------------------------------------------
    `#sheet` wraps every real section below the hero. It has no background of its
-   own: `.sheet__bg` paints the page colour, and `.sheet__content` is a transparent
+   own: `.sheet__bg` paints the page colour (the cream gradient with a single
+   warm glow over it and three arc hairlines at the crown), and `.sheet__content`
+   is a transparent
    stacking context so the sections sit ON that paint without any of them needing
    a background of their own.
 
@@ -691,30 +694,47 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
   isolation: isolate;
 }
 
-/* v2.2.6 - THE MESH. The gradient is the base tone and the three `.blob`s are the
-   colour on top of it, in that order: a child's own background always paints above
-   its parent's, so the blobs sit ON the wash and nothing has to be layered by
-   z-index to make that true. The three tones are the brief's warm cream / sand /
-   soft-gold, which are all LIGHTER than the base in the yellow channel and only
-   slightly darker in value â€” that near-equality is the point. At 0.55-0.7 alpha
-   and 80px of blur they read as a warm shift in the paper rather than as shapes,
-   which is what "visible but soft" has to mean.
+/* v2.2.8 - THE FLAT SHEET. The three drifting `.blob` layers are GONE, together
+   with their `arch-blob-drift-*` keyframes, their reduced-motion override and the
+   visibilitychange pause in arch-intro.js. They were the grey/dark crescents: each
+   was a 42-54vw disc parked near the top of the sheet, and `.sheet__bg`'s dome
+   radius plus `overflow: hidden` carved a soft arc out of every one of them, so
+   what survived the clip read as a large blurred grey shape lying under the hero
+   buttons and behind the portrait. No blur filter, no drift, no crescent.
 
-   The drift is `transform` only. `@keyframes` here touch nothing but
-   `translate3d`, so the whole animation is composited and the blur radius is never
-   re-rasterised â€” animating `top`/`left`/`border-radius` on a blurred element
-   re-blurs the entire 80px kernel every frame, which is the single most expensive
-   thing that could be done to this layer. */
+   What replaces them is entirely static and paints once:
+
+     1. the cream gradient, unchanged, `#faf8f5 -> #f5f2eb`;
+     2. ONE warm glow at the top right - a plain radial-gradient, no animation and
+        no `filter`, so nothing is ever re-rasterised on scroll or on visibility;
+     3. `.sheet__arcs`, an inline SVG of three concentric hairlines centred on the
+        dome's apex (rule below).
+
+   The glow is the FIRST background layer, so it paints over the cream. Its centre
+   is `at 94% 0` - a LENGTH on the y axis rather than a percentage, because this
+   box is as tall as the whole document and `2%` would drift hundreds of pixels
+   down the page; the `38vw` radius is a length for exactly the same reason. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(180deg, #faf8f5 0%, #f5f2eb 100%);
+  background:
+    radial-gradient(circle 38vw at 94% 0,
+      rgba(232, 214, 176, .35) 0%,
+      rgba(232, 214, 176, 0) 68%),
+    linear-gradient(180deg, #faf8f5 0%, #f5f2eb 100%);
+  /* THE DOME HAIRLINE, on the element that carries the radius. Because the
+     horizontal radius is 50%, the two top corner arcs MEET at the centre and no
+     straight top edge is left, so this 1px traces the whole dome: it fades in from
+     0 at the shoulders (the side borders are 0 wide) and is full strength at the
+     apex. The border box is unchanged - `box-sizing: border-box` plus `inset: 0`
+     - so the JS's `getBoundingClientRect().top` reads the same number as before. */
+  border-top: 1px solid rgba(184, 160, 112, .45);
   pointer-events: none;
-  /* `border-radius` clips a box's own background but NOT its children, so without
-     this the three blobs would spill past the dome's shoulders and paint warm
-     colour onto the photograph either side of the arch. The sheet is the only
-     ancestor of these elements and the only thing they can ever be clipped
+  /* `border-radius` clips a box's own background but NOT its children, so this is
+     what keeps the glow and the arcs inside the dome instead of painting warm
+     colour and hairlines onto the photograph either side of it. The sheet is the
+     only ancestor of these elements and the only thing they can be clipped
      against, so the clip has to live here. */
   overflow: hidden;
   border-radius: 50% 50% 0 0
@@ -723,63 +743,37 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
       0 0;
 }
 
-/* The three blobs were `filter: blur(80px)` disks re-rasterized whenever the
-   dome radius changed on scroll. Each is now a soft radial-gradient painted
-   once instead: the box is grown by 80px on each side (the old blur's
-   footprint) with the position countershifted so the glow centre is
-   identical, the solid core keeps the disk's original radius and the outer
-   80px feather fades to transparent. Same colour, size, softness, opacity and
-   drift; nothing re-rasterizes on scroll or on tab visibility. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob {
-  position: absolute;
+/* THE ARC ORNAMENT - three concentric hairlines centred on the dome's apex.
+
+   The SVG ships in index.html with a `0 0 700 420` viewBox in which all three arcs
+   are centred on (350, 0) - the top edge, dead centre - at radii 190 / 285 / 380,
+   each spanning 120deg (60deg either side of straight down). The span is the whole
+   safety story: a point r from the apex at angle t from the vertical is inside the
+   dome while r <= 2*rx*cos(t), so 60deg buys r <= rx and the largest arc (380)
+   stays well inside the 720px horizontal radius at 1440x900 - and inside 72vw of
+   crown on the phone, where `--arch-dome` clamps to 50vw. A semicircle would have
+   its two ends sliced off by the dome's shoulders; 120deg cannot reach them.
+
+   `left: 50%` + `translateX(-50%)` centres it on the apex at every viewport,
+   `width: min(72vw, 700px)` holds the whole set inside the crown, and the
+   `non-scaling-stroke` is what makes "1px" mean one CSS pixel at every one of
+   those widths instead of 1 user unit scaled down to 0.4px on a phone. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .sheet__arcs {
   display: block;
-  border-radius: 50%;
-  will-change: transform;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(72vw, 700px);
+  height: auto;
+  fill: none;
+  stroke: rgba(176, 150, 98, .18);
+  stroke-width: 1;
+  pointer-events: none;
 }
 
-body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--1 {
-  top: calc(4% - 80px);
-  inset-inline-start: calc(-8% - 80px);
-  width: calc(48vw + 160px);
-  height: calc(48vw + 160px);
-  background: radial-gradient(circle closest-side at 50% 50%, #e8e2d5 0%, #e8e2d5 calc(100% - 80px), rgba(232, 226, 213, 0) 100%);
-  opacity: .62;
-  animation: arch-blob-drift-1 34s ease-in-out infinite alternate;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--2 {
-  top: calc(11% - 80px);
-  inset-inline-end: calc(-10% - 80px);
-  width: calc(42vw + 160px);
-  height: calc(42vw + 160px);
-  background: radial-gradient(circle closest-side at 50% 50%, #efe4c8 0%, #efe4c8 calc(100% - 80px), rgba(239, 228, 200, 0) 100%);
-  opacity: .68;
-  animation: arch-blob-drift-2 41s ease-in-out infinite alternate;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob--3 {
-  top: calc(34% - 80px);
-  inset-inline-start: calc(26% - 80px);
-  width: calc(54vw + 160px);
-  height: calc(54vw + 160px);
-  background: radial-gradient(circle closest-side at 50% 50%, #f3ead3 0%, #f3ead3 calc(100% - 80px), rgba(243, 234, 211, 0) 100%);
-  opacity: .55;
-  animation: arch-blob-drift-3 47s ease-in-out infinite alternate;
-}
-
-@keyframes arch-blob-drift-1 {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(4vw, 3vh, 0); }
-}
-
-@keyframes arch-blob-drift-2 {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-5vw, 4vh, 0); }
-}
-
-@keyframes arch-blob-drift-3 {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(3vw, -4vh, 0); }
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .sheet__arcs path {
+  vector-effect: non-scaling-stroke;
 }
 
 /* v2.2.6 - the top padding that clears the hero content out of the dome curve.
@@ -920,7 +914,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) {
    and the sheet still comes to rest flush at y=0.
 
    `translate3d` rather than `translate` so the transform stays on the compositor
-   for the whole rise, matching how `.arch-hero` and the blobs already move.
+    for the whole rise, matching how `.arch-hero` already moves.
 
    The class is the opt-in. The JS adds `arch-rise-lag` only while the lag is more
    than half a pixel, so the sheet carries NO transform at all at rest and after the
@@ -1111,12 +1105,9 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__conte
     --dome-k: 1 !important;
   }
 
-  /* v2.2.6 - the mesh stops drifting, but it does not disappear: a permanent
-     `filter: blur(80px)` on a still element costs the same as on a moving one,
-     and the warm wash it paints is part of the sheet's colour rather than motion. */
-  body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .blob {
-    animation: none !important;
-  }
+  /* v2.2.8 - the sheet carries no motion of its own any more: the blob drift is
+     gone with the blobs, and the cream gradient, the top-right glow and the arc
+     ornament are all static paint. Nothing here needs a reduced-motion override. */
 
   body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-grid {
     transform: none !important;

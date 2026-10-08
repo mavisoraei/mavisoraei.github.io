@@ -8802,6 +8802,28 @@ body:has(main:not(.hero-overlap)) .site-header {
 }
 
 /* --------------------------------------------------------------------------
+   SHEET BACKGROUND ORNAMENT — index-only markup
+   --------------------------------------------------------------------------
+   index.html ships an inline `<svg class="sheet__arcs">` inside `.sheet__bg`: three
+   concentric hairlines centred on the dome's apex, part of the flat-sheet look
+   (cream gradient + one warm top-right glow + the 1px dome hairline). The SVG is
+   inert on its own: arch-intro.css is what reveals it, with a
+   `body.arch-intro:not(.classic-layout):not(.classic-mode)` rule that sets
+   display:block and pins it to the apex.
+
+   Off that path — classic layout, `.classic-mode`, or JS never adding the body
+   class — `.sheet__bg` is an unstyled zero-height div in flow and the SVG is its
+   only child: an intrinsically 700x420 replaced element that would sit in the
+   sheet and push every section down. So the default here is display:none and the
+   arch stylesheet opts it back in. Specificity confirms the order (the arch rule
+   is body-scoped and always wins when it applies). Same precedent as the other
+   index-only hero markup, e.g. `.lm-hero-figure--reposition`: this is the file
+   that always loads, so the always-safe default lives here. */
+.sheet__bg > .sheet__arcs {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
    HERO — LAYOUT & BACKGROUND TYPOGRAPHY
    -------------------------------------------------------------------------- */
 .lm-hero {
@@ -9410,10 +9432,13 @@ Two details make `15vw` mean exactly 15% of the VIEWPORT:
   backdrop-filter: blur(10px);
   border: 1px solid rgba(42, 38, 34, 0.22);
   color: #2a2622;
-  box-shadow:
-    inset 0 1px 1px #ffffff8c,
-    inset 0 -3px 6px #00000014,
-    0 10px 26px #0000001a;
+  /* v2.2.8 — NO HEAVY SHADOW ON THE HERO PAIR. The old stack (a lit top inset, a
+     bottom thickness inset and a 26px outer lift, doubled to #0000003d on the fill)
+     put a large blurred grey pool under each button and under the whole block, which
+     is exactly the soft shade this pass removes. What is left is the 1px border plus
+     a contact shadow no bigger than 1px/2px/6%. The glass structure (blur, tint) is
+     untouched — only the shade is. */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
 }
 
 .lm-hero .lm-btn:hover {
@@ -9426,10 +9451,7 @@ Two details make `15vw` mean exactly 15% of the VIEWPORT:
   background: linear-gradient(150deg, var(--foreground), var(--primary));
   color: var(--primary-foreground);
   border-color: color-mix(in srgb, var(--primary) 45%, transparent);
-  box-shadow:
-    inset 0 1px 1px #ffffff8c,
-    inset 0 -3px 6px #00000029,
-    0 10px 26px #0000003d;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
 }
 
 /* The arrow glyph inside the glass tier: /assets/icons/Arrow 1.svg ships a
@@ -9588,19 +9610,17 @@ Two details make `15vw` mean exactly 15% of the VIEWPORT:
   background: var(--clay-900);
   cursor: pointer;
   text-align: start;
-  /* v2.2.3 — was var(--shadow-sm), a shadow sized for a card resting on cream.
-     Over a photograph the card needs both more spread and more opacity to
-     detach from the image behind it; the first layer is a tight contact shadow
-     so it does not float, the second is the wide ambient lift. */
-  box-shadow:
-    0 2px 8px #00000047,
-    0 18px 44px #0000005c;
+  /* v2.2.8 — was 0 2px 8px #00000047 + 0 18px 44px #0000005c, a 44px blur pool
+     that read as another grey shade in the hero. Same reasoning as the hero
+     buttons: the 1px border does the separating, the shadow is only a contact
+     point, capped at 1px/2px/6% including on hover. */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
   transition: transform .4s cubic-bezier(.22, 1, .36, 1), box-shadow .4s ease;
 }
 
 .lm-play-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-key);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
 }
 
 .lm-play-thumb {

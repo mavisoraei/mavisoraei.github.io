@@ -860,18 +860,6 @@ function buildLayers() {
     rafId = requestAnimationFrame(tick);
 
     runIntro();
-
-    /* Pause the ambient blob drift while the tab is hidden so the compositor
-       has nothing to animate; resume it on return. */
-    var driftBlobs = doc.querySelectorAll('.sheet__bg .blob');
-    if (driftBlobs.length) {
-      own(doc, 'visibilitychange', function () {
-        var paused = doc.hidden;
-        for (var i = 0; i < driftBlobs.length; i++) {
-          driftBlobs[i].style.animationPlayState = paused ? 'paused' : '';
-        }
-      });
-    }
   }
 
   /* `defer` guarantees DOMContentLoaded has fired, but this is written to be
