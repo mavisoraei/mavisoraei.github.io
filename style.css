@@ -7939,83 +7939,108 @@ tbody tr:nth-child(2n) {
 
 .hl-grid {
   display: grid;
-  gap: clamp(1.2rem,3vw,2rem);
-  align-items: start;
-  margin-top: .4rem;
+  align-items: stretch;
+  gap: clamp(1.4rem, 3vw, 2.5rem);
+  margin-top: 1.6rem;
 }
 
 .hl-copy {
   display: flex;
   flex-direction: column;
-  gap: .9rem;
+  gap: 1.4rem;
 }
 
 .hl-nap {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: .35rem .9rem;
+  grid-template-columns: 140px 1fr;
   margin: 0;
-  max-width: 60ch;
+  max-width: none;
+  border-bottom: 1px solid rgba(42, 38, 34, .12);
+}
+
+.hl-nap dt,
+.hl-nap dd {
+  padding: 18px 0;
+  border-top: 1px solid rgba(42, 38, 34, .12);
 }
 
 .hl-nap dt {
-  color: var(--foreground);
-  font-weight: 700;
-  font-size: var(--step--1);
-  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #6b6258;
 }
 
 .hl-nap dd {
   margin: 0;
-  color: var(--muted-foreground);
-  line-height: 1.8;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #2a2622;
 }
 
 .hl-nap dd a {
-  color: var(--primary);
-  font-weight: 700;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
 }
 
-@media(max-width:599px) {
-  .hl-nap {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-  .hl-nap dd {
-    margin-block-end: .6rem;
-  }
-  .hl-nap dd:last-child {
-    margin-block-end: 0;
-  }
+.hl-nap dd a:hover {
+  text-decoration: underline;
 }
 
-.hl-links {
+/* The intro line above the Address / Phone / Hours rows. */
+.home-local .hl-lead {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #4a443d;
+}
+
+/* The neighbourhood line under the rows. */
+.home-local .hl-near {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 15px;
+  color: #6b6258;
+}
+
+.home-local p.hl-near a {
+  color: inherit;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+/* The button row: three route pills, then the dark booking pill. */
+.hl-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: .55rem;
+  gap: .7rem;
 }
 
-.hl-links a {
-  display: inline-block;
-  padding: .5rem 1.05rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--card);
-  font-size: var(--step--1);
-  color: var(--foreground);
-  font-weight: 400;
-  transition: border-color .3s,color .3s;
+.hl-actions .btn-pill {
+  margin: 0;
 }
 
-.hl-links a:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+.btn-pill--dark {
+  background: #2a2622;
+  border-color: #2a2622;
+  color: #faf8f5;
+}
+
+.btn-pill--dark:hover {
+  background: #14110f;
+  border-color: #14110f;
+  color: #faf8f5;
 }
 
 .hl-map {
   display: block;
-  max-width: 460px;
-  border-radius: var(--radius-lg);
+  border-radius: 24px;
   overflow: hidden;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
@@ -8034,15 +8059,33 @@ tbody tr:nth-child(2n) {
 
 @media(min-width:880px) {
   .hl-grid {
-    /* v1.0.15 — LUXURY MINIMAL ASYMMETRIC GRID. `1.2fr 1fr` gave the address
-       block barely more room than the map, so the `<dl>` wrapped to four lines
-       while the map sat half-empty. `2fr 3fr` inverts that: the copy column is
-       the narrow one and the map takes the larger share, which also stops the
-       `align-items: center` centring from floating the address list away from
-       its own heading. */
-    grid-template-columns: 2fr 3fr;
-    align-items: start;
+    /* Equal columns: copy | map. The map is stretched to the copy column's
+       height, so the two cards read as one pair. */
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
     gap: var(--lux-gap);
+  }
+
+  /* The image is taken out of flow so its intrinsic 700x700 cannot stretch the
+     row taller than the copy beside it; the anchor stretches to the row and the
+     image covers it. */
+  .hl-map {
+    position: relative;
+    height: 100%;
+    min-height: 320px;
+  }
+
+  .hl-map picture {
+    display: block;
+    height: 100%;
+  }
+
+  .hl-map img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .home-why.wrap {
