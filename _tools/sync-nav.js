@@ -157,7 +157,7 @@ for (const file of PAGES) {
   const full = path.join(ROOT, file);
   const html = fs.readFileSync(full, 'utf8');
 
-  const oldHeader = between(html, '<header class="site-header" id="site-header">', '</header>', 9);
+  const oldHeader = between(html, '<header class="lm-header" id="site-header">', '</header>', 9);
   const oldDrawer = between(html, '<div class="drawer-overlay"', '</aside>', 8);
 
   const info = { file, headerFound: !!oldHeader, drawerFound: !!oldDrawer };

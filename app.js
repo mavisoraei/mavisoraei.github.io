@@ -45,13 +45,27 @@
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ------------------------------------------------------------------ *
-   * sticky header shadow — toggles `.scrolled` past 8px
+   * header state — `.scrolled` past 8px (legacy bars), `.is-solid` past 24px
+   *
+   * `.is-solid` is the v3 navbar's scrolled state: the transparent bar at the
+   * top gains its linen fill + hairline only once the page has moved, so the
+   * hero shows through at rest. One passive listener drives both; the
+   * `.is-solid` toggle is guarded so it only ever touches the DOM when the
+   * state actually flips.
    * ------------------------------------------------------------------ */
 
   function initHeaderScroll() {
+    let headerEl = null;
+    let lastSolid = null;
     const update = function () {
-      const header = document.getElementById('site-header');
-      if (header) header.classList.toggle('scrolled', window.scrollY > 8);
+      if (!headerEl) headerEl = document.getElementById('site-header');
+      if (!headerEl) return;
+      headerEl.classList.toggle('scrolled', window.scrollY > 8);
+      const solid = window.scrollY > 24;
+      if (solid !== lastSolid) {
+        lastSolid = solid;
+        headerEl.classList.toggle('is-solid', solid);
+      }
     };
     window.addEventListener('scroll', rafThrottle(update), { passive: true });
     update();

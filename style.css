@@ -293,6 +293,10 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
      viewport, so it tracks the navbar pill at every width instead of only
      matching it on very wide screens */
   --shell-max: min(1200px, calc((100vw - 2 * var(--shell-inset)) * .94));
+  /* v3 navbar: the single content width the full-width bar centres itself in.
+     Independent of the retired pill's --shell-max so the nav can run wider
+     (1300px) while the hero content keeps its own 1200px column. */
+  --container: min(1300px, calc(100vw - 2 * clamp(24px, 7.7vw, 120px)));
   /* v2.2.6 — the navbar pill's INNER horizontal padding, named as two tokens so the
      hero content column can align to it exactly.
 
@@ -10537,4 +10541,207 @@ body.lm-modal-open {
     -webkit-mask-image: none;
     mask-image: none;
   }
+}
+
+/* ==========================================================================
+   NAVBAR v3 — full-width transparent bar + wordmark + .is-solid scroll state
+   --------------------------------------------------------------------------
+   Replaces the floating glass pill (the v1.0.9 glassmorphism look). The bar is
+   now a full-width, transparent 62px strip pinned flush to the top edge. Its
+   three content columns live in a centred `--container`, so the logo's left
+   edge, the centred link row and the action cluster's right edge line up with
+   the page content instead of floating in a pill.
+
+   The link row is *truly* centred because the two outer grid columns are equal
+   (`1fr auto 1fr`): the auto middle column is placed at the container's exact
+   midpoint, not merely between the brand and the actions.
+
+   `.lm-header.is-solid` (toggled by app.js past scrollY 24) paints the linen
+   fill and a hairline bottom border. No backdrop-filter, no box-shadow, no
+   fixed width. The old `.scrolled` class is still toggled (the ~220 legacy
+   `.site-header .bar` pages depend on it) and is neutralised below so it can
+   never resurrect the pill on these pages.
+   ========================================================================== */
+
+.lm-header {
+  top: 0;
+  inset-inline: 0;
+  height: 62px;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background .25s ease, border-color .25s ease;
+}
+
+.lm-header.is-solid {
+  background: rgba(250, 248, 245, .92);
+  border-bottom-color: rgba(42, 38, 34, .08);
+}
+
+/* Neutralise the retired pill on every state, including the old `.scrolled`
+   glass rule. Source order wins over the earlier `.lm-nav` /
+   `.lm-header.scrolled .lm-nav` blocks. */
+.lm-header .lm-nav,
+.lm-header.scrolled .lm-nav {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  width: 100%;
+  max-width: var(--container);
+  height: 62px;
+  margin-inline: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition: none;
+}
+
+/* Brand -------------------------------------------------------------------- */
+.lm-brand {
+  gap: .5rem;
+  flex: 0 0 auto;
+}
+
+.lm-brand img {
+  width: 38px;
+  height: 38px;
+}
+
+.lm-brand-text strong {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: .3em;
+  line-height: 1;
+  color: #2a2622;
+}
+
+.lm-brand-text small {
+  margin-top: .3rem;
+  font-family: var(--font-body);
+  font-size: 8.5px;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: #6b6258;
+}
+
+/* Links -------------------------------------------------------------------- */
+.lm-menu > ul {
+  gap: 26px;
+}
+
+.lm-menu > ul > li > a,
+.mega > summary {
+  position: relative;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #2a2622;
+  transition: opacity .25s ease;
+}
+
+.lm-menu > ul > li > a:hover,
+.mega > summary:hover {
+  opacity: .7;
+}
+
+.lm-menu > ul > li > a:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 1.5px;
+  background: #2a2622;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+}
+
+/* hover is opacity only; only the current page carries the underline */
+.lm-menu > ul > li > a:hover:after {
+  transform: scaleX(0);
+}
+
+.lm-menu > ul > li > a[aria-current="page"] {
+  font-weight: 600;
+  color: #2a2622;
+}
+
+.lm-menu > ul > li > a[aria-current="page"]:after {
+  transform: scaleX(1);
+}
+
+/* Actions ------------------------------------------------------------------ */
+.lm-actions {
+  gap: 10px;
+  margin-inline-start: auto;
+}
+
+.lm-social {
+  width: 32px;
+  height: 32px;
+  background: rgba(250, 248, 245, .9);
+  border: 1px solid rgba(42, 38, 34, .1);
+}
+
+.lm-social img {
+  width: 15px;
+  height: 15px;
+}
+
+.lm-social:hover {
+  background: #faf8f5;
+  transform: none;
+}
+
+.lm-cta {
+  height: 32px;
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  background: #2a2622;
+  color: #fff;
+  box-shadow: none;
+}
+
+.lm-cta:hover {
+  background: #1a1815;
+  color: #fff;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Desktop: true 3-column grid, link row centred on the container ----------- */
+@media (min-width: 1000px) {
+  .lm-header .lm-nav,
+  .lm-header.scrolled .lm-nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .lm-brand { grid-column: 1; justify-self: start; }
+  .lm-menu { grid-column: 2; justify-self: center; }
+  .lm-actions { grid-column: 3; justify-self: end; margin-inline-start: 0; }
+}
+
+/* Inner pages start solid at small widths so cream content never sits behind a
+   see-through strip. Home — the only page carrying `.arch-hero` — keeps the
+   transparent-over-photo treatment. The bar is also solid whenever the mobile
+   drawer is open, on any page. */
+@media (max-width: 900px) {
+  body:not(:has(.arch-hero)) .lm-header {
+    background: rgba(250, 248, 245, .92);
+    border-bottom-color: rgba(42, 38, 34, .08);
+  }
+}
+
+body:has(#mobile-drawer.open) .lm-header {
+  background: rgba(250, 248, 245, .92);
+  border-bottom-color: rgba(42, 38, 34, .08);
 }
