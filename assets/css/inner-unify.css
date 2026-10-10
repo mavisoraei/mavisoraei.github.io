@@ -899,3 +899,68 @@ main .pr-cta-actions .btn-pill:not(#_) {
     top: 120px;
   }
 }
+
+/* ==========================================================================
+   FACE-ANALYSIS HERO — shared-top-row step grid
+
+   `.ai-concept` becomes an explicit two-row grid at >=880px: row 1 holds the
+   two `.ai-step-label` headings, row 2 holds the filler cards and the
+   before/after pair. `.ai-pick` and `.ai-result` opt into `grid-template-rows:
+   subgrid`, so each wraps its own label + body but both land on the SAME row
+   tracks — the headings share one baseline and one margin regardless of how
+   the two are worded. The left filler column then stretches to the photo
+   height (row 2) and spreads its two cards top/bottom with a 16px floor, so
+   the first card's top meets the photo top and the last card's bottom meets
+   the photo bottom; the arrow spans both rows and stays vertically centred.
+   Hero text is left-aligned like every other inner page (section 11) with the
+   mascot kept above; the h1/lead/strong scale comes from sections 2, 5 and 8.
+   ========================================================================== */
+main .ai-step-label:not(#_) {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: .02em;
+  color: #2a2622;
+  margin: 0 0 16px;
+}
+
+main .ba-pair:not(#_) {
+  margin-top: 0;
+}
+
+@media (min-width: 880px) {
+  main .ai-concept:not(#_) {
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto auto;
+    align-items: stretch;
+    row-gap: 0;
+  }
+
+  main .ai-pick:not(#_),
+  main .ai-result:not(#_) {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: 1 / span 2;
+  }
+
+  main .ai-flow:not(#_) {
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  main .ai-products:not(#_) {
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    height: 100%;
+  }
+
+  main .ai-prod:not(#_) {
+    max-width: 190px;
+  }
+
+  main .ai-flow span:not(#_) {
+    transform: none;
+  }
+}
