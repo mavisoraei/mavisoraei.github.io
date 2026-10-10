@@ -38,7 +38,7 @@
    KEY COMPONENT CLASSES
      hero banner        .hero .hero-inner .hero-panel .hero-picture .scan
      doctor cards       .team-card .team-photo .team-meta .team-role
-     service grids      .svc-grid .svc-links .card .card-body
+     service grids      .svc-grid .svc-groups .card .card-body
      magazine cards     .trend-card .tc-media .tc-title .tc-blurb .tc-tag
 navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
       patient reviews    .cnp-rail .cnp-cols .cnp-track .cnp-card .cnp-ava .cnp-stars
@@ -957,6 +957,16 @@ main:not(.hero-overlap) {
    -------------------------------------------------------------------------- */
 :where(h1, h2, h3, h4, [id]) {
   scroll-margin-top: 84px;
+}
+
+/* v1.0.24 — WRAPPING POLISH
+   `p` and `h1`–`h4` already carry `text-wrap: pretty` / `balance` in the type
+   rules above. This extends the same polish to list and definition-list items,
+   and the centred intro paragraphs opt into `balance` alongside their headings
+   (see `.sec-head p` and the home-section rules below). Progressive enhancement:
+   without it the browser keeps normal wrapping and loses only the polish. */
+li, dd {
+  text-wrap: pretty;
 }
 
 @media(pointer:fine) {
@@ -6230,7 +6240,11 @@ tbody tr:nth-child(2n) {
 }
 
 .cnp-head {
-  text-align: center;
+  /* v1.0.24 — was `center`. The rating line has to hang from the same left
+     edge as the heading above it, which is only possible if the whole head
+     (eyebrow, heading, meta) shares one start alignment — the inner pages
+     already do this in inner-unify.css, so the home section now matches. */
+  text-align: start;
   margin-bottom: clamp(1.6rem,4vw,2.6rem);
 }
 
@@ -6352,7 +6366,11 @@ tbody tr:nth-child(2n) {
 }
 
 .cnp-card {
-  direction: rtl;
+  /* v1.0.24 — was `rtl`, which mirrored the card: the 44px avatar (a fixed-width
+     flex item) pinned to the inline-start edge, i.e. the right, and the name/stars
+     row read right-to-left. `ltr` puts the avatar and the name back on the left and
+     the stars on the right, matching the review cards on the service pages. */
+  direction: ltr;
   display: flex;
   flex-direction: column;
   gap: .8rem;
@@ -6437,6 +6455,10 @@ tbody tr:nth-child(2n) {
   color: var(--foreground);
   line-height: 1.8;
   font-size: var(--step--1);
+  /* v1.0.24 — resolve the paragraph's direction from its first strong character
+     rather than from the `dir` attribute, so an English review stays LTR while a
+     Persian review still sets itself RTL. */
+  unicode-bidi: plaintext;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
@@ -7754,7 +7776,7 @@ tbody tr:nth-child(2n) {
 .home-services > h2 + p,
 .home-local > h2 + p {
   text-align: center;
-  text-wrap: pretty;
+  text-wrap: balance;
   margin-inline: auto;
   max-width: 58ch;
 }
@@ -7890,31 +7912,63 @@ tbody tr:nth-child(2n) {
   color: #6b6258;
 }
 
-.svc-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .55rem;
-  margin-top: .8rem;
+/* v1.0.24 — "All Lemon Services" was ~67 outlined pill chips in a wrapping flex
+   row. It is now six titled text columns (3 desktop / 2 tablet / 1 mobile): a
+   display-serif group title over a hairline, then plain underlined-on-hover
+   links. Same 67 links, same labels and hrefs, only regrouped. */
+.svc-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.4rem, 3vw, 2.6rem);
+  margin-top: 1.6rem;
+  text-align: start;
 }
 
-.svc-links a {
-  display: inline-block;
-  padding: .5rem 1.05rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--card);
-  font-size: var(--step--1);
+.svc-group h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
   color: var(--foreground);
-  transition: border-color .3s,color .3s;
+  margin: 0 0 .35rem;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid rgba(42, 38, 34, .12);
 }
 
-.svc-links a:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+.svc-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
+.svc-group a {
+  display: inline-block;
+  color: #4a443d;
+  font-size: 15px;
+  line-height: 2;
+  text-decoration: none;
+}
+
+.svc-group a:hover {
+  color: var(--foreground);
+  text-decoration: underline;
+}
+
+@media(max-width:1023px) {
+  .svc-groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width:640px) {
+  .svc-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Only adds the gap; the `display` comes from `.btn-pill` so the button keeps
+   that pill's `margin-inline: auto` centring like the other section CTAs. */
 .price-cta {
-  display: inline-flex;
   margin-top: 1.4rem;
 }
 
@@ -8101,6 +8155,7 @@ tbody tr:nth-child(2n) {
 .sec-head p {
   color: var(--muted-foreground);
   margin-top: .5rem;
+  text-wrap: balance;
 }
 
 .team-marquee {
