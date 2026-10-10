@@ -37,7 +37,6 @@
                                                 section
 
    z-index   100 .lm-header         the floating glass navbar
-   z-index  9998 body::after        the site's film grain
    z-index 10000 #intro             the page-load intro — defined inline in
                                     index.html, above the grain on purpose
 
@@ -326,24 +325,24 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
    What replaces them is entirely static and paints once:
 
      1. the cream gradient, unchanged, `#faf8f5 -> #f5f2eb`;
-     2. ONE warm glow at the top right - a plain radial-gradient, no animation and
-        no `filter`, so nothing is ever re-rasterised on scroll or on visibility;
-     3. `.sheet__arcs`, an inline SVG of three concentric hairlines centred on the
-        dome's apex (rule below).
+     2. five warm glows - plain radial-gradients, no animation and no `filter`,
+        so nothing is ever re-rasterised on scroll or on visibility;
+     3. a paper-grain `::after` layer - a repeating feTurbulence tile at 4%
+        opacity, also static.
 
-   The glow is the FIRST background layer, so it paints over the cream. Its centre
-   is `at 94% 0` - a LENGTH on the y axis rather than a percentage, because this
-   box is as tall as the whole document and `2%` would drift hundreds of pixels
-   down the page; the `38vw` radius is a length for exactly the same reason. */
+   The glows are the first background layers, so they paint over the cream. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(circle 38vw at 94% 0,
-      rgba(232, 214, 176, .35) 0%,
-      rgba(232, 214, 176, 0) 68%),
-    linear-gradient(180deg, #faf8f5 0%, #f5f2eb 100%);
+    radial-gradient(900px 620px at 88% 3%, rgba(233,215,176,.42), transparent 62%),
+    radial-gradient(760px 700px at 4% 22%, rgba(238,224,208,.55), transparent 62%),
+    radial-gradient(900px 720px at 96% 48%, rgba(228,212,182,.38), transparent 62%),
+    radial-gradient(800px 700px at 6% 74%, rgba(236,222,204,.5), transparent 62%),
+    radial-gradient(900px 600px at 92% 96%, rgba(226,210,180,.35), transparent 62%),
+    linear-gradient(180deg,#faf8f5,#f5f2eb);
+  background-repeat: no-repeat;
   /* THE DOME HAIRLINE, on the element that carries the radius. Because the
      horizontal radius is 50%, the two top corner arcs MEET at the centre and no
      straight top edge is left, so this 1px traces the whole dome: it fades in from
@@ -353,10 +352,10 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
   border-top: 1px solid rgba(184, 160, 112, .45);
   pointer-events: none;
   /* `border-radius` clips a box's own background but NOT its children, so this is
-     what keeps the glow and the arcs inside the dome instead of painting warm
-     colour and hairlines onto the photograph either side of it. The sheet is the
-     only ancestor of these elements and the only thing they can be clipped
-     against, so the clip has to live here. */
+     what keeps the glows and the grain inside the dome instead of painting warm
+     colour onto the photograph either side of it. The sheet is the only ancestor
+     of these layers and the only thing they can be clipped against, so the clip
+     has to live here. */
   overflow: hidden;
   border-radius: 50% 50% 0 0
     / calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
@@ -364,37 +363,20 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
       0 0;
 }
 
-/* THE ARC ORNAMENT - three concentric hairlines centred on the dome's apex.
-
-   The SVG ships in index.html with a `0 0 700 420` viewBox in which all three arcs
-   are centred on (350, 0) - the top edge, dead centre - at radii 190 / 285 / 380,
-   each spanning 120deg (60deg either side of straight down). The span is the whole
-   safety story: a point r from the apex at angle t from the vertical is inside the
-   dome while r <= 2*rx*cos(t), so 60deg buys r <= rx and the largest arc (380)
-   stays well inside the 720px horizontal radius at 1440x900 - and inside 72vw of
-   crown on the phone, where `--arch-dome` clamps to 50vw. A semicircle would have
-   its two ends sliced off by the dome's shoulders; 120deg cannot reach them.
-
-   `left: 50%` + `translateX(-50%)` centres it on the apex at every viewport,
-   `width: min(72vw, 700px)` holds the whole set inside the crown, and the
-   `non-scaling-stroke` is what makes "1px" mean one CSS pixel at every one of
-   those widths instead of 1 user unit scaled down to 0.4px on a phone. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .sheet__arcs {
-  display: block;
+/* PAPER GRAIN - one repeating feTurbulence tile at 4% opacity, on the sheet
+   background element so the dome radius clips it and it can never spill onto the
+   photograph beside the crown. No animation, no `filter`, no blend mode: the tile
+   is a plain repeating background-image that rasterises once. The 140x140 tile
+   with `stitchTiles='stitch'` is seamless at its own size. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(72vw, 700px);
-  height: auto;
-  fill: none;
-  stroke: rgba(176, 150, 98, .18);
-  stroke-width: 1;
+  inset: 0;
   pointer-events: none;
-}
-
-body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .sheet__arcs path {
-  vector-effect: non-scaling-stroke;
+  opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  background-repeat: repeat;
 }
 
 /* v2.2.6 - the top padding that clears the hero content out of the dome curve.

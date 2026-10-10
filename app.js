@@ -389,31 +389,6 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * sun parallax — drifts the decorative glow as the page scrolls
-   * ------------------------------------------------------------------ */
-
-  function initSunParallax() {
-    const sun = document.querySelector('.sun-layer');
-    if (!sun) return;
-    let last = '';
-    const update = rafThrottle(function () {
-      const scrollable = document.body.scrollHeight - window.innerHeight || 1;
-      const progress = window.scrollY / scrollable;
-      // same .sun-layer travel as the old `--sun-x/--sun-y` (22->34, 18->26)
-      const tx = Math.round(progress * 12 * window.innerWidth / 100);
-      const ty = Math.round(progress * 8 * window.innerHeight / 100);
-      const next = 'translate3d(' + tx + 'px, ' + ty + 'px, 0)';
-      if (next !== last) {
-        last = next;
-        sun.style.transform = next;
-      }
-    });
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
-    update();
-  }
-
-  /* ------------------------------------------------------------------ *
    * homepage case row — scroll-snap carousel + before/after compare
    * ------------------------------------------------------------------ */
 
@@ -1270,7 +1245,6 @@
     initMobileDrawer();   // also drives the sticky-header state
     initBottomBar();
     initCardTilt();
-    initSunParallax();
     initCaseSlider();
     initCaseCompare();
     initMarqueeDrag();

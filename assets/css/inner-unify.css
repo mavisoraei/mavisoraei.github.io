@@ -28,6 +28,19 @@
   --font-latin: var(--font-body);
 }
 
+/* --- 1b. Page background -------------------------------------------------
+   One static wash for every inner page. It replaces the retired fixed
+   `.sun-layer` (the moving yellow glow) and the global `body:after` grain:
+   two warm corner glows over the cream base, painted by the body element
+   itself. Static only — no animation, no fixed overlay, no filter. */
+body:not(#_) {
+  background:
+    radial-gradient(900px 620px at 90% 0%, rgba(233,215,176,.38), transparent 62%),
+    radial-gradient(800px 700px at 0% 40%, rgba(238,224,208,.5), transparent 62%),
+    linear-gradient(180deg,#faf8f5,#f5f2eb);
+  background-repeat: no-repeat;
+}
+
 /* --- 2. Headings ---------------------------------------------------------
    h1 400 clamp(40px,4.8vw,64px)/1.05  · h2 clamp(30px,3.2vw,44px)/1.1
    h3 clamp(22px,2vw,28px)/1.2         · h4 20px/1.25

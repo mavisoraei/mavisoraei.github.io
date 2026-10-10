@@ -453,16 +453,9 @@ body:before {
     var(--background);
 }
 
-body:after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  pointer-events: none;
-  opacity: .028;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-}
+/* body:after film-grain overlay removed (v1.0.22) — the moving .sun-layer and
+   the full-viewport noise layer were both retired so inner pages show one static
+   body background. */
 
 /* --------------------------------------------------------------------------
    PAGE — BACKGROUND MESH CANVAS  (v1.0.14)
@@ -2787,24 +2780,8 @@ main:not(.hero-overlap) {
 /* --------------------------------------------------------------------------
    SCROLL REVEAL & MOTION
    -------------------------------------------------------------------------- */
-.sun-layer {
-  position: fixed;
-  top: -20%;
-  left: -20%;
-  width: 140%;
-  height: 140%;
-  pointer-events: none;
-  z-index: 9999;
-  /* Larger box + translate3d so the glow's drift is a composited move instead of
-     a per-frame full-screen repaint. Baseline layout (translate 0) puts the
-     radial centre exactly where `at 22% 18%` was on a viewport box, and the
-     gradient radii (80% x 60% of the viewport) become 57.1429% x 42.8571% of
-     this 140% box. The travel range (+12vw, +8vh right/down) stays inside the
-     enlarged box, so at every progress value the on-screen picture is identical
-     to the old `--sun-x`/`--sun-y` rewrite. */
-  background: radial-gradient(ellipse 57.1429% 42.8571% at 30% 27.1429%,rgba(237,228,211,.18) 0%,rgba(201,168,106,.07) 40%,transparent 70%);
-  will-change: transform;
-}
+/* .sun-layer retired (v1.0.22) — the animated full-viewport warm glow is gone
+   from every page; inner pages now carry one static body background instead. */
 
 /* --------------------------------------------------------------------------
    PAGE SECTIONS & CARDS
@@ -7823,7 +7800,7 @@ tbody tr:nth-child(2n) {
   justify-content: center;
 }
 
-.lm-hero-copy--new{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;text-align:start;gap:0;}.lm-hero-block{display:flex;flex-direction:column;align-items:flex-start;}.lm-hero-block--docs{gap:1rem;}.lm-hero-block--video{margin-top:0;}.lm-hero-block--text{margin-top:50px;gap:0.5rem;}.lm-hero-block--buttons{margin-top:28px;}.lm-buttons--stacked{flex-direction:column;align-items:flex-start;gap:28px;}.lm-hero-figure--reposition{position:absolute;top:17vh;left:52vw;right:0;bottom:0;width:auto;height:auto;display:flex;align-items:flex-end;justify-content:flex-end;overflow:visible;z-index:1;pointer-events:none;}.lm-hero-figure-img--fade{position:absolute;right:0;bottom:0;left:auto;top:auto;height:83vh;width:auto;max-width:100%;object-fit:contain;object-position:right bottom;-webkit-mask-image:linear-gradient(to bottom,black 80%,transparent 100%),linear-gradient(to right,black 92%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,black 80%,transparent 100%),linear-gradient(to right,black 92%,transparent 100%);mask-composite:intersect;}.lm-hero-figure-label--anchored{position:absolute;right:calc(24px);top:26%;transform:translateY(-50%);font-family:var(--font-body);font-weight:400;font-size:clamp(15px,1.05vw,20px);color:#2a2622;white-space:nowrap;z-index:2;}@media(max-width:900px){.lm-hero-figure--reposition{position:relative;top:auto;left:auto;right:auto;bottom:auto;width:100%;height:auto;margin-top:2rem;align-items:center;justify-content:center;}.lm-hero-figure-img--fade{position:relative;height:auto;width:100%;object-fit:contain;object-position:center bottom;-webkit-mask-image:linear-gradient(to bottom,black 80%,transparent 100%);mask-image:linear-gradient(to bottom,black 80%,transparent 100%);}.lm-hero-figure-label--anchored{display:none;}.lm-buttons--stacked{gap:1rem;}.lm-hero-block--text{margin-top:2rem;}.lm-hero-block--buttons{margin-top:1rem;}}
+.lm-hero-copy--new{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;text-align:start;gap:0;}.lm-hero-block{display:flex;flex-direction:column;align-items:flex-start;}.lm-hero-block--docs{gap:1rem;}.lm-hero-block--video{margin-top:0;}.lm-hero-block--text{margin-top:50px;gap:0.5rem;}.lm-hero-block--buttons{margin-top:28px;}.lm-buttons--stacked{flex-direction:column;align-items:flex-start;gap:28px;}.lm-hero-figure--reposition{position:absolute;top:calc(17vh - 90px);left:52vw;right:0;bottom:0;width:auto;height:auto;display:flex;align-items:flex-end;justify-content:flex-end;overflow:visible;z-index:1;pointer-events:none;}.lm-hero-figure-img--fade{position:absolute;right:0;bottom:0;left:auto;top:auto;height:83vh;width:auto;max-width:100%;object-fit:contain;object-position:right bottom;-webkit-mask-image:linear-gradient(to bottom,black 80%,transparent 100%),linear-gradient(to right,black 92%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,black 80%,transparent 100%),linear-gradient(to right,black 92%,transparent 100%);mask-composite:intersect;}@media(max-width:900px){.lm-hero-figure--reposition{position:relative;top:auto;left:auto;right:auto;bottom:auto;width:100%;height:auto;margin-top:2rem;align-items:center;justify-content:center;}.lm-hero-figure-img--fade{position:relative;height:auto;width:100%;object-fit:contain;object-position:center bottom;-webkit-mask-image:linear-gradient(to bottom,black 80%,transparent 100%);mask-image:linear-gradient(to bottom,black 80%,transparent 100%);}.lm-buttons--stacked{gap:1rem;}.lm-hero-block--text{margin-top:2rem;}.lm-hero-block--buttons{margin-top:1rem;}}
 
 /* The hero's second column, so its heading reads as part of the same centred
    composition rather than as the one left-flushed thing left in the grid. The
@@ -8849,28 +8826,6 @@ body:has(main:not(.hero-overlap)) .site-header {
 }
 
 /* --------------------------------------------------------------------------
-   SHEET BACKGROUND ORNAMENT — index-only markup
-   --------------------------------------------------------------------------
-   index.html ships an inline `<svg class="sheet__arcs">` inside `.sheet__bg`: three
-   concentric hairlines centred on the dome's apex, part of the flat-sheet look
-   (cream gradient + one warm top-right glow + the 1px dome hairline). The SVG is
-   inert on its own: arch-intro.css is what reveals it, with a
-   `body.arch-intro:not(.classic-layout):not(.classic-mode)` rule that sets
-   display:block and pins it to the apex.
-
-   Off that path — classic layout, `.classic-mode`, or JS never adding the body
-   class — `.sheet__bg` is an unstyled zero-height div in flow and the SVG is its
-   only child: an intrinsically 700x420 replaced element that would sit in the
-   sheet and push every section down. So the default here is display:none and the
-   arch stylesheet opts it back in. Specificity confirms the order (the arch rule
-   is body-scoped and always wins when it applies). Same precedent as the other
-   index-only hero markup, e.g. `.lm-hero-figure--reposition`: this is the file
-   that always loads, so the always-safe default lives here. */
-.sheet__bg > .sheet__arcs {
-  display: none;
-}
-
-/* --------------------------------------------------------------------------
    HERO — LAYOUT & BACKGROUND TYPOGRAPHY
    -------------------------------------------------------------------------- */
 .lm-hero {
@@ -8878,7 +8833,10 @@ body:has(main:not(.hero-overlap)) .site-header {
   display: grid;
   align-items: start;
   min-height: 100svh;
-  /* v1.0.14: TOP padding cut from `clamp(10.5rem,21vh,15rem)` to a flat `7.5rem`
+  /* v1.0.22: the left column is lifted a further 70px (top padding 120px -> 50px),
+     to match the 90px lift on the figure (`.lm-hero-figure--reposition`).
+
+     v1.0.14: TOP padding cut from `clamp(10.5rem,21vh,15rem)` to a flat `7.5rem`
      (120px). The old value had been raised twice — v1.0.8 to clear the floating
      navbar, v1.0.9 with it — and by v1.0.13 it was reserving 168-240px above the
      wordmark, which read as a dead band rather than breathing room.
@@ -8893,7 +8851,7 @@ body:has(main:not(.hero-overlap)) .site-header {
      with viewport height: a `vh` term only re-introduced the empty band on tall
      screens, which is where it was most visible. Bottom padding is untouched so
      the vertically centred row keeps its slight downward bias. */
-  padding-block: 7.5rem clamp(2rem, 5vh, 4rem);
+  padding-block: calc(7.5rem - 70px) clamp(2rem, 5vh, 4rem);
   /* v1.0.13: the section now carries the SAME horizontal inset as
      `.lm-header`, so the hero grid resolves its width against the same
      containing box as the navbar pill. See `.lm-hero-grid`. */
