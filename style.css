@@ -10467,3 +10467,74 @@ body.lm-modal-open {
   padding-inline-start: 1.25rem;
   margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
 }
+
+/* ==========================================================================
+   HOME HERO PHOTO — ARCH FRAME
+   The woman photograph (/pic/Face.webp, `.lm-hero-figure-img--fade`) becomes a
+   portrait ARCH: a clamp(340px,30vw,440px)-wide box at a 3/4 ratio whose top
+   corners are a full semicircle and whose bottom corners are 28px, with the
+   image covering it from the top. The hairline outline is a `::before` on the
+   figure, offset 14px OUTSIDE the arch and carrying the same radii; the
+   bottom/right fade masks and any shadow on the picture are dropped.
+   At <=900px the figure leaves its absolute right-hand parking spot on the
+   desktop composition and stacks below the hero copy, still centred.
+   ========================================================================== */
+.lm-hero-figure--reposition {
+  top: auto;
+  right: max(20px, 3vw);
+  bottom: max(20px, 3vw);
+  left: auto;
+  display: block;
+  width: max-content;
+  height: auto;
+  overflow: visible;
+  border-radius: 999px 999px 28px 28px;
+  box-shadow: none;
+  filter: none;
+}
+
+.lm-hero-figure--reposition::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border: 1px solid rgba(184, 160, 112, .5);
+  border-radius: 999px 999px 28px 28px;
+  pointer-events: none;
+}
+
+.lm-hero-figure-img--fade {
+  display: block;
+  position: relative;
+  inset: auto;
+  width: clamp(340px, 30vw, 440px);
+  height: auto;
+  max-width: none;
+  aspect-ratio: 3 / 4;
+  border-radius: 999px 999px 28px 28px;
+  overflow: hidden;
+  object-fit: cover;
+  object-position: center top;
+  box-shadow: none;
+  filter: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+@media (max-width: 900px) {
+  .lm-hero-figure--reposition {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: max-content;
+    margin: 2rem auto 0;
+  }
+
+  .lm-hero-figure-img--fade {
+    width: clamp(340px, 30vw, 440px);
+    object-position: center top;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
