@@ -606,3 +606,296 @@ main .reviewer-badge__text a:not(#_):not(#_):not(#_):focus-visible {
     display: none;
   }
 }
+
+/* ==========================================================================
+   PRICING TABLES — Treatment | Details | Price (facial, blog, areas)
+
+   Same hairline table as laser.html (`div.lp-scroll > table.pr-table`). The
+   markup already carried three columns, but with `table-layout: auto` the long
+   nowrap price strings (e.g. the multi-area Carboxy row) stretched the price
+   column until the table was wider than its container, so the right-aligned
+   figures were pushed out of view and the treatment names collapsed onto three
+   lines. A fixed layout with explicit shares keeps the first column wide enough
+   to stay on one line and lets the price wrap instead of widening the table.
+   ========================================================================== */
+main .svc-prices .pr-table:not(#_),
+main .pg-price-table .pr-table:not(#_) {
+  table-layout: fixed;
+}
+
+main .svc-prices .pr-table thead th:nth-child(1):not(#_),
+main .pg-price-table .pr-table thead th:nth-child(1):not(#_) {
+  width: 34%;
+}
+
+main .svc-prices .pr-table thead th:nth-child(2):not(#_),
+main .pg-price-table .pr-table thead th:nth-child(2):not(#_) {
+  width: 44%;
+}
+
+main .svc-prices .pr-table thead th:nth-child(3):not(#_),
+main .pg-price-table .pr-table thead th:nth-child(3):not(#_) {
+  width: 22%;
+}
+
+/* Treatment: wide, on one line. Details: reads left like body copy. Price:
+   right-aligned tabular figures that may wrap when a row holds several prices. */
+main .svc-prices .pr-table tbody td:nth-child(1):not(#_),
+main .pg-price-table .pr-table tbody td:nth-child(1):not(#_) {
+  white-space: nowrap;
+}
+
+main .svc-prices .pr-table thead th:nth-child(2):not(#_),
+main .svc-prices .pr-table tbody td:nth-child(2):not(#_),
+main .pg-price-table .pr-table thead th:nth-child(2):not(#_),
+main .pg-price-table .pr-table tbody td:nth-child(2):not(#_) {
+  text-align: start;
+}
+
+main .svc-prices .pr-table .num:not(#_),
+main .pg-price-table .pr-table .num:not(#_) {
+  white-space: normal;
+}
+
+main .svc-prices .pr-table td:not(#_),
+main .pg-price-table .pr-table td:not(#_) {
+  vertical-align: top;
+}
+
+/* ==========================================================================
+   PRICE LISTS — .pr-rows (prices.html) become the same table language
+
+   Two columns, Service | Price; the price is a right-aligned tabular figure and
+   service names sit at 500 weight. Rows are separated by the same hairline as
+   the tables, the old dotted link underline becomes a plain hairline, and the
+   optional per-row note stays as muted detail under the service name.
+   ========================================================================== */
+main .pr-rows:not(#_) {
+  display: block;
+  gap: 0;
+}
+
+main .pr-rows li:not(#_) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1.5rem;
+  align-items: baseline;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(42, 38, 34, .08);
+}
+
+main .pr-rows li:last-child:not(#_) {
+  border-bottom: 0;
+}
+
+main .pr-rows li > span:not(#_) {
+  color: #2a2622;
+  font-weight: 500;
+}
+
+main .pr-rows li > span a:not(#_) {
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(42, 38, 34, .25);
+  text-underline-offset: .2em;
+}
+
+main .pr-rows li > span a:not(#_):hover {
+  text-decoration-color: rgba(42, 38, 34, .55);
+}
+
+main .pr-rows li > b:not(#_) {
+  text-align: right;
+  color: #2a2622;
+  font-weight: 500;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+main .pr-rows .pr-row-sub:not(#_) {
+  display: block;
+  font-weight: 400;
+  color: #6b625d;
+  margin-top: 2px;
+}
+
+/* The richer Facial list (.pr-list) gets the same treatment. */
+main .pr-list:not(#_) {
+  display: block;
+  gap: 0;
+}
+
+main .pr-list li:not(#_) {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(42, 38, 34, .08);
+}
+
+main .pr-list li:last-child:not(#_) {
+  border-bottom: 0;
+}
+
+main .pr-name > span:first-child:not(#_) {
+  color: #2a2622;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+main .pr-price:not(#_) {
+  color: #2a2622;
+  font-weight: 500;
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
+main .pr-list .pr-extra:not(#_) {
+  color: #6b625d;
+}
+
+/* ==========================================================================
+   "HOW MANY CC OF LIP FILLER" TABLE — fixed six-column layout
+
+   Column shares are declared on the header cells (fixed layout takes its widths
+   from the first row) and every header inherits its column's alignment: text
+   left, figures right. The amount cell stacks its median value on the first
+   line with the 12px "exactly N cc" note under it, both right-aligned.
+   ========================================================================== */
+main .dose-scroll .pr-table:not(#_) {
+  table-layout: fixed;
+  min-width: 640px;
+}
+
+main .dose-scroll .pr-table :is(th, td):not(#_) {
+  padding: 16px 14px;
+  vertical-align: top;
+}
+
+main .dose-scroll .pr-table thead th:not(#_) {
+  white-space: normal;
+}
+
+main .dose-scroll .pr-table :is(th, td):nth-child(1):not(#_) {
+  width: 22%;
+  text-align: start;
+}
+
+main .dose-scroll .pr-table :is(th, td):nth-child(2):not(#_) {
+  width: 16%;
+  text-align: start;
+}
+
+main .dose-scroll .pr-table :is(th, td):nth-child(3):not(#_) {
+  width: 14%;
+  text-align: end;
+}
+
+main .dose-scroll .pr-table :is(th, td):nth-child(4):not(#_) {
+  width: 20%;
+  text-align: end;
+}
+
+main .dose-scroll .pr-table :is(th, td):nth-child(5):not(#_) {
+  width: 18%;
+  text-align: end;
+}
+
+main .dose-scroll .pr-table :is(th, td):nth-child(6):not(#_) {
+  width: 10%;
+  text-align: end;
+}
+
+main .dose-scroll .dose-modal:not(#_) {
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* Keep the six real columns on small screens and scroll instead of collapsing
+   into stacked label/value cards (which is what the shared .pr-table mobile
+   rule does to the other pricing tables). */
+@media (max-width: 640px) {
+  main .dose-scroll .pr-table thead:not(#_) {
+    display: table-header-group;
+  }
+
+  main .dose-scroll .pr-table tbody tr:not(#_) {
+    display: table-row;
+    padding: 0;
+    border: 0;
+  }
+
+  main .dose-scroll .pr-table tbody th:not(#_),
+  main .dose-scroll .pr-table tbody td:not(#_) {
+    display: table-cell;
+    padding: 16px 14px;
+  }
+
+  main .dose-scroll .pr-table tbody th:not(#_) {
+    border-bottom: 1px solid rgba(42, 38, 34, .08);
+  }
+
+  main .dose-scroll .pr-table tbody td:not(#_) {
+    border: 0;
+  }
+
+  main .dose-scroll .pr-table tbody td:not(#_):before {
+    content: none;
+  }
+}
+
+/* ==========================================================================
+   PRICING SIDEBAR — Quick jump and the Smart Mirror CTA card
+
+   Both become the same hairline card as the rest of the site (#fbf9f5, 1px
+   rgba(42,38,34,.08), radius 20px, no fill, no shadow). The CTA buttons are the
+   shared .btn-pill, stacked; Quick jump is a compact sticky index.
+   ========================================================================== */
+main .pr-nav:not(#_),
+main .pr-cta-card:not(#_) {
+  background: #fbf9f5;
+  border: 1px solid rgba(42, 38, 34, .08);
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+main .pr-nav h2:not(#_) {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+main .pr-nav ul:not(#_) {
+  gap: 10px;
+}
+
+main .pr-nav a:not(#_) {
+  color: #4a443d;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+main .pr-cta-card p:not(#_) {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4a443d;
+}
+
+main .pr-cta-actions:not(#_) {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+main .pr-cta-actions .btn-pill:not(#_) {
+  width: 100%;
+  margin: 0;
+}
+
+@media (min-width: 960px) {
+  main .pr-side:not(#_) {
+    top: 120px;
+  }
+}
