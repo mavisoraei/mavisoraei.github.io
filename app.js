@@ -403,91 +403,160 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * homepage case row — scroll-snap carousel + before/after compare
+   * homepage case row — auto-scrolling before/after marquee
    * ------------------------------------------------------------------ */
 
-  /* The row is a scroll container now (`.ias`: scroll-snap, hidden scrollbar,
-   * prev/next buttons below it — see the CSS), so this function's old job of
-   * appending a clone of every card, so a `translate3d(-50%)` keyframe could
-   * wrap seamlessly, is gone with the loop it served. What is left is the
-   * part CSS cannot do: bind the two buttons to scroll exactly one card at a
-   * time, and disable each at the end it would run past.
+  /* The four cases come from `window.LEMON_CASES`, declared in index.html at
+   * the top of the section. They are rendered here, then the whole set is
+   * cloned until the track is at least twice the viewport wide, so the
+   * `translate3d(-50%)` keyframe in the page's styles never runs past the
+   * content and shows a gap. Clones are decorative — `aria-hidden`,
+   * `tabindex="-1"`, no compare range — and their images stay lazy.
    *
-   * The clone set from the loop build is stripped on bind, so a page that
-   * still has one in its markup does not keep a doubled row.
-   *
-   * One card is measured as the item's own outer width, because CSS folds the
-   * gap into the item: that stays exact at every breakpoint and after a
-   * resize changes how many cards fit. */
-  function initCaseSlider() {
-    document.querySelectorAll('.ias').forEach(function (root) {
-      if (root.dataset.iasBound) return;
-      const track = root.querySelector('.ias-track');
-      if (!track) return;
-      const items = Array.prototype.slice.call(track.querySelectorAll('.ias-item:not([data-ias-clone])'));
-      if (!items.length) return;
-      root.dataset.iasBound = '1';
+   * The drift is a CSS animation; hover pauses it, and a press (which is when
+   * the divider is dragged) adds `.is-held` so touch holds it still too. The
+   * set is rebuilt on resize because the copy count depends on viewport
+   * width. */
+  function initCaseMarquee() {
+    const root = document.querySelector('.ias');
+    if (!root || root.dataset.iasBuilt) return;
+    const track = root.querySelector('.ias-track');
+    const cases = window.LEMON_CASES;
+    if (!track || !Array.isArray(cases) || !cases.length) return;
+    root.dataset.iasBuilt = '1';
 
+    const AVATARS = {
+      'Dr. Ghafouri': 'https://lemonclinic.org/images/doctors/ghafouri-ava-96.webp',
+      'Dr. Hoosavi': 'https://lemonclinic.org/images/doctors/havasi-ava-96.webp',
+      'Dr. Mehrabouran': 'https://lemonclinic.org/images/doctors/mehravaran-ava-96.webp'
+    };
+    const reduce = prefersReducedMotion();
+
+    const itemNode = function (c) {
+      const avatar = AVATARS[c.doctor] || AVATARS['Dr. Ghafouri'];
+      const li = document.createElement('li');
+      li.className = 'ias-item';
+      li.innerHTML =
+        '<a class="ias-card" href="' + c.link + '" tabindex="-1" aria-label="Case: ' + c.title + ', ' + c.doctor + '">' +
+          '<span class="ias-media">' +
+            '<span class="ias-ba">' +
+              '<span class="ias-ba-layer ias-ba-after"><img src="' + c.after + '" width="' + c.w + '" height="' + c.h + '" loading="lazy" decoding="async" alt="' + c.title + ' after at Lemon Aesthetic Clinic, ' + c.doctor + '"></span>' +
+              '<span class="ias-ba-layer ias-ba-before"><img src="' + c.before + '" width="' + c.w + '" height="' + c.h + '" loading="lazy" decoding="async" alt=""></span>' +
+              '<span class="ias-ba-line" aria-hidden="true"></span>' +
+              '<span class="ias-ba-handle" aria-hidden="true">\u2039\u203a</span>' +
+            '</span>' +
+            '<span class="ias-before">Before</span><span class="ias-after">After</span>' +
+          '</span>' +
+          '<span class="ias-meta">' +
+            '<span class="ias-treat">' + c.title + '</span>' +
+            '<span class="ias-doc"><img src="' + avatar + '" width="36" height="36" alt="' + c.doctor + '" loading="lazy" decoding="async"><span class="ias-doc-name">' + c.doctor + '</span></span>' +
+            '<span class="ias-hint" aria-hidden="true">View case</span>' +
+          '</span>' +
+        '</a>' +
+        '<input class="ias-ba-range" type="range" min="0" max="100" value="50" aria-label="Compare before and after">';
+      return li;
+    };
+
+    cases.forEach(function (c) { track.appendChild(itemNode(c)); });
+    const base = Array.prototype.slice.call(track.children);
+
+    const buildClones = function () {
       track.querySelectorAll('[data-ias-clone]').forEach(function (n) { n.remove(); });
-
-      const nav = root.parentElement ? root.parentElement.querySelector('.ias-nav') : null;
-      const prev = nav ? nav.querySelector('[data-ias-prev]') : null;
-      const next = nav ? nav.querySelector('[data-ias-next]') : null;
-
-      const sync = function () {
-        const max = root.scrollWidth - root.clientWidth;
-        if (prev) prev.disabled = root.scrollLeft <= 1;
-        if (next) next.disabled = root.scrollLeft >= max - 1;
-      };
-
-      const nudge = function (dir) {
-        root.scrollBy({
-          left: dir * items[0].getBoundingClientRect().width,
-          behavior: prefersReducedMotion() ? 'auto' : 'smooth'
+      if (reduce || !base.length) return;
+      let setWidth = 0;
+      base.forEach(function (n) { setWidth += n.getBoundingClientRect().width; });
+      const viewport = root.getBoundingClientRect().width || window.innerWidth;
+      if (!setWidth) return;
+      let copies = Math.max(2, Math.ceil((2 * viewport) / setWidth));
+      if (copies % 2) copies += 1;
+      for (let c = 1; c < copies; c++) {
+        base.forEach(function (n) {
+          const clone = n.cloneNode(true);
+          clone.setAttribute('data-ias-clone', '');
+          clone.setAttribute('aria-hidden', 'true');
+          const link = clone.querySelector('.ias-card');
+          if (link) link.setAttribute('tabindex', '-1');
+          const rng = clone.querySelector('.ias-ba-range');
+          if (rng) rng.remove();
+          track.appendChild(clone);
         });
-      };
+      }
+    };
 
-      if (prev) prev.addEventListener('click', function () { nudge(-1); });
-      if (next) next.addEventListener('click', function () { nudge(1); });
+    buildClones();
 
-      root.addEventListener('scroll', rafThrottle(sync), { passive: true });
-      window.addEventListener('resize', rafThrottle(sync), { passive: true });
-      sync();
-    });
+    let resizeTimer = 0;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(buildClones, 180);
+    }, { passive: true });
+
+    const hold = function () { root.classList.add('is-held'); };
+    const release = function () { root.classList.remove('is-held'); };
+    root.addEventListener('pointerdown', hold, { passive: true });
+    window.addEventListener('pointerup', release, { passive: true });
+    window.addEventListener('pointercancel', release, { passive: true });
   }
 
-  /* Before/after compare inside one arch frame. The range input sits over the
-   * frame but outside the card's link (a link may not contain one), and every
-   * `input` event writes `--pos` on the frame — the clipped before layer, the
-   * divider line and the handle all read that one variable, so they cannot
+  /* Before/after compare inside one arch frame. The frame is the invisible
+   * range input that covers it: the pointer's x over that frame drives `--pos`
+   * (eased toward the target at ~0.18 per frame) and leaving — or lifting a
+   * touch — eases back to the middle. The range stays for keyboard use, and
+   * its `input` event writes the same target. The clipped before layer, the
+   * divider line and the handle all read the one `--pos`, so they cannot
    * drift apart. */
   function initCaseCompare() {
-    document.querySelectorAll('.ias-media').forEach(function (media) {
-      if (media.dataset.iasCompareBound) return;
-      const item = media.closest('.ias-item');
-      const range = item ? item.querySelector('.ias-ba-range') : null;
-      const ba = media.querySelector('.ias-ba');
-      if (!range || !ba) return;
-      media.dataset.iasCompareBound = '1';
+    document.querySelectorAll('.ias-ba-range').forEach(function (range) {
+      if (range.dataset.iasCompareBound) return;
+      const item = range.closest('.ias-item');
+      const media = item ? item.querySelector('.ias-media') : null;
+      const ba = media ? media.querySelector('.ias-ba') : null;
+      if (!media || !ba) return;
+      range.dataset.iasCompareBound = '1';
 
-      const apply = function () { media.style.setProperty('--pos', range.value + '%'); };
-      range.addEventListener('input', apply);
-      apply();
+      const reduce = prefersReducedMotion();
+      let current = 50;
+      let target = 50;
+      let raf = 0;
 
-      /* The default layout is ONE combined side-by-side photo used by both
-       * layers (frame width, left half / right half). If a case ever ships two
-       * real photos instead, differing srcs flip the layers to frame width. */
-      const imgs = ba.querySelectorAll('.ias-ba-layer img');
-      if (imgs.length === 2 && imgs[0].getAttribute('src') !== imgs[1].getAttribute('src')) {
-        ba.classList.add('ias-ba--two');
-      }
+      const paint = function (v) { media.style.setProperty('--pos', v + '%'); };
+      const step = function () {
+        const diff = target - current;
+        if (reduce || Math.abs(diff) < 0.1) {
+          current = target;
+          paint(current);
+          raf = 0;
+          return;
+        }
+        current += diff * 0.18;
+        paint(current);
+        raf = requestAnimationFrame(step);
+      };
+      const set = function (v) {
+        target = v < 0 ? 0 : (v > 100 ? 100 : v);
+        if (reduce) { current = target; paint(current); return; }
+        if (!raf) raf = requestAnimationFrame(step);
+      };
+      const fromX = function (clientX) {
+        const r = ba.getBoundingClientRect();
+        if (!r.width) return;
+        set((clientX - r.left) / r.width * 100);
+      };
 
-      /* The gesture belongs to the slider: pointer events stop here so the
-       * scroll container never starts a sideways drag from a handle drag.
-       * (`touch-action: pan-y` on the input already gives it the vertical
-       * axis back to the page, for touch.) */
-      ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'].forEach(function (type) {
-        range.addEventListener(type, function (e) { e.stopPropagation(); });
+      paint(current);
+
+      range.addEventListener('pointermove', function (e) { fromX(e.clientX); }, { passive: true });
+      range.addEventListener('pointerleave', function (e) {
+        if (e.pointerType === 'mouse') set(50);
+      });
+      range.addEventListener('pointerup', function (e) {
+        if (e.pointerType !== 'mouse') set(50);
+      });
+      range.addEventListener('pointercancel', function () { set(50); });
+      range.addEventListener('input', function () {
+        if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        current = target = Number(range.value);
+        paint(current);
       });
     });
   }
@@ -1259,7 +1328,7 @@
     initMobileDrawer();   // also drives the sticky-header state
     initBottomBar();
     initCardTilt();
-    initCaseSlider();
+    initCaseMarquee();
     initCaseCompare();
     initMarqueeDrag();
     initReviewMarquee();
