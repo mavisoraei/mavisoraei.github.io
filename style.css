@@ -10745,3 +10745,238 @@ body:has(#mobile-drawer.open) .lm-header {
   background: rgba(250, 248, 245, .92);
   border-bottom-color: rgba(42, 38, 34, .08);
 }
+
+/* ==========================================================================
+   HOME HERO v2 — REBUILD INSIDE THE CREAM SHEET
+   --------------------------------------------------------------------------
+   Replaces the floating left column (`.lm-hero-copy` blocks + the `/pic/Face.webp`
+   arch portrait) with a single editorial hero: eyebrow, two-line Bodoni title,
+   lead and two pill buttons on the left; the new RGBA cut-out (`/pic/new/ai.webp`)
+   on the right, clipped by the sheet's dome. The old markup is hidden but kept.
+   The dome geometry, the rise and the intro are untouched — the photo lives
+   INSIDE the clipped `.sheet__bg`, so the dome border-radius clips it at every
+   frame of the rise and it can never appear outside the cream.
+
+   `--hero-h` is the hero's height. `--hero-top` is the hero's distance below the
+   sheet's top edge; it mirrors `.sheet__content`'s own `padding-top` (identical
+   formula and scope), which is what parks the photo on the hero's top edge. Both
+   live on `.sheet`, so `.sheet__bg` and `.lm-hero` inherit the same numbers. */
+
+.sheet {
+  --hero-h: clamp(520px, 34.5vw, 780px);
+  --hero-top: 0;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
+  --hero-top: min(26vh, calc(var(--arch-dome, 160px) * .3));
+}
+
+/* 1 — RETIRE the old hero content (kept in the DOM, out of view). */
+.lm-hero-block--docs,
+.lm-hero-block--video,
+.lm-hero-block--text,
+.lm-hero-block--buttons,
+.lm-hero-figure {
+  display: none !important;
+}
+
+/* The old grid stays in the DOM so its visually-hidden <h1> keeps labelling the
+   section, but it must contribute no height or it drags the copy off centre. */
+.lm-hero-grid,
+.lm-hero-copy {
+  margin: 0;
+  padding: 0;
+}
+
+/* 2 — THE HERO BOX. Container width, fixed height, one flex column. */
+.lm-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--container);
+  max-width: var(--container);
+  height: var(--hero-h);
+  min-height: 0;
+  margin-inline: auto;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* 4 — COPY BLOCK. Fills the hero, centred between the 62px navbar and the 64px
+   bottom band, capped at a 560px measure, held above the photo. */
+.lm-hero-v2__copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 560px;
+  padding-top: 62px;
+  padding-bottom: 64px;
+  box-sizing: border-box;
+}
+
+.lm-hero-v2__eyebrow {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: #6b6258;
+}
+
+.lm-hero-v2__title {
+  margin: 22px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(44px, 4vw, 72px);
+  font-weight: 400;
+  line-height: .92;
+  letter-spacing: -.01em;
+  color: #1f1b19;
+  font-synthesis: none;
+}
+
+.lm-hero-v2__lead {
+  margin: 22px 0 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.4;
+  color: #4a443d;
+}
+
+.lm-hero-v2__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.lm-hero-v2__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 38px;
+  padding: 0 24px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.lm-hero-v2__btn--dark {
+  background: #2a2622;
+  color: #fff;
+}
+
+.lm-hero-v2__btn--dark:hover {
+  background: #1a1815;
+}
+
+.lm-hero-v2__btn--outline {
+  background: transparent;
+  border-color: rgba(42, 38, 34, .45);
+  color: #2a2622;
+}
+
+.lm-hero-v2__btn--outline:hover {
+  border-color: #2a2622;
+}
+
+.lm-hero-v2__arrow {
+  display: block;
+  width: 14px;
+  height: 10px;
+  flex: none;
+}
+
+/* 5 — BOTTOM LINE. Labels + hairline across the container, above the photo. */
+.lm-hero-v2__bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 36px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.lm-hero-v2__lab {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: #8c7040;
+  white-space: nowrap;
+}
+
+.lm-hero-v2__rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: rgba(176, 150, 98, .55);
+}
+
+/* 3 — DESKTOP PHOTO. Absolutely placed inside the clipped `.sheet__bg`; its top
+   equals the hero's top edge, so it rises with the sheet and stays inside the
+   dome. Transparent source, so no left/right mask — only the bottom fade. */
+.lm-hero-photo {
+  position: absolute;
+  top: var(--hero-top);
+  right: 2.7vw;
+  width: auto;
+  height: calc(var(--hero-h) * 1.03);
+  max-width: none;
+  object-fit: contain;
+  object-position: right top;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 78%, transparent 100%);
+}
+
+/* The in-flow duplicate is desktop-hidden; it only exists for the mobile stack. */
+.lm-hero-v2__photo {
+  display: none;
+}
+
+/* 6 — SINGLE COLUMN. Copy first, then the photo full width (max 640px, centred)
+   with the same bottom fade. Height goes auto and the bottom labels retire. */
+@media (max-width: 1100px) {
+  .lm-hero {
+    height: auto;
+  }
+
+  .lm-hero-v2__copy {
+    flex: 0 1 auto;
+    max-width: none;
+  }
+
+  .lm-hero-photo {
+    display: none;
+  }
+
+  .lm-hero-v2__photo {
+    display: block;
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    margin: 0 auto;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 78%, transparent 100%);
+  }
+
+  .lm-hero-v2__bottom {
+    display: none;
+  }
+}

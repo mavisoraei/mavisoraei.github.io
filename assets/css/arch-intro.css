@@ -335,13 +335,13 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    radial-gradient(900px 620px at 88% 3%, rgba(233,215,176,.42), transparent 62%),
-    radial-gradient(760px 700px at 4% 22%, rgba(238,224,208,.55), transparent 62%),
-    radial-gradient(900px 720px at 96% 48%, rgba(228,212,182,.38), transparent 62%),
-    radial-gradient(800px 700px at 6% 74%, rgba(236,222,204,.5), transparent 62%),
-    radial-gradient(900px 600px at 92% 96%, rgba(226,210,180,.35), transparent 62%),
-    linear-gradient(180deg,#faf8f5,#f5f2eb);
+  background-image:
+    radial-gradient(900px 600px at 16% 0%, rgba(255,249,238,.75), transparent 65%),
+    linear-gradient(115deg, transparent 18%, rgba(255,250,242,.55) 34%, transparent 52%),
+    radial-gradient(800px 560px at 0% 62%, rgba(255,247,234,.55), transparent 62%),
+    linear-gradient(180deg, #e8ddcc 0, #e4d7c3 520px, #efe8dc 1100px, #f6f3ec 1500px, #f6f3ec 100%);
+  background-size: auto, 100% 900px, auto, auto;
+  background-position: 0 0, top, 0 0, 0 0;
   background-repeat: no-repeat;
   /* THE DOME HAIRLINE, on the element that carries the radius. Because the
      horizontal radius is 50%, the two top corner arcs MEET at the centre and no
@@ -363,21 +363,10 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
       0 0;
 }
 
-/* PAPER GRAIN - one repeating feTurbulence tile at 4% opacity, on the sheet
-   background element so the dome radius clips it and it can never spill onto the
-   photograph beside the crown. No animation, no `filter`, no blend mode: the tile
-   is a plain repeating background-image that rasterises once. The 140x140 tile
-   with `stitchTiles='stitch'` is seamless at its own size. */
-body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: .04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 140px 140px;
-  background-repeat: repeat;
-}
+/* PAPER GRAIN - REMOVED for the home hero rebuild. The `.sheet__bg::after`
+   feTurbulence tile was retired: the new hero paints the cut-out photograph as a
+   child of `.sheet__bg`, and a pseudo-element after it would sit on top of the
+   picture. The cream now carries no grain layer at all. */
 
 /* v2.2.6 - the top padding that clears the hero content out of the dome curve.
 
