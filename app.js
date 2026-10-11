@@ -57,18 +57,48 @@
   function initHeaderScroll() {
     let headerEl = null;
     let lastSolid = null;
+    const hero = document.querySelector('.arch-hero');
+    /* The observer drives the animated home only. Under reduced motion the
+       opening band has no height, so it is never "intersecting" and the
+       observer would never fire a second time; the home then follows the
+       plain scroll rule alongside the inner pages. */
+    const usesObserver = Boolean(hero && !prefersReducedMotion() && 'IntersectionObserver' in window);
+
+    const setSolid = function (solid) {
+      if (solid === lastSolid) return;
+      lastSolid = solid;
+      if (!headerEl) headerEl = document.getElementById('site-header');
+      if (headerEl) headerEl.classList.toggle('is-solid', solid);
+    };
+
     const update = function () {
       if (!headerEl) headerEl = document.getElementById('site-header');
       if (!headerEl) return;
-      headerEl.classList.toggle('scrolled', window.scrollY > 8);
-      const solid = window.scrollY > 24;
-      if (solid !== lastSolid) {
-        lastSolid = solid;
-        headerEl.classList.toggle('is-solid', solid);
-      }
+      const y = window.scrollY || window.pageYOffset || 0;
+      headerEl.classList.toggle('scrolled', y > 8);
+      /* Inner pages, and the reduced-motion home (where the band has no
+         height), go solid after a comfortable 80px. */
+      if (!usesObserver) setSolid(y > 80);
     };
     window.addEventListener('scroll', rafThrottle(update), { passive: true });
     update();
+
+    if (usesObserver) {
+      /* The band stays on screen until it has fully scrolled behind the bar:
+         `rootMargin: -70px` drops the observer's top edge just under the fixed
+         bar, so `!isIntersecting` means the band's bottom has passed it, and
+         `top < 0` keeps the trigger one-way (a band scrolling back into view
+         stays below the line, so the bar never flickers transparent behind
+         visible hero copy). */
+      const io = new IntersectionObserver(
+        function (entries) {
+          const e = entries[entries.length - 1];
+          setSolid(!e.isIntersecting && e.boundingClientRect.top < 0);
+        },
+        { rootMargin: '-70px 0px 0px 0px', threshold: 0 }
+      );
+      io.observe(hero);
+    }
   }
 
   /* ------------------------------------------------------------------ *
@@ -1321,6 +1351,47 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * window light — the two drifting glows on the home sheet
+   *
+   * The lights are transparent and paused by default; app.js only adds
+   * `lights-on` while the opening band is on screen and the tab is visible, so
+   * a background tab or a scrolled-away hero costs zero compositor work. One
+   * observer plus one `visibilitychange` listener, no scroll handler, and the
+   * animation itself stays entirely in CSS (transform + opacity).
+   * ------------------------------------------------------------------ */
+
+  function initWindowLight() {
+    const lights = document.querySelector('.sheet__bg .light-a');
+    if (!lights) return;
+    if (prefersReducedMotion()) return;
+
+    const hero = document.querySelector('.arch-hero');
+    let heroOnScreen = true;
+    let pageVisible = !document.hidden;
+    const apply = function () {
+      document.body.classList.toggle('lights-on', heroOnScreen && pageVisible);
+    };
+
+    if (hero && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        function (entries) {
+          heroOnScreen = entries[entries.length - 1].isIntersecting;
+          apply();
+        },
+        { threshold: 0 }
+      );
+      io.observe(hero);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      pageVisible = !document.hidden;
+      apply();
+    });
+
+    apply();
+  }
+
+  /* ------------------------------------------------------------------ *
    * boot
    * ------------------------------------------------------------------ */
 
@@ -1335,6 +1406,7 @@
     initConsultCta();
     initVideoModal();
     initPageMesh();
+    initWindowLight();
   });
 
   // these two need no DOM, so they start as early as possible

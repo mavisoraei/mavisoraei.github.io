@@ -335,13 +335,16 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
+  /* All layers are radial or full-height linear gradients. The old second
+     layer was a `linear-gradient(115deg, ...)` sized `100% 900px`: the fixed
+     900px box ended in a hard horizontal line across the cream just below the
+     hero, and that edge was the "seam". A radial glow has no edge at all, so
+     no `background-size` is needed and the layer can never leave a line. */
   background-image:
     radial-gradient(900px 600px at 16% 0%, rgba(255,249,238,.75), transparent 65%),
-    linear-gradient(115deg, transparent 18%, rgba(255,250,242,.55) 34%, transparent 52%),
+    radial-gradient(62% 44% at 34% 20%, rgba(255,250,242,.5), transparent 72%),
     radial-gradient(800px 560px at 0% 62%, rgba(255,247,234,.55), transparent 62%),
     linear-gradient(180deg, #e8ddcc 0, #e4d7c3 520px, #efe8dc 1100px, #f6f3ec 1500px, #f6f3ec 100%);
-  background-size: auto, 100% 900px, auto, auto;
-  background-position: 0 0, top, 0 0, 0 0;
   background-repeat: no-repeat;
   /* THE DOME HAIRLINE, on the element that carries the radius. Because the
      horizontal radius is 50%, the two top corner arcs MEET at the centre and no
@@ -361,6 +364,68 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
     / calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
       calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
       0 0;
+}
+
+/* WINDOW LIGHT — two soft, warm glows drifting slowly across the cream like
+   sunlight moving over a wall. They are plain children of the clipped
+   `.sheet__bg`, so the dome radius trims them at every frame for free, and they
+   paint behind the hero photo (which follows them in the DOM) so the light is
+   always on the wall and never over the model.
+
+   Motion is transform + opacity ONLY (no `filter`, no blur); `will-change` is
+   on the two layers and nothing else. They are PAUSED by default and app.js
+   adds `lights-on` while the hero band is on screen and the tab is visible, so
+   a background tab or a scrolled-away hero costs zero compositor work. Under
+   reduced motion the whole `.arch-intro` scope is absent, so the lights simply
+   do not render. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .light-a,
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .light-b {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,246,228,.75), rgba(255,246,228,0));
+  opacity: .45;
+  transform-origin: center;
+  will-change: transform, opacity;
+  animation: lm-light-a 26s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .light-a {
+  width: 62vw;
+  height: 30vw;
+  left: 4vw;
+  top: 3vw;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg .light-b {
+  width: 44vw;
+  height: 20vw;
+  left: 30vw;
+  top: 14vw;
+  opacity: .3;
+  animation-name: lm-light-b;
+  animation-duration: 34s;
+}
+
+/* Runs only while `.lights-on` is present. This rule is deliberately scoped
+   through `.arch-intro` as well: the shared rule above carries five class-level
+   selectors, so a bare `body.lights-on …` would LOSE the cascade and the lights
+   would stay parked forever. Same specificity, later in the file, plus the
+   `.lights-on` class decides it. */
+body.arch-intro:not(.classic-layout):not(.classic-mode).lights-on .sheet__bg .light-a,
+body.arch-intro:not(.classic-layout):not(.classic-mode).lights-on .sheet__bg .light-b {
+  animation-play-state: running;
+}
+
+@keyframes lm-light-a {
+  from { transform: translate3d(0, 0, 0) rotate(-18deg) scale(1);     opacity: .3; }
+  to   { transform: translate3d(7vw, 2.5vw, 0) rotate(-18deg) scale(1.1); opacity: .65; }
+}
+
+@keyframes lm-light-b {
+  from { transform: translate3d(0, 0, 0) rotate(-18deg) scale(1.05); opacity: .22; }
+  to   { transform: translate3d(-6vw, 2vw, 0) rotate(-18deg) scale(1); opacity: .5; }
 }
 
 /* PAPER GRAIN - REMOVED for the home hero rebuild. The `.sheet__bg::after`
@@ -603,6 +668,23 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-risen .lm-hero-gri
   will-change: transform;
 }
 
+/* THE NEW EDITORIAL HERO lifts too. The v2 copy column and the cut-out photo
+   live in `.sheet__content` / `.sheet__bg`, not in the old `.lm-hero-grid`, so
+   the parallax above never reached them and they arrived welded to the sheet.
+   `--arch-offset` is the hero's remaining travel (+62vh at rest, decaying to 0
+   through the rise), so a small multiple reads as the copy and the photo
+   settling upward into place. Transform-only, and the scope means the
+   reduced-motion teardown (no `.arch-intro`) drops both outright. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-v2__copy {
+  transform: translate3d(0, calc(var(--arch-offset, 0px) * .06), 0);
+  will-change: transform;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-photo {
+  transform: translate3d(0, calc(var(--arch-offset, 0px) * .04), 0);
+  will-change: transform;
+}
+
 /* Cancelled during the rise itself. The properties only exist while the hero is
    transformed (the first-paint guard in section 8 pins them until then), so the
    inner layer would otherwise be sitting 27vh low from the very first frame and
@@ -705,6 +787,13 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__conte
   body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-grid {
     transform: none !important;
     transition: none !important;
+  }
+
+  /* The v2 hero's own lift (section 8b) is motion too, so it is parked rather
+     than merely losing its `.arch-intro` scope to a mid-session toggle. */
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-v2__copy,
+  body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-hero-photo {
+    transform: none !important;
   }
 
   /* v2.2.6 - THE SLOWER RISE IS MOTION, SO IT GOES.

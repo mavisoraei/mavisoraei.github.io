@@ -10573,7 +10573,7 @@ body.lm-modal-open {
 }
 
 .lm-header.is-solid {
-  background: rgba(250, 248, 245, .92);
+  background: rgba(246, 243, 236, .94);
   border-bottom-color: rgba(42, 38, 34, .08);
 }
 
@@ -10736,13 +10736,13 @@ body.lm-modal-open {
    drawer is open, on any page. */
 @media (max-width: 900px) {
   body:not(:has(.arch-hero)) .lm-header {
-    background: rgba(250, 248, 245, .92);
+    background: rgba(246, 243, 236, .94);
     border-bottom-color: rgba(42, 38, 34, .08);
   }
 }
 
 body:has(#mobile-drawer.open) .lm-header {
-  background: rgba(250, 248, 245, .92);
+  background: rgba(246, 243, 236, .94);
   border-bottom-color: rgba(42, 38, 34, .08);
 }
 
@@ -10941,8 +10941,8 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
   object-fit: contain;
   object-position: right top;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 78%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0, #000 78%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 96%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 96%);
 }
 
 /* The in-flow duplicate is desktop-hidden; it only exists for the mobile stack. */
@@ -10972,8 +10972,8 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
     max-width: 640px;
     height: auto;
     margin: 0 auto;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 78%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0, #000 78%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 96%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 96%);
   }
 
   .lm-hero-v2__bottom {
