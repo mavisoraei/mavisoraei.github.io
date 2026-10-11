@@ -62,6 +62,10 @@
 
   /* ---------------------------------------------------------------- consts */
 
+  /* Play the page-load intro on EVERY load, not once per session. Flip to
+     `true` to bring back the old once-per-session behaviour. */
+  const INTRO_ONCE_PER_SESSION = false;
+
   /* PHASE 1. MUST match the `intro-arch` / `intro-dim` durations declared in
      index.html's critical block: 2.55s, built from the 47.06% / 56.86% /
      87.06% stops that are the rise / hold / open beats. */

@@ -114,7 +114,7 @@ html.intro-play .intro__photo {
    intro start at first paint instead of at first script: all it needs is one
    class on <html> and a start timestamp for arch-intro.js to read.
 
-   Once per session, never under reduced motion, never on a viewport too short
+   On every load, never under reduced motion, never on a viewport too short
    to hold the arch. If arch-intro.js never arrives, the two calls below still
    release the lock and drop #intro, so the page can never be left trapped
    behind a dark screen.
@@ -123,12 +123,9 @@ html.intro-play .intro__photo {
   var doc = document.documentElement;
   var play = false;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var seen = null;
-  try { seen = sessionStorage.getItem('lm-intro'); } catch (e) { /* private mode: play */ }
 
-  if (!reduce && !seen && window.innerHeight >= 520) {
+  if (!reduce && window.innerHeight >= 520) {
     play = true;
-    try { sessionStorage.setItem('lm-intro', '1'); } catch (e) {}
     /* The intro always ends at the top of the page, so the browser must not
        restore a saved position underneath it. */
     try { history.scrollRestoration = 'manual'; } catch (e) {}
