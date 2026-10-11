@@ -1,0 +1,132 @@
+/* nav-extras.css — T1: Services mega-menu overrides.
+   Loaded AFTER style.css. Only overrides existing rules (higher specificity);
+   it never touches the header markup or the open/close JS. Desktop only:
+   at <=900px the existing mobile drawer is kept untouched. */
+
+@media (min-width: 901px) {
+  /* Panel: a fixed, centred sheet under the header. Fixed survives because no
+     ancestor of the panel has a transform; the only ancestor that would become
+     a containing block is the pill bar's backdrop-filter, dropped while open. */
+  .mega .mega-panel {
+    position: fixed;
+    top: 72px;
+    left: 50%;
+    right: auto;
+    inset-inline-end: auto;
+    transform: translateX(-50%);
+    width: min(1120px, calc(100vw - 48px));
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    background: #faf8f5;
+    border: 1px solid rgba(42, 38, 34, .08);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 24px 60px rgba(42, 38, 34, .12);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    z-index: 120;
+  }
+
+  /* Groups: four equal columns. */
+  .mega .mega-panel .mega-groups {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+    border-bottom: 1px solid rgba(42, 38, 34, .12);
+    padding-bottom: 20px;
+  }
+
+  /* No card boxes inside. */
+  .mega .mega-panel .mega-group {
+    min-width: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  /* Groups with more than 8 links span two grid columns. */
+  .mega .mega-panel .mega-group:has(ul > li:nth-child(9)) {
+    grid-column: span 2;
+  }
+
+  /* Group title: small gold label with a hairline underline. */
+  .mega .mega-panel .mega-group-title {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    line-height: 1.35;
+    color: #8c7040;
+    padding: 0 0 10px;
+    margin: 0 0 12px;
+    border-bottom: 1px solid rgba(42, 38, 34, .12);
+  }
+
+  /* Links: a vertical list, not cards. */
+  .mega .mega-panel .mega-group ul {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mega .mega-panel .mega-group:has(ul > li:nth-child(9)) ul {
+    display: block;
+    column-count: 2;
+    column-gap: 20px;
+  }
+
+  .mega .mega-panel .mega-group ul a {
+    display: block;
+    padding: 0;
+    border-radius: 0;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #2a2622;
+    white-space: normal;
+    overflow-wrap: normal;
+    text-decoration: none;
+  }
+
+  .mega .mega-panel .mega-group ul a:hover {
+    background: none;
+    text-decoration: underline;
+  }
+
+  /* Footer row: the tariff link as an outline pill, right aligned. */
+  .mega .mega-panel .mega-tariff {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 46px;
+    margin: 20px 0 0 auto;
+    padding: 0 26px;
+    border: 1px solid rgba(42, 38, 34, .3);
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #2a2622;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* On the inner pages the pill bar carries backdrop-filter, which would become
+     the containing block for this fixed panel and break its centring; drop it
+     only while the Services menu is open. */
+  .site-header:has(.mega[open]) > .bar {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
