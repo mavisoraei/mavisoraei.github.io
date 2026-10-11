@@ -964,3 +964,198 @@ main .ba-pair:not(#_) {
     transform: none;
   }
 }
+
+/* ==========================================================================
+   T6 — INNER PAGE COMPONENT REVISIONS
+   1. Bottom CTA card (SMART MIRROR)
+   2. Callout component (gradient card; mascot variant)
+   3. facial.html "Cost and Fees" table groups
+   4. Single-column centering for pages without an aside
+   ========================================================================== */
+
+/* --- T6.1 Bottom CTA ----------------------------------------------------- */
+main .svc-cta:not(#_) {
+  background: transparent;
+  margin-top: 72px;
+  margin-bottom: 96px;
+}
+
+main .cta-card:not(#_) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 32px;
+  align-items: center;
+  background: linear-gradient(135deg, #f6efe2, #efe5d3);
+  border: 1px solid rgba(184, 160, 112, .35);
+  border-radius: 28px;
+  padding: 44px 52px;
+  box-shadow: none;
+}
+
+main .cta-eyebrow:not(#_) {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: .24em;
+  color: #8c7040;
+  margin: 0 0 10px;
+}
+
+main .cta-title:not(#_) {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+  max-width: 42ch;
+  margin: 0;
+}
+
+main .cta-card .cta-actions:not(#_) {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (max-width: 860px) {
+  main .cta-card:not(#_) {
+    grid-template-columns: 1fr;
+    padding: 32px 28px;
+  }
+
+  main .cta-card .cta-actions:not(#_) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  main .cta-card .cta-actions a:not(#_) {
+    width: 100%;
+  }
+}
+
+/* --- T6.2 Callouts ------------------------------------------------------- */
+main .callout:not(#_) {
+  background: linear-gradient(135deg, #fbf9f5, #f3ece0);
+  border: 1px solid rgba(184, 160, 112, .35);
+  border-radius: 22px;
+  padding: 24px 30px;
+  margin: 40px 0;
+  box-shadow: none;
+}
+
+main .callout .callout-title:not(#_) {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 500;
+  margin: 0 0 6px;
+  color: #2a2622;
+  letter-spacing: 0;
+}
+
+main .callout p:not(#_):not(.callout-title) {
+  font-size: 16px;
+  line-height: 1.65;
+  color: #4a443d;
+  margin: 0;
+}
+
+main .callout--media:not(#_) {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 22px;
+  align-items: center;
+}
+
+main .callout--media img:not(#_) {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #efe5d3;
+}
+
+/* --- T6.3 facial "Cost and Fees" table ----------------------------------- */
+main:has(.callout--media) .svc-prices:not(#_) {
+  margin-bottom: 56px;
+}
+
+main:has(.callout--media) .svc-prices .lp-scroll:not(#_) {
+  border: 1px solid rgba(42, 38, 34, .08);
+  border-radius: 20px;
+  overflow-x: auto;
+}
+
+main:has(.callout--media) .svc-prices .pr-table :is(th, td):not(#_) {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(42, 38, 34, .08);
+}
+
+main:has(.callout--media) .svc-prices .pr-table tbody tr:last-child:not(#_),
+main:has(.callout--media) .svc-prices .pr-table tbody tr:last-of-type :is(th, td):not(#_) {
+  border-bottom: 0;
+}
+
+main:has(.callout--media) .svc-prices .pr-table .num:not(#_) {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+main .pr-group-row td:not(#_) {
+  background: rgba(184, 160, 112, .08);
+  font-weight: 600;
+  color: #2a2622;
+  padding: 14px 18px;
+}
+
+main .pr-sub-row td:nth-child(2):not(#_) {
+  padding-inline-start: 36px;
+}
+
+@media (max-width: 640px) {
+  main .pr-table td[data-label="Treatment"]:empty:not(#_) {
+    display: none;
+  }
+
+  main .pr-group-row td:not(#_),
+  main .pr-sub-row td:nth-child(2):not(#_) {
+    padding-inline-start: 18px;
+  }
+}
+
+/* --- T6.4 Single-column pages ------------------------------------------ */
+main .svc-grid:not(#_):not(:has(.svc-side)):not(:has(.svc-card)) {
+  display: block;
+  max-width: min(980px, var(--container));
+  margin-inline: auto;
+}
+
+main .svc-group .svc-grid:not(#_):has(.svc-card) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--lux-gap);
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+@media (min-width: 960px) {
+  main .svc-grid:not(#_):has(.svc-side) {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: start;
+    max-width: var(--container);
+    margin-inline: auto;
+  }
+}
+
+main:has(.callout--media) .svc-prices.wrap:not(#_) {
+  max-width: min(980px, var(--container));
+  margin-inline: auto;
+}
