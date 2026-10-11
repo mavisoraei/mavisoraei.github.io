@@ -1,0 +1,53 @@
+﻿face-analysis-1 | meta-title | AI Face Analysis and Facial Beauty Test, Free | Lemon
+face-analysis-2 | meta-description | Upload a photo of your face and get a precise facial beauty score out of 100 across five criteria, free and with no sign-up. The filler and contouring simulation is free too and only asks you to confirm your number.
+face-analysis-3 | li | Home
+face-analysis-4 | li | AI Face Analysis
+face-analysis-5 | p | Lemon's Smart Mirror
+face-analysis-6 | h1 | AI Face Analysis and Facial Beauty Test
+face-analysis-7 | p | Upload a photo: see your precise facial beauty score out of 100 and the result before the injection on your own face. The score comes with no sign-up, and both are free.
+face-analysis-8 | a | Start Your Free AI Analysis with Lemon
+face-analysis-9 | button | Talk to Lemon's Smart Assistant
+face-analysis-10 | figcaption | Doll-Style Lip Filler
+face-analysis-11 | figcaption | Full-Face Contouring
+face-analysis-12 | figcaption | ago
+face-analysis-13 | figcaption | After
+face-analysis-14 | h2 | What is AI face analysis, and what do you get?
+face-analysis-15 | p | AI face analysis means you upload one simple photo of your face and Lemon’s Smart Mirror analyses it for free within seconds. You get two things: first, a precise facial beauty score out of 100 based on five symmetry and proportion criteria, and second, a visual simulation of the approximate result of lip filler or contouring on your own photo. Neither is a medical diagnosis; their job is to give you a clearer picture and more realistic expectations before you make any decision.
+face-analysis-16 | p | People search for this tool under many different names: face analysis, facial analysis, facial beauty analysis, face assessment, facial beauty test with a photo, or AI facial beauty test. They are all the same thing and all lead to this page, so you do not need to hunt for the right name.
+face-analysis-17 | h2 | How It Works
+face-analysis-18 | li | Upload a photo: You upload one simple photo of your face.
+face-analysis-19 | li | The AI analyzes: The proportions and symmetry of your facial features are assessed.
+face-analysis-20 | li | See the score: The facial beauty test score out of 100 appears on screen. Up to this point you need neither a sign-up nor a phone number.
+face-analysis-21 | li | Verify your number: For the photo step, a text message code arrives and you enter it.
+face-analysis-22 | li | See your result: Treatment simulation on your own face, before any decision.
+face-analysis-23 | h2 | Facial Beauty Test Without a Photo
+face-analysis-24 | p | A facial beauty test without a photo is not possible, because the score is calculated from that very photo of yours. But what people usually worry about, namely signing up and giving a phone number, is not needed at this stage: you upload the photo and the score with the five-criteria analysis appears right there, with no user account and no phone number. The number is only needed one step later, when you want the simulated photo of filler or contouring on your own face.
+face-analysis-25 | p | What happens to the photo is clear too: it is stored on Lemon’s own server for at most 6 months. After that the original photo and all the simulated images are deleted automatically. The analysis itself is done by an AI provider whose servers are outside Iran; the photo is sent only for this purpose, without your name or number. The details are on the Privacy Policy is written.
+face-analysis-26 | p | And if you still prefer not to upload a photo of your face, there is another option right here: the “Talk to Lemon’s Smart Assistant” button at the top of this page. You ask your question by voice and get the answer on the spot, without uploading anything. The fees are also on the Price and real examples in Gallery are available without any upload.
+face-analysis-27 | h2 | Facial Beauty Test: How the Score Out of 100 Is Calculated
+face-analysis-28 | p | The score is not guesswork. The Smart Mirror measures five specific criteria on your own photo precisely and gives each one a number out of 100:
+face-analysis-29 | li | Overall Facial Symmetry
+face-analysis-30 | li | Eye Proportion
+face-analysis-31 | li | Nose Proportion
+face-analysis-32 | li | Lip Proportion
+face-analysis-33 | li | Chin and Jaw Proportion
+face-analysis-34 | p | The final score is the average of those five numbers, along with a short sentence and an estimate of apparent age. Because the criteria are fixed, once you see the filler or contouring simulation you can place the before and after side by side and see which criterion shifted.
+face-analysis-35 | p | One point that makes a real difference: the number is not random. Upload the same photo again and you get the same score. The measurement is based on the criteria above, not on a draw.
+face-analysis-36 | p | You'll also be given the ideal range for this number
+face-analysis-37 | p | This is a beauty assessment, not a medical diagnosis and not a verdict about anyone. No treatment decision should be made on this score alone; that decision belongs to a medical consultation.
+face-analysis-38 | h2 | What a Full Face Analysis Includes
+face-analysis-39 | li | Doll-Style Lip Filler
+face-analysis-40 | li | Natural Lip Filler
+face-analysis-41 | li | Under-Eye Fillers
+face-analysis-42 | li | Full-Face Contouring
+face-analysis-43 | p | All four are performed at Lemon Clinic; for the details, brands and price per cc see the Lip Fillers, Under-Eye Fillers and Face Contouring with Filler page. If you are looking for something outside these four, such as Facial Botox, the full list is on the Services is.
+face-analysis-44 | p | It is not just the face: if you are following a slimming and body contouring path, you can also see the approximate before-and-after result of treatments such as Spartina. For a numerical slimming estimate, Spartina Calculator It helps you alongside the Smart Mirror.
+face-analysis-45 | p | Why see it before the injection?
+face-analysis-46 | p | Because an informed choice brings peace of mind. Once you have seen the approximate result on your own face, you make your decision about the consultation and the treatment with more confidence and more realistic expectations.
+face-analysis-47 | p | Because the simulation runs on your own photo, the result is personal and tangible rather than a generic example. For the final decision, the physician’s opinion in the Consultation consultation is what counts, and you can also see real cases on the Gallery to see.
+face-analysis-48 | p | Do you have your own clinic? The partner version of the same mirror for a doctor’s consultation phone, alongside Instagram Auto-Reply Bot, is introduced in Lemon’s software suite.
+face-analysis-49 | p | Your photo is processed only to deliver this service.
+face-analysis-50 | a | Start Your Free AI Analysis with Lemon
+face-analysis-51 | a | Book Appointment
+face-analysis-52 | p | Another free Lemon tool Gift Draw is: you enter your number, rotate it and receive a gift code.
+face-analysis-53 | h2 | FAQ

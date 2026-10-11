@@ -1,0 +1,86 @@
+﻿contact-1 | meta-title | Contact & Book Appointment | Lemon Aesthetic Clinic, West Tehran
+contact-2 | meta-description | Contact and book an appointment at Lemon Aesthetic Clinic in West Tehran (District 22 and Chitgar): exact address, phone, WhatsApp, opening hours and the booking form.
+contact-3 | li | Home
+contact-4 | li | Contact & Booking
+contact-5 | p | Book Online
+contact-6 | h1 | Contact & Book Appointment
+contact-7 | p | See the clinic's free slots below and confirm your appointment with an SMS code. If you have a question first, Lemon's smart assistant will answer you free of charge by voice.
+contact-8 | button | Talk to Lemon's smart assistant
+contact-9 | p | Loading the clinic calendar...
+contact-10 | h2 | Online booking is unavailable
+contact-11 | a | Book via WhatsApp
+contact-12 | a | Call the Clinic
+contact-13 | li | Service
+contact-14 | li | Day & Time
+contact-15 | li | Verify Number
+contact-16 | h2 | Which service do you want?
+contact-17 | p | 57 services take online appointments. Type the service name or pick from the groups.
+contact-18 | button | Back to the service list
+contact-19 | h2 | Which day and time?
+contact-20 | button | Back to service selection
+contact-21 | h2 | Let's verify your number
+contact-22 | p | A four-digit code is sent by SMS so the appointment is confirmed in your own name.
+contact-23 | label | Full Name
+contact-24 | label | Mobile Number
+contact-25 | p | The verification code is sent to this number by SMS.
+contact-26 | button | Send Verification Code
+contact-27 | label | Code sent by SMS
+contact-28 | button | Resend Code
+contact-29 | button | Confirm Appointment
+contact-30 | button | Back to time selection
+contact-31 | h2 | Your appointment is booked
+contact-32 | p | Our staff will call you to confirm. If you cannot make it, please let us know as early as possible so the slot goes to the next person.
+contact-33 | p | Tehran, Kharazi Highway, Ardestani Boulevard, Parseh Commercial Complex, 8th Floor
+contact-34 | a | Directions
+contact-35 | a | Cancel or Reschedule
+contact-36 | p | Appointment Summary
+contact-37 | p | Booking is free. Pay on the day of your visit.
+contact-38 | p | Lemon Clinic
+contact-39 | p | Tehran, Kharazi Highway, Ardestani Boulevard, Parseh Commercial Complex, 8th Floor
+contact-40 | p | Saturday to Thursday, 10 to 19
+contact-41 | a | 021 4700 9161
+contact-42 | h2 | Ways to Reach Us
+contact-43 | a | Phone 021 4700 9161
+contact-44 | a | WhatsApp 090 0470 9161
+contact-45 | a | Instagram lemonclinic_org
+contact-46 | a | View on Google Maps
+contact-47 | h2 | If you prefer to arrange it on WhatsApp
+contact-48 | label | Full Name
+contact-49 | label | Mobile Number
+contact-50 | label | Service of interest Fillers Botox Laser Hair Removal Facial Rejuvenation General Consultation
+contact-51 | label | Notes (optional)
+contact-52 | button | Continue on WhatsApp
+contact-53 | p | By pressing the button, your details open in a ready-made WhatsApp message for you to send us.
+contact-54 | p | Your message is ready!
+contact-55 | p | WhatsApp opened so you can send us the booking message. We are waiting for you and will reply as soon as possible.
+contact-56 | h3 | Which option should I choose?
+contact-57 | p | If you know which service you want, book online at the top of this page It is the fastest option: you see the real available slots and the appointment is recorded in the clinic calendar on the spot, with no call and no deposit. If you are still not sure which treatment suits you, WhatsApp is better because you can send photos and ask questions.
+contact-58 | h3 | what to write in a WhatsApp message
+contact-59 | li | which service you are interested in, or if you are unsure, what bothers you
+contact-60 | li | which days and times suit you best
+contact-61 | li | if you have had injections or laser elsewhere before, the approximate date
+contact-62 | li | if you are pregnant or breastfeeding, or take any medication, mention it right away
+contact-63 | h3 | Which day should we come
+contact-64 | p | The day depends on the doctor you want to see, because their schedules are not the same and are listed in the "doctors' consulting hours" section of this page. If you have no particular doctor in mind, it makes no difference on any working day and a doctor is always present. Early hours are usually quieter. Fridays have no fixed hours and we only take appointments booked in advance, so if Friday suits you better, message us on WhatsApp and we will arrange it. For public holidays it is also best to call before you travel.
+contact-65 | h3 | rescheduling or cancelling
+contact-66 | p | You can reschedule or cancel through the same channel you booked with, by phone or on WhatsApp. The earlier you let us know, the sooner the free slot goes to another patient and the easier your own new appointment is to arrange. There is no fee for rescheduling.
+contact-67 | h3 | Know the cost upfront
+contact-68 | p | Fees for all services before your visit are on the Pricing Page page and are exactly what you pay at the clinic; you do not need to call just to hear the price. If paying in one go is difficult, Installment Payment is done with no interest, no cheque and no deposit. The medical license numbers of the physicians registered with the Iranian Medical Council are also on the Doctors Page page and you can verify them yourself.
+contact-69 | h2 | Access to the Clinic
+contact-70 | p | Lemon Aesthetic Clinic is in West Tehran, District 22 and near Chitgar Lake is located, on Kharazi Highway, Ardestani Boulevard, Parseh Commercial Complex, 8th Floor. The clinic's location makes it reachable in the shortest time from all over West Tehran and the surrounding housing complexes. If you are coming from the Chitgar area and the surrounding complexes, the directions for the Chitgar Lake aesthetic clinic and shows the route more precisely.
+contact-71 | p | If you come by metro, the nearest stations are Chitgar and Find Out are on line 5, and from there you are a few minutes from the clinic by a ride-hailing taxi. For visitors who come by private car, the Parseh complex car park is available and finding a space is not a concern.
+contact-72 | li | Working hours: Saturday to Thursday, 10 to 19; for public holidays it is best to call before you travel
+contact-73 | li | The initial in-person examination and consultation is free and is performed by a physician before any treatment
+contact-74 | li | The clinic environment is designed with comfortable, private space for both women and men
+contact-75 | li | You can pay for all services in instalments with no interest, no cheque and no deposit; details on the Installment Payment Page
+contact-76 | li | Not sure about the route? Call before you travel and we will guide you.
+contact-77 | li | Before calling, you can Fees for all services page to see the full list of Clinic Services and browse it; the prices are the same as what you pay at the clinic
+contact-78 | h3 | Doctors' Consulting Hours
+contact-79 | li | Dr. Shadi Ghafouri and Dr. Mostafa Hoosavi: clinic visits and daily work; each one's exact time is arranged when booking
+contact-80 | li | Dr. Amirreza Mehrabouran: By appointment only
+contact-81 | li | Each physician is introduced with their medical license number or degree on the Lemon Doctors
+contact-82 | h3 | How the first visit goes
+contact-83 | p | The first session at Lemon is a consultation, not a treatment. The doctor examines the face or area of interest, sets out the options and explains what result each gives and what its limits are. This examination is free and carries no obligation; you can come just to hear the doctor's opinion and then decide. If you decide there and the area is ready, most injections are done in the same session.
+contact-84 | p | State your full medical history and all the medication you take, including supplements and vitamins. The doctor's decision about dose and timing depends on this. If before deciding you would like to see the result, Face Beauty Test Lemon Smart Mirror shows the approximate filler and contour shape on your own photo, and it is free.
+contact-85 | a | View on Neshan
+contact-86 | a | View on Balad

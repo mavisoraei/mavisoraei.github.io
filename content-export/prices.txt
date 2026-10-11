@@ -1,0 +1,290 @@
+﻿prices-1 | meta-title | Fees and prices 2026 | Lemon Aesthetic Clinic, West Tehran
+prices-2 | meta-description | Lemon Clinic prices in West Tehran and Chitgar (2026): facial, filler, mesogel, Botox, thread lift, hair mesotherapy, skin treatment and laser hair removal. Call to book.
+prices-3 | li | Home
+prices-4 | li | Pricing
+prices-5 | h1 | Service Fees
+prices-6 | p | The prices on this page are real, exact and the same as what you pay at the clinic (last updated: September 2026). Filler prices are per cc and laser prices are per session.
+prices-7 | p | Want to know what these services cost elsewhere in Tehran? Tehran seasonal beauty price index See it.
+prices-8 | p | Members of Lemon Customer Club Beyond this price list, they have their own benefits.
+prices-9 | p | These same prices can also be paid in instalments, with no change to the number: Installment Gel Injections. Lemon is an instalment beauty clinic in Tehran and the payment app covers its own fee, so the instalment price ties with the cash price.
+prices-10 | h2 | Botox
+prices-11 | p | Price is for the full dose.
+prices-12 | li | Botox (MecPure or Diston) 1,400,000
+prices-13 | li | Cat Eye Botox 1,800,000
+prices-14 | li | Micro-Botox 1,400,000
+prices-15 | li | Gummy Smile Botox 880,000
+prices-16 | li | Sweat Botox 4,000,000
+prices-17 | li | Barbie Back Botox 4,000,000
+prices-18 | li | Migraine Botox 2,500,000
+prices-19 | h2 | Fillers
+prices-20 | p | Prices are per cc. At Lemon, filler is authentic and never diluted with normal saline is injected and lasts until the brand's real cycle ends.
+prices-21 | h3 | Lip Fillers per cc
+prices-22 | li | ATP 7,000,000
+prices-23 | li | Inoscence 12,500,000
+prices-24 | li | Perjane Iranian, health-licensed, 8 to 12 months of durability 9,000,000
+prices-25 | li | Alkarisa 10,500,000
+prices-26 | li | Nucyn 16,000,000
+prices-27 | li | Perfecta Fine 17,500,000
+prices-28 | li | Dermal Style Smile 28,000,000
+prices-29 | h3 | Under-Eye Fillers per cc
+prices-30 | li | ATP 12,500,000
+prices-31 | li | Nucyn 17,000,000
+prices-32 | li | Perfecta 17,500,000
+prices-33 | li | Dermal Style Regular 28,000,000
+prices-34 | h3 | Facial filler (contour, cheek, smile line, chin) per cc
+prices-35 | li | Hyalux Swiss 3,800,000
+prices-36 | li | Max Fill 3,200,000
+prices-37 | li | Contour & Cheek ATP 5,400,000
+prices-38 | li | Rofhil Ultra 13,600,000
+prices-39 | li | Perfecta 17,500,000
+prices-40 | li | Dermal Style Regular 28,000,000
+prices-41 | h3 | Facial Contour Package Package, whole area
+prices-42 | li | Mid-Face Package 5 cc Hyalux Swiss 16,000,000
+prices-43 | li | Full-Face Package 10 cc Hyalux Swiss 28,000,000
+prices-44 | h2 | Filler Dissolving Enzyme
+prices-45 | p | Injection of the hyaluronidase enzyme to dissolve hyaluronic acid filler; our fillers are reversible. Price is per session.
+prices-46 | li | Filler dissolving enzyme (hyaluronidase) British enzyme, full dose required, under medical supervision 3,800,000
+prices-47 | h2 | Body Fillers
+prices-48 | p | Buttock volume, hip-dip correction and body shaping with Rabianca filler (full package); bikini and male genital fillers priced per area.
+prices-49 | li | Rabianca body filler, 100 cc 28,000,000
+prices-50 | li | Rabianca body filler, 200 cc 50,000,000
+prices-51 | li | Bikini filler, 10 cc 18,000,000
+prices-52 | li | Bikini filler, 20 cc 28,000,000
+prices-53 | li | Male genital filler, 10 cc 16,000,000
+prices-54 | li | Male genital filler, 20 cc 26,000,000
+prices-55 | h2 | Facial Threads
+prices-56 | p | Price is for the full dose.
+prices-57 | li | Standard MediLift Thread 16,000,000
+prices-58 | li | MediLift Collagen Thread 24,800,000
+prices-59 | li | Kag Lift Thread 34,500,000
+prices-60 | h2 | Endolift
+prices-61 | p | Price varies by the device used.
+prices-62 | li | Endolift per area, Italian Eufoton 55,000,000
+prices-63 | li | Endolift per area, Chinese Giga Endotite 36,000,000
+prices-64 | h2 | Blepharoplasty
+prices-65 | p | Price is for blepharoplasty surgery; the non-surgical plasma method (Plexr) is priced at consultation.
+prices-66 | li | Upper eyelid blepharoplasty 28,000,000
+prices-67 | li | Lower eyelid blepharoplasty 36,000,000
+prices-68 | li | Bilateral blepharoplasty (upper and lower) 55,000,000
+prices-69 | h2 | Mesogel & Skin Boosters
+prices-70 | p | Price is for the full dose. Includes Profhilo, Jalupro, Witene, Hiarun and Luxiva.
+prices-71 | li | Profhilo Structura 42,000,000
+prices-72 | li | Profhilo Classic 38,800,000
+prices-73 | li | Profhilo Body 48,000,000
+prices-74 | li | Jalupro Superhydro 36,500,000
+prices-75 | li | Jalupro Young-Eye 28,500,000
+prices-76 | li | Jalupro Classic 16,000,000
+prices-77 | li | Jalupro HMW 18,800,000
+prices-78 | li | Dimono (Korea, mesogel with a Botox-like effect) 22,000,000
+prices-79 | li | Liquid threads (PLLA, injectable collagen stimulator) 28,000,000
+prices-80 | li | Ellanse (injectable collagen stimulator) 38,000,000
+prices-81 | li | RotaCare 532 14,500,000
+prices-82 | li | Witene 14,000,000
+prices-83 | li | Hiarun 5,500,000
+prices-84 | li | Luxiva 6,800,000
+prices-85 | h2 | Hair Mesotherapy & Strengthening
+prices-86 | p | Price is per session.
+prices-87 | li | Hair Filler Dr.CYJ 14,000,000
+prices-88 | li | Rota Hair 7,200,000
+prices-89 | li | Eyebrow mesotherapy (French RotaCare) 2,300,000
+prices-90 | li | Combined hair mesotherapy (Fusion and Mesolike) 4,000,000
+prices-91 | li | Hair PRP 5,800,000
+prices-92 | h2 | Skin Treatments
+prices-93 | p | Price is per session; Mole Removal per lesion.
+prices-94 | li | Subcision Releasing the scar base with a Nokor needle or cannula 11,000,000
+prices-95 | li | Mesoneedling with a combined cocktail 4,000,000
+prices-96 | li | PRP Often a complement to subcision and mesoneedling 5,800,000
+prices-97 | li | Mole removal with plasma jet and Plexr per mole 200,000
+prices-98 | h2 | Spartina (Weight Loss)
+prices-99 | p | Price is per session; purchase is for the full 4-session one-month package.
+prices-100 | li | Spartina, per session First month: 4 full injections, 16,000,000 in total; no single-session purchase 4,000,000
+prices-101 | h2 | Prostolin Mesotherapy
+prices-102 | p | Localized fat burner and anti-pigmentation. Price is per dose.
+prices-103 | li | Prostolin Inner-B Double chin · cheek · jowl · abdomen · flank · arm, per dose 18,600,000
+prices-104 | li | Prostolin Blank-B Anti-pigmentation mesotherapy, per dose 14,800,000
+prices-105 | h2 | Laser hair removal (Candela)
+prices-106 | h3 | Laser Packages
+prices-107 | th | Package
+prices-108 | th | Women
+prices-109 | th | Men
+prices-110 | td | Full Body
+prices-111 | td | 1,600,000
+prices-112 | td | 1,800,000
+prices-113 | td | Total body (unlimited)
+prices-114 | td | 2,500,000
+prices-115 | td | 2,980,000
+prices-116 | td | Ionic Package
+prices-117 | td | 400,000
+prices-118 | td | 375,000
+prices-119 | td | Practical Package
+prices-120 | td | 1,100,000
+prices-121 | td | 1,200,000
+prices-122 | td | Lower Body Package
+prices-123 | td | 1,400,000
+prices-124 | td | Not offered
+prices-125 | td | Full Face
+prices-126 | td | 350,000
+prices-127 | td | 350,000
+prices-128 | h3 | Single-Area Pricing
+prices-129 | th | Area
+prices-130 | th | Women
+prices-131 | th | Men
+prices-132 | td | each facial or neck area
+prices-133 | td | 150,000
+prices-134 | td | 150,000
+prices-135 | td | between the brows
+prices-136 | td | 100,000
+prices-137 | td | 100,000
+prices-138 | td | Full Hand
+prices-139 | td | 550,000
+prices-140 | td | 680,000
+prices-141 | td | Forearm
+prices-142 | td | 300,000
+prices-143 | td | 390,000
+prices-144 | td | Arm
+prices-145 | td | 250,000
+prices-146 | td | 320,000
+prices-147 | td | Shoulder
+prices-148 | td | 180,000
+prices-149 | td | 250,000
+prices-150 | td | Wrist
+prices-151 | td | 150,000
+prices-152 | td | 200,000
+prices-153 | td | Elbow
+prices-154 | td | 150,000
+prices-155 | td | 200,000
+prices-156 | td | Underarm
+prices-157 | td | 300,000
+prices-158 | td | 375,000
+prices-159 | td | Full Leg
+prices-160 | td | 700,000
+prices-161 | td | 880,000
+prices-162 | td | Calf
+prices-163 | td | 400,000
+prices-164 | td | 550,000
+prices-165 | td | Thigh
+prices-166 | td | 400,000
+prices-167 | td | 550,000
+prices-168 | td | Knee
+prices-169 | td | 150,000
+prices-170 | td | 200,000
+prices-171 | td | Ankle
+prices-172 | td | 150,000
+prices-173 | td | 190,000
+prices-174 | td | Full Bikini
+prices-175 | td | 400,000
+prices-176 | td | Not offered
+prices-177 | td | each bikini area
+prices-178 | td | 150,000
+prices-179 | td | Not offered
+prices-180 | td | Full Buttocks
+prices-181 | td | 400,000
+prices-182 | td | Not offered
+prices-183 | td | Full Front Torso
+prices-184 | td | 500,000
+prices-185 | td | 690,000
+prices-186 | td | Half Front Torso
+prices-187 | td | 400,000
+prices-188 | td | 590,000
+prices-189 | td | Full Back Torso
+prices-190 | td | 500,000
+prices-191 | td | 690,000
+prices-192 | td | Half Back Torso
+prices-193 | td | 400,000
+prices-194 | td | 590,000
+prices-195 | td | each half-torso area
+prices-196 | td | 150,000
+prices-197 | td | 190,000
+prices-198 | td | Around Chest
+prices-199 | td | 150,000
+prices-200 | td | 190,000
+prices-201 | td | Breast Cap
+prices-202 | td | 350,000
+prices-203 | td | 450,000
+prices-204 | td | Chest Line
+prices-205 | td | 150,000
+prices-206 | td | 190,000
+prices-207 | td | Navel Line
+prices-208 | td | 150,000
+prices-209 | td | 190,000
+prices-210 | p | All prices are per session.
+prices-211 | h2 | Facial
+prices-212 | p | Consumables: Eclado, made in Korea.
+prices-213 | li | Cleansing and basic care 1,800,000 Exfoliation and removal of blemishes and acne, with facial massage, deep hydration and disinfection with a high-frequency device. Add neck and decollete 900,000 · Add eye area 600,000
+prices-214 | li | Hydrotherapy 2,200,000 Increase skin moisture and radiance with specialised serums and masks to relieve dryness and strengthen the skin barrier.
+prices-215 | li | Acne & Oil Control 2,500,000 Regulate skin oil production and reduce acne inflammation with antibacterial, soothing formulas.
+prices-216 | li | Brightening & Anti-Pigmentation 3,000,000 Reduce pigmentation and even out skin tone with vitamin compounds.
+prices-217 | li | Reform & Face Lift 3,500,000 Non-invasive lift, skin firming, rejuvenation and facial contouring.
+prices-218 | li | Specialist Acid Therapy 3,000,000 Deep exfoliation with specialised acids to renew young cells and clear pigmentation, blemishes and acne scars.
+prices-219 | li | Eye Area Rejuvenation 1,000,000 Special care to reduce dark circles, puffiness and fine lines around the eyes.
+prices-220 | li | Carboxy Therapy Increase oxygen delivery and stimulate collagen production for surface skin rejuvenation and texture refinement. Face 3,200,000 · Hands 2,500,000 · Elbows 2,500,000 · Knees 2,500,000 · Bikini 3,500,000
+prices-221 | li | Plagen Therapy Deep skin renewal and repair by boosting collagen to reduce wrinkles and improve skin firmness. Face 3,000,000 · Hands 3,000,000 · Neck and decollete 4,000,000
+prices-222 | li | Specialist Body Cleansing Therapeutic care with masks and specialised serums, including exfoliation, brightening and anti-blemish, matched to each body area. Neck and decollete 2,500,000 · Arm 2,800,000 · Waist 3,500,000 · Buttocks 3,500,000 · Bikini 3,500,000
+prices-223 | li | Combined therapeutic line (under medical supervision) A personalised treatment protocol combining several specialist methods, under direct physician supervision. Based on consultation
+prices-224 | li | Bridal Package Full cleansing and facial for face, neck, decollete, arms, waist, bikini and buttocks for glowing skin on your special night. Based on consultation
+prices-225 | h2 | How many cc of lip filler are needed
+prices-226 | p | This table comes from 115 real visits to this clinic, not from guesswork. The amount column shows how many cc were actually used in one session, and the last column shows what one session with that amount costs. The per-cc rate is today's price on this page.
+prices-227 | th | Brand
+prices-228 | th | Area
+prices-229 | th | Rate per cc
+prices-230 | th | Amount in one session, median
+prices-231 | th | Cost of one session
+prices-232 | th | Visit
+prices-233 | th | Alkarisa
+prices-234 | td | Lip
+prices-235 | td | 10,500,000
+prices-236 | td | 1 cc 85% exactly 1 cc
+prices-237 | td | 10,500,000
+prices-238 | td | 20
+prices-239 | th | Inoscence
+prices-240 | td | Lip
+prices-241 | td | 12,500,000
+prices-242 | td | 1 cc 98% exactly 1 cc
+prices-243 | td | 12,500,000
+prices-244 | td | 40
+prices-245 | th | Max Fill
+prices-246 | td | Face & Contour
+prices-247 | td | 3,200,000
+prices-248 | td | 5 cc 76% exactly 5 cc
+prices-249 | td | 16,000,000
+prices-250 | td | 25
+prices-251 | th | Hyalux Swiss
+prices-252 | td | Face & Contour
+prices-253 | td | 3,800,000
+prices-254 | td | 5.5 cc Range, from 1 to 14 cc
+prices-255 | td | 20,900,000
+prices-256 | td | 30
+prices-257 | h2 | Quick jump
+prices-258 | li | Botox
+prices-259 | li | Fillers
+prices-260 | li | Filler Enzyme
+prices-261 | li | Body Fillers
+prices-262 | li | Facial Threads
+prices-263 | li | Endolift
+prices-264 | li | Blepharoplasty
+prices-265 | li | Mesogel & Skin Boosters
+prices-266 | li | Hair Mesotherapy
+prices-267 | li | Skin Treatments
+prices-268 | li | Spartina (Weight Loss)
+prices-269 | li | Prostolin Mesotherapy
+prices-270 | li | Laser Hair Removal
+prices-271 | li | Facial
+prices-272 | li | How many cc are needed
+prices-273 | p | Preview your result before injection with Lemon Smart Mirror, or book now.
+prices-274 | a | Book Appointment
+prices-275 | a | Smart Mirror
+prices-276 | h2 | FAQ
+prices-277 | summary | How much is Botox at Lemon?
+prices-278 | p | MecPure or Diston Botox is 1,400,000 for the full dose, not per unit. Cat-eye Botox is 1,800,000 and sweat Botox 2,500,000 per area. The number of doses and the area needed depend on your face and are determined at the consultation.
+prices-279 | summary | How much do lip fillers cost at Lemon?
+prices-280 | p | Lip filler prices depend on the brand, from 7,000,000 per cc (ATP) up to 28,000,000 (Dermal Style Smile). All fillers are authentic and injected without dilution with normal saline, so they last until the brand's real durability cycle ends.
+prices-281 | summary | How much does laser hair removal cost per session?
+prices-282 | p | Laser prices depend on the area and start at 100,000 for between the brows; a full face is 350,000 and the women's total body package is 2,500,000. Laser is performed with several platforms from the Gentle Pro series and an 808-nanometer diode laser (suited to Iranian olive skin).
+prices-283 | summary | How much does a thread lift cost?
+prices-284 | p | A standard MediLift thread is 16,000,000, a collagen thread 24,800,000 and a Kag thread, the strongest type, is 34,500,000. The type of thread suited to your face is chosen at the consultation with Dr. Hoosavi.
+prices-285 | summary | If I'm not happy with my filler, how much does dissolving it cost?
+prices-286 | p | Lemon's hyaluronic acid fillers are reversible. Injecting the hyaluronidase enzyme to dissolve filler is 3,800,000 per session, under medical supervision. This reversibility is one of the important reasons to choose hyaluronic filler over permanent gel.
+prices-287 | summary | Can the prices on this page be paid in instalments?
+prices-288 | p | Yes, and the instalment price is exactly the same cash price as on this page; you do not pay a single rial more, and the clinic itself covers the payment app's fee. No cheque, no deposit and no guarantor are needed, because the app runs the credit check on your own bank account. Lemon has direct agreements with DigiPay and SnappPay, and is also a contracting party for DoctorPay and BeautyPul. Details are on the instalment gel injection page.
+prices-289 | p | Some other specialist services are not on this list; call for their fees and appointments.
+prices-290 | a | Book Appointment

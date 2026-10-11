@@ -1,0 +1,99 @@
+﻿services-1 | meta-title | Lemon Aesthetic Clinic Services & Prices | Full List
+services-2 | meta-description | The full list of services at Lemon Aesthetic Clinic in West Tehran with transparent pricing: filler, Botox, laser, lifting, rejuvenation and skin treatment, plus free consultation and the Lemon doctors.
+services-3 | li | Home
+services-4 | li | Services
+services-5 | p | Medical aesthetic clinic, West Tehran
+services-6 | h1 | Lemon Clinic Services
+services-7 | p | Scientifically reviewed: Dr. Farideh Gholizadeh, medical license 108047 · Last reviewed: September 2026
+services-8 | p | Under the direct supervision of Lemon's physicians
+services-9 | p | Dr. Mostafa Hoosavi General physician, with over 12 years of experience in aesthetics and facial design, medical license 142491
+services-10 | p | Dr. Shadi Ghafouri Dentist, founder and clinic director
+services-11 | p | Lemon Clinic offers a complete range of aesthetic and medical skin services in West Tehran: injectables such as filler and Botox, laser, lifting and rejuvenation, and skin treatment. All injections use the authentic product and are performed by Lemon's physicians.
+services-12 | p | On this page you will read
+services-13 | li | Weight Loss
+services-14 | li | Facial Fillers
+services-15 | li | Body Fillers
+services-16 | li | Botox
+services-17 | li | Laser
+services-18 | li | Face Lift & Threads
+services-19 | li | Rejuvenation & Mesogel
+services-20 | li | Skin Treatment
+services-21 | li | Facial
+services-22 | li | Hair & PRP
+services-23 | li | Plastic Surgery
+services-24 | p | Services are grouped below; click any group or service to see its description, cost and real cases of the same treatment If you are unsure which method suits you, use the AI face beauty test see the approximate result on your own photo, or Free In-Person Consultation book a consultation so the doctor can assess your skin and recommend the best option.
+services-25 | p | The cost of all these services can be paid in instalments at the same price as cash; Lemon is an instalment beauty clinic in Tehran and the payment app covers its own fee, with no cheque, no deposit and no guarantor. The full price list is on Pricing Page is.
+services-26 | h2 | Weight Loss
+services-27 | a | Spartina Overall weight loss with tirzepatide, under medical supervision.
+services-28 | a | Localized Slimming Localized fat burning with Endolift and fat-burning mesogel.
+services-29 | h2 | Facial Fillers
+services-30 | a | Lip Fillers Lip volume and shaping with authentic filler, from natural to doll-like.
+services-31 | a | Chin Fillers Chin enhancement and profile correction.
+services-32 | a | Cheek Fillers Cheek volume and lifting for a younger-looking face.
+services-33 | a | Jawline Fillers Defining the jawline and facial angles with filler.
+services-34 | a | Nose Fillers Non-surgical nose reshaping (injectable rhinoplasty).
+services-35 | a | Under-Eye Fillers Filling under-eye hollows and reducing a tired look.
+services-36 | a | Temple Fillers Filling temple hollows and restoring facial framing.
+services-37 | a | Smile Line Fillers Softening smile lines and frown lines with filler.
+services-38 | a | Frown Line Fillers Softening smile lines and frown lines with filler.
+services-39 | a | Contouring & Full-Face Whole-face design with filler; mid-face and full-face.
+services-40 | a | Filler Dissolution & Correction
+services-41 | h2 | Body Fillers
+services-42 | a | Buttock & Hip-Dip Fillers Non-surgical buttock and hip-dip shaping with body filler.
+services-43 | a | Calf Fillers
+services-44 | a | Breast Fillers
+services-45 | a | Bikini Fillers
+services-46 | a | Male Genital Fillers
+services-47 | a | Collarbone Fillers
+services-48 | h2 | Botox
+services-49 | a | Underarm & Sweat Botox Sweat control for underarms, palms and soles with Botox.
+services-50 | a | Forehead Botox
+services-51 | a | Micro-Botox Clarity and oil and pore control with Micro-Botox.
+services-52 | a | Chin JLines Botox
+services-53 | a | Gummy Smile Botox Correcting a gummy smile with Botox.
+services-54 | a | Cat Eye Botox Lifting the brow tail and creating a lifted look with Botox.
+services-55 | a | Full Face Botox
+services-56 | a | Barbie Back Botox Beautiful neck and shoulder definition with Barbie Back Botox.
+services-57 | a | Migraine Botox Reducing migraine headaches with therapeutic Botox.
+services-58 | a | Eyelid Drooping After Botox
+services-59 | h2 | Laser
+services-60 | a | Laser Hair Removal Permanent hair reduction with a 2025 Candela.
+services-61 | a | Laser Burn Treatment
+services-62 | h2 | Face Lift & Threads
+services-63 | a | Thread Lift Lifting sagging skin with Kag threads, fast results.
+services-64 | a | Filler Lift
+services-65 | a | Rejuvenation Threads Collagen stimulation and skin quality improvement with PDO threads.
+services-66 | a | Endolift Lift Laser fiber lift for tightening the jaw and double chin.
+services-67 | a | Endolift for Abdomen, Flanks & Arms
+services-68 | a | Types of Facial Threads Types of facial threads; lift threads and rejuvenation threads.
+services-69 | h2 | Rejuvenation & Mesogel
+services-70 | a | Mesogel & Skin Boosters Skin hydration and radiance with mesogel and skin boosters.
+services-71 | a | Carboxy Therapy
+services-72 | a | Profhilo Bio-remodeling of face and neck with pure hyaluronic acid.
+services-73 | a | Jalupro Bio-revitalizer with amino acids for rejuvenation.
+services-74 | a | Profhilo or Jalupro? A guide to choosing between Profhilo and Jalupro.
+services-75 | a | Dimono Korean mesogel with a smoothing effect similar to Botox.
+services-76 | a | Bikini & Vaginal Rejuvenation Mesogel and PRP/PRF for hydration and rejuvenation of the bikini and vaginal area.
+services-77 | h2 | Skin Treatment
+services-78 | a | Acne Treatment Oil and inflammation control, reducing breakouts and preventing acne scars.
+services-79 | a | Pigmentation & Melasma Treatment Lightening dark pigmentation and controlling melasma.
+services-80 | a | Scar Treatment & Subcision Treating acne scars with subcision, mesoneedling and laser.
+services-81 | a | Mole Removal
+services-82 | a | Mesoneedling Skin renewal with microneedling and mesoneedling.
+services-83 | h2 | Facial
+services-84 | a | Specialist Facial Cleansing, hydration and specialist skin treatment.
+services-85 | h2 | Hair & PRP
+services-86 | a | Hair Mesotherapy Strengthening and treating hair loss with mesotherapy.
+services-87 | a | PRP & PRF Treating hair loss and rejuvenating skin with PRP and PRF.
+services-88 | h2 | Plastic Surgery
+services-89 | a | Body Contouring Body contouring and removal of stubborn localized fat with surgery.
+services-90 | a | Breast Augmentation Breast volume increase and shaping with implant surgery.
+services-91 | a | Mammoplasty Reducing and lifting large, heavy breasts.
+services-92 | a | Abdominoplasty Tightening loose skin and firming abdominal muscles.
+services-93 | a | Breast Lift
+services-94 | a | Brow Lift
+services-95 | a | Eyelid Blepharoplasty Eyelid beauty with Plexr and specialist surgery.
+services-96 | p | SMART MIRROR
+services-97 | h2 | Preview your result before injection with Lemon Smart Mirror, or book now.
+services-98 | a | Book Appointment
+services-99 | a | Smart Mirror

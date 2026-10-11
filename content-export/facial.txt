@@ -1,0 +1,111 @@
+﻿facial-1 | meta-title | Facial in West Tehran; Types, Steps and Prices | Lemon Clinic
+facial-2 | meta-description | Specialist facials at Lemon Clinic, West Tehran: deep cleansing, hydration (hydrafacial), acne control and pigmentation treatment, tailored to your skin type.
+facial-3 | li | Home
+facial-4 | li | Services
+facial-5 | li | Facial
+facial-6 | h1 | Facial
+facial-7 | p | Under medical supervision
+facial-8 | p | Scientifically reviewed: Dr. Farideh Gholizadeh, medical license 108047 · Last reviewed: September 2026
+facial-9 | p | Under the direct supervision of Lemon's physicians
+facial-10 | p | Dr. Mostafa Hoosavi General physician, with over 12 years of experience in aesthetics and facial design, medical license 142491
+facial-11 | p | Dr. Shadi Ghafouri Dentist, founder and clinic director
+facial-12 | p | A facial is a professional skin cleanse done with a device and professional products that clears the pores, removes dead cells and hydrates. At Lemon Clinic your skin type is examined before every session and the treatment line is chosen to match it.
+facial-13 | h2 | Cost and Fees
+facial-14 | p | Consumables: Eclado, made in Korea. The price of each treatment line is listed separately in the table below.
+facial-15 | th | Treatment
+facial-16 | th | Details
+facial-17 | th | Price (toman)
+facial-18 | td | Cleansing and basic care
+facial-19 | td | 1,800,000
+facial-20 | td | Add neck and decollete
+facial-21 | td | 900,000
+facial-22 | td | Add eye area
+facial-23 | td | 600,000
+facial-24 | td | Hydrotherapy
+facial-25 | td | 2,200,000
+facial-26 | td | Acne & Oil Control
+facial-27 | td | 2,500,000
+facial-28 | td | Brightening & Anti-Pigmentation
+facial-29 | td | 3,000,000
+facial-30 | td | Reform & Face Lift
+facial-31 | td | 3,500,000
+facial-32 | td | Specialist Acid Therapy
+facial-33 | td | 3,000,000
+facial-34 | td | Eye Area Rejuvenation
+facial-35 | td | 1,000,000
+facial-36 | td | Carboxy Therapy
+facial-37 | td | Face
+facial-38 | td | 3,200,000
+facial-39 | td | Hands
+facial-40 | td | 2,500,000
+facial-41 | td | Elbows
+facial-42 | td | 2,500,000
+facial-43 | td | Knees
+facial-44 | td | 2,500,000
+facial-45 | td | Bikini
+facial-46 | td | 3,500,000
+facial-47 | td | Plagen Therapy
+facial-48 | td | Face
+facial-49 | td | 3,000,000
+facial-50 | td | Hands
+facial-51 | td | 3,000,000
+facial-52 | td | Neck and decollete
+facial-53 | td | 4,000,000
+facial-54 | td | Specialist Body Cleansing
+facial-55 | td | Neck and decollete
+facial-56 | td | 2,500,000
+facial-57 | td | Arm
+facial-58 | td | 2,800,000
+facial-59 | td | Waist
+facial-60 | td | 3,500,000
+facial-61 | td | Buttocks
+facial-62 | td | 3,500,000
+facial-63 | td | Bikini
+facial-64 | td | 3,500,000
+facial-65 | td | Combined therapeutic line (under medical supervision)
+facial-66 | td | Based on consultation
+facial-67 | td | Bridal Package
+facial-68 | td | Based on consultation
+facial-69 | p | On this page you will read
+facial-70 | li | What a Facial Does
+facial-71 | li | How is device facial cleansing done at Lemon?
+facial-72 | li | Facial Treatment Lines at Lemon
+facial-73 | li | Who benefits from a facial
+facial-74 | p | A facial is a professional skin cleanse done with a device and professional products, and it offers more than an ordinary cleanse. At Lemon Clinic your skin type is examined before every session and the treatment line is chosen to match it, so you get the best result with the least irritation.
+facial-75 | figcaption | Hydrating Mask in a Lemon Facial Session
+facial-76 | h2 | What a Facial Does
+facial-77 | p | The goal of a facial is to bring back clarity, hydration and skin health. In this method the pores are cleared of dirt and excess oil, the layer of dead cells is removed, and nutrients and moisture reach deep into the skin. The result is clean, even and radiant skin.
+facial-78 | h2 | How is device facial cleansing done at Lemon?
+facial-79 | p | Device facial cleansing is exactly what we call a facial at Lemon. In the basic skin line the skin is first exfoliated, blackheads and acne are extracted, then the face is massaged and deeply hydrated, and finally the skin is disinfected with a high-frequency device. It is this last step that separates a clinical cleanse from a home one.
+facial-80 | p | The consumables used in this session are Eclado, made in Korea, and the basic line called “Cleansing and Basic Care” starts at 1,800,000; adding the neck and décolletage is 900,000 and the eye area 600,000 on top.
+facial-81 | p | Acne-prone skin has its own rules. Blackheads and whiteheads are extracted in the same session, but inflamed, cystic and subcutaneous acne should not be squeezed, because that leaves acne scars; these Acne Treatment need treatment, not extraction. That is why if your skin has active acne, the “Acne and Oil Control” line or a combination therapeutic line under medical supervision is chosen rather than an ordinary cleanse.
+facial-82 | h2 | Facial Treatment Lines at Lemon
+facial-83 | li | Deep Cleansing: Pore extraction, removal of blackheads and whiteheads.
+facial-84 | li | Hydrofacial (Hydration): Deep hydration for dry, dull skin.
+facial-85 | li | Acne and Oil Control: For oily and acne-prone skin.
+facial-86 | li | Anti-Aging and Brightening: Helps even out skin tone.
+facial-87 | li | Lifting and Firming: Improves skin radiance and elasticity.
+facial-88 | p | Why is a Lemon facial different?
+facial-89 | p | The treatment line is chosen for your skin, not a fixed formula for everyone. That means a real result matched to what your skin needs, in a calm and hygienic environment.
+facial-90 | h2 | Who benefits from a facial
+facial-91 | p | If your skin has become dull, tired or dehydrated, if you have open pores or recurring breakouts, or if you simply want radiant skin before an occasion, a facial is a good option. A gentler line is considered for sensitive skin too. The pre-session consultation helps you choose correctly. Alongside a course of facials, having a skin care routine matched to your skin type At home, it makes the result last longer.
+facial-92 | figcaption | Exfoliation and professional skin cleansing
+facial-93 | p | A facial session is just as relaxing
+facial-94 | p | You lie down, close your eyes and your skin breathes fresh; the rest is the Lemon team’s job.
+facial-95 | h2 | FAQ
+facial-96 | summary | What skin types is a facial suitable for?
+facial-97 | p | All skin types. The treatment line is chosen according to what your skin needs (oily, dry, sensitive, acne-prone or pigmented).
+facial-98 | summary | How many facial sessions are needed?
+facial-99 | p | A single session already leaves the skin radiant and clean, but for a lasting result a course a few weeks apart is usually recommended.
+facial-100 | summary | What is facial cleansing?
+facial-101 | p | Facial cleansing is the common name for the session the clinic calls a facial: removing dead cells, extracting the pores and hydrating the skin in one session with no recovery period. The difference is the name, not the work; at Lemon one of the treatment lines is chosen based on your skin type.
+facial-102 | summary | Is facial cleansing harmful for acne-prone skin?
+facial-103 | p | If the spots are blackheads and whiteheads, no, extracting them is part of the session itself. But inflamed, cystic and subcutaneous acne should not be squeezed, because that leaves acne scars. In that case, instead of an ordinary cleanse, the Acne and Oil Control line or a combination therapeutic line under medical supervision is recommended.
+facial-104 | summary | How much does facial cleansing cost at the clinic?
+facial-105 | p | The basic line called “Cleansing and Basic Care” at Lemon starts at 1,800,000; adding the neck and décolletage is 900,000 and the eye area 600,000. More specialised lines such as Acne and Oil Control, or brightening and pigmentation treatment, are priced separately and are listed in the table on this page.
+facial-106 | summary | Is there a recovery period after a facial?
+facial-107 | p | No. A facial is non-invasive and you can return to your daily activities immediately. Just avoid direct sunlight and heavy makeup for a few days.
+facial-108 | p | SMART MIRROR
+facial-109 | h2 | Preview your result before injection with Lemon Smart Mirror, or book now.
+facial-110 | a | Book Appointment
+facial-111 | a | Smart Mirror

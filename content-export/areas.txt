@@ -1,0 +1,40 @@
+﻿areas-1 | meta-title | Areas served by Lemon Aesthetic Clinic | West Tehran
+areas-2 | meta-description | Lemon Aesthetic Clinic in West Tehran (District 22 and Chitgar), with easy access for West Tehran residents. Local pages for West Tehran, District 22 and Chitgar.
+areas-3 | li | Home
+areas-4 | li | Locations
+areas-5 | p | Lemon Aesthetic Clinic
+areas-6 | h1 | Areas We Serve
+areas-7 | p | Lemon is on Ardestani Boulevard, in the Parseh Commercial Complex; a point that easily connects West Tehran, District 22 and the neighbourhoods around Chitgar Lake. Each of these areas has its own access route; choose your own neighbourhood page below to see the most accurate route and details.
+areas-8 | h2 | Sample Price
+areas-9 | th | Treatment
+areas-10 | th | Details
+areas-11 | th | Price (toman)
+areas-12 | td | Botox
+areas-13 | td | from 1,400,000
+areas-14 | td | Lip Fillers
+areas-15 | td | per cc, starting from ATP
+areas-16 | td | from 7,000,000
+areas-17 | td | Laser, full face
+areas-18 | td | from 350,000
+areas-19 | a | See the full price list →
+areas-20 | li | West Tehran aesthetic clinic Access from the main highways of West Tehran For residents of Shahrak-e Gharb, Saadat Abad, Punak, Ekbatan and Jannat Abad; access routes from each neighbourhood and its highway.
+areas-21 | li | District 22 aesthetic clinic On Ardestani Boulevard, Parseh Complex For residents of the District 22 housing complexes (Chitgar, Golestan, Olympic Village); the nearest page if you live in this area.
+areas-22 | li | Chitgar Aesthetic Clinic Near Chitgar Lake and Park The exact route from the edge of Chitgar Lake and the surrounding housing complexes to the clinic, plus common questions about this neighbourhood.
+areas-23 | h2 | One clinic for all of West Tehran
+areas-24 | p | West Tehran has dense and growing neighbourhoods whose residents want an aesthetic treatment centre with licensed doctors that is close to home. Lemon's location on Ardestani Boulevard brings these neighbourhoods close together: from Shahrak-e Gharb and Saadat Abad in the south to the District 22 housing complexes and the area around Chitgar Lake in the north-west. For each neighbourhood we have put a separate access route and that neighbourhood's common questions on its own page, so you have the most accurate guide.
+areas-25 | p | All the clinic's main services, from Fillers and Botox to Laser Hair Removal and Rejuvenation, are offered under one roof right here; so you do not need to visit several separate centres for different treatments.
+areas-26 | h2 | Which neighbourhood page should I open?
+areas-27 | p | If you are in Shahrak-e Gharb, Saadat Abad, Punak, Ekbatan or Jannat Abad, the West Tehran aesthetic clinic page explains your route from your own highway. If you live in the District 22 housing complexes, the District 22 page is the closest one. And if your starting point is around the lake and the park, the Chitgar Page page has that route and those neighbourhood questions. All three reach the same address; the only difference is how you get there and the common questions for that area.
+areas-28 | h2 | Proximity is not the only criterion for choosing a clinic
+areas-29 | p | Searching for "aesthetic clinic near me" is natural, but distance is the weakest criterion for work performed on your face. Two more important things can be checked before you go, and both are verifiable online: that the injection is performed by a physician with a medical license number rather than an operator, and that the fees are transparent before your visit. Every Lemon doctor's license number is on the Doctors Page is listed and verifiable, and the full price list is on the Pricing Page page, viewable without calling.
+areas-30 | h2 | A few practical points for the day of your visit
+areas-31 | p | page. The clinic is on the eighth floor of the Parseh Commercial Complex and the complex has a car park, but it is better to set off a little earlier than your appointment time: traffic on Kharazi Highway gets heavy towards the end of the day, and those few minutes are the difference between arriving on time and rushing. Working hours are Saturday to Thursday, 10 to 19, and Fridays are by appointment only. Appointments can be made by phone or on WhatsApp, and if your plans change the same channel works for rescheduling. The first session is usually a consultation: the doctor examines your face, sets out the options and the decision is yours, with no need to have any work done that same day.
+areas-32 | h2 | If you are coming from further away
+areas-33 | p | Some treatments are one-off and some are courses; laser and mesotherapy require repeat visits, and for someone travelling from further away that means more planning. The simple way to handle it is to ask at the first consultation how many sessions there will be and roughly how far apart, and to coordinate the dates all at once, so the trips stay regular and no gap appears in the middle of the course.
+areas-34 | h2 | What is the same across all these neighbourhoods
+areas-35 | p | The fees, the brand of consumable materials and the doctor performing the work have nothing to do with where you live and are the same for everyone; we have no regional pricing and no special neighbourhood rate. The only thing that differs between these pages is the route to get here and the recurring questions of residents in that area.
+areas-36 | h2 | Access to the Clinic
+areas-37 | p | Clinic address: Tehran, Kharazi Highway, Ardestani Boulevard, Parseh Commercial Complex, 8th Floor. Working hours: Saturday to Thursday, 10 to 19. To book an appointment or consult the 021 4700 9161 Call or use the form Contact & Booking form. Access from the main highways of West Tehran is easy and mall parking is available for visitors.
+areas-38 | p | Preview your result before injection with Lemon Smart Mirror, or book now.
+areas-39 | a | Book Appointment
+areas-40 | a | Smart Mirror

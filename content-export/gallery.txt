@@ -1,0 +1,172 @@
+﻿gallery-1 | meta-title | Lemon Aesthetic Clinic cases | Before and after
+gallery-2 | meta-description | A real portfolio gallery from Lemon Clinic in West Tehran: before and after photos of lip filler, contouring, under-eye filler, skin treatment and lifting, each with the doctor
+gallery-3 | li | Home
+gallery-4 | li | Gallery
+gallery-5 | h1 | Cases, real before and after
+gallery-6 | p | See the real results of our work. 63 before-and-after cases from real Lemon patients, with the treating doctor's name and their own written consent. No result has been manipulated; only the framing and lighting have been made consistent.
+gallery-7 | button | All
+gallery-8 | button | Lip Fillers
+gallery-9 | button | Contour
+gallery-10 | button | Lift
+gallery-11 | button | Rejuvenation
+gallery-12 | button | Jaw & Chin
+gallery-13 | button | Under-Eye
+gallery-14 | button | Skin
+gallery-15 | button | Botox
+gallery-16 | button | Eyelid
+gallery-17 | button | Shadi Ghafouri
+gallery-18 | button | Mostafa Hoosavi
+gallery-19 | button | Amirreza Mehrabouran
+gallery-20 | button | Atefeh Norouhmohammadi
+gallery-21 | button | Saba Dehghani
+gallery-22 | button | Before After
+gallery-23 | a | View case
+gallery-24 | button | Before After
+gallery-25 | a | View case
+gallery-26 | button | Before After
+gallery-27 | a | View case
+gallery-28 | button | Before After
+gallery-29 | a | View case
+gallery-30 | button | Before After
+gallery-31 | a | View case
+gallery-32 | button | Before After
+gallery-33 | a | View case
+gallery-34 | button | Before After
+gallery-35 | a | View case
+gallery-36 | button | Before After
+gallery-37 | a | View case
+gallery-38 | button | Before After
+gallery-39 | a | View case
+gallery-40 | button | Before After
+gallery-41 | a | View case
+gallery-42 | button | Before After
+gallery-43 | a | View case
+gallery-44 | button | Before After
+gallery-45 | a | View case
+gallery-46 | button | Before After
+gallery-47 | a | View case
+gallery-48 | button | Before After
+gallery-49 | a | View case
+gallery-50 | button | Before After
+gallery-51 | a | View case
+gallery-52 | button | Before After
+gallery-53 | a | View case
+gallery-54 | button | Before After
+gallery-55 | a | View case
+gallery-56 | button | Before After
+gallery-57 | a | View case
+gallery-58 | button | Before After
+gallery-59 | a | View case
+gallery-60 | button | Before After
+gallery-61 | a | View case
+gallery-62 | button | Before After
+gallery-63 | a | View case
+gallery-64 | button | Before After
+gallery-65 | a | View case
+gallery-66 | button | Before After
+gallery-67 | a | View case
+gallery-68 | button | Before After
+gallery-69 | a | View case
+gallery-70 | button | Before After
+gallery-71 | a | View case
+gallery-72 | button | Before After
+gallery-73 | a | View case
+gallery-74 | button | Before After
+gallery-75 | a | View case
+gallery-76 | button | Before After
+gallery-77 | a | View case
+gallery-78 | button | Before After
+gallery-79 | a | View case
+gallery-80 | button | Before After
+gallery-81 | a | View case
+gallery-82 | button | Before After
+gallery-83 | a | View case
+gallery-84 | button | Before After
+gallery-85 | a | View case
+gallery-86 | button | Before After
+gallery-87 | a | View case
+gallery-88 | button | Before After
+gallery-89 | a | View case
+gallery-90 | button | Before After
+gallery-91 | a | View case
+gallery-92 | button | Before After
+gallery-93 | a | View case
+gallery-94 | button | Before After
+gallery-95 | a | View case
+gallery-96 | button | Before After
+gallery-97 | a | View case
+gallery-98 | button | Before After
+gallery-99 | a | View case
+gallery-100 | button | Before After
+gallery-101 | a | View case
+gallery-102 | button | Before After
+gallery-103 | a | View case
+gallery-104 | button | Before After
+gallery-105 | a | View case
+gallery-106 | button | Before After
+gallery-107 | a | View case
+gallery-108 | button | Before After
+gallery-109 | a | View case
+gallery-110 | button | Before After
+gallery-111 | a | View case
+gallery-112 | button | Before After
+gallery-113 | a | View case
+gallery-114 | button | Before After
+gallery-115 | a | View case
+gallery-116 | button | Before After
+gallery-117 | a | View case
+gallery-118 | button | Before After
+gallery-119 | a | View case
+gallery-120 | button | Before After
+gallery-121 | a | View case
+gallery-122 | button | Before After
+gallery-123 | a | View case
+gallery-124 | button | Before After
+gallery-125 | a | View case
+gallery-126 | button | Before After
+gallery-127 | a | View case
+gallery-128 | button | Before After
+gallery-129 | a | View case
+gallery-130 | button | Before After
+gallery-131 | a | View case
+gallery-132 | button | Before After
+gallery-133 | a | View case
+gallery-134 | button | Before After
+gallery-135 | a | View case
+gallery-136 | button | Before After
+gallery-137 | a | View case
+gallery-138 | button | Before After
+gallery-139 | a | View case
+gallery-140 | button | Before After
+gallery-141 | a | View case
+gallery-142 | button | Before After
+gallery-143 | a | View case
+gallery-144 | button | Before After
+gallery-145 | a | View case
+gallery-146 | button | Before After
+gallery-147 | a | View case
+gallery-148 | h2 | How to read a real case
+gallery-149 | p | A proper case should be recorded in identical lighting, at the same angle and without heavy makeup, so that the real difference is visible rather than the effect of light and filters. The images on this page follow those principles, with only framing and lighting made consistent; no result has been manipulated or exaggerated.
+gallery-150 | p | Every image shows the real result for that individual and was published with their written consent. Your result may differ, because it depends on your own anatomy, skin type and circumstances. For this reason we recommend first getting a AI face beauty test with Lemon Smart Mirror, see the approximate result on your own face and then come in for a precise treatment plan Consultation get it.
+gallery-151 | h2 | Why the number of cases matters more than a single photo
+gallery-152 | p | free consultation, because a good result can happen by chance. Dozens of results from several doctors and several types of treatment reveal a pattern. This is why this gallery is built with filters by treatment type and doctor name, rather than a handful of selected images. You can view only one doctor's work, or follow only one specific treatment such as lip filler or contouring, and see how consistent the results are across different people.
+gallery-153 | h2 | Before comparing, keep these two things in mind
+gallery-154 | p | First, some cases have more than one angle and are marked with an "angle" badge; they are one person, not two. Second, the gap between the before and after photo varies per case, because every treatment has its own timeline — for example, filler results are visible the same day, while collagen stimulation takes weeks. The doctor explains the treatment plan and realistic expectations during the In-Person Consultation and determine it by seeing your own face.
+gallery-155 | h2 | How to use the filters
+gallery-156 | p | consultation. There are two rows of filters at the top of the gallery: one by treatment type and one by doctor. Combine them to narrow the list to something relevant — for example, only Dr. Hoosavi's contouring, or only Dr. Mehrabouran's eyelid work. Clicking any image opens a larger version where skin texture and the edges of the treatment are seen better. If you are looking for something close to your own situation, rather than hunting for the best result, look for a case whose starting point resembles yours; that is the more realistic comparison.
+gallery-157 | h2 | If you want more examples
+gallery-158 | p | This gallery is not all of the clinic's work; it only includes cases where the patient consented to public publication. If the treatment you are interested in has few examples here, ask at the consultation; some cases are in an internal archive that can be shown in person.
+gallery-159 | h2 | The order is not random
+gallery-160 | p | The cases are grouped by treatment type, not by how good they are. In other words, what you see higher up is not necessarily the most successful result; this order is deliberate so that a biased choice does not happen.
+gallery-161 | h2 | FAQ
+gallery-162 | summary | Are all the images real?
+gallery-163 | p | Yes, all the images are real cases of Lemon Clinic patients. No result has been manipulated; only the framing and lighting of the images have been made consistent for gallery uniformity.
+gallery-164 | summary | Was written consent obtained from the patients?
+gallery-165 | p | Yes, explicit written consent has been obtained from the patients for publishing all the images.
+gallery-166 | summary | Which doctor performed each case?
+gallery-167 | p | The treating doctor's name is printed on each image and links to that doctor's page. The Lemon medical team holds medical license numbers.
+gallery-168 | summary | Is the result the same for everyone?
+gallery-169 | p | Not necessarily. Each person's result depends on their anatomy, skin type and individual circumstances. These images show the real results for these individuals and do not guarantee the same result for others.
+gallery-170 | button | ✕
+gallery-171 | button | ‹
+gallery-172 | button | ›

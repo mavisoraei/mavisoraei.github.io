@@ -1,0 +1,58 @@
+﻿doctors-1 | meta-title | Lemon's doctors; introducing our physicians with medical license numbers | West Tehran
+doctors-2 | meta-description | The team at Lemon Aesthetic Clinic in West Tehran: Dr Shadi Ghafoouri, Dr Mostafa Hoosavi, Dr Farideh Gholizadeh and Dr Amirreza Mehrabouran, with each doctor
+doctors-3 | li | Home
+doctors-4 | li | Lemon Doctors
+doctors-5 | h1 | Lemon Doctors
+doctors-6 | p | Treatments are performed by real, qualified physicians, combining safe anatomy with the art of aesthetics. To learn more about the clinic, see the About Us See it.
+doctors-7 | h2 | Dr. Shadi Ghafouri
+doctors-8 | p | Dentist · Founder and clinic director
+doctors-9 | p | At the clinic: clinic visits and daily work; the exact time is arranged when booking
+doctors-10 | li | Dental graduate ( B.D.S) from Maharashtra University of Medical Sciences, India
+doctors-11 | li | 4 years of specialist experience in dental facial aesthetics
+doctors-12 | li | Advanced courses in facial contouring and filler at recognised academies AAAM(Malaysia) and AAOPM(UAE)
+doctors-13 | li | Expertise in facial anatomy, advanced aesthetic injections and designing facial rejuvenation and harmony
+doctors-14 | li | Combining current science with international aesthetic artistry to create natural, safe results
+doctors-15 | a | See Dr. Ghafouri's full page →
+doctors-16 | h2 | Dr. Mostafa Hoosavi
+doctors-17 | p | General physician · Over 12 years of experience in aesthetics and facial design · Contour and thread lift · Medical license 142491
+doctors-18 | p | At the clinic: clinic visits and daily work; the exact time is arranged when booking
+doctors-19 | li | Professional doctorate graduate of Ilam University of Medical Sciences
+doctors-20 | li | Over 12 years of continuous experience in aesthetics and modern rejuvenation methods
+doctors-21 | li | 3 years of specialist teaching and running skills workshops for physicians
+doctors-22 | li | Special expertise in full facial contouring ( Full-Face) and advanced thread lifting and rejuvenation techniques
+doctors-23 | li | Precise blending of safe anatomy and aesthetic artistry for natural, lasting results
+doctors-24 | a | See Dr. Hoosavi's full page →
+doctors-25 | h2 | Dr. Farideh Gholizadeh
+doctors-26 | p | Researcher and emergency physician · Author of Lemon Magazine · Medical license 108047
+doctors-27 | li | Professional doctorate graduate of Iran University of Medical Sciences
+doctors-28 | li | Consulting physician of Iran University of Medical Sciences
+doctors-29 | li | 25 years of emergency medicine experience in state general hospitals
+doctors-30 | li | Director of public relations at Iran University of Medical Sciences
+doctors-31 | li | Director of the Razi Convention Centre in the 2000s
+doctors-32 | li | Director of student affairs at Shahid Beheshti University of Medical Sciences
+doctors-33 | li | Director of cultural and extracurricular affairs at Shahid Beheshti University of Medical Sciences
+doctors-34 | li | Physician and head of HSEQ at International Iritec Engineering
+doctors-35 | li | Lemon Clinic researcher; author of scientific articles Lemon Magazine
+doctors-36 | a | See Dr. Gholizadeh's full page →
+doctors-37 | h2 | Dr. Amirreza Mehrabouran
+doctors-38 | p | General Surgery Specialist · Blepharoplasty Surgeon · Medical license 131683
+doctors-39 | p | At the clinic: By appointment only
+doctors-40 | li | General Surgery Specialist, medical license 131683
+doctors-41 | li | Surgery Section Blepharoplasty and eyelid rejuvenation at Lemon Clinic
+doctors-42 | li | Performs eyelid surgery with specialist precision to correct drooping, puffiness and excess skin
+doctors-43 | li | Performs eyelid surgery with a hidden-suture technique (often called a laser stitch) so no suture marks are left on the skin
+doctors-44 | li | Her surgical expertise also covers lifts, implants, mammoplasty, body contouring, abdominoplasty and laparoscopy
+doctors-45 | a | See Dr. Mehrabouran's full page →
+doctors-46 | h2 | From the Lemon team, currently not consulting
+doctors-47 | p | Dr. Saba Dehghani and Dr. Atefeh Norouhmohammadi They are part of the Lemon team and sometimes Lemon Magazine write articles, but currently do not see patients at the clinic. The clinic's daily visits and work are with Dr. Mostafa Hoosavi and Dr. Shadi Ghafouri is.
+doctors-48 | h2 | who does what
+doctors-49 | p | At Lemon the division of labour is clear, and it is the same as written on each doctor's page. The injections, lasers and skin treatments are performed by the clinic's aesthetic physicians, not operators. Surgeries are by Dr. Mehrabouran, the clinic's general surgery specialist and blepharoplasty surgeon. Dr. Gholizadeh Researcher & Science Writer Lemon Magazine and injections and visits are not with them; their name appears under the articles they genuinely reviewed.
+doctors-50 | h2 | Verify the medical license number yourself
+doctors-51 | p | the medical license number of every physician registered with the Iranian Medical Council is written on their own page and can be verified through the official system of the Medical Council (Dr. Ghafouri is a dental graduate of India and his credentials are on his own page); the verification link is on that same page. This is the only way to fact-check a claim of being a "doctor" from the outside, and we suggest you do the same for any clinic you are considering, not just for Lemon. Each physician's cases are also listed separately on the Case Gallery You can see it by filtering on the doctor's name.
+doctors-52 | h2 | Education and the magazine: two more things this team does
+doctors-53 | p | Besides treatment, two other outputs come from this same team. Lemon Academy runs courses for physicians and clinical staff, and the details are on Training Page page. Lemon Magazine also publishes educational articles, each carrying the author's signature and, where relevant, a reviewer's signature. The rule is simple: the reviewer is always someone other than the author, and their name appears only under something they have genuinely read and approved.
+doctors-54 | p | This team is not closed. If you are a physician or medical assistant looking for work at an active clinic, the conditions are written in the aesthetic physician vacancies at Lemon and the roles currently open are listed there.
+doctors-55 | h2 | Each doctor's consulting hours differ
+doctors-56 | p | The days and hours each doctor is present are written under their name and are fixed. If you would prefer a particular doctor to do your work, say so when booking so the appointment falls on one of their consulting days.
+doctors-57 | p | To consult or book with Lemon's doctors, act now.
+doctors-58 | a | Book Appointment
