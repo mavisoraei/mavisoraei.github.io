@@ -27,11 +27,13 @@
 .case-card {
   display: flex;
   flex-direction: column;
+  align-items: start;
 }
 
 .case-media {
   position: relative;
-  aspect-ratio: var(--case-ratio, 599 / 1357);
+  width: 100%;
+  aspect-ratio: 4 / 5;
   border-radius: 999px 999px 20px 20px;
   overflow: hidden;
   background: #e8e2d5;
@@ -64,7 +66,7 @@
   padding: 0;
   display: block;
   object-fit: cover;
-  object-position: 50% 28%;
+  object-position: 50% 24%;
 }
 
 .case-ba-line {
@@ -143,7 +145,7 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding-top: 22px;
+  align-self: stretch;
 }
 
 .case-treat {
@@ -153,6 +155,7 @@
   text-align: center;
   color: inherit;
   text-decoration: none;
+  margin-top: 22px;
 }
 .case-treat:hover,
 .case-treat:focus-visible {
@@ -169,7 +172,7 @@
 .case-doc img { border-radius: 50%; }
 .case-doc-name { font-size: 14px; color: #6b6258; }
 
-/* Below 1100px: a horizontal scroll-snap row, ~2.2 cards visible. */
+/* Below 1100px: a horizontal scroll-snap row, each card 240px wide. */
 @media (max-width: 1100px) {
   .cases-grid {
     display: flex;
@@ -180,7 +183,7 @@
     padding-bottom: 4px;
   }
   .case-card {
-    flex: 0 0 calc((100% - 24px) / 2.2);
+    flex: 0 0 240px;
     scroll-snap-align: start;
   }
 }
