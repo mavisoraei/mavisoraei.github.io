@@ -1404,6 +1404,7 @@
     initMarqueeDrag();
     initReviewMarquee();
     initConsultCta();
+    initContactDialog();
     initVideoModal();
     initPageMesh();
     initWindowLight();
@@ -1412,4 +1413,130 @@
   // these two need no DOM, so they start as early as possible
   initEntryAttribution();
   initAnalytics();
+
+  let lastFocus = null;
+  let focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  function initContactDialog() {
+    const dialog = document.getElementById('lm-contact');
+    if (!dialog || dialog.dataset.bound) return;
+    dialog.dataset.bound = '1';
+
+    const contact = {
+      whatsapp: 'https://wa.me/989004709161',
+      phone: 'tel:+982147009161',
+      email: '',
+      instagram: 'https://instagram.com/lemonclinic_org',
+      linkedin: '',
+      maps: 'https://www.google.com/maps?cid=2160021389971725298',
+      neshan: 'https://neshan.org/maps/places/abaf5ff52a87d9b2dcf313e9fae7f153',
+      balad: 'https://balad.ir/p/%DA%A9%D9%84%DB%8C%D9%86%DB%8C%DA%A9-%D8%B2%DB%8C%D8%A8%D8%A7%DB%8C%DB%8C-%D9%84%D9%85%D9%88%D9%86-tehran-nei-_medical-office-6kHIOEJAGfw5Ep',
+      booking: '/contact.html'
+    };
+
+    function applyLinks() {
+      document.querySelectorAll('[data-contact="whatsapp"]').forEach(el => {
+        if (!contact.whatsapp) el.setAttribute('hidden', '');
+        else { el.removeAttribute('hidden'); el.setAttribute('href', contact.whatsapp); }
+      });
+      document.querySelectorAll('[data-contact="phone"]').forEach(el => {
+        if (!contact.phone) el.setAttribute('hidden', '');
+        else { el.removeAttribute('hidden'); el.setAttribute('href', contact.phone); }
+      });
+      document.querySelectorAll('[data-contact="email"]').forEach(el => {
+        if (!contact.email) el.setAttribute('hidden', '');
+        else { el.removeAttribute('hidden'); el.setAttribute('href', 'mailto:' + contact.email); }
+      });
+      document.querySelectorAll('[data-contact="instagram"]').forEach(el => {
+        if (!contact.instagram) el.setAttribute('hidden', '');
+        else { el.removeAttribute('hidden'); el.setAttribute('href', contact.instagram); }
+      });
+      document.querySelectorAll('[data-contact="linkedin"]').forEach(el => {
+        if (!contact.linkedin) el.setAttribute('hidden', '');
+        else { el.removeAttribute('hidden'); el.setAttribute('href', contact.linkedin); }
+      });
+      document.querySelectorAll('[data-contact-map="maps"]').forEach(el => {
+        if (contact.maps) el.setAttribute('href', contact.maps);
+      });
+      document.querySelectorAll('[data-contact-map="neshan"]').forEach(el => {
+        if (contact.neshan) el.setAttribute('href', contact.neshan);
+      });
+      document.querySelectorAll('[data-contact-map="balad"]').forEach(el => {
+        if (contact.balad) el.setAttribute('href', contact.balad);
+      });
+      document.querySelectorAll('[data-contact-book]').forEach(el => {
+        if (contact.booking) el.setAttribute('href', contact.booking);
+      });
+    }
+    applyLinks();
+
+    function open() {
+      if (!dialog.hasAttribute('open')) {
+        if (typeof dialog.showModal === 'function') dialog.showModal();
+        else dialog.setAttribute('open', '');
+      }
+      lastFocus = document.activeElement;
+      document.body.style.overflow = 'hidden';
+      trapFocus();
+    }
+
+    function close() {
+      if (dialog.hasAttribute('open')) {
+        if (typeof dialog.close === 'function') dialog.close();
+        else dialog.removeAttribute('open');
+      }
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+
+    function trapFocus(e) {
+      const focusables = Array.from(dialog.querySelectorAll(focusableSelectors)).filter(el => {
+        return !el.hasAttribute('hidden') && el.offsetWidth > 0 && el.offsetHeight > 0;
+      });
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e && e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    document.addEventListener('click', function (e) {
+      const trigger = e.target.closest('[data-lm-contact]');
+      if (trigger) {
+        const href = trigger.getAttribute('href');
+        if (href && href.startsWith('#') === false && trigger.getAttribute('data-lm-contact') !== 'force-js') {
+        }
+        e.preventDefault();
+        open();
+        return;
+      }
+      if (dialog.hasAttribute('open')) {
+        if (e.target.closest('[data-lm-contact-close]')) { e.preventDefault(); close(); return; }
+        if (e.target === dialog) { close(); return; }
+      }
+    });
+
+    dialog.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      trapFocus(e);
+    });
+
+    document.querySelectorAll('[data-contact]').forEach(a => {
+      if (!a.getAttribute('href') || a.getAttribute('href') === '#') {
+        const k = a.getAttribute('data-contact');
+        const val = contact[k];
+        if (!val) a.setAttribute('hidden', '');
+        else a.setAttribute('href', k === 'email' ? 'mailto:' + val : val);
+      }
+    });
+  }
+
+
 }());
