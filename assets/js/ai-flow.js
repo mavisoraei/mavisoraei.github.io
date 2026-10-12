@@ -1,4 +1,4 @@
-// ai-flow.js - AI Face Analysis Flow
+﻿// ai-flow.js - AI Face Analysis Flow
 // Adapter config as specified
 
 const AI = {
@@ -98,14 +98,9 @@ function showUpgradeMessage() {
 
 function init() {
   const url = new URL(window.location.href);
-  const demo = url.searchParams.get('demo');
-  const hasDemo = demo === '1';
-  
-  // Check if API is empty and no demo
-  if (AI.api === '' && !hasDemo) {
-    showUpgradeMessage();
-    return;
-  }
+  const url = new URL(window.location.href);
+  const demo = url.searchParams.get("demo");
+  let hasDemo = (AI.api === "" || demo === "1");
   
   if (hasDemo) {
     $('#demo-ribbon').classList.add('is-visible');
