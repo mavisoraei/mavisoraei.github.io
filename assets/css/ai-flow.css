@@ -1,4 +1,4 @@
-﻿.ai-flow-page main, #main, .ai-flow-wrap { background: none !important; }\n/* ai-flow.css - AI Face Analysis Flow
+﻿body, html { background: #f5f2eb !important; margin: 0; padding: 0; }\nmain, #main, .ai-flow-page, #app, .ai-flow-wrap { background: none !important; box-shadow: none !important; border: none !important; }\n.ai-flow-page { min-height: 100vh; }\n.ai-flow-page main, #main, .ai-flow-wrap { background: none !important; }\n/* ai-flow.css - AI Face Analysis Flow
    Design system: cream background, centered column max-width 480px, LTR
 */
 
@@ -925,4 +925,5 @@
     transition: none;
   }
 }
+
 
