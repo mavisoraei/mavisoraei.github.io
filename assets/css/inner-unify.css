@@ -1259,3 +1259,111 @@ main .cta-card .cta-actions:not(#_):not(#_):not(#_) {
     width: 100%;
   }
 }
+/* ==========================================================================
+   K3 — FACIAL MONO: table labels, one centred column, unframed mascot
+
+   1. Price-table sub-row labels move into the Treatment column and the Details
+      column is dropped on facial (blog/areas keep their Details column).
+   2. Every article text block shares one centred column (min(100%, 780px));
+      the price table and the hero figure may run min(100%, 980px); the FAQ
+      stays at 820px.
+   3. The mascot sticker (treatment.webp) has an alpha channel, so it is shown
+      full-bleed at 104px — no circle crop, no container.
+   ========================================================================== */
+
+/* --- K3.1 facial price table is now Treatment | Price --------------------- */
+
+/* Rebalance the two surviving columns: Treatment wide, Price narrow. */
+main .svc-prices .pr-table thead th:nth-child(1):not(#_):not(#_):not(#_):not(#_),
+main .svc-prices .pr-table tbody td:nth-child(1):not(#_):not(#_):not(#_):not(#_) {
+  width: 66%;
+}
+
+main .svc-prices .pr-table thead th:nth-child(2):not(#_):not(#_):not(#_):not(#_),
+main .svc-prices .pr-table tbody td:nth-child(2):not(#_):not(#_):not(#_):not(#_) {
+  width: 34%;
+}
+
+/* Price is the second column now � right-aligned tabular figures. */
+main .svc-prices .pr-table thead th:nth-child(2):not(#_):not(#_):not(#_):not(#_):not(#_),
+main .svc-prices .pr-table tbody td:nth-child(2):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  text-align: end;
+  padding-inline-start: 18px;
+}
+
+/* Moved sub-row labels sit indented with a small gold dash. */
+main .svc-prices .pr-table tbody tr.pr-sub-row td:nth-child(1):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  padding-inline-start: 24px;
+  white-space: normal;
+}
+
+main .svc-prices .pr-table tbody tr.pr-sub-row td:nth-child(1)::before {
+  content: "\2014";
+  margin-inline-end: 8px;
+  color: #8c7040;
+}
+
+@media (max-width: 640px) {
+  main .svc-prices .pr-table tbody tr.pr-sub-row td:nth-child(1):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+    padding-inline-start: 18px;
+  }
+}
+
+/* --- K3.2 one centred column for the article blocks ----------------------- */
+
+/* The article body (facial and services; laser keeps its 1fr 300px side grid)
+   and every lead share min(100%, 780px), centred, text still left inside. */
+main .svc-grid:not(:has(.svc-side)) .svc-body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  max-width: 780px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+main .docs-hero .lead:not(#_):not(#_):not(#_),
+main .ct-hero-text .lead:not(#_):not(#_):not(#_),
+main .pg-hero .lead:not(#_):not(#_):not(#_) {
+  width: min(100%, 780px);
+  margin-inline: auto;
+}
+
+main .svc-lead:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  width: min(100%, 780px);
+  margin-inline: auto;
+}
+
+/* The large hero figure and the price tables may run 980px. */
+main .svc-figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  max-width: 980px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+main .svc-prices:not(#_):not(#_):not(#_):not(:has(.callout--media)) {
+  max-width: min(980px, var(--container));
+  margin-inline: auto;
+}
+
+main .pg-price-table:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+/* FAQ keeps its 820px centred band (already in place). */
+
+/* --- K3.3 mascot sticker, never cropped ----------------------------------
+   treatment.webp carries alpha transparency, so the no container branch
+   applies: the whole sticker at 104px wide, no circle, no backdrop. */
+main .callout--media:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  grid-template-columns: auto 1fr;
+}
+
+main .callout--media img:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  display: block;
+  width: 104px;
+  height: auto;
+  max-width: none;
+  border-radius: 0;
+  object-fit: contain;
+  background: transparent;
+  flex: none;
+}
