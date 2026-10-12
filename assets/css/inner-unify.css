@@ -1159,3 +1159,103 @@ main:has(.callout--media) .svc-prices.wrap:not(#_) {
   max-width: min(980px, var(--container));
   margin-inline: auto;
 }
+
+/* ==========================================================================
+   K2 — TWO LAYOUT FIXES
+   1. Doctor photo box: uncropped whole-photo rectangle beside the text.
+   2. Smart Mirror CTA card: restore the lost in-card padding + button row.
+   ========================================================================== */
+
+/* --- K2.1 Doctor box -----------------------------------------------------
+   The team photo (havasi-ghafouri-team-420.webp) is 420 x 411 natural. The
+   box holds that ratio so `object-fit: cover` never crops; it stretches to
+   the text block's height, capped in width, with the photo on the column
+   that keeps it on the left of the text (English layout). */
+:root {
+  --doc-ar: calc(420 / 411);
+}
+
+main .reviewer-badge:not(#_):not(#_) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 24px;
+  padding: 22px 28px;
+}
+
+main .reviewer-badge picture:not(#_):not(#_) {
+  align-self: stretch;
+  min-height: 128px;
+  aspect-ratio: var(--doc-ar);
+  max-width: 210px;
+  width: auto;
+  height: auto;
+  border-radius: 16px;
+  overflow: hidden;
+  flex: none;
+  display: block;
+  background: #f5f2eb;
+}
+
+main .reviewer-badge img:not(#_):not(#_) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  flex: none;
+  display: block;
+  border-radius: 0;
+}
+
+@media (max-width: 640px) {
+  main .reviewer-badge:not(#_):not(#_) {
+    grid-template-columns: 1fr;
+  }
+
+  main .reviewer-badge picture:not(#_):not(#_) {
+    align-self: auto;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    max-height: 260px;
+    margin-inline: auto;
+  }
+}
+
+/* --- K2.2 Smart Mirror CTA card ------------------------------------------
+   `main .wrap:not(...)` in section 11b zeroes the in-card padding for every
+   `.wrap` it does not exclude; `.cta-card` was not excluded, so its text and
+   buttons landed on the card edges. These overrides beat it (higher
+   specificity) and rebuild the intended layout. */
+main .wrap.cta-card:not(#_):not(#_) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 40px;
+  row-gap: 28px;
+  padding: 44px 52px;
+  box-sizing: border-box;
+}
+
+main .cta-card .cta-actions:not(#_):not(#_):not(#_) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+@media (max-width: 700px) {
+  main .wrap.cta-card:not(#_):not(#_) {
+    grid-template-columns: 1fr;
+    padding: 28px 24px;
+  }
+
+  main .cta-card .cta-actions:not(#_):not(#_):not(#_) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  main .cta-card .cta-actions a:not(#_):not(#_):not(#_):not(#_) {
+    width: 100%;
+  }
+}
