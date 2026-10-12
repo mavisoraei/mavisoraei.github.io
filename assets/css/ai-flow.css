@@ -1,4 +1,4 @@
-/* ai-flow.css - AI Face Analysis Flow
+﻿/* ai-flow.css - AI Face Analysis Flow
    Design system: cream background, centered column max-width 480px, LTR
 */
 
@@ -18,7 +18,7 @@
 }
 
 .ai-flow-page {
-  background: var(--cream);
+  background: #f5f2eb;
   color: var(--ink);
   font-family: var(--font-body, 'Jost', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif);
   padding: 20px 16px 40px;
@@ -43,8 +43,8 @@
 
 /* Top bar */
 .ai-topbar {
-  display: grid;
-  grid-template-columns: 40px 1fr 120px;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   align-items: center;
   margin-bottom: 20px;
@@ -87,18 +87,30 @@
   display: flex;
   gap: 6px;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
-.ai-progress-seg {
-  flex: 1;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--progress-rest);
-  transition: background 200ms ease;
+.ai-progress {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
-.ai-progress-seg.is-done {
-  background: var(--gold);
+.ai-progress {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 /* Screen */
@@ -143,23 +155,27 @@
 
 /* Cards */
 .ai-card {
-  background: var(--cream-bg);
+  background: #fbf9f5;
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 16px;
   margin-bottom: 14px;
   display: flex;
   gap: 14px;
-  align-items: center;
+  align-items: stretch;
+  cursor: pointer;
 }
 
 .ai-card img {
   width: 90px;
-  height: 90px;
-  border-radius: 16px;
-  object-fit: cover;
+  height: 100%;
+  max-height: 90px;
+  border-radius: 12px;
+  object-fit: contain;
   flex-shrink: 0;
   display: block;
+  margin: 0;
+  align-self: center;
 }
 
 .ai-card-content {
@@ -199,8 +215,8 @@
 
 /* Bar and footnote */
 .ai-bar {
-  background: var(--cream-bg);
-  border: 1px solid var(--border);
+  background: linear-gradient(135deg, #fbf9f5, #f3ece0);
+  border: 1px solid rgba(184,160,112,0.35);
   border-radius: 20px;
   padding: 12px 16px;
   text-align: center;
@@ -208,6 +224,10 @@
   color: var(--ink);
   margin: 16px 0 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .ai-footnote {
@@ -361,7 +381,7 @@
   gap: 10px;
   padding: 10px 12px;
   margin-bottom: 8px;
-  background: var(--cream-bg);
+  background: #fbf9f5;
   border: 1px solid var(--border);
   border-radius: 14px;
   font-size: 13px;
@@ -415,7 +435,7 @@
 }
 
 .ai-summary-card {
-  background: var(--cream-bg);
+  background: #fbf9f5;
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 14px 16px;
@@ -487,7 +507,7 @@
 }
 
 .ai-treat-card {
-  background: var(--cream-bg);
+  background: #fbf9f5;
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 10px;
@@ -614,11 +634,14 @@
   display: block;
 }
 
-.ai-progress-text {
-  font-size: 12px;
-  color: var(--muted);
-  text-align: center;
-  margin: 10px 0 0;
+.ai-progress {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 /* Final */
@@ -768,7 +791,7 @@
   width: min(480px, 100%);
   max-height: calc(100vh - 48px);
   overflow: auto;
-  background: var(--cream);
+  background: #f5f2eb;
   border: 1px solid var(--border);
   border-radius: 24px 24px 0 0;
   padding: 24px 20px 20px;
@@ -872,14 +895,22 @@
     padding: 16px 12px 32px;
   }
   
-  .ai-topbar {
-    grid-template-columns: 40px 1fr;
-    gap: 8px;
-  }
+.ai-topbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
   
-  .ai-progress {
-    grid-column: 1 / -1;
-  }
+.ai-progress {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 /* Reduced motion */
