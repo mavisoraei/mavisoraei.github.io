@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Face Analysis - Lemon</title>
+  <meta name="description" content="AI face analysis flow">
+  <link rel="preload" href="/assets/fonts/BodoniModa-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/Jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css?v=1.0.27">
+  <link rel="stylesheet" href="/assets/css/nav-extras.css?v=1.0.0">
+  <link rel="stylesheet" href="/assets/css/contact-modal.css?v=1.0.0">
+  <link rel="stylesheet" href="/assets/css/ai-flow.css?v=1.0.0">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  
+  <!-- Header (same markup as inner page) -->
+  <header class="lm-header" id="site-header">
+    <div class="lm-nav">
+      <a class="lm-brand" href="./index.html" aria-label="Lemon Aesthetic Clinic">
+        <img src="/assets/icons/logo.svg" alt="Lemon Aesthetic Clinic logo" width="38" height="38" decoding="async">
+        <span class="lm-brand-text">
+          <strong>LEMON</strong>
+          <small>Aesthetic Clinic</small>
+        </span>
+      </a>
+      <nav class="lm-menu" aria-label="Primary navigation">
+        <ul role="list">
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./laser.html">Laser</a></li>
+          <li><a href="./facial.html">Facial</a></li>
+          <li><a href="./doctors.html">Doctors</a></li>
+          <li><a href="./prices.html">Pricing</a></li>
+          <li><a href="./ai-analysis.html#/start" class="active" aria-current="page">Face Analysis</a></li>
+          <li>
+            <details class="mega">
+              <summary>Services<span class="caret" aria-hidden="true">â–¾</span></summary>
+              <div class="mega-panel">
+                <div class="mega-groups" aria-label="Services list">
+                  <div class="mega-group">
+                    <a class="mega-group-title mega-group-link" href="./weight-loss.html">Weight Loss</a>
+                    <ul role="list">
+                      <li><a href="./spartina-2.html">Spartina</a></li>
+                      <li><a href="./localized-slimming-2.html">Localized Slimming</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <a class="mega-group-title mega-group-link" href="./facial-fillers-2.html">Facial Fillers</a>
+                    <ul role="list">
+                      <li><a href="./lip-fillers-2.html">Lip Fillers</a></li>
+                      <li><a href="./chin-fillers-2.html">Chin Fillers</a></li>
+                      <li><a href="./cheek-fillers-2.html">Cheek Fillers</a></li>
+                      <li><a href="./jawline-fillers.html">Jawline Fillers</a></li>
+                      <li><a href="./nose-fillers-2.html">Nose Fillers</a></li>
+                      <li><a href="./under-eye-fillers-2.html">Under-Eye Fillers</a></li>
+                      <li><a href="./temple-fillers.html">Temple Fillers</a></li>
+                      <li><a href="./smile-line-fillers-2.html">Smile Line Fillers</a></li>
+                      <li><a href="./contouring-full-face-2.html">Contouring & Full-Face</a></li>
+                      <li><a href="./filler-dissolution-correction.html">Filler Dissolution & Correction</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <a class="mega-tariff" href="./prices.html">Fees & Pricing for All Services<span aria-hidden="true"> â†’</span></a>
+              </div>
+            </details>
+          </li>
+        </ul>
+      </nav>
+      <div class="lm-actions">
+        <a class="lm-social" href="https://instagram.com/lemonclinic_org" target="_blank" rel="noopener" aria-label="Lemon Aesthetic Clinic on Instagram">
+          <img src="/assets/icons/instagram.svg" alt="" width="18" height="18" decoding="async">
+        </a>
+        <a class="lm-cta" href="./contact.html">Contact Us</a>
+      </div>
+      <button class="burger lm-burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="ai-flow-page">
+    <div id="demo-ribbon" class="ai-demo-ribbon">Demo preview - not a real analysis</div>
+    
+    <div id="ai-flow-wrap" class="ai-flow-wrap">
+      <!-- Top bar -->
+      <div class="ai-topbar">
+        <button type="button" id="back-btn" class="ai-back" aria-label="Go back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <h2 id="step-title" class="ai-step-title" aria-live="polite">Start</h2>
+        <div class="ai-progress" aria-label="Step progress">
+          <div class="ai-progress-seg is-done"></div>
+          <div class="ai-progress-seg"></div>
+          <div class="ai-progress-seg"></div>
+          <div class="ai-progress-seg"></div>
+          <div class="ai-progress-seg"></div>
+        </div>
+      </div>
+
+      <!-- Step 1: Start -->
+      <section class="ai-screen is-active" data-step="#/start" aria-label="Start screen">
+        <h1 class="ai-h1" tabindex="-1">What would you like to see?</h1>
+        <p class="ai-sub">A real preview on your own photo, in seconds.</p>
+        
+        <div class="ai-card" id="start-face" role="button" tabindex="0">
+          <img src="/mascot/full-v2/mascot.webp" alt="Mascot" loading="lazy">
+          <div class="ai-card-content">
+            <h3 class="ai-card-title">Face</h3>
+            <p class="ai-card-text">See filler and contour on your own photo before injection.</p>
+            <div class="ai-card-action">
+              Start
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div class="ai-card" id="start-body" role="button" tabindex="0">
+          <img src="/mascot/full-v2/mascot.webp" alt="Mascot" loading="lazy">
+          <div class="ai-card-content">
+            <h3 class="ai-card-title">Body</h3>
+            <p class="ai-card-text">See yourself after weight loss.</p>
+            <div class="ai-card-action">
+              Start
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div class="ai-bar" id="ask-us">Any questions? Ask us</div>
+        <p class="ai-footnote">Your photo is used only for this analysis and does not replace a doctor's examination.</p>
+      </section>
+
+      <!-- Step 2: Capture -->
+      <section class="ai-screen" data-step="#/capture" aria-label="Capture photo">
+        <h1 class="ai-h1" tabindex="-1">Face analysis</h1>
+        <div class="ai-sample">
+          <div class="ai-sample-frame">
+            <img src="/images/consult/ai-consultant.webp" alt="Sample photo" loading="lazy">
+            <span class="ai-chip">Good example</span>
+          </div>
+        </div>
+        <h2 class="ai-h2">Whole face in frame, looking straight at the camera</h2>
+        <p class="ai-text">Good light - no glasses or hat - relaxed face, no smile</p>
+        <p class="ai-note-small" id="retention-note"></p>
+        <div class="ai-actions">
+          <button type="button" id="btn-camera" class="ai-btn ai-btn-outline">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            Camera
+          </button>
+          <button type="button" id="btn-gallery" class="ai-btn ai-btn-outline">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            Gallery
+          </button>
+        </div>
+        <p class="ai-hint">To start, take a photo of your face or choose one from your gallery.</p>
+        <input type="file" id="camera-input" accept="image/*" capture="user" style="display:none">
+        <input type="file" id="gallery-input" accept="image/*" style="display:none">
+      </section>
+
+      <!-- Step 3: Confirm -->
+      <section class="ai-screen" data-step="#/confirm" aria-label="Confirm photo">
+        <h1 class="ai-h1" tabindex="-1">Face analysis</h1>
+        <div class="ai-photo-confirm">
+          <div class="ai-photo-frame-round">
+            <img id="confirm-photo" src="" alt="Your photo" loading="lazy">
+          </div>
+        </div>
+        <h2 class="ai-h2">Whole face in frame, looking straight at the camera</h2>
+        <div class="ai-actions" style="margin-top:20px">
+          <button type="button" id="btn-continue" class="ai-btn ai-btn-dark">Continue</button>
+          <button type="button" id="btn-change" class="ai-btn ai-btn-outline">Change photo</button>
+        </div>
+      </section>
+
+      <!-- Step 4: Analyzing -->
+      <section class="ai-screen" data-step="#/analyzing" aria-label="Analyzing">
+        <h1 class="ai-h1" tabindex="-1">Analyzing your face...</h1>
+        <p class="ai-sub">It will only take a few more seconds.</p>
+        <ul class="ai-list" aria-live="polite">
+          <li class="ai-list-item"><span class="ai-list-dot"></span>Detecting face...</li>
+          <li class="ai-list-item"><span class="ai-list-dot"></span>Scanning facial parts...</li>
+          <li class="ai-list-item"><span class="ai-list-dot"></span>Analyzing eyes...</li>
+          <li class="ai-list-item"><span class="ai-list-dot"></span>Nose and lips...</li>
+          <li class="ai-list-item"><span class="ai-list-dot"></span>Calculating symmetry...</li>
+          <li class="ai-list-item"><span class="ai-list-dot"></span>Done</li>
+        </ul>
+      </section>
+
+      <!-- Step 5: Result -->
+      <section class="ai-screen" data-step="#/result" aria-label="Result">
+        <p class="ai-score-label">Facial beauty score</p>
+        <h1 id="score-num" class="ai-score" tabindex="-1">84/100</h1>
+        <p id="score-label" class="ai-category">Natural beauty</p>
+        <div class="ai-summary-card">
+          <span id="apparent-age" class="ai-chip-inline">Apparent age 24</span>
+          <div id="summary-text">Balanced proportions with natural harmony.</div>
+        </div>
+        <p class="ai-sentence">Your facial analysis shows balanced proportions and natural symmetry.</p>
+        
+        <div class="ai-bars">
+          <div class="ai-bar-row">
+            <div class="ai-bar-label">
+              <span>Overall symmetry</span>
+              <span class="ai-bar-val">86%</span>
+            </div>
+            <div class="ai-bar-track">
+              <div id="bar-sym" class="ai-bar-fill" style="width:86%"></div>
+            </div>
+          </div>
+          <div class="ai-bar-row">
+            <div class="ai-bar-label">
+              <span>Eye proportion</span>
+              <span class="ai-bar-val">82%</span>
+            </div>
+            <div class="ai-bar-track">
+              <div id="bar-eyes" class="ai-bar-fill" style="width:82%"></div>
+            </div>
+          </div>
+          <div class="ai-bar-row">
+            <div class="ai-bar-label">
+              <span>Nose proportion</span>
+              <span class="ai-bar-val">88%</span>
+            </div>
+            <div class="ai-bar-track">
+              <div id="bar-nose" class="ai-bar-fill" style="width:88%"></div>
+            </div>
+          </div>
+          <div class="ai-bar-row">
+            <div class="ai-bar-label">
+              <span>Lip proportion</span>
+              <span class="ai-bar-val">84%</span>
+            </div>
+            <div class="ai-bar-track">
+              <div id="bar-lips" class="ai-bar-fill" style="width:84%"></div>
+            </div>
+          </div>
+          <div class="ai-bar-row">
+            <div class="ai-bar-label">
+              <span>Jaw and chin proportion</span>
+              <span class="ai-bar-val">80%</span>
+            </div>
+            <div class="ai-bar-track">
+              <div id="bar-jaw" class="ai-bar-fill" style="width:80%"></div>
+            </div>
+          </div>
+        </div>
+        
+        <button type="button" id="btn-choose" class="ai-btn ai-btn-dark" onclick="setStep('#/treatments')">Choose treatment</button>
+      </section>
+
+      <!-- Step 6: Treatments -->
+      <section class="ai-screen" data-step="#/treatments" aria-label="Treatments">
+        <h1 class="ai-h1" tabindex="-1">Choose treatment</h1>
+        <p class="ai-sub">You can combine several treatments.</p>
+        
+        <div class="ai-treatments-grid">
+          <div class="ai-treat-card" data-idx="0">
+            <span class="ai-treat-check">âœ“</span>
+            <img src="/images/filler/perfectha-cut-480.webp" alt="Natural lip filler" loading="lazy">
+            <h3 class="ai-treat-title">Natural lip filler</h3>
+            <p class="ai-treat-sub">Natural, balanced volume</p>
+          </div>
+          <div class="ai-treat-card" data-idx="1">
+            <span class="ai-treat-check">âœ“</span>
+            <img src="" alt="Russian lip filler" loading="lazy">
+            <h3 class="ai-treat-title">Russian lip filler</h3>
+            <p class="ai-treat-sub">Volume and Russian-style lift</p>
+            <span class="ai-treat-badge">Replaces</span>
+          </div>
+          <div class="ai-treat-card" data-idx="2">
+            <span class="ai-treat-check">âœ“</span>
+            <img src="" alt="Full contour" loading="lazy">
+            <h3 class="ai-treat-title">Full contour</h3>
+            <p class="ai-treat-sub">Correct structure and symmetry</p>
+          </div>
+          <div class="ai-treat-card" data-idx="3">
+            <span class="ai-treat-check">âœ“</span>
+            <img src="/images/filler/dermmalstyle-cut-480.webp" alt="Under-eye filler" loading="lazy">
+            <h3 class="ai-treat-title">Under-eye filler</h3>
+            <p class="ai-treat-sub">Fix hollowness and dark circles</p>
+          </div>
+          <div class="ai-treat-card" data-idx="4">
+            <span class="ai-treat-check">âœ“</span>
+            <img src="" alt="Jawline" loading="lazy">
+            <h3 class="ai-treat-title">Jawline</h3>
+            <p class="ai-treat-sub">Clear, defined jaw line</p>
+          </div>
+        </div>
+        
+        <p class="ai-treat-counter" id="treat-counter">0 of 4 treatments selected</p>
+        <button type="button" id="btn-simulate" class="ai-btn ai-btn-dark">Simulate result</button>
+        <p class="ai-footnote" style="margin-top:10px">Russian lip filler, Full contour, Jawline have no local image - render as text-only cards. See MISSING IMAGES report.</p>
+      </section>
+
+      <!-- Step 7: Generating -->
+      <section class="ai-screen" data-step="#/generating" aria-label="Generating">
+        <h1 class="ai-h1" tabindex="-1">Creating your simulation takes 1 to 2 minutes.</h1>
+        <p class="ai-sub">Please keep this page open: if you leave, your credit is used and the image will not be generated.</p>
+        <div class="ai-preview-wrap">
+          <div class="ai-preview-blur">
+            <img src="/images/ai/ba-before-900.webp" alt="Preview" loading="lazy">
+          </div>
+          <div class="ai-preview-frame">
+            <img src="/images/ai/ba-before-900.webp" alt="Your photo" loading="lazy">
+          </div>
+        </div>
+        <div class="ai-bar-track" style="margin:16px 0 8px">
+          <div id="gen-bar" class="ai-bar-fill" style="width:9%"></div>
+        </div>
+        <p id="gen-text" class="ai-progress-text">Analyzing faces... 9%</p>
+      </section>
+
+      <!-- Step 8: Final -->
+      <section class="ai-screen" data-step="#/final" aria-label="Final result">
+        <h1 class="ai-h1" tabindex="-1">Before and After</h1>
+        <div class="ai-beforeafter-wrap">
+          <div id="ba-wrap" class="ba-compare" role="img" aria-label="Before and after comparison">
+            <img id="ba-before" src="/images/ai/ba-before-900.webp" alt="Before" loading="lazy">
+            <div id="ba-handle" class="ba-handle"></div>
+            <div class="ba-knob">Drag</div>
+            <div class="ba-pill ba-pill-before">Before</div>
+            <div class="ba-pill ba-pill-after">After</div>
+          </div>
+        </div>
+        <div class="ai-actions">
+          <button type="button" id="btn-book" class="ai-btn ai-btn-dark">Book a consultation</button>
+          <button type="button" id="btn-try" class="ai-btn ai-btn-outline">Try another treatment</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Upgrade message -->
+    <div id="ai-upgrade" class="ai-upgrade" style="display:none">
+      <p>Our AI analysis is being upgraded. Please contact us to book a consultation.</p>
+      <button type="button" id="btn-upgrade-contact" class="ai-btn ai-btn-dark" onclick="if(window.LemonBooking&&window.LemonBooking.open){window.LemonBooking.open()}else{window.location.href='contact.html'}">Contact Us</button>
+    </div>
+  </main>
+
+  <!-- Verification bottom sheet -->
+  <div id="verification-sheet" class="ai-sheet" aria-label="Verification">
+    <div class="ai-sheet-content" role="dialog" aria-modal="true">
+      <h2 class="ai-sheet-title">Verify your number</h2>
+      <p class="ai-sheet-text">To see the result, verify your number.</p>
+      <p class="ai-sheet-text" style="margin-bottom:16px">Your simulated photo is created for you and, if you wish, a Lemon specialist will advise you about the course and approximate price. Your number is used only for this contact and for information about Lemon services.</p>
+      
+      <div id="sheet-step1">
+        <div class="ai-field">
+          <label for="name-input">Your name</label>
+          <input type="text" id="name-input" autocomplete="name">
+        </div>
+        <div class="ai-field">
+          <label for="phone-input">Mobile number</label>
+          <input type="tel" id="phone-input" autocomplete="tel" placeholder="09xxxxxxxxx">
+        </div>
+        <button type="button" id="btn-send-code" class="ai-btn ai-btn-dark" style="margin-top:8px">Send me the code</button>
+      </div>
+      
+      <div id="sheet-step2" style="display:none">
+        <p class="ai-sheet-text">Code sent to <span id="phone-display"></span></p>
+        <div class="ai-code-wrap" role="group" aria-label="6-digit code">
+          <input type="text" class="ai-code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="ai-code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="ai-code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="ai-code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="ai-code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="ai-code-input" maxlength="1" inputmode="numeric">
+        </div>
+        <button type="button" id="btn-verify" class="ai-btn ai-btn-dark" style="margin-top:8px">Verify and continue</button>
+        <div class="ai-sheet-links">
+          <button type="button" id="change-number">Change number</button>
+          <button type="button" id="resend-code" disabled><span id="resend-text">Resend in 60 seconds</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer (minimal inline to keep it simple) -->
+  <footer class="site-footer" style="margin-top:60px">
+    <div class="f-bar">
+      <div class="wrap f-bar-inner">
+        <span>Lemon Medical Aesthetic Clinic</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/nav-extras.js?v=1.0.0" defer></script>
+  <script src="/assets/js/contact-modal.js?v=1.0.0" defer></script>
+  <script src="/assets/js/ai-flow.js?v=1.0.0" defer></script>
+  
+  <script>
+    // Set retention text with Privacy policy link
+    document.addEventListener('DOMContentLoaded', function() {
+      const el = document.getElementById('retention-note');
+      if (el) {
+        el.innerHTML = 'Your photo is kept for up to 6 months and then deleted automatically. <a href="privacy-policy.html">Privacy policy</a>';
+      }
+    });
+  </script>
+</body>
+</html>
