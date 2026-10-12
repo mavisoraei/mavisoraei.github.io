@@ -18,6 +18,8 @@
     booking: '/contact.html'
   };
 
+  window.LEMON_CONTACT = CONTACT;
+
   var ADDRESS = 'Tehran, Kharazi Highway, Ardestani Boulevard, Parseh Commercial Complex, 8th Floor';
   var HOURS = 'Saturday to Thursday, 10 to 19';
 
@@ -129,6 +131,12 @@
     var book = el('a', 'cm-book btn-pill btn-pill--dark');
     book.href = CONTACT.booking;
     book.textContent = 'Book Appointment';
+    book.addEventListener('click', function (e) {
+      if (!window.LemonBooking || typeof window.LemonBooking.open !== 'function') return;
+      e.preventDefault();
+      dialog.close();
+      window.LemonBooking.open({});
+    });
     dialog.appendChild(book);
 
     return dialog;

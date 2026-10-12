@@ -1,0 +1,396 @@
+/* booking.css — K1: booking modal + inline availability calendar.
+   Loaded on index.html (dialog) and contact.html (inline). */
+
+/* --- dialog shell (reuses the contact dialog look) --- */
+.contact-modal.booking-dialog {
+  width: min(520px, 100vw - 32px);
+}
+
+.booking-dialog .bk-form {
+  margin-top: 20px;
+}
+
+/* --- fields --- */
+.bk-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.bk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.bk-label {
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2a2622;
+}
+
+.bk-input {
+  display: block;
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  background: #fbf9f5;
+  border: 1px solid rgba(42, 38, 34, .14);
+  border-radius: 14px;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 15px;
+  color: #2a2622;
+  transition: border-color .18s ease, box-shadow .18s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.bk-textarea {
+  height: auto;
+  min-height: 64px;
+  padding: 12px 14px;
+  line-height: 1.5;
+  resize: none;
+}
+
+.bk-input::placeholder {
+  color: #8a8176;
+}
+
+.bk-input:focus {
+  outline: none;
+  border-color: rgba(184, 160, 112, .8);
+  box-shadow: 0 0 0 3px rgba(184, 160, 112, .18);
+}
+
+/* custom select arrow */
+.bk-select-wrap {
+  position: relative;
+  display: block;
+}
+
+.bk-select {
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.bk-select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  color: #6b6258;
+  pointer-events: none;
+}
+
+.bk-select-arrow svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.bk-fmsg {
+  margin: 0;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 13px;
+  color: #9a4a3a;
+  min-height: 0;
+}
+
+/* --- calendar --- */
+.bk-cal {
+  max-width: 340px;
+  margin: 24px auto 0;
+}
+
+.bk-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.bk-cal-nav {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  flex: 0 0 auto;
+  border: 1px solid rgba(42, 38, 34, .14);
+  border-radius: 50%;
+  background: transparent;
+  color: #2a2622;
+  cursor: pointer;
+  transition: border-color .18s ease, color .18s ease;
+}
+
+.bk-cal-nav:hover:not(:disabled) {
+  border-color: rgba(184, 160, 112, .8);
+}
+
+.bk-cal-nav:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.bk-cal-nav svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+.bk-cal-title {
+  flex: 1 1 auto;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  color: #2a2622;
+}
+
+.bk-cal-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 14px;
+}
+
+.bk-wd {
+  text-align: center;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #6b6258;
+  padding: 4px 0;
+}
+
+.bk-cal-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  place-items: center;
+  row-gap: 2px;
+  margin-top: 4px;
+}
+
+.bk-cal-void {
+  width: 38px;
+  height: 38px;
+}
+
+.bk-day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 14.5px;
+  font-weight: 400;
+  color: #2a2622;
+}
+
+.bk-day--open {
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow .18s ease, background .18s ease, color .18s ease;
+}
+
+.bk-day--open:hover {
+  box-shadow: inset 0 0 0 2px rgba(184, 160, 112, .65);
+}
+
+.bk-day[aria-disabled="true"] {
+  color: #b3aca2;
+}
+
+.bk-day.bk-day--selected {
+  background: #2a2622;
+  color: #fff;
+  box-shadow: none;
+}
+
+.bk-day.bk-day--today::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #8c7040;
+}
+
+/* --- time chips --- */
+.bk-times-h {
+  margin: 18px 0 10px;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #6b6258;
+}
+
+.bk-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bk-chip {
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid rgba(42, 38, 34, .18);
+  border-radius: 19px;
+  background: transparent;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2a2622;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, color .18s ease;
+}
+
+.bk-chip:hover {
+  border-color: rgba(184, 160, 112, .8);
+}
+
+.bk-chip--on,
+.bk-chip--on:hover {
+  background: #2a2622;
+  border-color: #2a2622;
+  color: #fff;
+}
+
+.bk-notimes {
+  margin: 10px 0 0;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 14px;
+  color: #9a4a3a;
+}
+
+/* --- summary + notes + submit --- */
+.bk-summary {
+  margin: 18px 0 0;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2a2622;
+}
+
+.bk-form .bk-field + .bk-field {
+  margin-top: 14px;
+}
+
+.bk-submit {
+  width: 100%;
+  height: 48px;
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  background: #2a2622;
+  color: #faf8f5;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity .18s ease;
+}
+
+.bk-submit.is-disabled {
+  opacity: .45;
+}
+
+.bk-form-msg {
+  margin: 12px 0 0;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 13px;
+  color: #9a4a3a;
+}
+
+.bk-form-tel {
+  color: #9a4a3a;
+  white-space: nowrap;
+}
+
+/* --- success state --- */
+.bk-success {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.bk-success[hidden] {
+  display: none;
+}
+
+.bk-suc-img {
+  display: block;
+  width: 116px;
+  height: auto;
+  margin: 0 auto 14px;
+}
+
+.bk-suc-title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  color: #2a2622;
+}
+
+.bk-suc-text {
+  margin: 0 auto 20px;
+  max-width: 320px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #6b6258;
+}
+
+.bk-suc-done {
+  margin-inline: auto;
+}
+
+/* --- inline mount (contact.html) --- */
+.bk-inline {
+  margin-top: 40px;
+  margin-bottom: 0;
+}
+
+.bk-inline-box {
+  background: #faf8f5;
+  border: 1px solid rgba(184, 160, 112, .35);
+  border-radius: 28px;
+  padding: 34px 32px 28px;
+}
+
+@media (max-width: 520px) {
+  .bk-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* bottom sheet extends the contact-modal rule */
+@media (max-width: 600px) {
+  .contact-modal.booking-dialog {
+    inset: auto 0 0 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px 24px 0 0;
+  }
+}
