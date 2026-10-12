@@ -100,7 +100,7 @@ function init() {
   const url = new URL(window.location.href);
   const url = new URL(window.location.href);
   const demo = url.searchParams.get("demo");
-  let hasDemo = (AI.api === "" || demo === "1");
+  const DEMO_MODE = true;\n  let hasDemo = true;
   
   if (hasDemo) {
     $('#demo-ribbon').classList.add('is-visible');
@@ -383,5 +383,7 @@ function setupBeforeAfter() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+
 
 

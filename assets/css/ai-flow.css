@@ -1,4 +1,4 @@
-﻿/* ai-flow.css - AI Face Analysis Flow
+﻿.ai-flow-page main, #main, .ai-flow-wrap { background: none !important; }\n/* ai-flow.css - AI Face Analysis Flow
    Design system: cream background, centered column max-width 480px, LTR
 */
 
@@ -925,3 +925,4 @@
     transition: none;
   }
 }
+
