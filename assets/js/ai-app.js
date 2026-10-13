@@ -1,4 +1,4 @@
-/* Lemon AI Smart Mirror: UI flow with ONE hash router. Mock data via ai-api.js. Renders inside <main id="main">. */
+﻿/* Lemon AI Smart Mirror: UI flow with ONE hash router. Mock data via ai-api.js. Renders inside <main id="main">. */
 (() => {
   'use strict';
   const main = document.getElementById('main'), api = window.LemonAI;
@@ -138,3 +138,4 @@
   window.addEventListener('hashchange', () => { S.navs++; route(); });
   route();
 })();
+
