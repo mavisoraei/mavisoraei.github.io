@@ -140,3 +140,4 @@
 })();
 
 
+\n// force routing\nif (document.getElementById('face-start')) {\n  const el = document.getElementById('face-start');\n  ['click','touchend'].forEach(ev=>el.addEventListener(ev, function(e){ e.preventDefault(); window.location.hash='#/face/upload'; }));\n  el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); window.location.hash='#/face/upload'; } });\n}\nif (document.getElementById('body-start')) {\n  const el = document.getElementById('body-start');\n  ['click','touchend'].forEach(ev=>el.addEventListener(ev, function(e){ e.preventDefault(); window.location.hash='#/body/upload'; }));\n}\nif (document.getElementById('ask-us')) {\n  const el = document.getElementById('ask-us');\n  ['click','touchend'].forEach(ev=>el.addEventListener(ev, function(e){ e.preventDefault(); window.location.hash='#/ask'; }));\n}\n
