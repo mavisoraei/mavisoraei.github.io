@@ -360,6 +360,44 @@
           <input id="chat-input" type="text" placeholder="Type your question..." style="flex:1;height:40px;padding:0 10px;border-radius:8px;border:1px solid rgba(42,38,34,0.3);font-size:14px">
           <button id="chat-send" class="ai-btn ai-btn-dark" style="width:auto;padding:0 16px">Send</button>
         </div>
+      </section>      <section class="ai-screen" data-step="#/face/upload" aria-label="Face Upload">
+        <h1 class="ai-h1" tabindex="-1">Upload Photo</h1>
+        <p class="ai-sub">Drag & drop or choose a file</p>
+        <div id="drop-zone" style="border:2px dashed rgba(42,38,34,0.3);border-radius:12px;padding:24px;text-align:center;background:#fbf9f5">
+          <p>Drop image here</p>
+          <input type="file" id="face-file" accept="image/*" style="margin-top:8px">
+          <button id="face-take" class="ai-btn ai-btn-outline" style="margin-top:8px;width:auto">Take a photo</button>
+          <img id="face-preview" style="max-width:200px;margin-top:10px;display:none;border-radius:8px">
+        </div>
+        <p class="ai-footnote">Good light, face centered, no glasses</p>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="ai-btn ai-btn-outline" style="width:auto" onclick="window.history.back()">Back</button>
+          <button id="face-continue" class="ai-btn ai-btn-dark" style="width:auto" disabled>Continue</button>
+        </div>
+      </section>      <section class="ai-screen" data-step="#/face/areas" aria-label="Face Areas">
+        <h1 class="ai-h1" tabindex="-1">Select Areas</h1>
+        <p class="ai-sub">Choose areas to enhance</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px" id="area-chips"></div>
+        <p class="ai-footnote" style="margin-top:10px">Intensity</p>
+        <input type="range" id="intensity" min="0" max="2" step="1" value="1" style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#3a342f"><span>Natural</span><span>Balanced</span><span>Noticeable</span></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="ai-btn ai-btn-outline" style="width:auto" onclick="window.location.hash='#/face/upload'">Back</button>
+          <button id="areas-continue" class="ai-btn ai-btn-dark" style="width:auto">Continue</button>
+        </div>
+      </section>      <section class="ai-screen" data-step="#/face/processing" aria-label="Processing">
+        <h1 class="ai-h1" tabindex="-1">Processing</h1>
+        <p class="ai-sub" id="proc-text">Analyzing your photo...</p>
+        <div style="text-align:center;margin-top:20px">Loading...</div>
+      </section>
+      <section class="ai-screen" data-step="#/face/result" aria-label="Result">
+        <h1 class="ai-h1" tabindex="-1">Result</h1>
+        <p class="ai-sub">Before/After preview</p>
+        <div style="text-align:center"><img id="result-img" style="max-width:280px;border-radius:8px"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="ai-btn ai-btn-outline" style="width:auto" onclick="window.location.hash='#/start'">Try again</button>
+          <button class="ai-btn ai-btn-dark" style="width:auto" onclick="window.location.href='contact.html'">Book an appointment</button>
+        </div>
       </section></main>
 
   <!-- Verification bottom sheet -->
@@ -424,6 +462,9 @@
   </script>
 </body>
 </html>
+
+
+
 
 
 
