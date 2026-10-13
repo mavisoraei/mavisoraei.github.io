@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    LEMON CLINIC — SHARED STYLESHEET
    --------------------------------------------------------------------------
    Single stylesheet for every main page in this project. Edit here to restyle
@@ -340,7 +340,7 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
      edge by a fixed gap at EVERY viewport without being able to measure it.
 
      The pill's height is content-driven and falls into two regimes. Measured in
-     Chrome by sweeping 19 viewport widths (320 → 2560) and reading the rendered
+     Chrome by sweeping 19 viewport widths (320 \\2192 2560) and reading the rendered
      `.lm-nav` box:
 
        320, 360, 375, 390, 414, 430, 480, 540, 600, 768, 834, 900  ->  62.00px
@@ -348,7 +348,7 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
 
      Mobile is flat at 62px: `.lm-menu` is `display: none` there, so the 44px burger
      sets the content height instead of the menu. Desktop grows slowly with the
-     menu's line box (39.47px at 1024 → 40.70px at 1920) and saturates at 58.7px.
+     menu's line box (39.47px at 1024 \\2192 40.70px at 1920) and saturates at 58.7px.
 
      So 4rem is the smallest single bound that clears every measured width. The
      earlier `3.625rem` (58px) was not just wrong, it was wrong in the direction that
@@ -9546,7 +9546,7 @@ Two details make `15vw` mean exactly 15% of the VIEWPORT:
    still one arrow file in the project rather than a left-pointing twin that can
    drift out of step with it.
 
-   The text arrows were fixed at the markup level — all 46 of them were "→" now,
+   The text arrows were fixed at the markup level — all 46 of them were "\\2192" now,
    since every one of them is a forward link in a dir="ltr" document. A text
    glyph cannot be mirrored from CSS, so if a page is ever switched to RTL those
    need flipping in the markup at the same time as the `dir` attribute; they are
