@@ -11,7 +11,7 @@ main.ai-on{display:block;padding:0;min-height:0}
 .ai-sub{margin:10px 0 24px;text-align:center;font-size:16px;line-height:1.6;color:var(--ai-mut)}
 .ai-card{display:flex;align-items:center;gap:18px;padding:18px 22px;margin-bottom:14px;border:1px solid var(--ai-line);border-radius:22px;background:var(--ai-card);color:inherit;text-decoration:none;transition:border-color .2s,transform .2s}
 .ai-card:hover{border-color:rgba(184,160,112,.6);transform:translateY(-2px)}
-.ai-card img{width:48px;height:auto;flex:none}.ai-card span{flex:1}
+.ai-card img { width: 48px; height: 48px; max-width: 48px; max-height: 48px; object-fit: contain; flex-shrink: 0; display: block; }.ai-card span{flex:1}
 .ai-card b{display:block;font:500 22px/1.2 var(--font-display,'Bodoni Moda',Georgia,serif)}.ai-card small{display:block;margin-top:4px;font-size:14px;line-height:1.5;color:var(--ai-mut)}
 .ai-foot{margin-top:22px;text-align:center;font-size:13px;line-height:1.6;color:var(--ai-mut)}
 .ai-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:52px;margin-top:14px;padding:0 24px;border:1px solid var(--ai-ink);border-radius:999px;background:var(--ai-ink);color:#faf8f5;font:500 15px Jost,system-ui,sans-serif;text-decoration:none;cursor:pointer}
@@ -54,4 +54,5 @@ main.ai-on{display:block;padding:0;min-height:0}
 .ai-msg input:focus{outline:none;border-color:rgba(184,160,112,.8);box-shadow:0 0 0 3px rgba(184,160,112,.18)}
 .ai-send{width:50px;height:50px;border:0;border-radius:50%;background:var(--ai-ink);color:#faf8f5;display:grid;place-items:center;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.scan,.typing i,.ai-card{animation:none;transition:none}}
+
 
