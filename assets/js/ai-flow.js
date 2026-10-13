@@ -391,3 +391,4 @@ document.addEventListener('DOMContentLoaded', init);
 
 
 
+\n// ensure face/body click routing\nif (document.getElementById('face-start')) {\n  const el = document.getElementById('face-start');\n  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/capture'; });\n  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/capture'; });\n}\nif (document.getElementById('body-start')) {\n  const el = document.getElementById('body-start');\n  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });\n  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });\n}\n
