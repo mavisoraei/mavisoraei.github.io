@@ -398,6 +398,33 @@
           <button class="ai-btn ai-btn-outline" style="width:auto" onclick="window.location.hash='#/start'">Try again</button>
           <button class="ai-btn ai-btn-dark" style="width:auto" onclick="window.location.href='contact.html'">Book an appointment</button>
         </div>
+      </section>      <section class="ai-screen" data-step="#/body/upload" aria-label="Body Upload">
+        <h1 class="ai-h1" tabindex="-1">Upload Body Photo</h1>
+        <p class="ai-sub">Choose a photo</p>
+        <input type="file" id="body-file" accept="image/*">
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="ai-btn ai-btn-outline" style="width:auto" onclick="window.history.back()">Back</button>
+          <button id="body-up-continue" class="ai-btn ai-btn-dark" style="width:auto" disabled>Continue</button>
+        </div>
+      </section>
+      <section class="ai-screen" data-step="#/body/goal" aria-label="Body Goal">
+        <h1 class="ai-h1" tabindex="-1">Goal</h1>
+        <p class="ai-sub">Select target</p>
+        <input type="range" id="goal" min="1" max="15" step="1" value="5" style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#3a342f"><span>1 kg</span><span>15 kg</span></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="ai-btn ai-btn-outline" style="width:auto" onclick="window.location.hash='#/body/upload'">Back</button>
+          <button id="goal-continue" class="ai-btn ai-btn-dark" style="width:auto">Continue</button>
+        </div>
+      </section>
+      <section class="ai-screen" data-step="#/body/processing" aria-label="Body Processing">
+        <h1 class="ai-h1" tabindex="-1">Processing</h1>
+        <p class="ai-sub">Analyzing...</p>
+      </section>
+      <section class="ai-screen" data-step="#/body/result" aria-label="Body Result">
+        <h1 class="ai-h1" tabindex="-1">Result</h1>
+        <p class="ai-sub">Preview</p>
+        <div style="text-align:center"><img id="body-result-img" style="max-width:280px;border-radius:8px"></div>
       </section></main>
 
   <!-- Verification bottom sheet -->
@@ -462,6 +489,7 @@
   </script>
 </body>
 </html>
+
 
 
 
