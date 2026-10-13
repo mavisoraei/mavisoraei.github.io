@@ -165,7 +165,7 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
    -------------------------------------------------------------------------- */
 :root {
   /* --- Zen Linen Light: the authoritative palette ------------------------- */
-  --background: #E9E4D8;
+  --background: transparent !important;
   --foreground: #1E1E1E;
   --card: #F4EFE4;
   --card-foreground: #1E1E1E;
@@ -10980,4 +10980,5 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
     display: none;
   }
 }
+
 
