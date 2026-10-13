@@ -67,7 +67,7 @@ function setStep(hash) {
   // Update progress
   const stepMap = {
     '#/start': 0,
-    '#/capture': 1,
+    '#/face/upload': 1,
     '#/confirm': 2,
     '#/analyzing': 3,
     '#/result': 4,
@@ -79,7 +79,7 @@ function setStep(hash) {
   // Update step title
   const stepTitles = {
     '#/start': 'Start',
-    '#/capture': 'Capture',
+    '#/face/upload': 'Capture',
     '#/confirm': 'Confirm',
     '#/analyzing': 'Analyzing',
     '#/result': 'Result',
@@ -108,7 +108,7 @@ function init() {
   
   // Set up navigation
   $('#back-btn').addEventListener('click', () => {
-    const steps = ['#/start', '#/capture', '#/confirm', '#/analyzing', '#/result', '#/treatments', '#/generating', '#/final'];
+    const steps = ['#/start', '#/face/upload', '#/confirm', '#/analyzing', '#/result', '#/treatments', '#/generating', '#/final'];
     const idx = steps.indexOf(currentStep);
     if (idx > 0) {
       setStep(steps[idx - 1]);
@@ -118,7 +118,7 @@ function init() {
   });
   
   // Start screen
-  $('#start-face').addEventListener('click', () => setStep('#/capture'));
+  $('#start-face').addEventListener('click', () => setStep('#/face/upload'));
   $('#start-body').addEventListener('click', () => {
     alert('Body analysis coming soon');
   });
@@ -142,7 +142,7 @@ function init() {
   $('#gallery-input').addEventListener('change', handlePhotoSelect);
   
   // Confirm screen
-  $('#btn-change').addEventListener('click', () => setStep('#/capture'));
+  $('#btn-change').addEventListener('click', () => setStep('#/face/upload'));
   $('#btn-continue').addEventListener('click', () => {
     setStep('#/analyzing');
     startAnalyzing();
@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', init);
 
 
 
-\n// ensure face/body click routing\nif (document.getElementById('face-start')) {\n  const el = document.getElementById('face-start');\n  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/capture'; });\n  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/capture'; });\n}\nif (document.getElementById('body-start')) {\n  const el = document.getElementById('body-start');\n  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });\n  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });\n}\n
+\n// ensure face/body click routing\nif (document.getElementById('face-start')) {\n  const el = document.getElementById('face-start');\n  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/face/upload'; });\n  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/face/upload'; });\n}\nif (document.getElementById('body-start')) {\n  const el = document.getElementById('body-start');\n  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });\n  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });\n}\n
 if (document.getElementById('face-start')) {
   const el = document.getElementById('face-start');
   el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/face/upload'; });
@@ -532,3 +532,4 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 });
+
