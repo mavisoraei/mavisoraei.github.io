@@ -350,7 +350,17 @@
       <p>Our AI analysis is being upgraded. Please contact us to book a consultation.</p>
       <button type="button" id="btn-upgrade-contact" class="ai-btn ai-btn-dark" onclick="if(window.LemonBooking&&window.LemonBooking.open){window.LemonBooking.open()}else{window.location.href='contact.html'}">Contact Us</button>
     </div>
-  </main>
+        <section class="ai-screen" data-step="#/ask" aria-label="Ask Us">
+        <h1 class="ai-h1" tabindex="-1">Ask Us</h1>
+        <p class="ai-sub">Chat with our AI assistant</p>
+        <div style="background:#fbf9f5;border:1px solid rgba(42,38,34,0.08);border-radius:12px;padding:12px;min-height:260px;display:flex;flex-direction:column;gap:10px" id="chat-box">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px" id="chat-suggest"></div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <input id="chat-input" type="text" placeholder="Type your question..." style="flex:1;height:40px;padding:0 10px;border-radius:8px;border:1px solid rgba(42,38,34,0.3);font-size:14px">
+          <button id="chat-send" class="ai-btn ai-btn-dark" style="width:auto;padding:0 16px">Send</button>
+        </div>
+      </section></main>
 
   <!-- Verification bottom sheet -->
   <div id="verification-sheet" class="ai-sheet" aria-label="Verification">
@@ -414,6 +424,7 @@
   </script>
 </body>
 </html>
+
 
 
 
