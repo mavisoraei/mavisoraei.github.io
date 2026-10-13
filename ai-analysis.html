@@ -401,7 +401,7 @@
       </section>      <section class="ai-screen" data-step="#/body/upload" aria-label="Body Upload">
         <h1 class="ai-h1" tabindex="-1">Upload Body Photo</h1>
         <p class="ai-sub">Choose a photo</p>
-        <input type="file" id="body-file" accept="image/*">
+        <div id="drop-zone-body" style="border:2px dashed rgba(42,38,34,0.3);border-radius:12px;padding:20px;text-align:center;background:#fbf9f5"><input type="file" id="body-file" accept="image/*"></div>
         <div style="display:flex;gap:8px;margin-top:12px">
           <button class="ai-btn ai-btn-outline" style="width:auto" onclick="window.history.back()">Back</button>
           <button id="body-up-continue" class="ai-btn ai-btn-dark" style="width:auto" disabled>Continue</button>
@@ -489,6 +489,7 @@
   </script>
 </body>
 </html>
+
 
 
 
