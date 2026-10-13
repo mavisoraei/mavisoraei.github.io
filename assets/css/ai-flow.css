@@ -1,4 +1,4 @@
-﻿.skip-link {\n  position: absolute;\n  top: -40px;\n  left: 0;\n  background: #2a2622;\n  color: #fff;\n  padding: 8px 12px;\n  text-decoration: none;\n  z-index: 1000;\n  transition: top 0.2s;\n}\n.skip-link:focus {\n  top: 0;\n}\nbody, html { background: #f5f2eb !important; margin: 0; padding: 0; }\nmain, #main, .ai-flow-page, #app, .ai-flow-wrap { background: none !important; box-shadow: none !important; border: none !important; }\n.ai-flow-page { min-height: 100vh; }\n.ai-flow-page main, #main, .ai-flow-wrap { background: none !important; }\n/* ai-flow.css - AI Face Analysis Flow
+﻿.skip-link { position:absolute; top:-40px; left:0; background:#2a2622; color:#fff; padding:8px 12px; text-decoration:none; z-index:1000; }\n.skip-link:focus { top:0; }\n.skip-link {\n  position: absolute;\n  top: -40px;\n  left: 0;\n  background: #2a2622;\n  color: #fff;\n  padding: 8px 12px;\n  text-decoration: none;\n  z-index: 1000;\n  transition: top 0.2s;\n}\n.skip-link:focus {\n  top: 0;\n}\nbody, html { background: #f5f2eb !important; margin: 0; padding: 0; }\nmain, #main, .ai-flow-page, #app, .ai-flow-wrap { background: none !important; box-shadow: none !important; border: none !important; }\n.ai-flow-page { min-height: 100vh; }\n.ai-flow-page main, #main, .ai-flow-wrap { background: none !important; }\n/* ai-flow.css - AI Face Analysis Flow
    Design system: cream background, centered column max-width 480px, LTR
 */
 
@@ -925,6 +925,7 @@
     transition: none;
   }
 }
+
 
 
 
