@@ -404,3 +404,11 @@ if (document.getElementById('body-start')) {
   el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });
   el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); window.location.hash = '#/body/upload'; } });
 }
+document.addEventListener('click', function(e){
+  const a = e.target.closest('#ask-start');
+  if(a){ e.preventDefault(); window.location.hash='#/ask'; }
+});
+document.addEventListener('click', function(e){
+  const a = e.target.closest('#ask-us');
+  if(a){ e.preventDefault(); window.location.hash='#/ask'; }
+});
