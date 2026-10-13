@@ -392,3 +392,15 @@ document.addEventListener('DOMContentLoaded', init);
 
 
 \n// ensure face/body click routing\nif (document.getElementById('face-start')) {\n  const el = document.getElementById('face-start');\n  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/capture'; });\n  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/capture'; });\n}\nif (document.getElementById('body-start')) {\n  const el = document.getElementById('body-start');\n  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });\n  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });\n}\n
+if (document.getElementById('face-start')) {
+  const el = document.getElementById('face-start');
+  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/face/upload'; });
+  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/face/upload'; });
+  el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); window.location.hash = '#/face/upload'; } });
+}
+if (document.getElementById('body-start')) {
+  const el = document.getElementById('body-start');
+  el.addEventListener('click', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });
+  el.addEventListener('touchend', function(e){ e.preventDefault(); window.location.hash = '#/body/upload'; });
+  el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); window.location.hash = '#/body/upload'; } });
+}
