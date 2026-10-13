@@ -448,3 +448,87 @@ if (document.getElementById('chat-send')) {
   document.getElementById('chat-send').addEventListener('click', send);
   document.getElementById('chat-input').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); send(); } });
 }
+document.addEventListener('DOMContentLoaded', function(){
+  const faceFile = document.getElementById('face-file');
+  const faceTake = document.getElementById('face-take');
+  const faceCont = document.getElementById('face-continue');
+  if(faceFile){
+    faceFile.addEventListener('change', function(e){
+      const f = e.target.files[0];
+      if(!f) return;
+      APP.state.photo = f;
+      const r = new FileReader();
+      r.onload = function(ev){
+        APP.state.photoDataUrl = ev.target.result;
+        const img = document.getElementById('face-preview');
+        if(img){ img.src=ev.target.result; img.style.display='block'; }
+        if(faceCont) faceCont.disabled=false;
+      };
+      r.readAsDataURL(f);
+    });
+  }
+  if(faceTake){
+    faceTake.addEventListener('click', function(){ alert('Camera not available in this demo'); });
+  }
+  if(faceCont){
+    faceCont.addEventListener('click', function(){
+      window.location.hash='#/face/areas';
+    });
+  }
+  const chipsDiv = document.getElementById('area-chips');
+  if(chipsDiv && !chipsDiv.dataset.init){
+    chipsDiv.dataset.init='1';
+    ['Lips','Cheeks','Under-eye','Jawline','Chin','Nose','Forehead'].forEach(a=>{
+      const b=document.createElement('button');
+      b.textContent=a;
+      b.style.margin='4px';
+      b.style.padding='6px 10px';
+      b.style.borderRadius='999px';
+      b.style.border='1px solid rgba(42,38,34,0.3)';
+      b.style.background='#fbf9f5';
+      b.addEventListener('click', function(){
+        if(APP.state.areas.includes(a)) APP.state.areas=APP.state.areas.filter(x=>x!==a);
+        else APP.state.areas.push(a);
+        b.style.background=APP.state.areas.includes(a)?'#2a2622':'#fbf9f5';
+        b.style.color=APP.state.areas.includes(a)?'#fff':'#000';
+      });
+      chipsDiv.appendChild(b);
+    });
+  }
+  const areasCont = document.getElementById('areas-continue');
+  if(areasCont){
+    areasCont.addEventListener('click', function(){
+      const i = document.getElementById('intensity');
+      if(i) APP.state.intensity = ['Natural','Balanced','Noticeable'][parseInt(i.value)];
+      window.location.hash='#/face/processing';
+      setTimeout(function(){
+        document.getElementById('result-img').src = APP.state.photoDataUrl || '/images/ai/ba-before-900.webp';
+        window.location.hash='#/face/result';
+      }, 1200);
+    });
+  }
+  const bodyFile = document.getElementById('body-file');
+  const bodyUp = document.getElementById('body-up-continue');
+  if(bodyFile){
+    bodyFile.addEventListener('change', function(){
+      if(bodyUp) bodyUp.disabled=false;
+    });
+  }
+  if(bodyUp){
+    bodyUp.addEventListener('click', function(){
+      window.location.hash='#/body/goal';
+    });
+  }
+  const goalCont = document.getElementById('goal-continue');
+  if(goalCont){
+    goalCont.addEventListener('click', function(){
+      const g = document.getElementById('goal');
+      if(g) APP.state.goal=parseInt(g.value);
+      window.location.hash='#/body/processing';
+      setTimeout(function(){
+        document.getElementById('body-result-img').src = '/images/ai/ba-before-900.webp';
+        window.location.hash='#/body/result';
+      }, 1000);
+    });
+  }
+});
