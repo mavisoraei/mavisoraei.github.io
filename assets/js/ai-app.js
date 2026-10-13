@@ -77,6 +77,15 @@
     S.pending = false; drawChat();
   }
 
+  // The ONLY place that writes to #main. It fully clears the container and mounts
+  // exactly one view, so steps can never stack or append on top of each other.
+  function render(html) {
+    const wrap = document.createElement('div');
+    wrap.className = 'aiapp';
+    wrap.innerHTML = html;
+    main.replaceChildren(wrap);
+  }
+
   function route() {
     S.tok++; timers.forEach(clearInterval); timers = [];
     const [kind, step] = location.hash.replace(/^#\/?/, '').split('/');
@@ -130,7 +139,7 @@
       }
       html += '<p class="ai-foot">Your photo is used only for this analysis and does not replace a doctor\'s examination.</p>';
     }
-    main.innerHTML = '<div class="aiapp">' + html + '</div>';
+    render(html);
     const back = $('.ai-back'); if (back) back.addEventListener('click', () => S.navs > 0 ? history.back() : go('#/start'));
     bind(); window.scrollTo(0, 0);
     const h1 = $('#ai-h'); if (h1) h1.focus({ preventScroll: true });
