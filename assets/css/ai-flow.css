@@ -1,4 +1,4 @@
-:root{--ai-ink:#2a2622;--ai-mut:#6b6258;--ai-gold:#8c7040;--ai-card:#fbf9f5;--ai-line:rgba(42,38,34,.1)}
+﻿:root{--ai-ink:#2a2622;--ai-mut:#6b6258;--ai-gold:#8c7040;--ai-card:#fbf9f5;--ai-line:rgba(42,38,34,.1)}
 .skip-link:not(:focus){position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #verification-sheet{display:none!important}
 main.ai-on{display:block;padding:0;min-height:0}
@@ -54,3 +54,4 @@ main.ai-on{display:block;padding:0;min-height:0}
 .ai-msg input:focus{outline:none;border-color:rgba(184,160,112,.8);box-shadow:0 0 0 3px rgba(184,160,112,.18)}
 .ai-send{width:50px;height:50px;border:0;border-radius:50%;background:var(--ai-ink);color:#faf8f5;display:grid;place-items:center;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.scan,.typing i,.ai-card{animation:none;transition:none}}
+
