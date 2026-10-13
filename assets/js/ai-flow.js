@@ -536,3 +536,4 @@ document.addEventListener('DOMContentLoaded', function(){
 
 \nconst isLocalhost = location.hostname==='localhost' || location.hostname==='127.0.0.1' || location.hostname.endsWith('.local'); const DEMO = isLocalhost || new URLSearchParams(location.search).has('demo');\n
 
+
