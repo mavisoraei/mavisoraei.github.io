@@ -1,8 +1,8 @@
-// assets/js/ai-api.js - Mock API stubs for AI flow
+﻿// assets/js/ai-api.js - Mock API stubs for AI flow
 // Brother will replace only this file with real backend calls.
 
 const AI_API = {
-  async analyzeFace(photoFile, options = {}) {
+  async analyzeFace(photoBlob, options={}) {
     console.log('Mock analyzeFace called', { fileName: photoFile?.name, options });
     await new Promise(r => setTimeout(r, 1200));
     return {
@@ -22,7 +22,7 @@ const AI_API = {
     };
   },
   
-  async analyzeBody(photoFile, goal = 5) {
+  async analyzeBody(photoBlob, goal=5) {
     console.log('Mock analyzeBody called', { fileName: photoFile?.name, goal });
     await new Promise(r => setTimeout(r, 1200));
     return {
@@ -48,3 +48,4 @@ const AI_API = {
     };
   }
 };
+
