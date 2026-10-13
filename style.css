@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+﻿@keyframes home-bg-drift {\n  0% { transform: translate3d(-5%, -3%, 0) scale(1.02); }\n  50% { transform: translate3d(6%, 4%, 0) scale(1.05); }\n  100% { transform: translate3d(-4%, 6%, 0) scale(1.03); }\n}\n@keyframes home-bg-sheen {\n  0% { transform: translate3d(-40%, -30%, 0); }\n  100% { transform: translate3d(40%, 30%, 0); }\n}\n.home-bg {\n  position: fixed;\n  inset: 0;\n  z-index: -1;\n  pointer-events: none;\n  overflow: hidden;\n  background: #f5f2eb;\n  will-change: transform;\n}\n.home-bg::before {\n  content: '';\n  position: absolute;\n  inset: -20%;\n  background:\n    radial-gradient(50% 50% at 20% 25%, rgba(255,255,255,0.9) 0%, transparent 70%),\n    radial-gradient(55% 55% at 75% 20%, rgba(201,169,110,0.25) 0%, transparent 75%),\n    radial-gradient(60% 60% at 30% 75%, rgba(250,248,245,0.85) 0%, transparent 75%),\n    radial-gradient(50% 50% at 80% 80%, rgba(201,169,110,0.15) 0%, transparent 70%);\n  animation: home-bg-drift 45s ease-in-out infinite alternate;\n  transform-origin: center;\n  will-change: transform;\n}\n.home-bg::after {\n  content: '';\n  position: absolute;\n  inset: -30%;\n  background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.5) 48%, transparent 60%);\n  opacity: 0.5;\n  width: 160%;\n  animation: home-bg-sheen 60s ease-in-out infinite alternate;\n  will-change: transform;\n}\n@media (max-width: 768px), (prefers-reduced-motion: reduce) {\n  .home-bg::before,\n  .home-bg::after {\n    animation: none;\n  }\n}\n/* ==========================================================================
    LEMON CLINIC — SHARED STYLESHEET
    --------------------------------------------------------------------------
    Single stylesheet for every main page in this project. Edit here to restyle
@@ -10980,3 +10980,4 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
     display: none;
   }
 }
+
