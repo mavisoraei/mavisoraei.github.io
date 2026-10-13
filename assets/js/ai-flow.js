@@ -412,3 +412,39 @@ document.addEventListener('click', function(e){
   const a = e.target.closest('#ask-us');
   if(a){ e.preventDefault(); window.location.hash='#/ask'; }
 });
+if (document.getElementById('chat-send')) {
+  const send = () => {
+    const input = document.getElementById('chat-input');
+    if (!input) return;
+    const msg = input.value.trim();
+    if (!msg) return;
+    const box = document.getElementById('chat-box');
+    const b = document.createElement('div');
+    b.textContent = msg;
+    b.style.alignSelf='flex-end';
+    b.style.background='#2a2622';
+    b.style.color='#fff';
+    b.style.padding='8px 12px';
+    b.style.borderRadius='12px';
+    b.style.maxWidth='70%';
+    box.appendChild(b);
+    input.value='';
+    setTimeout(async () => {
+      try {
+        const res = await window.AI_API.askQuestion(msg);
+        const rb = document.createElement('div');
+        rb.textContent = res.answer;
+        rb.style.alignSelf='flex-start';
+        rb.style.background='#fbf9f5';
+        rb.style.border='1px solid rgba(42,38,34,0.08)';
+        rb.style.padding='8px 12px';
+        rb.style.borderRadius='12px';
+        rb.style.maxWidth='70%';
+        box.appendChild(rb);
+        box.scrollTop = box.scrollHeight;
+      } catch(e) {}
+    }, 400);
+  };
+  document.getElementById('chat-send').addEventListener('click', send);
+  document.getElementById('chat-input').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); send(); } });
+}
