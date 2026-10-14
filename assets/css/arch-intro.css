@@ -365,7 +365,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
       calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
       0 0;
 }
-: mesh-below option A - translucent sheet below hero band)
+: hide hero photo when mesh-below; lower cream opacity to .45 below dome)
 
 
 /* WINDOW LIGHT — two soft, warm glows drifting slowly across the cream like
