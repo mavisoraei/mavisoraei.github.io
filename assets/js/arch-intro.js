@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ARCH INTRO â€” page-load intro + domed sheet rise  (v3.0.0)
+   ARCH INTRO — page-load intro + domed sheet rise  (v3.0.0)
    ==========================================================================
    Paired with /assets/css/arch-intro.css. Loaded on /index.html only, after
    /vendor/lenis.min.js and /app.js, with `defer`.
@@ -10,7 +10,7 @@
 
      PHASE 1  THE PAGE-LOAD INTRO. Its markup, its critical CSS and its
               play/skip decision are inline in index.html, because the dark
-              screen has to be painted on the FIRST frame â€” before any
+              screen has to be painted on the FIRST frame — before any
               stylesheet or deferred script has run. The arch is a plain
               `clip-path: inset(... round ...)` keyframe on `.intro__photo`
               (see index.html), not a shape in a file. This file only
@@ -46,8 +46,8 @@
    --------------------------------------------------------------------------
    THE ONE INVARIANT
    --------------------------------------------------------------------------
-   If the effect is not active â€” no JS, classic layout, reduced motion, short
-   viewport, missing Lenis, missing hero â€” this file must leave the DOM *exact-
+   If the effect is not active — no JS, classic layout, reduced motion, short
+   viewport, missing Lenis, missing hero — this file must leave the DOM *exact-
    ly* as it found it apart from removing nodes it created itself. `teardown()`
    makes that true and is wired to `.classic-layout` appearing at runtime, so a
    single class on <body> restores the standard layout instantly, with no
@@ -78,7 +78,7 @@
 var RISE_FRACTION = 0.62;
 var SCALE_FROM = 0.94;         /* literal widening: .94 -> full-bleed    */
 
-/* v2.2.6 â€” the dome is gated on the MEASURED position of the apex, not on
+/* v2.2.6 — the dome is gated on the MEASURED position of the apex, not on
    `--p`. See the `--dome-k` publish in apply() for the whole argument; the short
    version is that deriving the flatten window from `--p` assumed the apex sits at
    exactly `100svh - scrollY`, and when that assumption is off by even a little the
@@ -91,13 +91,13 @@ var SCALE_FROM = 0.94;         /* literal widening: .94 -> full-bleed    */
    Must be > 0; the verification script asserts 0 < DOME_HOLD_VH < 1. */
 var DOME_HOLD_VH = 0.30;
 
-/* v2.2.6 â€” the slower rise. `SHEET_LERP` is the per-frame fraction by which the
+/* v2.2.6 — the slower rise. `SHEET_LERP` is the per-frame fraction by which the
    SMOOTHED rise progress chases the real one. Below 1 the smoothed value lags, and
    the sheet's rendered position is offset by exactly that lag, so the sheet
    arrives late and settles rather than tracking the scrollbar 1:1.
 
    0.06 is the value the brief named, and it is also roughly a 37% stretch of the
-   reveal: the lag closes to 1/e of its opening size in 1/0.06 â‰ˆ 17 frames (~280ms
+   reveal: the lag closes to 1/e of its opening size in 1/0.06 ≈ 17 frames (~280ms
    at 60fps) and is within 5% by 50 frames (~830ms), which is a visible settle
    without ever feeling like the page is ignoring the scroll wheel.
 
@@ -140,7 +140,7 @@ var IDLE_COMPLETE_MS = 2600;   /* never leave a reader stuck below the fold */
   var intro = null;              /* #intro — the page-load intro, if playing */
   var introPhoto = null;         /* .intro__photo inside it                  */
   var archHero = null;           /* .arch-hero             (phase 2)        */
-var sheetBg = null;            /* .sheet__bg â€” carries the border-radius  */
+var sheetBg = null;            /* .sheet__bg — carries the border-radius  */
   var pSmooth = 0;               /* SHEET_LERP's smoothed rise progress      */
   var lagOn = false;             /* is SHEET_LAG_CLASS currently on?        */
 
@@ -281,7 +281,7 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
         /* v2.2.4: `--dome-k` joins the list, and its removal matters MORE than the
            others. It is not an arch value and nothing else reads it, but it
            multiplies the sheet dome's radii, so leaving it behind would pin the
-           crown at whatever depth the reader last scrolled to â€” a permanently
+           crown at whatever depth the reader last scrolled to — a permanently
            squared-off sheet that no reload-free code path could recover, since the
            loop that would fix it is exactly what this teardown stops.
 
@@ -559,7 +559,7 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
   function initArchRise() {
     if (!archHero) return null;
 
-    /* v2.2.6 â€” the element that actually carries the `border-radius`, resolved ONCE.
+    /* v2.2.6 — the element that actually carries the `border-radius`, resolved ONCE.
        Reading it per frame would mean a querySelector inside the hot loop; more
        importantly this is the element whose `getBoundingClientRect().top` the dome
        gate below is defined against, so it must be the same node every frame. */
@@ -568,7 +568,7 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
     var apply = function (rawScroll, force) {
       if (!archHero) return;
 
-      /* IDLE FRAME â€” one early return buys the whole frame.
+      /* IDLE FRAME — one early return buys the whole frame.
 
          `lastScroll`/`lastPhase` remember what the last frame that did work saw.
          When neither has moved, Lenis has no animation in flight and the sheet's
@@ -603,12 +603,12 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
 
       /* PHASE 1 IGNORES SCROLL. If the browser restored a scroll position, or
          the user hit a hash link, the hero would otherwise begin its rise while
-         the curtain is still opaque â€” the two phases would visibly fight.
+         the curtain is still opaque — the two phases would visibly fight.
          Forcing 0 here makes phase 2 start from a clean handoff the moment
          finishIntro() flips the phase. */
       var scroll = phase === 'boot' ? 0 : (rawScroll || 0);
 
-      /* v2.2.6 â€” READ FIRST, WRITE AFTER. Everything this function publishes is a
+      /* v2.2.6 — READ FIRST, WRITE AFTER. Everything this function publishes is a
          custom property on <body>, and every one of those writes invalidates
          layout. Reading `getBoundingClientRect()` after any of them would force a
          synchronous reflow on every frame, which is the classic read/write
@@ -662,9 +662,9 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
       }
 
       /* `p` is deliberately NOT the rise progress `t`. `t` saturates at 1 once
-         the hero has finished rising, i.e. at 62% of a viewport height â€” well
+         the hero has finished rising, i.e. at 62% of a viewport height — well
          before the sheet's domed top edge (which sits directly below this
-         100svh hero) has travelled up to meet the copy â€” so anything smoothed
+         100svh hero) has travelled up to meet the copy — so anything smoothed
          on `t` settles while a third of the hero is still on screen, which is
          the "text vanishes too early" failure the brief explicitly rules out.
 
@@ -683,7 +683,7 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
       var heroSpan = vh;
       var p = Math.min(Math.max(scroll, 0) / heroSpan, 1);
 
-      /* v2.2.6 â€” `--dome-k` NOW READS THE APEX'S REAL POSITION.
+      /* v2.2.6 — `--dome-k` NOW READS THE APEX'S REAL POSITION.
 
          v2.2.4 derived the flatten window from `--p`, which is only equivalent to
          the apex's screen position if the apex really does sit at exactly
@@ -704,7 +704,7 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
          page.
 
          `getBoundingClientRect().top` on the element that owns the radius is the
-         position that actually matters to the reader â€” it is what "how far down the
+         position that actually matters to the reader — it is what "how far down the
          screen is the curve right now" means, and it is immune to all of the above
          because it is the layout, not a formula about it.
 
@@ -737,7 +737,7 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
         body.style.setProperty('--dome-k', domeStr);
       }
 
-      /* v2.2.6 â€” THE SLOWER RISE. `pSmooth` chases `p` at SHEET_LERP per frame and
+      /* v2.2.6 — THE SLOWER RISE. `pSmooth` chases `p` at SHEET_LERP per frame and
          always trails it, so `lag` is never negative: the sheet is only ever held
          DOWN from its true scroll position, never pushed past it. It resolves to 0
          whenever scrolling stops, because then `p` stops moving and the smoothed
@@ -745,8 +745,8 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
 
          This is a `transform` and not a change to the rise distance, and that
          choice is the whole point. `RISE_FRACTION` only drives `--arch-offset`,
-         which moves `.arch-hero` â€” an EMPTY box (the hero copy moved into the sheet
-         in v2.2.5) â€” so lengthening it buys nothing visible at all. The cream sheet
+         which moves `.arch-hero` — an EMPTY box (the hero copy moved into the sheet
+         in v2.2.5) — so lengthening it buys nothing visible at all. The cream sheet
          is a normal flow element: it rises at exactly the scroll rate, and the only
          way to make it travel more slowly without adding page height is to offset
          where it is drawn. Nothing here touches layout, so the page height, every
@@ -833,7 +833,7 @@ var sheetBg = null;            /* .sheet__bg â€” carries the border-radius 
 
        `raf` below matters: Lenis' implementation is
        `raf(e){ let t = e - (this.time || e); this.time = e; animate.advance(t * .001) }`
-       â€” it reads its argument as a *timestamp in milliseconds*. Feeding it
+       — it reads its argument as a *timestamp in milliseconds*. Feeding it
        `window.scrollY` (the obvious-looking mistake) makes the "delta" a pixel
        count: non-zero while the page moves, exactly 0 on any idle frame, so the
        animation clock stalls when the user is not scrolling and smooth scroll

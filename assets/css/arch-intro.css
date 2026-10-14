@@ -62,7 +62,7 @@
 
 
 /* --------------------------------------------------------------------------
-   1. TYPE â€” NO FONT DECLARATIONS HERE ANY MORE
+   1. TYPE — NO FONT DECLARATIONS HERE ANY MORE
    --------------------------------------------------------------------------
    This file used to declare three @font-face rules of its own: a second
    'Lemon Editorial Serif' and two 'Lemon Body Sans' faces, the latter two
@@ -70,7 +70,7 @@
    loads.
 
    They were all redundant. The serif was a byte-identical redeclaration of the
-   one in style.css â€” same family, same weight, same unicode-range, same file â€”
+   one in style.css — same family, same weight, same unicode-range, same file —
    so the browser held two FontFace entries for one face. The 'Lemon Body Sans'
    pair was worse: a SECOND family name bound to the SAME two font files as
    Vazirmatn, so "the brand body font" and "the site body font" were the same
@@ -160,7 +160,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo img {
   height: 100%;
   object-fit: cover;
   object-position: center 30%;
-  /* no colour, no filter, no overlay â€” this is the photograph, untouched */
+  /* no colour, no filter, no overlay — this is the photograph, untouched */
 }
 
 
@@ -192,15 +192,15 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-hero
 
 
 /* --------------------------------------------------------------------------
-   8. PHASE 2 â€” THE HERO, AND THE SHEET'S DOMED TOP EDGE
+   8. PHASE 2 — THE HERO, AND THE SHEET'S DOMED TOP EDGE
    --------------------------------------------------------------------------
 `.arch-hero` is now the EMPTY opening screen. The photograph is a separate fixed
        layer, and every piece of hero copy has moved down into `.sheet__content`
        (section 8a) so the photo carries nothing but pixels at load. The box is
        kept for two reasons that are both load-bearing: `min-height: 100svh` is
-       what holds the sheet exactly one viewport down â€” it was `.lm-hero` that
+       what holds the sheet exactly one viewport down — it was `.lm-hero` that
        used to supply that height, so dropping the box without replacing the
-       height would slide the whole sheet up to y=0 and bury the photograph â€” and
+       height would slide the whole sheet up to y=0 and bury the photograph — and
        the JS still targets the element to toggle `.arch-risen`.
 
      The domed silhouette belongs to the SHEET, not the hero. `#sheet` wraps every
@@ -220,7 +220,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-hero
      descendants (`.visually-hidden` on the h1, `.lm-play-ico`,
      `.lm-play-label`) and all three resolve against `.lm-play-card`, which is
      itself `position: relative`. The `position: fixed` header is a sibling of the
-     hero â€” it closes before `<main>` â€” so the transform below cannot capture or
+     hero — it closes before `<main>` — so the transform below cannot capture or
      re-anchor it.
 
      Custom properties published by the JS every frame, on `<body>` so the hero,
@@ -238,12 +238,12 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-hero
                       so it decays over the band between apex y = 30vh and y = 0
                       and the crown is already flattening by the time the sheet's
                       top edge passes the fold.
-       `--arch-dome`   static dome depth â€” not written by the JS.
+       `--arch-dome`   static dome depth — not written by the JS.
 
      There is deliberately no `transition` on any of the written ones: they are all
      updated every frame from the rAF loop, and a transition would only add lag
      behind the scroll. The inner contents in section 8b do have one, because they
-     are not written per frame â€” they are a single settle once. */
+     are not written per frame — they are a single settle once. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero {
   position: relative;
   z-index: 1;
@@ -262,7 +262,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero {
      `.lm-hero`'s `min-height: 100svh` that pushed `.sheet` down to y=100svh, and
      the copy that has moved into the sheet no longer sits in here to carry it.
      Without this the sheet renders at the top of the document and the photograph
-     is never seen â€” the dome's apex would also sit at y=0 rather than at the fold. */
+     is never seen — the dome's apex would also sit at y=0 rather than at the fold. */
   min-height: 100svh;
   /* The dome is NOT here any more, but `.arch-hero::before` still resolves to
      this element's pseudo. `content: none` retires the cap cleanly at this
@@ -278,7 +278,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero::before {
 }
 
 /* --------------------------------------------------------------------------
-   8a. THE SHEET â€” CREAM + ONE WARM GLOW, DOMED TOP EDGE, 1px HAIRLINE
+   8a. THE SHEET — CREAM + ONE WARM GLOW, DOMED TOP EDGE, 1px HAIRLINE
    --------------------------------------------------------------------------
    `#sheet` wraps every real section below the hero. It has no background of its
    own: `.sheet__bg` paints the page colour (the cream gradient with a single
@@ -289,7 +289,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero::before {
 
    The dome is `border-radius` on `.sheet__bg`, with `50% 50% 0 0 / D D 0 0`:
    horizontal radius 50% of the sheet's width, vertical radius `--arch-dome`.
-   That pairing is what makes it read as a dome rather than a rounded rectangle â€”
+   That pairing is what makes it read as a dome rather than a rounded rectangle —
    a 50% horizontal radius on a full-width box means each top corner curve spans
    half the viewport, so the two curves meet at the centre to close a single
    continuous arc. A small horizontal radius would instead leave a flat shelf in
@@ -299,7 +299,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero::before {
    `--dome-k` scales the vertical radii only. At 1 the crown is at full depth;
    as the sheet scrolls up it decays to 0, which flattens the top corners to
    square. The horizontal 50% is left alone, because that is what keeps the arc a
-   single curve â€” shrinking it as well would reintroduce the shelf.
+   single curve — shrinking it as well would reintroduce the shelf.
 
    `--arch-dome` is the resting depth and `--dome-k` the live multiplier, so the
    two never fight over the same property and the JS only has to write one number.
@@ -307,7 +307,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero::before {
    The sheet's own background lives here and not on `.sheet__content`, which is
    why `.faq-item` cards and the footer gradient in style.css keep their own
    backgrounds and are untouched. Nothing about any real section's paint is
-   changed by this rule â€” they are simply resting on the sheet's cream. */
+   changed by this rule — they are simply resting on the sheet's cream. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
   position: relative;
   z-index: 2;
@@ -488,8 +488,8 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__content {
    drift rule below is a descendant selector on `.lm-hero-grid`, which no longer has
    `.arch-hero` as an ancestor, so a value set only on `.arch-hero` would no longer
    reach it and it would fall back to the literal in the rule for the whole
-   animation. Net visual effect is unchanged â€” `--arch-offset` is already 0 by the
-   time `.arch-risen` is set â€” but the mechanism stays wired instead of silently
+   animation. Net visual effect is unchanged — `--arch-offset` is already 0 by the
+   time `.arch-risen` is set — but the mechanism stays wired instead of silently
    going dead. */
 
 /* First-paint guard. `.arch-intro` only exists once the JS is running, so
@@ -499,7 +499,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__content {
 
    These are declared on <body>, not on `.arch-hero`, for two reasons: the mesh
    clip in section 4 needs to inherit the same values, and a value specified
-   directly on `.arch-hero` would BEAT the value inherited from <body> â€” which
+   directly on `.arch-hero` would BEAT the value inherited from <body> — which
    would pin the hero at 62vh forever and freeze the rise. The JS writes them as
    inline styles on <body>, and inline beats this rule, so first paint matches
    the first frame of motion exactly.
@@ -509,12 +509,12 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__content {
 body.arch-intro:not(.classic-layout):not(.classic-mode) {
   --arch-offset: 62vh;
   --arch-scale: 0.94;
-  /* Resting depth of the sheet's dome â€” the VERTICAL radius only. The horizontal
+  /* Resting depth of the sheet's dome — the VERTICAL radius only. The horizontal
      one is the 50% in `.sheet__bg`'s shorthand, which is half the viewport at every
      width, so "how round is this arch" is entirely this number.
 
      v2.2.5 raised it from `min(22vw, 34svh)` to `min(50vw, 95svh)`. At 22vw the
-     radius was ~317px against a 720px horizontal radius â€” roughly 0.44 * rx, which
+     radius was ~317px against a 720px horizontal radius — roughly 0.44 * rx, which
      is a shallow segment, not an arch: it read as a wide box with soft shoulders.
      At 50vw the two radii are equal at 1440x900, and because `ry = rx` on a 50%
      horizontal radius IS a semicircle, the top edge becomes a true half-round.
@@ -594,7 +594,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-rise-lag .sheet {
 
    The old `border-radius: inherit` handoff is gone. The dome is now
    `border-radius` on `.sheet__bg` (section 8a), which paints its own background
-   and so needs no radius inherited from any ancestor â€” `.lm-hero` and every real
+   and so needs no radius inherited from any ancestor — `.lm-hero` and every real
    section are left completely untouched, and nothing can fight a radius they are
    not given. */
 
@@ -602,7 +602,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-rise-lag .sheet {
    `.lm-hero` it inherited the hero's inline padding and came up ~2.4rem narrow on
    each side, which needed a matching negative margin to cancel. It now lives
    directly inside `.sheet__content`, which has no horizontal padding of its own,
-   so the gallery is back to the viewport width it had on the classic page â€” by
+   so the gallery is back to the viewport width it had on the classic page — by
    inheritance rather than by a negative margin fighting one.
 
    Its background is likewise no longer needed here. `.home-ga` had none on the
@@ -623,7 +623,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-rise-lag .sheet {
    off. v2.2.5 kept it on the now-empty box for the same reason: it costs nothing,
    and dropping it would only be a change left around to be re-broken.
 
-   No radius is reset here â€” the hero has no dome of its own any more. The
+   No radius is reset here — the hero has no dome of its own any more. The
    silhouette belongs to `.sheet__bg` and is meant to survive the rise untouched. */
 body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero.arch-risen {
   overflow: hidden;
@@ -631,14 +631,14 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero.arch-risen {
 }
 
 /* --------------------------------------------------------------------------
-   8b. PHASE 2 â€” INNER CONTENT PARALLAX
+   8b. PHASE 2 — INNER CONTENT PARALLAX
    --------------------------------------------------------------------------
    The container rises FAST, the contents inside it drift SLOWLY, and the two
    are deliberately decoupled: `--arch-inner` is a fixed multiple of
    `--arch-offset` rather than a second scroll term, so the hero travels 62vh to
    its final position while its contents cover barely half that distance. The
    result is that the hero slides into place and the copy, buttons, doctors and
-   case gallery are still catching up â€” which is the whole point, and the reason
+   case gallery are still catching up — which is the whole point, and the reason
    this cannot be one property driving both.
 
    `.home-ga` is NOT in this list. It left the hero for the sheet, so its parallax
@@ -652,7 +652,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .arch-hero.arch-risen {
    travel, which at rest is 27vh of drift against the hero's 62vh.
 
    All of these are transforms. Nothing here animates width, height, top or
-   margin, so none of it can trigger layout or reflow the subtree â€” which is what
+   margin, so none of it can trigger layout or reflow the subtree — which is what
    "use hardware-accelerated transitions rather than animating layout properties"
    actually requires. `will-change` is on the parallax elements and NOT on the
    hero's own children beyond these, so this adds two composited layers, not one
@@ -699,7 +699,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__conte
 
 /* v2.2.6 - MOBILE DOME. `min(50vw, 95svh)` is right for a desktop viewport and
    wrong for a phone, for one specific reason: the horizontal radius is 50% of the
-   VIEWPORT, so on a 390px screen `50vw` is 195px and `95svh` is 802px â€” the `min`
+   VIEWPORT, so on a 390px screen `50vw` is 195px and `95svh` is 802px — the `min`
    already lands on 195px there, giving a ry of 195px against an rx of 195px. That
    is round, but it is a 390px-wide arch dropping 195px over content that has to
    clear it, and `clamp()` pins the band to something that cannot swallow a 844px
@@ -720,7 +720,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__conte
    matched `.home-intro` with `+ *` but left `.cluster`, `.trend`, `.cnp` and the
    other post-hero sections stacking straight onto the fixed photograph, which is
    why "content floating loose on the background" kept returning. One wrapper
-   around all of them cannot have that half-applied failure mode â€” there is no
+   around all of them cannot have that half-applied failure mode — there is no
    sibling selector left to get wrong, and no section that can be missed.
 
    No section's own background is touched. `--background` is the same token `body`
@@ -738,7 +738,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__conte
    the preference changes mid-session. */
 @media (prefers-reduced-motion: reduce) {
 
-  /* The photo is no longer clipped, so there is no clip to reset â€” the hero's own
+  /* The photo is no longer clipped, so there is no clip to reset — the hero's own
      opacity does the work under this query. */
   body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo {
     clip-path: none !important;
@@ -763,7 +763,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).arch-risen .sheet__conte
 
      `--dome-k` is pinned to 1 here, not 0. It flattens the sheet's dome as you
      scroll in, so pinning it to 0 would leave a reduced-motion user with square
-     top corners â€” the flat, plain sheet this change exists to replace. The dome
+     top corners — the flat, plain sheet this change exists to replace. The dome
      is a static shape, not an animation, so there is nothing about it to
      suppress. `--arch-open` is retired with the clip-path dome; it is kept in
      this block only so an older cached rule cannot reintroduce it. */
