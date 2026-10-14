@@ -365,7 +365,6 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
       calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
       0 0;
 }
-: hide hero
 
 /* WINDOW LIGHT — two soft, warm glows drifting slowly across the cream like
    sunlight moving over a wall. They are plain children of the clipped
