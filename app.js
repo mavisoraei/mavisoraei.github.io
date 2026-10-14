@@ -1251,6 +1251,8 @@
     /* t is in seconds since start, so the phase is identical on reload
        regardless of frame rate */
     let started = performance.now();
+    const FIXED_TIME = 12.5;
+    let fixedFrameDrawn = false;
     /* Seconds of shader time of the last frame actually drawn. When the loop
        is stopped because the canvas is off-screen, `started` is rewound to
        this timestamp on resume, so the shader phase continues from the last
@@ -1300,16 +1302,33 @@
        resumed as the band re-enters. Pages without `.arch-hero` keep the canvas
        running as the plain backdrop they have always had. */
     const arch = document.querySelector('.arch-hero');
+    const hasArch = !!arch;
+    if (hasArch && document.body) document.body.classList.add('arch-has-hero');
     let archBottom = 0;
     const measureCoverage = function () {
       archBottom = arch ? arch.offsetTop + arch.offsetHeight : 0;
     };
     const covered = function () {
-      return archBottom > 0 && window.scrollY >= archBottom;
+      if (!hasArch) return false;
+      if (!archBottom || archBottom <= 0) return false;
+      return window.scrollY >= archBottom;
     };
     const decide = function () {
-      if (covered()) stop();
-      else start();
+      const c = covered();
+      if (document.body) {
+        if (hasArch && c) document.body.classList.add('mesh-below');
+        else document.body.classList.remove('mesh-below');
+      }
+      if (c) {
+        stop();
+        if (program && !fixedFrameDrawn) {
+          draw(FIXED_TIME);
+          fixedFrameDrawn = true;
+        }
+      } else {
+        fixedFrameDrawn = false;
+        start();
+      }
     };
     measureCoverage();
     window.addEventListener('resize', measureCoverage);
