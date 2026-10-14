@@ -370,8 +370,14 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).mesh-below .sheet__bg {
     radial-gradient(900px 600px at 16% 0%, rgba(255,249,238,0.75), transparent 65%),
     radial-gradient(62% 44% at 34% 20%, rgba(255,250,242,0.5), transparent 72%),
     radial-gradient(800px 560px at 0% 62%, rgba(255,247,234,0.55), transparent 62%),
-    linear-gradient(180deg, rgba(232,221,204,1.0) 0, rgba(228,215,195,1.0) 400px, rgba(228,215,195,0.78) 520px, rgba(239,232,220,0.78) 1100px, rgba(246,243,236,0.78) 1500px, rgba(246,243,236,0.78) 100%);
+    linear-gradient(180deg, rgba(232,221,204,1.0) 0, rgba(228,215,195,1.0) 400px, rgba(228,215,195,0.45) 520px, rgba(239,232,220,0.45) 1100px, rgba(246,243,236,0.45) 1500px, rgba(246,243,236,0.45) 100%);
 }
+body.arch-intro:not(.classic-layout):not(.classic-mode).mesh-below .lm-hero-photo,
+body.arch-intro:not(.classic-layout):not(.classic-mode).mesh-below .arch-hero {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
 
 
 /* WINDOW LIGHT — two soft, warm glows drifting slowly across the cream like
