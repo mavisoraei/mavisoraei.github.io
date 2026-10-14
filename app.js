@@ -1089,6 +1089,362 @@
     '}'
   ].join('\n');
 
+  /* ------------------------------------------------------------------ *
+   * SHEET SILK — the home sheet's own background
+   *
+   * A port of the Novatrix shader by the Latent Cat Team
+   * (https://github.com/latentcat/uvcanvas, MIT). The upstream shader
+   * returns a full-colour cosine weave; here only its luminance is kept and
+   * run through a four-stop warm ramp, so the whole sheet stays linen — the
+   * pattern can warm or lighten the cream but can never introduce a colour
+   * outside the theme.
+   *
+   * Copyright (c) 2023 Latent Cat
+   *
+   * Permission is hereby granted, free of charge, to any person obtaining a
+   * copy of this software and associated documentation files (the
+   * "Software"), to deal in the Software without restriction, including
+   * without limitation the rights to use, copy, modify, merge, publish,
+   * distribute, sublicense, and/or sell copies of the Software, and to
+   * permit persons to whom the Software is furnished to do so, subject to
+   * the following conditions:
+   *
+   * The above copyright notice and this permission notice shall be included
+   * in all copies or substantial portions of the Software.
+   *
+   * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+   * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+   * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+   * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+   * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   *
+   * Unlike the page wash this canvas is AUTHORED into index.html (home only)
+   * as the first child of the clipped `.sheet__bg`, so the dome radius trims
+   * it for free and it paints under the window lights and the hero photo. It
+   * is fixed to the viewport while the dome edge scrolls over it, so the silk
+   * reads as a texture sitting still behind the arch rather than a layer
+   * sliding with the page.
+   * ------------------------------------------------------------------ */
+
+  const SILK = {
+    /* the upstream shader advances its clock by 0.001 per ms; 0.35 keeps that
+       rate at ~35%, so the weave drifts instead of churning */
+    speed: 0.35,
+    /* shader-seconds of the single frame painted under reduced motion */
+    tStatic: 6.0,
+    /* luminance -> ramp coordinate: below `lo` is the warmest stop, above
+       `hi` the brightest */
+    lo: 0.45,
+    hi: 1.0,
+    /* 1.0 = no extra contrast on the ramp coordinate */
+    contrast: 1.0,
+    /* four warm stops, darkest -> lightest. Every stop keeps the site's dark
+       body text well clear of the 4.5:1 minimum. */
+    ramp: [
+      [0.831, 0.722, 0.478],   /* #d4b87a  faint gold */
+      [0.902, 0.839, 0.722],   /* #e6d6b8  champagne  */
+      [0.961, 0.949, 0.910],   /* #f5f2e8  cream      */
+      [0.992, 0.984, 0.969]    /* #fdfbf7  ivory      */
+    ],
+    fps: 30,
+    maxEdgeDesktop: 960,
+    maxEdgeMobile: 640,
+    dprCap: 1.5
+  };
+
+  const SILK_FRAG = [
+    'precision highp float;',
+    '',
+    'uniform vec2  u_res;',
+    'uniform float u_time;',
+    'uniform float u_lo;',
+    'uniform float u_hi;',
+    'uniform float u_contrast;',
+    'uniform vec3  u_ramp[4];',
+    '',
+    'void main() {',
+    /* centred, aspect-corrected coordinates, matching the page wash */
+    '  vec2 uv = (gl_FragCoord.xy * 2.0 - u_res) / min(u_res.x, u_res.y);',
+    /* the Novatrix weave: a coupled cosine map, one loop of eight steps */
+    '  float d = -u_time * 0.5;',
+    '  float a = 0.0;',
+    '  for (float i = 0.0; i < 8.0; ++i) {',
+    '    a += cos(i - d - a * uv.x);',
+    '    d += sin(uv.y * i + a);',
+    '  }',
+    '  d += u_time * 0.5;',
+    '  vec3 col = vec3(cos(uv * vec2(d, a)) * 0.6 + 0.4, cos(a + d) * 0.5 + 0.5);',
+    '  col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5);',
+    /* keep only the luminance of the upstream colour, then run that single
+       scalar through the warm ramp with three straight mixes */
+    '  float lum = dot(col, vec3(0.2126, 0.7152, 0.0722));',
+    '  float s = clamp((lum - u_lo) / max(u_hi - u_lo, 0.0001), 0.0, 1.0);',
+    '  s = clamp((s - 0.5) * u_contrast + 0.5, 0.0, 1.0);',
+    '  vec3 ramp = s < 0.33333',
+    '    ? mix(u_ramp[0], u_ramp[1], s / 0.33333)',
+    '    : (s < 0.66667',
+    '        ? mix(u_ramp[1], u_ramp[2], (s - 0.33333) / 0.33334)',
+    '        : mix(u_ramp[2], u_ramp[3], (s - 0.66667) / 0.33333));',
+    '  gl_FragColor = vec4(ramp, 1.0);',
+    '}'
+  ].join('\n');
+
+  function initSheetSilk() {
+    /* The canvas is authored into the home page only, as the first child of
+       `.sheet__bg`. Its presence is what marks this as the home page: when it
+       is absent we return false so the caller starts the site-wide page wash
+       instead. */
+    const canvas = document.querySelector('.sheet-silk');
+    if (!canvas) return false;
+
+    /* Any failure from here on means "no silk" — the cream gradient on
+       `.sheet__bg` is a complete background in its own right, so the safe
+       response is always to hide the canvas and carry on. */
+    const bail = function () {
+      canvas.style.display = 'none';
+    };
+
+    const gl =
+      canvas.getContext('webgl', {
+        alpha: false,
+        depth: false,
+        stencil: false,
+        antialias: false,
+        preserveDrawingBuffer: false,
+        powerPreference: 'low-power'
+      }) ||
+      canvas.getContext('experimental-webgl', { alpha: false, depth: false, stencil: false, antialias: false });
+    if (!gl) { bail(); return true; }
+
+    const buildProgram = function () {
+      const compile = function (type, src) {
+        const sh = gl.createShader(type);
+        gl.shaderSource(sh, src);
+        gl.compileShader(sh);
+        if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+          if (window.console && console.warn) console.warn('[silk] shader compile failed:', gl.getShaderInfoLog(sh));
+          gl.deleteShader(sh);
+          return null;
+        }
+        return sh;
+      };
+      const vs = compile(gl.VERTEX_SHADER, PAGE_MESH_VERT);
+      const fs = compile(gl.FRAGMENT_SHADER, SILK_FRAG);
+      if (!vs || !fs) return null;
+      const prog = gl.createProgram();
+      gl.attachShader(prog, vs);
+      gl.attachShader(prog, fs);
+      gl.linkProgram(prog);
+      gl.deleteShader(vs);
+      gl.deleteShader(fs);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        if (window.console && console.warn) console.warn('[silk] link failed:', gl.getProgramInfoLog(prog));
+        gl.deleteProgram(prog);
+        return null;
+      }
+      return prog;
+    };
+
+    let program = null;
+    let u = null;
+    let aPos = -1;
+
+    /* Rebuilt on `webglcontextrestored`, like the page wash: after a context
+       loss the program and every uniform location are invalid, but the
+       canvas, the config and the listeners are not. */
+    const setup = function () {
+      program = buildProgram();
+      if (!program) return false;
+
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      aPos = gl.getAttribLocation(program, 'a_pos');
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+      u = {
+        res: gl.getUniformLocation(program, 'u_res'),
+        time: gl.getUniformLocation(program, 'u_time'),
+        lo: gl.getUniformLocation(program, 'u_lo'),
+        hi: gl.getUniformLocation(program, 'u_hi'),
+        contrast: gl.getUniformLocation(program, 'u_contrast'),
+        ramp: gl.getUniformLocation(program, 'u_ramp')
+      };
+      gl.useProgram(program);
+      gl.uniform1f(u.lo, SILK.lo);
+      gl.uniform1f(u.hi, SILK.hi);
+      gl.uniform1f(u.contrast, SILK.contrast);
+
+      const ramp = new Float32Array(SILK.ramp.length * 3);
+      SILK.ramp.forEach(function (c, i) {
+        ramp[i * 3] = c[0];
+        ramp[i * 3 + 1] = c[1];
+        ramp[i * 3 + 2] = c[2];
+      });
+      gl.uniform3fv(u.ramp, ramp);
+      return true;
+    };
+
+    if (!setup()) { bail(); return true; }
+
+    const isMobileViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+    const resize = function () {
+      /* CSS pins the canvas to the viewport (100vw x 100vh) in both the
+         settled and the rise-time containing block, so the viewport is its
+         true size. Reading it from the window rather than from
+         getBoundingClientRect() also sets the backing store during the brief
+         window where the `.arch-intro` scope has not yet switched the canvas
+         from `display:none` to `display:block` (arch-intro.js adds the class
+         after app.js has booted), when the rect would still be 0x0. */
+      const cssW = window.innerWidth;
+      const cssH = window.innerHeight;
+      if (!cssW || !cssH || !program) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, SILK.dprCap);
+      const maxEdge = isMobileViewport ? SILK.maxEdgeMobile : SILK.maxEdgeDesktop;
+      const scale = Math.min(dpr, maxEdge / cssW) || 1;
+      const w = Math.max(1, Math.round(cssW * scale));
+      const h = Math.max(1, Math.round(cssH * scale));
+      if (canvas.width === w && canvas.height === h) return;
+      canvas.width = w;
+      canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    };
+
+    let raf = 0;
+    let started = performance.now();
+    /* Shader-seconds of the last frame actually drawn. When the loop is parked
+       for a scroll, `started` is rewound to this on resume, so the weave
+       continues from the last painted frame instead of leaping to a new
+       pattern. */
+    let lastTime = 0;
+    let lastDraw = 0;
+    const targetInterval = 1000 / (SILK.fps || 30);
+
+    const draw = function (shaderSeconds) {
+      if (!program) return;
+      gl.uniform2f(u.res, canvas.width, canvas.height);
+      gl.uniform1f(u.time, shaderSeconds);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      lastTime = shaderSeconds;
+    };
+
+    const tick = function (now) {
+      if (program && now - lastDraw >= targetInterval - 1) {
+        draw(((now - started) / 1000) * SILK.speed);
+        lastDraw = now;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    let onScreen = true;
+    let scrolling = false;
+    let pageVisible = !document.hidden;
+    let reduce = prefersReducedMotion();
+    const running = function () {
+      return onScreen && !scrolling && pageVisible && !reduce;
+    };
+
+    const start = function () {
+      if (raf || !running()) return;
+      if (lastTime > 0) started = performance.now() - (lastTime / SILK.speed) * 1000;
+      lastDraw = performance.now();
+      raf = requestAnimationFrame(tick);
+    };
+    const stop = function () {
+      if (!raf) return;
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+
+    /* Render only while the sheet is on screen. The dome is the top of the
+       sheet and the sheet is opaque for the whole page below it, so the canvas
+       only matters until the sheet has scrolled fully past. */
+    const sheet = document.querySelector('.sheet');
+    if (sheet && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        function (entries) {
+          onScreen = entries[entries.length - 1].isIntersecting;
+          if (onScreen) start();
+          else stop();
+        },
+        { threshold: 0 }
+      );
+      io.observe(sheet);
+    }
+
+    /* Park the loop for the whole time the reader is scrolling, so it never
+       competes with the compositor for the scroll itself, and pick it up again
+       200ms after the last scroll event. The last frame stays on screen while
+       parked. */
+    let scrollIdle = 0;
+    window.addEventListener('scroll', function () {
+      scrolling = true;
+      stop();
+      if (scrollIdle) clearTimeout(scrollIdle);
+      scrollIdle = setTimeout(function () {
+        scrolling = false;
+        start();
+      }, 200);
+    }, { passive: true });
+
+    document.addEventListener('visibilitychange', function () {
+      pageVisible = !document.hidden;
+      if (running()) start();
+      else stop();
+    });
+
+    const relayout = rafThrottle(function () {
+      resize();
+      /* a resize while parked still has to repaint, or the canvas is left
+         showing a stretched old frame */
+      if (!raf) draw(reduce ? SILK.tStatic : lastTime || 0);
+    });
+    window.addEventListener('resize', relayout);
+    window.addEventListener('orientationchange', relayout);
+
+    canvas.addEventListener('webglcontextlost', function (e) {
+      e.preventDefault();
+      stop();
+      program = null;
+    });
+    canvas.addEventListener('webglcontextrestored', function () {
+      program = null;
+      if (!setup()) return bail();
+      canvas.width = 0;      // force `resize` to re-apply the viewport
+      resize();
+      draw(reduce ? SILK.tStatic : lastTime || 0);
+      start();
+    });
+
+    /* Reduced motion can be toggled while the page is open. */
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onMotionChange = function () {
+      reduce = prefersReducedMotion();
+      if (reduce) {
+        stop();
+        draw(SILK.tStatic);
+      } else {
+        start();
+      }
+    };
+    if (typeof motionQuery.addEventListener === 'function') motionQuery.addEventListener('change', onMotionChange);
+    else if (typeof motionQuery.addListener === 'function') motionQuery.addListener(onMotionChange);
+
+    resize();
+    /* paint one frame immediately so there is never an unpainted canvas, then
+       either animate or stop on the single static frame */
+    if (reduce) {
+      draw(SILK.tStatic);
+    } else {
+      draw(0);
+      start();
+    }
+    return true;
+  }
+
   function initPageMesh() {
     /* The canvas is injected rather than authored into each page: the wash is
      * site-wide, and putting the same fixed element in ~230 hand-maintained
@@ -1422,7 +1778,7 @@
     initReviewMarquee();
     initConsultCta();
     initVideoModal();
-    initPageMesh();
+    if (!initSheetSilk()) initPageMesh();
     initWindowLight();
   });
 

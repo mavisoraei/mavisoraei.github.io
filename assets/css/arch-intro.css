@@ -364,6 +364,43 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
     / calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
       calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
       0 0;
+  /* clip-path on the radius owner is what trims a `position: fixed` child.
+     `border-radius` + `overflow: hidden` clip absolutely-positioned children
+     but NOT fixed ones, and the silk canvas is fixed to the viewport so it
+     can stay locked to the screen while the dome edge scrolls over it. Same
+     radii as the `border-radius` above, so the two clips coincide. */
+  clip-path: inset(0 round 50% 50% 0 0
+    / calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
+      calc(var(--arch-dome, 50vw) * var(--dome-k, 1))
+      0 0);
+}
+
+/* SILK — the Novatrix shader canvas, authored in index.html (home only) as the
+   first child of the clipped `.sheet__bg`, so it paints over the cream gradient
+   and under the two window lights and the hero photo.
+
+   Hidden by default, and that matters: without the arch scope (JS off, reduced
+   motion, classic layout, a short viewport) a bare unstyled <canvas> would paint
+   as a 300x150 box in the flow. The arch scope turns it on and fixes it to the
+   viewport; the dome clip on `.sheet__bg` then trims it, so as the page scrolls
+   the shader stays put and the dome edge moves over it — the silk is only ever
+   visible through the dome. */
+.sheet-silk {
+  display: none;
+}
+
+body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet-silk {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* viewport-sized in both the settled (viewport-fixed) and the rise-time
+     (sheet-contained) case, so the canvas is never stretched to the sheet's
+     full page height while `.arch-rise-lag`'s `will-change` makes `.sheet` the
+     containing block */
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
 }
 
 /* WINDOW LIGHT — two soft, warm glows drifting slowly across the cream like
