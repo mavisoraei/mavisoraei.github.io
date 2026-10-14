@@ -976,7 +976,10 @@
        long edge keeps a 4K display from shading ~8M pixels a frame; the
        browser's own bilinear upscale is indistinguishable on a wash this
        soft, and doubles as a touch of extra smoothing. */
-    maxEdge: 1440
+    maxEdgeDesktop: 960,
+    maxEdgeMobile: 640,
+    dprCap: 1.5,
+    fps: 30
   };
 
   const PAGE_MESH_VERT = [
@@ -1218,10 +1221,16 @@
 
     if (!setup()) return bail();
 
+    const isMobileViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+    const getMaxEdge = function () {
+      return isMobileViewport ? PAGE_MESH.maxEdgeMobile : PAGE_MESH.maxEdgeDesktop;
+    };
     const resize = function () {
       const rect = canvas.getBoundingClientRect();
       if (!rect.width || !rect.height || !program) return;
-      const scale = Math.min(window.devicePixelRatio || 1, PAGE_MESH.maxEdge / rect.width) || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, PAGE_MESH.dprCap);
+      const maxEdge = getMaxEdge();
+      const scale = Math.min(dpr, maxEdge / rect.width) || 1;
       const w = Math.max(1, Math.round(rect.width * scale));
       const h = Math.max(1, Math.round(rect.height * scale));
       if (canvas.width === w && canvas.height === h) return;
@@ -1247,8 +1256,15 @@
        this timestamp on resume, so the shader phase continues from the last
        painted frame instead of leaping to a new pattern. */
     let lastTime = 0;
+    let lastDraw = 0;
+    const targetInterval = 1000 / (PAGE_MESH.fps || 30);
     const tick = function (now) {
-      if (program) draw((now - started) / 1000);
+      if (program) {
+        if (now - lastDraw >= targetInterval - 1) {
+          draw((now - started) / 1000);
+          lastDraw = now;
+        }
+      }
       raf = requestAnimationFrame(tick);
     };
 
@@ -1266,6 +1282,7 @@
       /* First frame back: pick up exactly where the last drawn frame left off
          so pausing for off-screen coverage is never seen as a jump. */
       if (lastTime > 0) started = performance.now() - lastTime * 1000;
+      lastDraw = performance.now();
       raf = requestAnimationFrame(tick);
     };
     const stop = function () {
