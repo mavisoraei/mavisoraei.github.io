@@ -954,16 +954,16 @@
    * as a `vec3[6]`. Values are the ones agreed for the Lemon theme. */
 
   const PAGE_MESH = {
-    colors: ['#fdfbf7', '#f3eee4', '#e6ded0', '#f8f5ee', '#d4af37', '#f2ebe0'],
+    colors: ['#fdfbf7', '#f5f2e8', '#e6d6b8', '#f7f4ed', '#d4b87a', '#f3eee4'],
     /* v1.0.7: retuned from the hero-only wash (0.6 / 0.4 / 0.3) to
        0.5 / 0.3 / 0.15. Because the canvas is now fixed behind the WHOLE page
        rather than filling one viewport-height section, it is on screen for far
        longer, so a faster, more distorted, more swirled wash becomes
        noticeable and tiring. Halving the drift and easing both shape
        parameters keeps the movement perceptible but ambient. */
-    distortion: 0.5,
-    swirl: 0.3,
-    speed: 0.15,
+    distortion: 0.7,
+    swirl: 0.5,
+    speed: 0.22,
     /* How far the most saturated palette entry is damped relative to a fully
        neutral one, when turned into its per-blob weight in the shader. 0.78
        puts #d4af37 at 0.22 of a cream's weight: enough to warm the linen
