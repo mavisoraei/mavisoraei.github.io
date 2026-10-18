@@ -8313,8 +8313,10 @@ tbody tr:nth-child(2n) {
 }
 
 .home-team .team-card {
-  background: #fbf9f5;
-  border: 1px solid rgba(42, 38, 34, .08);
+  /* The opaque `#fbf9f5` fill and hairline that used to live here are gone: the
+     surface now comes from `.glass-card`, which app.js-independent markup adds
+     to every card. Only the radius stays, so the glass sweep is clipped to the
+     card's own corner. */
   border-radius: 20px;
 }
 
@@ -8370,6 +8372,102 @@ tbody tr:nth-child(2n) {
 
 .home-team .btn-pill {
   margin-inline: auto;
+}
+
+/* ==========================================================================
+   GLASS CARD — reusable warm-glass surface
+   --------------------------------------------------------------------------
+   A translucent cream→warm-white fill, a colourless hairline stroke, an inset
+   top highlight and a faint champagne inner bottom edge, ringed by a soft
+   low-alpha gold glow. Palette only: cream, champagne and soft gold — never
+   pink or grey.
+
+   ⛔ NO `backdrop-filter`. An animated WebGL silk / mesh sits behind the page,
+   so blurring it would make the compositor re-sample the live canvas every
+   frame for every card. The glass reads from the fill, the stroke and the two
+   inner edges alone.
+
+   The radius is NOT set here — the host keeps its own (20px on the doctor
+   cards; `--radius-lg` on `.glass-card--panel`) and the sweep is clipped to
+   that radius by the host's `overflow: hidden`.
+
+   Behaviour: `initGlassCards()` in app.js adds `.is-lit` the first time a card
+   enters the viewport (then unobserves it and drops the class on
+   `animationend`, so the one-shot sweep can replay on hover/focus).
+   `.glass-card--panel` is the padded block wrapper shared by the homepage
+   "Clinic access" block and (next) contact.html.
+   ========================================================================== */
+.glass-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 252, 245, .58) 0%,
+    rgba(255, 250, 238, .2) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, .65);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .78),
+    inset 0 -1px 0 rgba(198, 166, 109, .22),
+    0 24px 60px -20px rgba(212, 175, 55, .18),
+    0 6px 22px -12px rgba(212, 175, 55, .14);
+}
+
+/* Padded block wrapper: one large card around a whole section's content. */
+.glass-card--panel {
+  border-radius: var(--radius-lg);
+  padding: clamp(24px, 4vw, 56px);
+}
+
+/* The sweeping highlight. Transform + opacity only, so the compositor never
+   has to repaint — it just moves one gradient layer across the card. */
+.glass-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-130%);
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 253, 247, .55) 50%,
+    transparent 62%
+  );
+}
+
+@keyframes glass-sweep {
+  0%   { opacity: 0; transform: translateX(-130%); }
+  14%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(130%); }
+}
+
+.glass-card.is-lit::after,
+.glass-card:hover::after,
+.glass-card:focus-visible::after,
+.glass-card:focus-within::after {
+  animation: glass-sweep 1.1s cubic-bezier(.22, .61, .36, 1) 1;
+}
+
+/* Keep the glass stroke (and not the old dark `.team-card:hover` border) and
+   lift the glow slightly on hover. Placed after `.team-card:hover` so the
+   equal-specificity tie resolves in the glass's favour. */
+.glass-card:hover,
+.glass-card:focus-visible,
+.glass-card:focus-within {
+  border-color: rgba(255, 255, 255, .8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .85),
+    inset 0 -1px 0 rgba(198, 166, 109, .28),
+    0 28px 70px -20px rgba(212, 175, 55, .24),
+    0 8px 26px -12px rgba(212, 175, 55, .18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card::after { display: none; }
 }
 
 /* --------------------------------------------------------------------------

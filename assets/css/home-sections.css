@@ -242,12 +242,18 @@
 }
 .home-local .hl-nap {
   grid-template-columns: 170px 1fr;
-  column-gap: 24px;
-  align-items: baseline;
+  /* The label/value divider is each cell's own `border-top`, so the column gap
+     has to be zero for the line to run continuously across both columns - the
+     24px gutter is moved onto `dt`'s padding instead (below). `align-items`
+     was `baseline`, which shifted the shorter cell down to share a text
+     baseline and left the two `border-top` lines ~4px apart at different y. */
+  column-gap: 0;
+  align-items: start;
 }
 .home-local .hl-nap dt,
 .home-local .hl-nap dd { padding: 20px 0; }
 .home-local .hl-nap dt {
+  padding-right: 24px;
   font-family: var(--font-body);
   font-size: 15px;
   font-weight: 600;

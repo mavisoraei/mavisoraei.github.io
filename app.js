@@ -1859,6 +1859,40 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * glass cards — one-shot light sweep on first scroll-in, then on hover
+   *
+   * This only tags; the sweep itself is the `glass-sweep` animation in
+   * style.css. Each card is observed once and unobserved the moment it first
+   * enters the viewport; `animationend` then drops `.is-lit` so the resting
+   * state carries no animation and a later hover/focus replays the sweep from
+   * the start. Reduced motion opts out entirely (the CSS layer is hidden too).
+   * ------------------------------------------------------------------ */
+
+  function initGlassCards() {
+    const cards = document.querySelectorAll('.glass-card');
+    if (!cards.length || prefersReducedMotion()) return;
+
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(function (card) { card.classList.add('is-lit'); });
+      return;
+    }
+
+    const io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        const card = entry.target;
+        observer.unobserve(card);
+        card.classList.add('is-lit');
+        card.addEventListener('animationend', function (e) {
+          if (e.target === card) card.classList.remove('is-lit');
+        }, { once: true });
+      });
+    }, { threshold: .25 });
+
+    cards.forEach(function (card) { io.observe(card); });
+  }
+
+  /* ------------------------------------------------------------------ *
    * boot
    * ------------------------------------------------------------------ */
 
@@ -1872,6 +1906,7 @@
     initReviewMarquee();
     initConsultCta();
     initVideoModal();
+    initGlassCards();
     if (!initSheetSilk()) initPageMesh();
     initWindowLight();
   });
