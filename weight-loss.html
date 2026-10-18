@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Weight Loss &middot; Lemon Aesthetic Clinic (local mirror)</title>
 <meta name="description" content="Local offline mirror placeholder. The full page content is not mirrored; open the live page at https://lemonclinic.org/%D8%AE%D8%AF%D9%85%D8%A7%D8%AA/%D9%84%D8%A7%D8%BA%D8%B1%DB%8C/">
+<link rel="preload" href="/assets/fonts/Runiga.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  @font-face{font-family:"Runiga";src:url(/assets/fonts/Runiga.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+  @font-face{font-family:"Olivera";src:url(/assets/fonts/Olivera.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
   :root {
     --background: #E9E4D8;
     --foreground: #1E1E1E;
@@ -19,9 +22,13 @@
     --muted-foreground: #5E5A52;
     --border: #D2CBBB;
     --font-body: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-heading: "Runiga", Georgia, serif;
+    --font-subheading: "Olivera", Georgia, serif;
   }
   body{margin:0;padding:3rem 1.5rem;font:16px/1.7 var(--font-body);color:var(--foreground);background:var(--background)}
   main{max-width:44rem;margin:0 auto;background:var(--card);color:var(--card-foreground);border:1px solid var(--border);border-radius:14px;padding:2rem}
+  h1,h2,h3,h4,h5,h6{font-family:var(--font-heading);font-weight:500;letter-spacing:-.01em}
+  h3,h4,h5,h6{font-family:var(--font-subheading)}
   h1{font-size:1.6rem;margin:0 0 .75rem}
   p{margin:.6rem 0}
   .note{background:var(--secondary);color:var(--secondary-foreground);border:1px solid var(--border);border-radius:10px;padding:.85rem 1rem;font-size:.94rem}

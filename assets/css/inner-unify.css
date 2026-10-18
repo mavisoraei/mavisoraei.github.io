@@ -3,12 +3,13 @@
    areas / blog / contact / doctors / facial / face-analysis /
    gallery / gallery_new / laser / prices / services
 
-   Two families only: the display face Bodoni Moda for headings and the body
-   face Jost for everything else. --font-display is inherited from style.css
-   ("Ambroise Std Francois", "Bodoni Moda", Georgia, serif) — Ambroise has no
-   file and no @font-face here, so it resolves to Bodoni Moda with the Georgia
-   fallback kept. On these pages Vazirmatn has no glyph scope (no Persian
-   text), so --font-fa and --font-latin point at the body stack instead.
+   Two heading faces plus the body face: Runiga (--font-heading) for the MAIN
+   headings h1/h2 and section/page titles, Olivera (--font-subheading) for the
+   smaller headings h3–h6, card/box titles and doctor names, and Jost
+   (--font-body) for everything else. Both heading tokens are inherited from
+   style.css and each falls back to Georgia. On these pages Vazirmatn has no
+   glyph scope (no Persian text), so --font-fa and --font-latin point at the
+   body stack instead.
 
    Specificity: inner-unify.css is linked AFTER style.css, but a tie in
    specificity still loses to style.css, whose rules are mostly class-based.
@@ -46,14 +47,19 @@ body:not(#_) {
    h3 clamp(22px,2vw,28px)/1.2         · h4 20px/1.25
    An h2 averages 40px+ only from 1250px wide; below that the scale rule says
    the weight must be 500, so the 400 swap lives in a breakpoint.
-   All headings start-aligned; --font-display already sets optical sizing.  - */
+   All headings start-aligned; --font-heading already sets optical sizing.  - */
 main h1:not(#_), main h2:not(#_), main h3:not(#_), main h4:not(#_) {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-optical-sizing: auto;
   font-weight: 500;
   letter-spacing: -.01em;
   text-align: start;
   margin-inline: 0;
+}
+
+/* v3.0.0 — h3/h4 are SUB-headings, so they take Olivera, not Runiga. */
+main h3:not(#_), main h4:not(#_), main h5:not(#_), main h6:not(#_) {
+  font-family: var(--font-subheading);
 }
 
 main h1:not(#_) {
@@ -92,12 +98,25 @@ main .team-card h3:not(#_),
 main .ct-done-title:not(#_),
 main .price-card h2:not(#_),
 main .svc-related h2:not(#_) {
-  font-family: var(--font-display);
   font-optical-sizing: auto;
   font-weight: 500;
   font-size: 20px;
   line-height: 1.25;
   text-align: start;
+}
+
+/* v3.0.0 — card/box titles are SUB-headings (Olivera); the two h2s are MAIN
+   headings (Runiga). */
+main .card-title:not(#_),
+main .svc-card-title:not(#_),
+main .team-card h3:not(#_),
+main .ct-done-title:not(#_) {
+  font-family: var(--font-subheading);
+}
+
+main .price-card h2:not(#_),
+main .svc-related h2:not(#_) {
+  font-family: var(--font-heading);
 }
 
 /* --- 4. Body ------------------------------------------------------------- */
@@ -862,7 +881,7 @@ main .pr-cta-card:not(#_) {
 }
 
 main .pr-nav h2:not(#_) {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 500;
 }
@@ -1004,7 +1023,7 @@ main .cta-eyebrow:not(#_) {
 }
 
 main .cta-title:not(#_) {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: 30px;
   line-height: 1.15;
   font-weight: 500;
@@ -1049,7 +1068,7 @@ main .callout:not(#_) {
 
 main .callout .callout-title:not(#_) {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-subheading);
   font-size: 22px;
   line-height: 1.2;
   font-weight: 500;

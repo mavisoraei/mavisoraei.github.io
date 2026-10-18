@@ -30,7 +30,7 @@
                  --clay-300 .. --clay-900  dark bands (derived)
                  (legacy aliases --cream --gold --ink --line ... are kept
                   below the palette for safety; no rule here uses them)
-     Type        --font-fa --font-latin --font-display
+     Type        --font-heading --font-subheading --font-fa --font-latin --font-body
                  --step--1 --step-0 --step-1 --step-2 --step-3 --step-4
      Layout     --wrap --gutter --radius --radius-lg --shadow-*
 
@@ -84,40 +84,83 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* v2.2.3 — the homepage hero moved onto the photograph, which forced a real
-   display/body pairing: cream serif display type on a dark image reads very
-   differently from dark-on-cream, and the old Vazirmatn-everywhere stack was
-   doing neither job well. Both faces are SELF-HOSTED woff2 under /assets/fonts/
-   (SIL Open Font License 1.1 — freely redistributable, so self-hosting is
-   permitted), fetched from Google Fonts as variable files. Nothing is hotlinked
-   and there is no CDN request at runtime.
+/* v3.0.0 — heading typefaces. The old display serif (Bodoni Moda, a variable
+   Google face) is RETIRED. Two self-hosted static woff2 faces replace it and are
+   declared ONCE, here, so no component ever names a heading family itself:
 
-   Both are VARIABLE. Google advertises that with range notation
-   (`font-weight: 400 900`), which a static face can never emit, and the
-   `opsz` range in the Bodoni Moda request was accepted rather than 400'd — so
-   the optical-size axis ships inside the file. `font-optical-sizing: auto` is
-   set on the display type below so the axis actually does something: at
-   clamp(64px,11vw,190px) Bodoni's contrast should be the display cut, not the
-   text cut, and letting the browser pick opsz from the rendered size is how
-   that happens automatically.
+     Runiga   -> --font-heading     main headings: h1/h2, hero, page titles,
+                                    section titles
+     Olivera  -> --font-subheading  smaller headings: h3-h6, card and box titles,
+                                    doctor names, FAQ questions, case names
 
-   "Ambroise Std Francois" is a licensed display face that is NOT ours to
-   redistribute, so there is no file for it and no @font-face. It is listed
-   FIRST in the --font-display stack: drop the licensed woff2 into
-   /assets/fonts/ and add its own @font-face with `local()`-less src and this
-   page picks it up with no other edit. Until then the stack falls through to
-   Bodoni Moda, so nothing renders broken in the meantime. */
+   The supplied Runiga.otf and Olivera_Demo.ttf were converted to woff2 with a
+   one-off tool run OUTSIDE the repo (no build step, no package.json); only the
+   .woff2 is referenced. There is no oblique Olivera: nothing in the project is
+   italic, so the demo oblique cut is deliberately left out.
+
+   Both are single-weight (400) faces, so `font-weight: 400 700` tells the browser
+   that the one cut covers the heading weights actually used (400 and 500) and
+   stops it faking a bold the file does not contain.
+
+   LICENSE: both are PERSONAL-USE-ONLY demo cuts — Runiga by Brandsemut
+   (fonts/runiga/Read Me !!!.txt) and Olivera by Pentagonistudio
+   (fonts/oliver/readmedemo.txt). A purchased commercial licence is required
+   before this site is used commercially.
+
+   COVERAGE: Olivera's demo carries only A-Z, a-z, 0-9 and space — no
+   punctuation — so any comma/full stop/apostrophe inside an Olivera heading is
+   drawn by the next font in the stack (Georgia). Runiga covers full Latin-1 plus
+   curly quotes and the common f-ligatures; it has no en/em dash.
+
+   The two *Fallback* faces are Georgia re-scaled to each face's metrics so the
+   swap from fallback to web font cannot shift layout. `size-adjust` is the ratio
+   of the web face's average letter advance to Georgia's; the ascent/descent/
+   line-gap overrides are the web face's own metrics as a percentage of its em. */
 @font-face {
-  font-family: "Bodoni Moda";
-  src: url(/assets/fonts/BodoniModa-latin.woff2) format("woff2");
-  font-weight: 400 900;
+  font-family: "Runiga";
+  src: url(/assets/fonts/Runiga.woff2) format("woff2");
+  font-weight: 400 700;
   font-style: normal;
   font-display: swap;
-  font-optical-sizing: auto;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+@font-face {
+  font-family: "Runiga Fallback";
+  src: local("Georgia");
+  size-adjust: 96.96%;
+  ascent-override: 76.60%;
+  descent-override: 28.00%;
+  line-gap-override: 0%;
+  font-weight: 400 700;
+}
+
+@font-face {
+  font-family: "Olivera";
+  src: url(/assets/fonts/Olivera.woff2) format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Olivera Fallback";
+  src: local("Georgia");
+  size-adjust: 78.64%;
+  ascent-override: 77.30%;
+  descent-override: 22.70%;
+  line-gap-override: 0%;
+  font-weight: 400 700;
+}
+
+/* Jost — the body/misc face (SIL Open Font License 1.1, self-hosted variable
+   woff2 from Google Fonts; nothing is hotlinked and there is no CDN request at
+   runtime). */
 
 @font-face {
   font-family: "Jost";
@@ -227,26 +270,23 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
   --sage-light: var(--secondary);
   --wood: var(--secondary);
 
-  /* v2.2.3 — real display/body split. --font-display is now genuinely a DISPLAY
-     SERIF and h1–h4 consume it (see the `h1,h2,h3,h4` rule below); until this
-     change it deliberately resolved to the sans so that registering a serif
-     would not restyle the 11 main pages by surprise. That trade is now made the
-     other way on purpose, because the hero sits on a photograph and needs a real
-     display cut. Two escape hatches are kept intact so this stays reversible in
-     one edit: --font-latin / --font-fa are STILL Vazirmatn-first, so every
-     Persian page still renders through them, and --font-serif is still the
-     Playfair-based brand serif used by the wordmark and legacy editorial bits.
-     Order inside --font-display is the licensed-face-first contract:
-     "Ambroise Std Francois" is listed before Bodoni Moda so that dropping the
-     licensed woff2 in and adding its @font-face is the ONLY step needed. */
-  --font-display: "Ambroise Std Francois", "Bodoni Moda", Georgia, serif;
+  /* v3.0.0 — heading typefaces, defined ONCE for the whole site. Runiga is the
+     main display serif (h1/h2, hero/page/section titles); Olivera is the smaller
+     heading serif (h3–h6, card and box titles, doctor names, FAQ questions, case
+     names). Every component consumes these two names — no rule names a heading
+     family directly. --font-display is kept only as an alias of --font-heading so
+     any snippet still using the retired name keeps resolving to a heading face
+     rather than falling back to an arbitrary serif. */
+  --font-heading: "Runiga", "Runiga Fallback", Georgia, serif;
+  --font-subheading: "Olivera", "Olivera Fallback", Georgia, serif;
+  --font-display: var(--font-heading);
   --font-body: "Jost", "Vazirmatn", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-fa: "Vazirmatn", "Vazir-fb-noto", "Vazir-fb-naskh", "Vazir-fb-segoe", system-ui, sans-serif;
   --font-latin: "Vazirmatn", "Vazir-fb-noto", "Vazir-fb-naskh", "Vazir-fb-segoe", system-ui, sans-serif;
 
-  /* v1.0.16: the brand display serif, self-hosted from /assets/fonts/. Opt-in
-     per component via var(--font-serif); distinct from --font-display on
-     purpose — this is the existing brand face, that one is the hero face. */
+  /* The brand display serif, self-hosted from /assets/fonts/. Kept for any
+     editorial use; the LEMON navbar lockup now follows --font-heading (Runiga),
+     so no Bodoni Moda is referenced anywhere. */
   --font-serif: "Lemon Editorial Serif", "Playfair Display", Georgia, serif;
 
   /* v2.2.3 — hero-over-photo palette. These are NOT theme tokens: they are
@@ -548,16 +588,16 @@ ul[role=list], ol[role=list] {
    `margin-top` on headings is kept on h2/h3 but not h1: the h1 is never preceded
    by a sibling heading in this markup, so a top margin there only opens a gap
    under the fixed navbar. */
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  /* v2.2.3 — headings now genuinely render in the display serif (they resolve
-     through --font-display, which until v2.2.3 pointed at the sans on purpose).
-     500 rather than 400: Bodoni Moda ships 400–900 and its 500 still holds a
-     crisp thick/thin contrast at heading sizes, where 400 goes spindly on the
-     long Persian-fallback headings. `font-optical-sizing: auto` lets the opsz
-     axis in the variable face pick the display cut automatically from the
-     rendered size, instead of us hard-coding `font-variation-settings: "opsz"`
-     per breakpoint and drifting out of sync with the clamp(). */
+/* v3.0.0 — heading hierarchy. h1/h2 are MAIN headings and render in Runiga
+   (--font-heading); h3–h6 are SUB-headings and render in Olivera
+   (--font-subheading). Both faces are single-weight, so the 500 here is served
+   by the 400 cut without a synthesised bold (the @font-face declares the
+   400–700 range). `font-optical-sizing: auto` is kept because other faces in the
+   stack may carry an opsz axis; Runiga and Olivera do not, so it is a no-op for
+   them. The size/weight contrast between the two faces is what makes the
+   hierarchy read without any decorative weight. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
   font-optical-sizing: auto;
   font-weight: 500;
   letter-spacing: -.02em;
@@ -569,8 +609,11 @@ h1, h2, h3, h4 {
   text-wrap: balance;
 }
 
+h3, h4, h5, h6 {
+  font-family: var(--font-subheading);
+}
+
 h1 {
-  font-family: var(--font-display);
   font-size: var(--step-4);
   line-height: 1.15;
   margin-top: 0;
@@ -586,6 +629,14 @@ h3 {
 
 h4 {
   font-size: var(--step-0);
+}
+
+h5 {
+  font-size: var(--step-0);
+}
+
+h6 {
+  font-size: var(--step--1);
 }
 
 p {
@@ -4287,7 +4338,7 @@ main:not(.hero-overlap) {
 }
 
 .laser-prices h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-subheading);
   font-size: var(--step-1);
   color: var(--foreground);
   margin: 1.6rem 0 .7rem;
@@ -5607,7 +5658,7 @@ tbody tr:nth-child(2n) {
 }
 
 .pr-block h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--step-2);
   color: var(--foreground);
   margin-bottom: .4rem;
@@ -5684,7 +5735,7 @@ tbody tr:nth-child(2n) {
 }
 
 .pr-brand h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-subheading);
   font-size: var(--step-1);
   color: var(--foreground);
   margin-bottom: .4rem;
@@ -5783,7 +5834,7 @@ tbody tr:nth-child(2n) {
 }
 
 .pr-nav h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--step-1);
   color: var(--foreground);
   margin-bottom: .8rem;
@@ -5891,7 +5942,7 @@ tbody tr:nth-child(2n) {
 }
 
 .spread-copy h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--step-3);
   color: var(--foreground);
 }
@@ -6260,7 +6311,7 @@ tbody tr:nth-child(2n) {
 }
 
 .cnp-head h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--step-2);
   color: var(--foreground);
 }
@@ -7130,7 +7181,7 @@ tbody tr:nth-child(2n) {
 }
 
 .trend-head h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--step-2);
   color: var(--foreground);
   margin: .3rem 0 .4rem;
@@ -7200,7 +7251,7 @@ tbody tr:nth-child(2n) {
 }
 
 .tc-title {
-  font-family: var(--font-display);
+  font-family: var(--font-subheading);
   font-size: 22px;
   line-height: 1.2;
   color: var(--foreground);
@@ -7578,7 +7629,7 @@ tbody tr:nth-child(2n) {
 }
 
 .room-copy h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   color: var(--foreground);
   font-size: var(--step-2);
 }
@@ -7706,7 +7757,7 @@ tbody tr:nth-child(2n) {
 }
 
 .home-intro h2, .home-why h2, .home-services h2, .home-local h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--step-2);
   color: var(--foreground);
   margin-bottom: .8rem;
@@ -7847,7 +7898,7 @@ tbody tr:nth-child(2n) {
 }
 
 .home-why.wrap > h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 500;
   font-size: var(--step-2);
   line-height: 1.08;
@@ -7891,7 +7942,7 @@ tbody tr:nth-child(2n) {
   grid-row: 1;
   align-self: start;
   padding-top: .2em;
-  font-family: var(--font-display);
+  font-family: var(--font-subheading);
   font-size: 20px;
   font-weight: 400;
   line-height: 1.2;
@@ -7902,7 +7953,7 @@ tbody tr:nth-child(2n) {
   grid-column: 2;
   grid-row: 1;
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-subheading);
   font-size: 24px;
   line-height: 1.3;
 }
@@ -7929,7 +7980,7 @@ tbody tr:nth-child(2n) {
 }
 
 .svc-group h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-subheading);
   font-size: 22px;
   font-weight: 500;
   line-height: 1.2;
@@ -8281,7 +8332,7 @@ tbody tr:nth-child(2n) {
 /* Name: display serif, 22px/1.15, two lines of height reserved so every
    card's text block starts and aligns identically. */
 .home-team .team-meta h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-subheading);
   font-size: 22px;
   line-height: 1.15;
   font-weight: 500;
@@ -8963,7 +9014,7 @@ body:has(main:not(.hero-overlap)) .site-header {
   align-self: start;
   justify-self: start;
   text-align: start;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
 /* v2.2.5 — the wordmark is DARK again. It spent v2.2.3 to v2.2.4 as
      --hero-ink on the photograph; v2.2.5 moves the copy into the cream sheet
      (see the note on `.lm-hero` in index.html), so near-white on cream was both
@@ -8979,9 +9030,9 @@ body:has(main:not(.hero-overlap)) .site-header {
           "Beauty".
         * line-height .88, up from .84: two lines of a 190px Didone at .84
           overlap the ball terminal of "Beauty" with the cap of "Clinic".
-     `font-optical-sizing: auto` lets Bodoni's opsz axis pick the display cut
-     from the rendered size, so the 64px mobile size and the 190px desktop size
-     get genuinely different contrast rather than one shape scaled up.
+     Runiga is a static single cut with no `opsz` axis, so the
+     `font-optical-sizing: auto` on this rule is inert; it is kept only so an
+     opsz-carrying fallback behaves.
      `font-feature-settings` and `text-rendering` are the two levers that make a
      Didone at this size look typeset rather than assembled: standard `liga` and
      `kern` are on by default, so naming them is really a guarantee that a
@@ -9253,10 +9304,10 @@ Two details make `15vw` mean exactly 15% of the VIEWPORT:
 .lm-hero-badge text {
   fill: #4a423a;
   /* v2.2.3: the brand brief puts CURVED TEXT on the display face, not the body
-     face — this is display typography, so it follows the same rule as h1–h4 and
-     resolves to Bodoni Moda here. At 7.5px the letterspacing is doing the
+     face — this is display typography, so it follows the same rule as h1/h2 and
+     resolves to Runiga here. At 7.5px the letterspacing is doing the
      legibility work that the serif's small x-height takes away. */
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: 7.5px;
   font-weight: 400;
   letter-spacing: .6px;
@@ -9599,7 +9650,7 @@ Two details make `15vw` mean exactly 15% of the VIEWPORT:
      strength, no alpha — it is the only label in this column and it has to hold
      the avatars and the video card beneath it. */
   color: #2a2622;
-  /* It inherits `var(--font-display)` from the global h1–h4 rule as of v2.2.3.
+  /* It inherits `var(--font-heading)` from the global h1/h2 rule.
      The heading is a serif at up to 1.8rem over a photograph now, so it needs
      the same optical treatment as the title or it renders in the text cut while
      the title above it renders in the display cut. */
@@ -10611,7 +10662,7 @@ body.lm-modal-open {
 }
 
 .lm-brand-text strong {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: 19px;
   font-weight: 400;
   letter-spacing: .3em;
@@ -10750,7 +10801,7 @@ body:has(#mobile-drawer.open) .lm-header {
    HOME HERO v2 — REBUILD INSIDE THE CREAM SHEET
    --------------------------------------------------------------------------
    Replaces the floating left column (`.lm-hero-copy` blocks + the `/pic/Face.webp`
-   arch portrait) with a single editorial hero: eyebrow, two-line Bodoni title,
+   arch portrait) with a single editorial hero: eyebrow, two-line Runiga title,
    lead and two pill buttons on the left; the new RGBA cut-out (`/pic/new/ai.webp`)
    on the right, clipped by the sheet's dome. The old markup is hidden but kept.
    The dome geometry, the rise and the intro are untouched — the photo lives
@@ -10832,7 +10883,7 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
 
 .lm-hero-v2__title {
   margin: 22px 0 0;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: clamp(44px, 4vw, 72px);
   font-weight: 400;
   line-height: .92;
