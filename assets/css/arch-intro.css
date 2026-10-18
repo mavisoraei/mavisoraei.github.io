@@ -392,15 +392,26 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet__bg {
 body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet-silk {
   display: block;
   position: fixed;
-  top: 0;
-  left: 0;
-  /* viewport-sized in both the settled (viewport-fixed) and the rise-time
-     (sheet-contained) case, so the canvas is never stretched to the sheet's
-     full page height while `.arch-rise-lag`'s `will-change` makes `.sheet` the
-     containing block */
-  width: 100vw;
+  /* `inset: 0` pins all four edges, so no measured pixel size is needed and
+     the canvas always starts life covering the whole viewport — there is no
+     window between "canvas is in the DOM" and "canvas has a size" in which it
+     could paint short. `width` is set explicitly because a <canvas> is a
+     replaced element: with `width: auto` its intrinsic (attribute) size would
+     win and the box would shrink-wrap to the backing store. */
+  inset: 0;
+  width: 100%;
+  /* `100vh` first as the fallback, then `100lvh` — the LARGE viewport height —
+     in place of a measured height. `lvh` never shrinks when a mobile URL bar is
+     showing, so the canvas always covers at least the layout viewport the dome
+     is positioned in; `100dvh` was rejected on purpose because it tracks the
+     URL bar and would resize (and so redraw) the canvas on every mobile scroll. */
   height: 100vh;
+  height: 100lvh;
   pointer-events: none;
+  /* app.js's `pinCapture` sets a `translate3d` here for the stretches where
+     `.arch-rise-lag`'s transform makes `.sheet` the containing block for this
+     fixed canvas (see app.js); without it the canvas would slide with the sheet
+     and leave the bottom of the viewport on the cream. */
 }
 
 /* WINDOW LIGHT — two soft, warm glows drifting slowly across the cream like

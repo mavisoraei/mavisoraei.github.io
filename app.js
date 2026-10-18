@@ -1130,16 +1130,19 @@
 
   const SILK = {
     /* the upstream shader advances its clock by 0.001 per ms; 0.35 keeps that
-       rate at ~35%, so the weave drifts instead of churning */
-    speed: 0.35,
+       rate at ~35%, so the weave drifts instead of churning. Softened to 0.315
+       (x0.9): 10% slower, nothing else. */
+    speed: 0.315,
     /* shader-seconds of the single frame painted under reduced motion */
     tStatic: 6.0,
     /* luminance -> ramp coordinate: below `lo` is the warmest stop, above
        `hi` the brightest */
     lo: 0.45,
     hi: 1.0,
-    /* 1.0 = no extra contrast on the ramp coordinate */
-    contrast: 1.0,
+    /* 1.0 = no extra contrast on the ramp coordinate. Softened to 0.9 (x0.9):
+       the ramp coordinate spreads a little less across the four stops, so the
+       weave reads 10% softer. */
+    contrast: 0.9,
     /* four warm stops, darkest -> lightest. Every stop keeps the site's dark
        body text well clear of the 4.5:1 minimum. */
     ramp: [
@@ -1149,8 +1152,12 @@
       [0.992, 0.984, 0.969]    /* #fdfbf7  ivory      */
     ],
     fps: 30,
-    maxEdgeDesktop: 960,
-    maxEdgeMobile: 640,
+    /* x0.9 of the previous 960 / 640. A mesh-grain wash gains nothing from a
+       dense store, and the browser's bilinear upscale of a texture this soft is
+       indistinguishable — the lower store is very slightly softer as well as
+       cheaper to fill. */
+    maxEdgeDesktop: 864,
+    maxEdgeMobile: 576,
     dprCap: 1.5
   };
 
@@ -1292,15 +1299,15 @@
 
     const isMobileViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
     const resize = function () {
-      /* CSS pins the canvas to the viewport (100vw x 100vh) in both the
-         settled and the rise-time containing block, so the viewport is its
-         true size. Reading it from the window rather than from
-         getBoundingClientRect() also sets the backing store during the brief
-         window where the `.arch-intro` scope has not yet switched the canvas
-         from `display:none` to `display:block` (arch-intro.js adds the class
-         after app.js has booted), when the rect would still be 0x0. */
-      const cssW = window.innerWidth;
-      const cssH = window.innerHeight;
+      /* The canvas's CSS box is the source of truth for its on-screen size
+         (`position: fixed; inset: 0; height: 100lvh`), so read it off the
+         element rather than measuring the window. While `.sheet-silk` is still
+         `display: none` — before arch-intro.js adds the arch scope — its box
+         measures 0x0, so the window is the correct fallback for that brief
+         window. Taking the height from the box is what keeps the backing store
+         matched to what is actually painted even while the rise is live. */
+      const cssW = canvas.clientWidth || window.innerWidth;
+      const cssH = canvas.clientHeight || window.innerHeight;
       if (!cssW || !cssH || !program) return;
       const dpr = Math.min(window.devicePixelRatio || 1, SILK.dprCap);
       const maxEdge = isMobileViewport ? SILK.maxEdgeMobile : SILK.maxEdgeDesktop;
@@ -1313,12 +1320,77 @@
       gl.viewport(0, 0, w, h);
     };
 
+    /* ------------------------------------------------------------------ *
+     * THE FIXED-POSITION CAPTURE, and why the canvas has to correct for it
+     *
+     * `body.arch-rise-lag .sheet` carries `transform: translate3d(0,
+     * var(--sheet-lag), 0)` together with `will-change: transform` for as long
+     * as the rise is still trailing the scroll. A transformed ancestor becomes
+     * the CONTAINING BLOCK for `position: fixed` descendants, so during that
+     * window this canvas stops being viewport-fixed: `top: 0` resolves against
+     * the sheet's top edge, and the canvas paints a 100lvh slice that slides
+     * with the sheet. Once the sheet's top has scrolled above the viewport that
+     * leaves the bottom of the viewport unpainted, and `.sheet__bg`'s cream
+     * gradient shows through — the "silk covers only the top of the screen"
+     * symptom — until the lag decays below 0.5px, `arch-rise-lag` is dropped
+     * and the canvas snaps back to the viewport. That is exactly what a refresh
+     * produces: the intro auto-completes the rise, and the decaying lag keeps
+     * the canvas sheet-anchored for a couple of seconds while the reader
+     * scrolls.
+     *
+     * `pinCapture` cancels precisely that offset, so the canvas covers the full
+     * viewport in every state and is still clipped by the dome exactly as
+     * before. It reads only `window.scrollY` and the `--sheet-lag` custom
+     * property arch-intro.js writes as an inline style, so it never forces a
+     * layout. */
+    const sheet = document.querySelector('.sheet');
+    const lagClass = 'arch-rise-lag';
+    let sheetDocTop = 0;
+    let pinned = null;
+    let capturedNow = false;
+
+    const sheetLag = function () {
+      /* null means `.sheet` carries no transform, so the canvas is already
+         viewport-fixed and needs neither a correction nor a pin. When the class
+         is present the property is always written in the same frame, but treat a
+         missing one as 0 rather than as "not captured", so the pin can never be
+         skipped while the sheet really is transformed. */
+      if (!sheet || !document.body.classList.contains(lagClass)) return null;
+      const v = parseFloat(document.body.style.getPropertyValue('--sheet-lag'));
+      return isFinite(v) ? v : 0;
+    };
+
+    const measureSheet = function () {
+      if (!sheet) return;
+      /* `getBoundingClientRect()` already includes the lag transform while it
+         is live, so subtract it to recover the sheet's untransformed document
+         top. Re-measured on each repaint trigger, never per frame. */
+      const lag = sheetLag();
+      sheetDocTop = sheet.getBoundingClientRect().top + window.scrollY - (lag || 0);
+    };
+
+    const pinCapture = function () {
+      if (!sheet) return;
+      const lag = sheetLag();
+      const captured = lag !== null;
+      /* Re-read the sheet's document top the moment a capture episode starts:
+         that is the one point where it is known to have settled, and it costs a
+         single rect read per episode rather than one per frame. */
+      if (captured && !capturedNow) measureSheet();
+      capturedNow = captured;
+      const offset = captured ? window.scrollY - sheetDocTop - lag : 0;
+      const str = offset ? 'translate3d(0, ' + offset.toFixed(1) + 'px, 0)' : '';
+      if (str === pinned) return;
+      pinned = str;
+      canvas.style.transform = str;
+    };
+
     let raf = 0;
     let started = performance.now();
     /* Shader-seconds of the last frame actually drawn. When the loop is parked
-       for a scroll, `started` is rewound to this on resume, so the weave
-       continues from the last painted frame instead of leaping to a new
-       pattern. */
+       (the sheet is off screen, the tab is hidden, or motion is reduced),
+       `started` is rewound to this on resume, so the weave continues from the
+       last painted frame instead of leaping to a new pattern. */
     let lastTime = 0;
     let lastDraw = 0;
     const targetInterval = 1000 / (SILK.fps || 30);
@@ -1332,6 +1404,10 @@
     };
 
     const tick = function (now) {
+      /* Re-pin before drawing: while `.sheet` is transformed for the rise lag
+         the canvas has to be corrected every frame or it slides with the sheet.
+         One `scrollY` read and one inline-style read, so it is not a layout. */
+      pinCapture();
       if (program && now - lastDraw >= targetInterval - 1) {
         draw(((now - started) / 1000) * SILK.speed);
         lastDraw = now;
@@ -1340,11 +1416,10 @@
     };
 
     let onScreen = true;
-    let scrolling = false;
     let pageVisible = !document.hidden;
     let reduce = prefersReducedMotion();
     const running = function () {
-      return onScreen && !scrolling && pageVisible && !reduce;
+      return onScreen && pageVisible && !reduce;
     };
 
     const start = function () {
@@ -1362,7 +1437,6 @@
     /* Render only while the sheet is on screen. The dome is the top of the
        sheet and the sheet is opaque for the whole page below it, so the canvas
        only matters until the sheet has scrolled fully past. */
-    const sheet = document.querySelector('.sheet');
     if (sheet && 'IntersectionObserver' in window) {
       const io = new IntersectionObserver(
         function (entries) {
@@ -1375,35 +1449,53 @@
       io.observe(sheet);
     }
 
-    /* Park the loop for the whole time the reader is scrolling, so it never
-       competes with the compositor for the scroll itself, and pick it up again
-       200ms after the last scroll event. The last frame stays on screen while
-       parked. */
-    let scrollIdle = 0;
-    window.addEventListener('scroll', function () {
-      scrolling = true;
-      stop();
-      if (scrollIdle) clearTimeout(scrollIdle);
-      scrollIdle = setTimeout(function () {
-        scrolling = false;
-        start();
-      }, 200);
-    }, { passive: true });
-
     document.addEventListener('visibilitychange', function () {
       pageVisible = !document.hidden;
       if (running()) start();
       else stop();
     });
 
-    const relayout = rafThrottle(function () {
+    /* Any event that can change the canvas's box or the page's layout repaints
+       at once: a viewport resize or rotation, the load event (images finally
+       carry the sheet's real height), a font swap, a bfcache restore.
+       `resize()` re-applies the backing store and the GL viewport, the draw
+       repaints immediately so the canvas is never left showing a stretched or
+       short frame, and `measureSheet()` re-reads the sheet's document top,
+       which late images and fonts move. */
+    const repaint = rafThrottle(function () {
       resize();
-      /* a resize while parked still has to repaint, or the canvas is left
-         showing a stretched old frame */
-      if (!raf) draw(reduce ? SILK.tStatic : lastTime || 0);
+      draw(reduce ? SILK.tStatic : lastTime || 0);
+      measureSheet();
+      pinCapture();
     });
-    window.addEventListener('resize', relayout);
-    window.addEventListener('orientationchange', relayout);
+    window.addEventListener('resize', repaint);
+    window.addEventListener('orientationchange', repaint);
+    window.addEventListener('load', repaint);
+    window.addEventListener('pageshow', repaint);
+    if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+      document.fonts.ready.then(repaint);
+    }
+
+    /* The canvas can change size without the window changing at all — most
+       importantly the `display: none` -> `display: block` switch arch-intro.js
+       triggers when it adds the arch scope, which is also the moment the sheet
+       gains its real document position. Observing the canvas itself catches
+       that and every later box change. */
+    if (window.ResizeObserver) {
+      new ResizeObserver(repaint).observe(canvas);
+    }
+
+    /* `.sheet`'s capture is driven by classes and custom properties
+       arch-intro.js writes on <body> every frame; observing those keeps the pin
+       in the same frame as the transform that causes it. The draw loop does this
+       too, but that loop is parked whenever the tab is hidden, so this is what
+       keeps the pin correct the instant the lag is applied. */
+    if (window.MutationObserver && document.body) {
+      new MutationObserver(pinCapture).observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+      });
+    }
 
     canvas.addEventListener('webglcontextlost', function (e) {
       e.preventDefault();
@@ -1442,6 +1534,8 @@
       draw(0);
       start();
     }
+    measureSheet();
+    pinCapture();
     return true;
   }
 
