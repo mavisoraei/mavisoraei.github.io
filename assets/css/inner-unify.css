@@ -1331,7 +1331,11 @@ main .svc-prices .pr-table tbody tr.pr-sub-row td:nth-child(1)::before {
 /* --- K3.2 one centred column for the article blocks ----------------------- */
 
 /* The article body (facial and services; laser keeps its 1fr 300px side grid)
-   and every lead share min(100%, 780px), centred, text still left inside. */
+   runs a centred 780px column, text left inside. The page LEAD is a different
+   thing: it introduces the page under the title, so it must hang from the same
+   left edge as that title and is never auto-centred. An auto margin here pushed
+   the lead ~216px inboard of the h1 on doctors, gallery, gallery_new, areas,
+   blog, contact, facial, laser and services. */
 main .svc-grid:not(:has(.svc-side)) .svc-body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
   max-width: 780px;
   width: 100%;
@@ -1342,12 +1346,12 @@ main .docs-hero .lead:not(#_):not(#_):not(#_),
 main .ct-hero-text .lead:not(#_):not(#_):not(#_),
 main .pg-hero .lead:not(#_):not(#_):not(#_) {
   width: min(100%, 780px);
-  margin-inline: auto;
+  margin-inline: 0;
 }
 
 main .svc-lead:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
   width: min(100%, 780px);
-  margin-inline: auto;
+  margin-inline: 0;
 }
 
 /* The large hero figure and the price tables may run 980px. */

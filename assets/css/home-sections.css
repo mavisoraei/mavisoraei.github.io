@@ -14,6 +14,32 @@
 .home-ga .sec-head p { text-align: center; }
 .home-ga .ga-cta .btn-pill { margin-inline: auto; }
 
+/* ---------- Centred section heads: name the heading, not only the wrapper ----
+   `style.css` gives `h1`–`h6` a DIRECT `text-align: left`, so a heading never
+   inherits `text-align: center` from the wrapper it sits in. A centred head must
+   therefore name its `h2` as well as its `p`, or the title stays flush left while
+   the paragraph under it centres. This one rule names every centred home head
+   (Lemon Doctors, the cases head, and the Patient Experiences head). */
+.home-team .sec-head h2,
+.home-ga .sec-head h2,
+.cnp-head h2 {
+  text-align: center;
+}
+
+/* ---------- Section CTA under a card grid / marquee -------------------------
+   One consistent gap between a card grid and the pill button that follows it.
+   Before this each button carried its own value — the doctors and cases buttons
+   had none at all and sat almost flush against the last row of cards, while
+   Services & Pricing (1.4rem) and All Magazine Articles (~1.8rem) each had a
+   different one. Scoped to the four section CTAs; the cards themselves, and the
+   spacing inside them, are untouched. */
+.home-team > .btn-pill,
+.home-ga .ga-cta > .btn-pill,
+.home-services > .btn-pill,
+.trend-inner > .btn-pill {
+  margin-top: 2.5rem;
+}
+
 /* ---------- "Real cases, before and after" ---------- */
 .cases-grid {
   display: grid;
