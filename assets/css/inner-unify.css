@@ -3,8 +3,8 @@
    areas / blog / contact / doctors / facial / face-analysis /
    gallery / gallery_new / laser / prices / services
 
-   Two heading faces plus the body face: Runiga (--font-heading) for the MAIN
-   headings h1/h2 and section/page titles, Olivera (--font-subheading) for the
+   Two heading tiers plus the body face, both in Runiga: --font-heading for the
+   MAIN headings h1/h2 and section/page titles, --font-subheading for the
    smaller headings h3–h6, card/box titles and doctor names, and Jost
    (--font-body) for everything else. Both heading tokens are inherited from
    style.css and each falls back to Georgia. On these pages Vazirmatn has no
@@ -57,9 +57,11 @@ main h1:not(#_), main h2:not(#_), main h3:not(#_), main h4:not(#_) {
   margin-inline: 0;
 }
 
-/* v3.0.0 — h3/h4 are SUB-headings, so they take Olivera, not Runiga. */
+/* v3.0.0 — h3/h4 are SUB-headings; they take Runiga too (--font-subheading),
+   with slightly wider tracking than the main headings. */
 main h3:not(#_), main h4:not(#_), main h5:not(#_), main h6:not(#_) {
   font-family: var(--font-subheading);
+  letter-spacing: .01em;
 }
 
 main h1:not(#_) {
@@ -100,13 +102,14 @@ main .price-card h2:not(#_),
 main .svc-related h2:not(#_) {
   font-optical-sizing: auto;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 20.6px;
+  letter-spacing: .01em;
   line-height: 1.25;
   text-align: start;
 }
 
-/* v3.0.0 — card/box titles are SUB-headings (Olivera); the two h2s are MAIN
-   headings (Runiga). */
+/* v3.0.0 — card/box titles are SUB-headings; the two h2s are MAIN headings.
+   Both resolve to Runiga now that Olivera is retired. */
 main .card-title:not(#_),
 main .svc-card-title:not(#_),
 main .team-card h3:not(#_),
@@ -1069,12 +1072,12 @@ main .callout:not(#_) {
 main .callout .callout-title:not(#_) {
   display: block;
   font-family: var(--font-subheading);
-  font-size: 22px;
+  font-size: 22.7px;
   line-height: 1.2;
   font-weight: 500;
   margin: 0 0 6px;
   color: #2a2622;
-  letter-spacing: 0;
+  letter-spacing: .01em;
 }
 
 main .callout p:not(#_):not(.callout-title) {

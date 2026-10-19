@@ -90,29 +90,24 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
 
      Runiga   -> --font-heading     main headings: h1/h2, hero, page titles,
                                     section titles
-     Olivera  -> --font-subheading  smaller headings: h3-h6, card and box titles,
+     Runiga   -> --font-subheading  smaller headings: h3-h6, card and box titles,
                                     doctor names, FAQ questions, case names
 
-   The supplied Runiga.otf and Olivera_Demo.ttf were converted to woff2 with a
-   one-off tool run OUTSIDE the repo (no build step, no package.json); only the
-   .woff2 is referenced. There is no oblique Olivera: nothing in the project is
-   italic, so the demo oblique cut is deliberately left out.
+   The supplied Runiga.otf was converted to woff2 with a one-off tool run OUTSIDE
+   the repo (no build step, no package.json); only the .woff2 is referenced.
 
-   Both are single-weight (400) faces, so `font-weight: 400 700` tells the browser
+   Runiga is a single-weight (400) face, so `font-weight: 400 700` tells the browser
    that the one cut covers the heading weights actually used (400 and 500) and
    stops it faking a bold the file does not contain.
 
-   LICENSE: both are PERSONAL-USE-ONLY demo cuts — Runiga by Brandsemut
-   (fonts/runiga/Read Me !!!.txt) and Olivera by Pentagonistudio
-   (fonts/oliver/readmedemo.txt). A purchased commercial licence is required
+   LICENSE: Runiga is a PERSONAL-USE-ONLY demo cut by Brandsemut
+   (fonts/runiga/Read Me !!!.txt). A purchased commercial licence is required
    before this site is used commercially.
 
-   COVERAGE: Olivera's demo carries only A-Z, a-z, 0-9 and space — no
-   punctuation — so any comma/full stop/apostrophe inside an Olivera heading is
-   drawn by the next font in the stack (Georgia). Runiga covers full Latin-1 plus
-   curly quotes and the common f-ligatures; it has no en/em dash.
+   COVERAGE: Runiga covers full Latin-1 plus curly quotes and the common
+   f-ligatures; it has no en/em dash.
 
-   The two *Fallback* faces are Georgia re-scaled to each face's metrics so the
+   The *Fallback* face is Georgia re-scaled to the face's metrics so the
    swap from fallback to web font cannot shift layout. `size-adjust` is the ratio
    of the web face's average letter advance to Georgia's; the ascent/descent/
    line-gap overrides are the web face's own metrics as a percentage of its em. */
@@ -133,27 +128,6 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
   size-adjust: 96.96%;
   ascent-override: 76.60%;
   descent-override: 28.00%;
-  line-gap-override: 0%;
-  font-weight: 400 700;
-}
-
-@font-face {
-  font-family: "Olivera";
-  src: url(/assets/fonts/Olivera.woff2) format("woff2");
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: "Olivera Fallback";
-  src: local("Georgia");
-  size-adjust: 78.64%;
-  ascent-override: 77.30%;
-  descent-override: 22.70%;
   line-gap-override: 0%;
   font-weight: 400 700;
 }
@@ -271,14 +245,15 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
   --wood: var(--secondary);
 
   /* v3.0.0 — heading typefaces, defined ONCE for the whole site. Runiga is the
-     main display serif (h1/h2, hero/page/section titles); Olivera is the smaller
-     heading serif (h3–h6, card and box titles, doctor names, FAQ questions, case
-     names). Every component consumes these two names — no rule names a heading
-     family directly. --font-display is kept only as an alias of --font-heading so
-     any snippet still using the retired name keeps resolving to a heading face
-     rather than falling back to an arbitrary serif. */
+     single display serif for BOTH tiers: main headings (h1/h2, hero/page/section
+     titles) and smaller headings (h3–h6, card and box titles, doctor names, FAQ
+     questions, case names). Olivera was retired, so --font-subheading points at
+     the same face. Every component consumes these two names — no rule names a
+     heading family directly. --font-display is kept only as an alias of
+     --font-heading so any snippet still using the retired name keeps resolving to
+     a heading face rather than falling back to an arbitrary serif. */
   --font-heading: "Runiga", "Runiga Fallback", Georgia, serif;
-  --font-subheading: "Olivera", "Olivera Fallback", Georgia, serif;
+  --font-subheading: "Runiga", "Runiga Fallback", Georgia, serif;
   --font-display: var(--font-heading);
   --font-body: "Jost", "Vazirmatn", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-fa: "Vazirmatn", "Vazir-fb-noto", "Vazir-fb-naskh", "Vazir-fb-segoe", system-ui, sans-serif;
@@ -588,14 +563,13 @@ ul[role=list], ol[role=list] {
    `margin-top` on headings is kept on h2/h3 but not h1: the h1 is never preceded
    by a sibling heading in this markup, so a top margin there only opens a gap
    under the fixed navbar. */
-/* v3.0.0 — heading hierarchy. h1/h2 are MAIN headings and render in Runiga
-   (--font-heading); h3–h6 are SUB-headings and render in Olivera
-   (--font-subheading). Both faces are single-weight, so the 500 here is served
-   by the 400 cut without a synthesised bold (the @font-face declares the
-   400–700 range). `font-optical-sizing: auto` is kept because other faces in the
-   stack may carry an opsz axis; Runiga and Olivera do not, so it is a no-op for
-   them. The size/weight contrast between the two faces is what makes the
-   hierarchy read without any decorative weight. */
+/* v3.0.0 — heading hierarchy. h1/h2 are MAIN headings and h3–h6 are SUB-headings;
+   both now render in Runiga (--font-heading / --font-subheading). The face is
+   single-weight, so the 500 here is served by the 400 cut without a synthesised
+   bold (the @font-face declares the 400–700 range). `font-optical-sizing: auto`
+   is kept because other faces in the stack may carry an opsz axis; Runiga does
+   not, so it is a no-op for it. The size contrast plus the wider tracking on the
+   sub-headings is what makes the hierarchy read without any decorative weight. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-optical-sizing: auto;
@@ -611,6 +585,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h3, h4, h5, h6 {
   font-family: var(--font-subheading);
+  letter-spacing: .01em;
 }
 
 h1 {
@@ -7252,7 +7227,8 @@ tbody tr:nth-child(2n) {
 
 .tc-title {
   font-family: var(--font-subheading);
-  font-size: 22px;
+  font-size: 22.7px;
+  letter-spacing: .01em;
   line-height: 1.2;
   color: var(--foreground);
   margin: 0;
@@ -7954,7 +7930,8 @@ tbody tr:nth-child(2n) {
   grid-row: 1;
   margin: 0;
   font-family: var(--font-subheading);
-  font-size: 24px;
+  font-size: 24.7px;
+  letter-spacing: .01em;
   line-height: 1.3;
 }
 
@@ -7981,8 +7958,9 @@ tbody tr:nth-child(2n) {
 
 .svc-group h3 {
   font-family: var(--font-subheading);
-  font-size: 22px;
+  font-size: 22.7px;
   font-weight: 500;
+  letter-spacing: .01em;
   line-height: 1.2;
   color: var(--foreground);
   margin: 0 0 .35rem;
@@ -8335,7 +8313,8 @@ tbody tr:nth-child(2n) {
    card's text block starts and aligns identically. */
 .home-team .team-meta h3 {
   font-family: var(--font-subheading);
-  font-size: 22px;
+  font-size: 22.7px;
+  letter-spacing: .01em;
   line-height: 1.15;
   font-weight: 500;
   min-height: 2.3em;

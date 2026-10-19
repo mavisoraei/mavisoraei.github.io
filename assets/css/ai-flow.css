@@ -31,7 +31,7 @@ main.ai-on{display:block;padding:0;min-height:0}
 .ai-card:hover{border-color:rgba(184,160,112,.6);transform:translateY(-2px);box-shadow:0 10px 28px rgba(42,38,34,.06)}
 .ai-card img{width:48px;height:48px;max-width:48px;max-height:48px;object-fit:contain;flex:0 0 auto}
 .ai-card>span{flex:1;min-width:0}
-.ai-card b{display:block;font:500 22px/1.15 var(--font-subheading)}
+.ai-card b{display:block;font:500 22.7px/1.15 var(--font-subheading);letter-spacing:.01em}
 .ai-card small{display:block;margin-top:5px;font-size:14px;line-height:1.5;color:var(--ai-mut)}
 .ai-card>svg{flex:0 0 auto;color:var(--ai-mut)}
 .ai-foot{margin-top:24px;text-align:center;font-size:13px;line-height:1.6;color:var(--ai-mut)}
