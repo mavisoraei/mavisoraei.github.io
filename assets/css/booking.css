@@ -394,3 +394,127 @@
     border-radius: 24px 24px 0 0;
   }
 }
+
+/* ==========================================================================
+   CONTACT — booking card layout
+   ==========================================================================
+   Desktop-first two-column booking box: the month calendar takes the wide left
+   column (larger cells, title and nav) and the available-times chips sit in the
+   right column. Stacks back to one column below 900px.
+
+   Every rule here is scoped to `.bk-inline-box`, which booking.js only emits for
+   the contact page's inline mount, so the index.html booking dialog is untouched.
+   ========================================================================== */
+
+/* booking.js writes the .cm-* header block, but contact-modal.css scopes those
+   selectors to the dialog; the inline card needs its own copy. */
+.bk-inline-box .cm-eyebrow {
+  margin: 0 0 8px;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: #8c7040;
+}
+
+.bk-inline-box .cm-title {
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: #2a2622;
+}
+
+.bk-inline-box .cm-desc {
+  margin: 0 0 22px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #6b6258;
+}
+
+/* Name and mobile stay level: the shared `.bk-form .bk-field + .bk-field`
+   margin was also hitting the second field inside `.bk-row`. */
+.bk-form .bk-row .bk-field + .bk-field {
+  margin-top: 0;
+}
+
+/* --- calendar + times, side by side --- */
+.bk-inline-box .bk-cal {
+  max-width: none;
+  margin: 28px 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-areas:
+    "head  times"
+    "week  times"
+    "days  times";
+  column-gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+
+.bk-inline-box .bk-cal-head { grid-area: head; }
+.bk-inline-box .bk-cal-week { grid-area: week; }
+.bk-inline-box .bk-cal-days { grid-area: days; }
+.bk-inline-box .bk-times-wrap { grid-area: times; }
+
+/* --- larger month title and nav buttons --- */
+.bk-inline-box .bk-cal-title { font-size: 26px; }
+.bk-inline-box .bk-cal-nav { width: 42px; height: 42px; }
+.bk-inline-box .bk-cal-nav svg { width: 20px; height: 20px; }
+
+/* --- larger day cells that use the available column width --- */
+.bk-inline-box .bk-cal-week { margin-top: 18px; }
+.bk-inline-box .bk-wd { font-size: 12px; }
+.bk-inline-box .bk-cal-days { row-gap: 6px; margin-top: 6px; }
+
+.bk-inline-box .bk-day,
+.bk-inline-box .bk-cal-void {
+  width: 100%;
+  max-width: 52px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+
+.bk-inline-box .bk-day { font-size: 16px; }
+
+/* --- available times as a grid of slots --- */
+.bk-inline-box .bk-times-h { margin: 2px 0 12px; }
+
+.bk-inline-box .bk-times {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 10px;
+}
+
+.bk-inline-box .bk-chip { height: 42px; padding: 0 12px; }
+
+@media (max-width: 900px) {
+  .bk-inline-box .bk-cal {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "week" "days" "times";
+    column-gap: 0;
+  }
+
+  .bk-inline-box .bk-times-wrap { margin-top: 26px; }
+}
+
+/* ==========================================================================
+   CONTACT — "Clinic access and location" glass card
+   ==========================================================================
+   The markup is copied from index.html, but inner-unify.css's ID-weighted
+   `main h2:not(#_)` / `main p:not(#_)` rules out-rank the shared `.home-local`
+   styles. These scoped rules (`.contact-local` only exists on contact.html)
+   restore the homepage look for the heading and the neighbourhood line. */
+main .contact-local h2:not(#_) {
+  text-align: center;
+  margin-inline: auto;
+  margin-bottom: 40px;
+  font-size: var(--step-2);
+}
+
+main .contact-local .hl-near:not(#_) {
+  font-size: 16px;
+  color: #6b6258;
+}
