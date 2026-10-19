@@ -109,7 +109,8 @@ var DOME_HOLD_VH = 0.30;
 var SHEET_LERP = 0.06;
 var SHEET_LAG_CLASS = 'arch-rise-lag';
 
-var IDLE_COMPLETE_MS = 2600;   /* never leave a reader stuck below the fold */
+var IDLE_COMPLETE_MS = 600;    /* never leave a reader stuck below the fold — the
+                                  idle self-rise now starts ~2s sooner (was 2600) */
   var MIN_VIEWPORT_H = 520;      /* below this, skip the intro                */
   var ROOT_CLASS = 'arch-intro';
   var RISEN_CLASS = 'arch-risen';

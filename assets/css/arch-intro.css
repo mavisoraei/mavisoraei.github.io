@@ -178,16 +178,34 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo img {
    `intro-active` costs one class and cannot start a transition backwards.
 
    Nothing is transformed and nothing is re-timed. style.css gives `.lm-header`
-   no entrance animation of its own, so opacity alone is the whole hand-off. */
+   no entrance animation of its own, so opacity alone is the whole hand-off.
+
+   The navbar is the exception to the shared 400ms beat: its linen fill would
+   otherwise land the instant the intro leaves, so it now waits 2s and then
+   dissolves over 900ms. The lobby photograph reads through it for those two
+   seconds. The hero copy keeps the original 400ms so the page never opens onto
+   a blank dome. */
 body.arch-intro:not(.classic-layout):not(.classic-mode).intro-active .lm-header,
 body.arch-intro:not(.classic-layout):not(.classic-mode).intro-active .lm-hero {
   opacity: 0;
   transition: none;
 }
 
-body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-header,
+body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-header {
+  transition: opacity 900ms ease 2000ms;
+}
+
 body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-hero {
   transition: opacity 400ms ease;
+}
+
+/* While the bar rides over the lobby photograph — before its fill arrives on
+   scroll (`.is-solid`) — the dark links get a light halo so they stay legible
+   against a busy photo. Home only. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-header:not(.is-solid) .lm-menu a,
+body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-header:not(.is-solid) .lm-brand-text strong,
+body.arch-intro:not(.classic-layout):not(.classic-mode) .lm-header:not(.is-solid) .lm-brand-text small {
+  text-shadow: 0 1px 6px rgba(255, 255, 255, .55);
 }
 
 

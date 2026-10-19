@@ -1143,13 +1143,14 @@
        the ramp coordinate spreads a little less across the four stops, so the
        weave reads 10% softer. */
     contrast: 0.9,
-    /* four warm stops, darkest -> lightest. Every stop keeps the site's dark
-       body text well clear of the 4.5:1 minimum. */
+    /* four warm stops, darkest -> lightest. Recoloured ~6% darker and a touch
+       warmer (champagne/sand) than the original linen ramp; the site's dark body
+       text still clears 4.5:1 against the darkest stop. */
     ramp: [
-      [0.831, 0.722, 0.478],   /* #d4b87a  faint gold */
-      [0.902, 0.839, 0.722],   /* #e6d6b8  champagne  */
-      [0.961, 0.949, 0.910],   /* #f5f2e8  cream      */
-      [0.992, 0.984, 0.969]    /* #fdfbf7  ivory      */
+      [0.784, 0.663, 0.427],   /* #c8a96d  faint gold */
+      [0.863, 0.780, 0.627],   /* #dcc7a0  champagne  */
+      [0.925, 0.886, 0.804],   /* #ece2cd  cream      */
+      [0.969, 0.945, 0.898]    /* #f7f1e5  ivory      */
     ],
     fps: 30,
     /* x0.9 of the previous 960 / 640. A mesh-grain wash gains nothing from a
