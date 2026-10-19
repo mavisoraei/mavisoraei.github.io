@@ -1860,18 +1860,19 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * glass cards — one-shot light sweep on first scroll-in, then on hover
+   * glass cards — one lap on first scroll-in, then only on hover/focus
    *
-   * This only tags; the sweep itself is the `glass-sweep` animation in
-   * style.css. Each card is observed once and unobserved the moment it first
-   * enters the viewport; `animationend` then drops `.is-lit` so the resting
-   * state carries no animation and a later hover/focus replays the sweep from
-   * the start. Reduced motion opts out entirely (the CSS layer is hidden too).
+   * `style.css` owns the static frosted ring; this only tags `.is-lit` for
+   * the single travelling highlight. Each card is observed once, unobserved
+   * as soon as it enters the viewport, and the class is dropped on the
+   * pseudo-element's `animationend`. Idle cards therefore carry no animation.
+   * Reduced motion and sub-768px viewports opt out (the ring stays static).
    * ------------------------------------------------------------------ */
 
   function initGlassCards() {
-    const cards = document.querySelectorAll('.glass-card');
+    const cards = document.querySelectorAll('.glass-card:not([data-glow="live"])');
     if (!cards.length || prefersReducedMotion()) return;
+    if (!window.matchMedia('(min-width: 768px)').matches) return;
 
     if (!('IntersectionObserver' in window)) {
       cards.forEach(function (card) { card.classList.add('is-lit'); });
@@ -1884,13 +1885,64 @@
         const card = entry.target;
         observer.unobserve(card);
         card.classList.add('is-lit');
-        card.addEventListener('animationend', function (e) {
-          if (e.target === card) card.classList.remove('is-lit');
-        }, { once: true });
+        card.addEventListener('animationend', function done(e) {
+          if (e.target !== card || e.pseudoElement !== '::before') return;
+          card.classList.remove('is-lit');
+          card.removeEventListener('animationend', done);
+        });
       });
     }, { threshold: .25 });
 
     cards.forEach(function (card) { io.observe(card); });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * optional live glass glow — `data-glow="live"`, max 3 per page
+   *
+   * None in the markup by default. When opted in, the slow loop runs only
+   * while the card is on screen AND the page is not scrolling. Same
+   * reduced-motion and sub-768px opt-out as the one-shot lap.
+   * ------------------------------------------------------------------ */
+
+  function initGlassLiveGlow() {
+    const cards = Array.prototype.slice
+      .call(document.querySelectorAll('.glass-card[data-glow="live"]'))
+      .slice(0, 3);
+    if (!cards.length || prefersReducedMotion()) return;
+    if (!window.matchMedia('(min-width: 768px)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+
+    const visible = new Set();
+    let scrolling = false;
+    let scrollTimer = 0;
+
+    function apply() {
+      cards.forEach(function (card) {
+        card.classList.toggle('is-live', visible.has(card) && !scrolling);
+      });
+    }
+
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) visible.add(entry.target);
+        else visible.delete(entry.target);
+      });
+      apply();
+    }, { threshold: .15 });
+
+    cards.forEach(function (card) { io.observe(card); });
+
+    window.addEventListener('scroll', function () {
+      if (!scrolling) {
+        scrolling = true;
+        apply();
+      }
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(function () {
+        scrolling = false;
+        apply();
+      }, 160);
+    }, { passive: true });
   }
 
   /* ------------------------------------------------------------------ *
@@ -1908,6 +1960,7 @@
     initConsultCta();
     initVideoModal();
     initGlassCards();
+    initGlassLiveGlow();
     if (!initSheetSilk()) initPageMesh();
     initWindowLight();
   });

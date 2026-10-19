@@ -7172,7 +7172,9 @@ tbody tr:nth-child(2n) {
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(.9rem,2vw,1.2rem);
+  /* 20px minimum: the glass ring reaches 7px outside each card, so two
+     neighbouring rings leave 6px of silk between them. */
+  gap: 20px;
 }
 
 .trend-card {
@@ -7181,22 +7183,18 @@ tbody tr:nth-child(2n) {
   flex-direction: column;
   height: 100%;
   border-radius: 20px;
-  overflow: hidden;
-  background: #fbf9f5;
-  border: 1px solid rgba(42, 38, 34, .08);
+  overflow: visible;      /* the glass ring is drawn 7px outside the box */
+  background: transparent; /* the shared `.glass-card` fill takes over */
+  border: 1px solid transparent;
   box-shadow: none;
   color: inherit;
   text-decoration: none;
-  transition: border-color .28s ease;
-}
-
-.trend-card:hover {
-  border-color: rgba(42, 38, 34, .32);
+  transition: border-color .28s ease, box-shadow .28s ease;
 }
 
 .trend-card:focus-visible {
   outline: 2px solid var(--primary);
-  outline-offset: 3px;
+  outline-offset: 10px;   /* clear of the 7px frosted ring */
 }
 
 .tc-media {
@@ -8290,6 +8288,12 @@ tbody tr:nth-child(2n) {
   margin-block-end: calc(clamp(1.2rem, 3vw, 1.8rem) - 24px);
 }
 
+/* Doctor cards carry the shared glass ring, which reaches 7px outside each
+   card. 20px minimum keeps adjacent rings from touching at every width. */
+.home-team .ga-row {
+  --gap: clamp(20px, 1.6vw, 24px);
+}
+
 .home-team .team-card {
   /* The opaque `#fbf9f5` fill and hairline that used to live here are gone: the
      surface now comes from `.glass-card`, which app.js-independent markup adds
@@ -8354,7 +8358,7 @@ tbody tr:nth-child(2n) {
 }
 
 /* ==========================================================================
-   GLASS CARD — reusable warm-glass surface
+   GLASS CARD — reusable warm-glass surface + frosted outer ring
    --------------------------------------------------------------------------
    A translucent cream→warm-white fill, a colourless hairline stroke, an inset
    top highlight and a faint champagne inner bottom edge, ringed by a soft
@@ -8366,26 +8370,37 @@ tbody tr:nth-child(2n) {
    frame for every card. The glass reads from the fill, the stroke and the two
    inner edges alone.
 
-   The radius is NOT set here — the host keeps its own (20px on the doctor
-   cards; `--radius-lg` on `.glass-card--panel`) and the sweep is clipped to
-   that radius by the host's `overflow: hidden`.
+   The ring is drawn OUTSIDE the card by `::before` (inset -7px) and punched
+   out with a padding-box mask, so the card's own fill and content are never
+   touched. It is completely colourless: a .22 white frost, a .7 white 1px
+   outer edge and the host's .7 white 1px inner stroke. The silk behind stays visible
+   through it. `--glass-radius` mirrors the host's own radius because the ring
+   needs `host radius + 7px`; hosts that are not 20px set the variable.
 
-   Behaviour: `initGlassCards()` in app.js adds `.is-lit` the first time a card
-   enters the viewport (then unobserves it and drops the class on
-   `animationend`, so the one-shot sweep can replay on hover/focus).
-   `.glass-card--panel` is the padded block wrapper shared by the homepage
-   "Clinic access" block and (next) contact.html.
+   Motion: a conic highlight (one wide soft lobe, max .55 white) rotates via
+   `@property --glow-angle`. It is static at rest and only animates while the
+   card is hovered/focused, plus one lap when `initGlassCards()` first sees it
+   (IO, then unobserve). Live cards (`data-glow="live"`, max 3, none by
+   default) get a slow loop only while on screen and not scrolling. Under
+   768px and reduced motion the ring stays static.
    ========================================================================== */
+@property --glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .glass-card {
+  --glass-radius: 20px;
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  overflow: visible;
   background-image: linear-gradient(
     135deg,
     rgba(255, 252, 245, .58) 0%,
     rgba(255, 250, 238, .2) 100%
   );
-  border: 1px solid rgba(255, 255, 255, .65);
+  border: 1px solid rgba(255, 255, 255, .7);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, .78),
     inset 0 -1px 0 rgba(198, 166, 109, .22),
@@ -8395,40 +8410,67 @@ tbody tr:nth-child(2n) {
 
 /* Padded block wrapper: one large card around a whole section's content. */
 .glass-card--panel {
+  --glass-radius: var(--radius-lg);
   border-radius: var(--radius-lg);
   padding: clamp(24px, 4vw, 56px);
 }
 
-/* The sweeping highlight. Transform + opacity only, so the compositor never
-   has to repaint — it just moves one gradient layer across the card. */
-.glass-card::after {
+/* Doctor cards keep their 20px resting radius (`.home-team .team-card`). */
+.team-card.glass-card {
+  --glass-radius: 20px;
+}
+
+/* The frosted ring. `inset:-7px`, a 1px outer edge + 6px padding = the full
+   7px band, and the mask removes the content box so the card keeps its fill.
+   The band ends exactly at the card's outer edge. */
+.glass-card::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  z-index: 1;
+  inset: -7px;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, .7);
+  padding: 6px;
+  border-radius: calc(var(--glass-radius) + 7px);
   pointer-events: none;
-  opacity: 0;
-  transform: translateX(-130%);
-  background: linear-gradient(
-    105deg,
-    transparent 38%,
-    rgba(255, 253, 247, .55) 50%,
-    transparent 62%
-  );
+  background:
+    conic-gradient(
+      from var(--glow-angle, 0deg),
+      rgba(255, 255, 255, .55) 0deg,
+      rgba(255, 255, 255, .34) 28deg,
+      rgba(255, 255, 255, .12) 68deg,
+      rgba(255, 255, 255, 0) 120deg,
+      rgba(255, 255, 255, 0) 240deg,
+      rgba(255, 255, 255, .12) 292deg,
+      rgba(255, 255, 255, .34) 332deg,
+      rgba(255, 255, 255, .55) 360deg
+    ),
+    rgba(255, 255, 255, .22);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
 }
 
-@keyframes glass-sweep {
-  0%   { opacity: 0; transform: translateX(-130%); }
-  14%  { opacity: 1; }
-  100% { opacity: 0; transform: translateX(130%); }
+/* The card's own 1px `.7` stroke is the ring's inner edge — the mask hole is
+   exactly the card box, so the two hairlines sit flush without doubling. */
+
+/* The host used to clip its own corners; now the ring lives outside, so the
+   first row of media has to own the top radius instead. */
+.team-card .team-photo,
+.trend-card .tc-media {
+  border-radius:
+    calc(var(--glass-radius, 20px) - 1px)
+    calc(var(--glass-radius, 20px) - 1px)
+    0 0;
 }
 
-.glass-card.is-lit::after,
-.glass-card:hover::after,
-.glass-card:focus-visible::after,
-.glass-card:focus-within::after {
-  animation: glass-sweep 1.1s cubic-bezier(.22, .61, .36, 1) 1;
+@keyframes glass-glow-spin {
+  from { --glow-angle: 0deg; }
+  to   { --glow-angle: 360deg; }
 }
 
 /* Keep the glass stroke (and not the old dark `.team-card:hover` border) and
@@ -8445,8 +8487,23 @@ tbody tr:nth-child(2n) {
     0 8px 26px -12px rgba(212, 175, 55, .18);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .glass-card::after { display: none; }
+/* Motion is opt-in by interaction, or by the one-shot `.is-lit` tag. Below
+   768px and with reduced motion the conic highlight simply stays at 0deg. */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .glass-card:hover::before,
+  .glass-card:focus-visible::before,
+  .glass-card:focus-within::before {
+    animation: glass-glow-spin 11s linear infinite;
+  }
+
+  .glass-card.is-lit::before {
+    animation: glass-glow-spin 11s linear 1;
+  }
+
+  /* Optional, JS-gated: slow loop only while on screen and not scrolling. */
+  .glass-card[data-glow="live"].is-live::before {
+    animation: glass-glow-spin 17s linear infinite;
+  }
 }
 
 /* --------------------------------------------------------------------------
