@@ -180,11 +180,12 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) #arch-intro-photo img {
    Nothing is transformed and nothing is re-timed. style.css gives `.lm-header`
    no entrance animation of its own, so opacity alone is the whole hand-off.
 
-   The navbar is the exception to the shared 400ms beat: its linen fill would
-   otherwise land the instant the intro leaves, so it now waits 2s and then
-   dissolves over 900ms. The lobby photograph reads through it for those two
-   seconds. The hero copy keeps the original 400ms so the page never opens onto
-   a blank dome. */
+   The navbar is the ONE deliberate exception, and it is isolated on purpose:
+   only `.lm-header` (the bar's own background layer) waits, via its own
+   `--lm-nav-intro-delay`, then dissolves over 900ms so the lobby photograph
+   reads through it. `.lm-hero` keeps the BASE 400ms reveal, and the delay is
+   never written into a value the arch timeline reads — the trigger class
+   (`arch-intro-done`) and the moment it is added are unchanged. */
 body.arch-intro:not(.classic-layout):not(.classic-mode).intro-active .lm-header,
 body.arch-intro:not(.classic-layout):not(.classic-mode).intro-active .lm-hero {
   opacity: 0;
@@ -192,7 +193,9 @@ body.arch-intro:not(.classic-layout):not(.classic-mode).intro-active .lm-hero {
 }
 
 body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-header {
-  transition: opacity 900ms ease 2000ms;
+  --lm-nav-intro-delay: 2000ms;
+  transition: opacity 900ms ease;
+  transition-delay: var(--lm-nav-intro-delay);
 }
 
 body.arch-intro:not(.classic-layout):not(.classic-mode).arch-intro-done .lm-hero {
