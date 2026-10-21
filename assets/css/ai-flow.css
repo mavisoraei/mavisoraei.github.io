@@ -109,3 +109,26 @@ main.ai-on{display:block;padding:0;min-height:0}
   .ai-card b{font-size:20px}
   .ai-row{grid-template-columns:1fr}
 }
+
+/* ---------------------------------------------------------------------------
+   v1.0.3 - AI flow page only (ai-flow.css is loaded by ai-analysis.html alone)
+   1. no site footer on this page, so drop the 64px `--bottombar-h` reservation
+      that style.css leaves on <body> below 1000px - it renders as an empty
+      beige strip under the last element.
+   2. desktop scale-up: the flow column was tuned at phone width and reads
+      small on a desktop. Every rule below is gated at 768px, so the mobile
+      rules above are untouched.
+   --------------------------------------------------------------------------- */
+body{padding-bottom:0}
+
+@media (min-width:768px){
+  .aiapp{max-width:720px;box-sizing:border-box;padding-left:clamp(22px,3vw,32px);padding-right:clamp(22px,3vw,32px)}
+  .ai-card{padding:clamp(28px,2.4vw,32px) clamp(28px,2.8vw,32px);gap:20px;margin-bottom:18px}
+  .ai-card img{width:64px;height:64px;max-width:64px;max-height:64px}
+  .ai-card b{font:400 28px/1.2 var(--font-heading);letter-spacing:.005em}
+  .ai-card small{margin-top:7px;font-size:17px;line-height:1.55}
+  .ai-card>svg{width:24px;height:24px}
+  .ai-drop{min-height:320px}
+  .ba{max-width:720px;margin-inline:auto}
+  .chip{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px}
+}
