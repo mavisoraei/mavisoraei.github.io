@@ -1407,11 +1407,12 @@ main .callout--media img:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_)
      --content     760px  running text and in-text figures
 
    Side padding is shared by both, so `--content` starts on the same x as
-   `--container` and simply stops earlier. Scoped with `:has(.svc-grid)` so no
+   `--container` and simply stops earlier. Scoped to the two service templates
+   (`:has(.svc-grid)` = facial/services, `:has(.lm-svc-hero)` = laser) so no
    other inner page (doctors, blog, contact...) changes width.
    ========================================================================== */
 
-main:has(.svc-grid) {
+main:has(:is(.svc-grid, .lm-svc-hero)) {
   --container: 1160px;
   --content: 760px;
   --container-pad: clamp(20px, 4vw, 48px);
@@ -1422,35 +1423,560 @@ main:has(.svc-grid) {
 /* The `:not(#_)` stacks are deliberately repeated: this file's earlier width
    rules carry up to eight of them, and these must land last AND win. */
 /* --- container blocks: full width, flush left ---------------------------- */
-main:has(.svc-grid) .svc-prices:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
-main:has(.svc-grid) .svc-figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
-main:has(.svc-grid) .svc-grid:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
-main:has(.svc-grid) .svc-cta:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
-main:has(.svc-grid) .svc-cta .wrap:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-prices:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-cta:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-cta .wrap:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
   width: 100%;
   max-width: none;
   margin-inline: 0;
 }
 
 /* --- content blocks: 760px, flush left ----------------------------------- */
-main:has(.svc-grid) .svc-body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
-main:has(.svc-grid) .svc-body figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
-main:has(.svc-grid) .svc-lead:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
-main:has(.svc-grid) .faq:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-body figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-lead:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .faq:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
   width: 100%;
   max-width: var(--content);
   margin-inline: 0;
 }
 
 /* Running text fills its 760px column instead of stopping at 68ch. */
-main:has(.svc-grid) .svc-body p:not(#_):not(#_):not(#_),
-main:has(.svc-grid) .svc-body :is(ul, ol):not(#_):not(#_):not(#_) {
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-body p:not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-body :is(ul, ol):not(#_):not(#_):not(#_) {
   max-width: none;
 }
 
 /* The article column inside the 1fr | 300px grid keeps the container's left
    edge; the related-services column still ends at the container's right edge. */
-main:has(.svc-grid) .svc-grid:has(.svc-side) {
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
   grid-template-columns: minmax(0, var(--content)) 300px;
   justify-content: space-between;
 }
+/* ==========================================================================
+   SERVICE PAGE HERO — new top (phase 1: laser.html)
+   --------------------------------------------------------------------------
+   Two columns from 900px: copy left, arch image right. The image keeps the
+   home "Real cases" arch (999px top radius, 20px foot); the badges are the
+   small glass variant. No backdrop-filter anywhere.
+   ========================================================================== */
+
+.glass-card--sm {
+  --glass-radius: 14px;
+  border-radius: 14px;
+}
+
+.lm-svc-hero {
+  margin-top: clamp(14px, 2.4vw, 28px);
+}
+
+.lm-svc-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+  gap: clamp(28px, 4.5vw, 64px);
+  align-items: stretch;
+}
+
+@media (max-width: 899px) {
+  .lm-svc-hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+
+/* --- copy column --------------------------------------------------------- */
+.lm-svc-hero__eyebrow {
+  margin: 0 0 10px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.lm-svc-hero h1 {
+  margin: .18em 0 .38em;
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -.015em;
+  max-width: 16ch;
+  text-wrap: balance;
+}
+
+.lm-svc-hero__summary {
+  margin: 0 0 26px;
+  max-width: 52ch;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+/* --- quick facts: small glass chips, 2x2 under 900px ---------------------- */
+.lm-svc-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 28px;
+}
+
+.lm-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 132px;
+  padding: 10px 16px;
+}
+
+.lm-fact b {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.lm-fact span {
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+@media (max-width: 899px) {
+  .lm-svc-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* --- CTAs ---------------------------------------------------------------- */
+.lm-svc-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.lm-btn--primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.lm-btn--primary:hover {
+  background: var(--foreground);
+}
+
+.lm-btn--ghost {
+  background: transparent;
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 28%, transparent);
+}
+
+.lm-btn--ghost:hover {
+  background: var(--card);
+}
+
+.lm-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .lm-svc-ctas {
+    flex-direction: column;
+  }
+
+  .lm-btn {
+    width: 100%;
+  }
+}
+
+/* --- media column: arch + floating glass badges --------------------------- */
+.lm-svc-hero__media {
+  position: relative;
+  min-width: 0;
+}
+
+.lm-svc-arch {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: 999px 999px 20px 20px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--muted) 60%, var(--card));
+}
+
+.lm-svc-arch picture,
+.lm-svc-arch img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.lm-svc-arch img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.lm-svc-badge {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  gap: 10px;
+  max-width: min(300px, 84%);
+  padding: 10px 13px;
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+
+.lm-svc-badge--docs {
+  left: 14px;
+  bottom: 14px;
+}
+
+.lm-svc-badge--review {
+  top: 14px;
+  right: 14px;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lm-svc-badge__k {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.lm-svc-badge__names {
+  display: block;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.lm-svc-badge__names a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+.lm-svc-badge__role {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+}
+
+.lm-svc-avatars {
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.lm-svc-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, .9);
+}
+
+.lm-svc-avatar--a {
+  object-position: 28% 10%;
+}
+
+.lm-svc-avatar--b {
+  object-position: 74% 10%;
+  margin-left: -14px;
+}
+
+@media (max-width: 899px) {
+  .lm-svc-badge {
+    max-width: 78%;
+    padding: 8px 10px;
+    font-size: 11.5px;
+  }
+
+  .lm-svc-avatar {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* --- supervising physicians: collapsed details --------------------------- */
+.lm-svc-docs {
+  margin-top: clamp(20px, 3vw, 32px);
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.lm-svc-docs > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.lm-svc-docs > summary::-webkit-details-marker {
+  display: none;
+}
+
+.lm-svc-docs > summary::after {
+  content: "+";
+  font-size: 18px;
+  line-height: 1;
+}
+
+.lm-svc-docs[open] > summary::after {
+  content: "\2013";
+}
+
+.lm-svc-docs > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.lm-svc-docs .reviewer-badge {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  margin: 16px 0 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 640px) {
+  .lm-svc-docs .reviewer-badge {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- motion: one 500ms rise, 60ms stagger, reduced-motion off ------------ */
+@media (prefers-reduced-motion: no-preference) {
+  .lm-svc-hero__copy > * {
+    animation: lm-svc-rise 500ms cubic-bezier(.22, .61, .36, 1) both;
+  }
+
+  .lm-svc-hero__copy > *:nth-child(2) { animation-delay: 60ms; }
+  .lm-svc-hero__copy > *:nth-child(3) { animation-delay: 120ms; }
+  .lm-svc-hero__copy > *:nth-child(4) { animation-delay: 180ms; }
+  .lm-svc-hero__copy > *:nth-child(5) { animation-delay: 240ms; }
+  .lm-svc-hero__copy > *:nth-child(6) { animation-delay: 300ms; }
+
+  .lm-svc-hero__media {
+    animation: lm-svc-rise 500ms cubic-bezier(.22, .61, .36, 1) both;
+    animation-delay: 120ms;
+  }
+}
+
+@keyframes lm-svc-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ==========================================================================
+   STICKY "ON THIS PAGE" BAR
+   --------------------------------------------------------------------------
+   The existing numbered TOC list is moved here verbatim: same <nav>, same
+   <ol>, same anchors. It becomes a horizontally scrolling chip rail; the
+   numbered title stays as the accessible name (visually hidden).
+   ========================================================================== */
+
+.lm-svc-tocbar {
+  position: sticky;
+  top: 62px;
+  z-index: 60; /* under the navbar (100) */
+  margin-top: clamp(16px, 2.4vw, 28px);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border-block: 1px solid var(--border);
+  box-shadow: 0 10px 30px -22px color-mix(in srgb, var(--foreground) 30%, transparent);
+}
+
+.lm-svc-tocbar__in {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding-block: 10px;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+}
+
+.lm-svc-tocbar__in::-webkit-scrollbar {
+  display: none;
+}
+
+.lm-svc-tocbar .svc-toc {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.lm-svc-tocbar .toc-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.lm-svc-tocbar .svc-toc ol {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-svc-tocbar .svc-toc li {
+  margin: 0;
+  padding: 0;
+}
+
+.lm-svc-tocbar .svc-toc li::before {
+  display: none;
+}
+
+.lm-svc-tocbar .svc-toc a {
+  display: block;
+  max-width: 28ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px 14px;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 70%, transparent);
+  color: var(--foreground);
+  font-size: 13.5px;
+  line-height: 1.2;
+  text-decoration: none;
+  scroll-snap-align: start;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.lm-svc-tocbar .svc-toc a:hover {
+  background: var(--card);
+}
+
+.lm-svc-tocbar .svc-toc a.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.lm-svc-tocbar .svc-toc a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Anchored headings must clear the sticky bar. */
+main .svc-body [id],
+main .svc-prices [id] {
+  scroll-margin-top: 140px;
+}
+
+/* ==========================================================================
+   RELATED SERVICES — a row at the end, no longer a side column
+   ========================================================================== */
+
+.lm-svc-related {
+  margin-top: clamp(36px, 6vw, 64px);
+}
+
+.lm-svc-related .svc-related {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.lm-svc-related .svc-related h2 {
+  margin: 0 0 16px;
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.2;
+}
+
+.lm-svc-related .svc-related ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-svc-related .svc-related li {
+  margin: 0;
+}
+
+.lm-svc-related .svc-related a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: background .2s ease;
+}
+
+.lm-svc-related .svc-related a:hover {
+  background: var(--secondary);
+}
+
+.lm-svc-related .svc-related a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* The navbar is a 62px full-width strip on every page, so the bar docks
+   flush under it at all widths. */

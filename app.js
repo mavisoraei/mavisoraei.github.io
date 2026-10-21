@@ -1946,6 +1946,50 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * sticky service TOC bar — one observer, no scroll listeners
+   *
+   * The chips ARE the page's original `.svc-toc` anchors, moved into the bar
+   * by the markup. This only mirrors the section each one points at: the
+   * first heading to cross the middle band wins, and every other chip is
+   * cleared. No-ops on pages without `[data-svc-tocbar]`.
+   * ------------------------------------------------------------------ */
+
+  function initSvcTocBar() {
+    const bar = document.querySelector('[data-svc-tocbar]');
+    if (!bar || !('IntersectionObserver' in window)) return;
+
+    const links = Array.prototype.slice.call(bar.querySelectorAll('a[href^="#"]'));
+    if (!links.length) return;
+
+    const byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+
+    const heads = Array.prototype.slice
+      .call(document.querySelectorAll('main [id]'))
+      .filter(function (el) {
+        return byId[el.id] && /^H[1-6]$/.test(el.tagName);
+      });
+    if (!heads.length) return;
+
+    function activate(id) {
+      links.forEach(function (a) {
+        const on = a === byId[id];
+        a.classList.toggle('is-active', on);
+        if (on) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }
+
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) activate(entry.target.id);
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    heads.forEach(function (h) { io.observe(h); });
+  }
+
+  /* ------------------------------------------------------------------ *
    * boot
    * ------------------------------------------------------------------ */
 
@@ -1961,6 +2005,7 @@
     initVideoModal();
     initGlassCards();
     initGlassLiveGlow();
+    initSvcTocBar();
     if (!initSheetSilk()) initPageMesh();
     initWindowLight();
   });
