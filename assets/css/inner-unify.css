@@ -1393,3 +1393,64 @@ main .callout--media img:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_)
   background: transparent;
   flex: none;
 }
+
+/* ==========================================================================
+   WIDTH SYSTEM (service pages: laser, facial, services)
+   --------------------------------------------------------------------------
+   Two widths, one left edge. `main` is the only centred shell; inside it a
+   block is either the full container or a 760px content column, and BOTH are
+   flush left. Nothing is centred on its own any more, which was the thing
+   that made the table (980), the TOC + related row (~1150), the text (~700)
+   and the images (~640) all start at different x positions.
+
+     --container  1160px  tables, TOC + related row, big images, CTA bars
+     --content     760px  running text and in-text figures
+
+   Side padding is shared by both, so `--content` starts on the same x as
+   `--container` and simply stops earlier. Scoped with `:has(.svc-grid)` so no
+   other inner page (doctors, blog, contact...) changes width.
+   ========================================================================== */
+
+main:has(.svc-grid) {
+  --container: 1160px;
+  --content: 760px;
+  --container-pad: clamp(20px, 4vw, 48px);
+  max-width: calc(var(--container) + 2 * var(--container-pad));
+  padding-inline: var(--container-pad);
+}
+
+/* The `:not(#_)` stacks are deliberately repeated: this file's earlier width
+   rules carry up to eight of them, and these must land last AND win. */
+/* --- container blocks: full width, flush left ---------------------------- */
+main:has(.svc-grid) .svc-prices:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(.svc-grid) .svc-figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(.svc-grid) .svc-grid:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(.svc-grid) .svc-cta:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(.svc-grid) .svc-cta .wrap:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* --- content blocks: 760px, flush left ----------------------------------- */
+main:has(.svc-grid) .svc-body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(.svc-grid) .svc-body figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(.svc-grid) .svc-lead:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(.svc-grid) .faq:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  width: 100%;
+  max-width: var(--content);
+  margin-inline: 0;
+}
+
+/* Running text fills its 760px column instead of stopping at 68ch. */
+main:has(.svc-grid) .svc-body p:not(#_):not(#_):not(#_),
+main:has(.svc-grid) .svc-body :is(ul, ol):not(#_):not(#_):not(#_) {
+  max-width: none;
+}
+
+/* The article column inside the 1fr | 300px grid keeps the container's left
+   edge; the related-services column still ends at the container's right edge. */
+main:has(.svc-grid) .svc-grid:has(.svc-side) {
+  grid-template-columns: minmax(0, var(--content)) 300px;
+  justify-content: space-between;
+}
