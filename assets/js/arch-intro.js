@@ -263,6 +263,7 @@ var sheetBg = null;            /* .sheet__bg — carries the border-radius  */
     if (lenis) {
       try { lenis.destroy(); } catch (e) { /* signature differs across majors */ }
       lenis = null;
+      window.__lenis = null;
     }
 
 /* Reset the scroll-driven custom properties so the hero is identical to its
@@ -522,6 +523,11 @@ var sheetBg = null;            /* .sheet__bg — carries the border-radius  */
          rAF loop (see tick()). Stated explicitly so the invariant is visible. */
       autoRaf: false
     });
+
+    /* Shared modals (booking, contact) live in their own files and cannot
+       reach this closure. They look for `window.__lenis` to stop the smooth
+       scroll while a dialog is open. Cleared on teardown, below. */
+    window.__lenis = lenis;
 
     /* While Lenis is live the page must not smooth-scroll twice (style.css sets
        `html:has(body.arch-intro) { scroll-behavior: auto }`; this inline rule is

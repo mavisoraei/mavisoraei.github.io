@@ -223,9 +223,15 @@
     const submit = el('button', 'bk-submit', 'Book appointment');
     submit.type = 'button';
     submit.setAttribute('aria-disabled', 'true');
-    form.appendChild(submit);
 
-    form.appendChild(el('p', 'bk-form-msg')).setAttribute('aria-live', 'polite');
+    /* Sticky footer: stays at the bottom of the scrolling form, with a soft
+       fade above it so the calendar slides underneath instead of colliding. */
+    const foot = el('div', 'bk-foot');
+    foot.appendChild(submit);
+    const formMsg = el('p', 'bk-form-msg');
+    formMsg.setAttribute('aria-live', 'polite');
+    foot.appendChild(formMsg);
+    form.appendChild(foot);
 
     /* success state */
     const success = el('div', 'bk-success');
@@ -399,6 +405,9 @@
     const showSuccess = function () {
       const now = tehranNow();
       sucText.textContent = fmtLong(state.date) + ' at ' + state.time + ' (Tehran time). We will confirm by phone shortly.';
+      /* The panel is built around a hidden form: keep the success block a
+         sibling, or `form.hidden` would hide it too. */
+      if (success.parentNode === form) form.parentNode.insertBefore(success, form.nextSibling);
       form.hidden = true;
       success.removeAttribute('hidden');
     };
@@ -498,6 +507,9 @@
     dialog = el('dialog', 'contact-modal booking-dialog');
     dialog.setAttribute('aria-labelledby', 'bk-title');
     dialog.setAttribute('data-booking-dialog', '');
+    /* Belt and braces: the form carries the attribute too, but the dialog
+       wrapper covers the header and the footer hit area as well. */
+    dialog.setAttribute('data-lenis-prevent', '');
 
     const close = el('button', 'cm-close', ICONS.close);
     close.type = 'button';
@@ -514,6 +526,12 @@
 
     const ctrl = buildForm();
     dialog._bk = ctrl;
+    /* The form inside the dialog is the modal's scroll container (the panel
+       itself never scrolls). Lenis 1.3.x walks the event path for this
+       attribute and leaves wheel/touch to the browser, so the form scrolls
+       natively while the page behind stays locked. Only the dialog mode gets
+       it: the inline mount on contact.html is page content, not a scroller. */
+    ctrl.form.setAttribute('data-lenis-prevent', '');
     dialog.appendChild(ctrl.form);
 
     close.addEventListener('click', function () { closeDialog(dialog); });

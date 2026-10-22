@@ -5,6 +5,7 @@
 html.cm-open,
 html.cm-open body {
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .contact-modal {
@@ -16,6 +17,8 @@ html.cm-open body {
   height: max-content;
   max-height: calc(100vh - 48px);
   overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
   padding: 34px 32px 28px;
   background: #faf8f5;
   border: 1px solid rgba(184, 160, 112, .35);
