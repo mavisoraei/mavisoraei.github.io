@@ -1515,45 +1515,6 @@ main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
   color: var(--muted-foreground);
 }
 
-/* --- quick facts: small glass chips, 2x2 under 900px ---------------------- */
-.lm-svc-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 0 0 28px;
-}
-
-.lm-fact {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 132px;
-  padding: 10px 16px;
-}
-
-.lm-fact b {
-  font-family: var(--font-body);
-  font-size: 10.5px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-}
-
-.lm-fact span {
-  font-size: 14px;
-  line-height: 1.3;
-  color: var(--foreground);
-}
-
-@media (max-width: 899px) {
-  .lm-svc-facts {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
 /* --- CTAs ---------------------------------------------------------------- */
 .lm-svc-ctas {
   display: flex;
@@ -1611,10 +1572,33 @@ main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
   }
 }
 
-/* --- media column: arch + floating glass badges --------------------------- */
+/* --- medical review line: one quiet line under the CTAs ------------------- */
+.lm-svc-reviewed {
+  margin: 14px 0 0;
+  max-width: 58ch;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.lm-svc-reviewed a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 30%, transparent);
+  text-underline-offset: 2px;
+}
+
+.lm-svc-reviewed a:hover {
+  text-decoration-color: var(--primary);
+}
+
+/* --- media column: arch + the supervising card ---------------------------- */
 .lm-svc-hero__media {
   position: relative;
   min-width: 0;
+  /* room for the card that straddles the arch's lower edge */
+  margin-bottom: 56px;
 }
 
 .lm-svc-arch {
@@ -1636,93 +1620,126 @@ main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
 
 .lm-svc-arch img {
   object-fit: cover;
-  object-position: center;
+  /* The laser hero photo has a Persian-text panel down its left edge, so the
+     4/5 window is pulled toward the treatment side and nudged in slightly. */
+  object-position: 85% 50%;
+  transform: scale(1.06);
 }
 
-.lm-svc-badge {
+/* --- "Supervised by": warm-white card straddling the arch's bottom edge ---- */
+.lm-svc-sup {
   position: absolute;
+  left: 50%;
+  bottom: 0;
   z-index: 3;
+  /* half of the card sits below the arch's lower edge, whatever its height */
+  transform: translate(-50%, 50%);
   display: flex;
-  gap: 10px;
-  max-width: min(300px, 84%);
-  padding: 10px 13px;
-  font-size: 12.5px;
-  line-height: 1.35;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  max-width: min(440px, calc(100% - 24px));
+  padding: 11px 16px 11px 12px;
+  border: 1px solid rgba(255, 255, 255, .95);
+  border-radius: 18px;
+  /* Warm-white, near-opaque: readable on the photograph, no backdrop-filter. */
+  background: rgba(250, 246, 238, .9);
+  box-shadow:
+    0 14px 34px -18px rgba(42, 38, 34, .45),
+    0 2px 8px rgba(42, 38, 34, .08);
+  color: #2a2622;
 }
 
-.lm-svc-badge--docs {
-  left: 14px;
-  bottom: 14px;
-}
-
-.lm-svc-badge--review {
-  top: 14px;
-  right: 14px;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.lm-svc-badge__k {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-}
-
-.lm-svc-badge__names {
-  display: block;
-  font-weight: 500;
-  color: var(--foreground);
-}
-
-.lm-svc-badge__names a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
-}
-
-.lm-svc-badge__role {
-  display: block;
-  font-size: 11.5px;
-  color: var(--muted-foreground);
-}
-
-.lm-svc-avatars {
+.lm-svc-sup__avatars {
   display: flex;
   flex: 0 0 auto;
+  gap: 6px;
 }
 
-.lm-svc-avatar {
+.lm-svc-sup__avatar {
+  display: block;
+  flex: 0 0 auto;
   width: 44px;
   height: 44px;
   border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #faf6ee;
+  background: var(--muted);
+  box-shadow: 0 1px 3px rgba(42, 38, 34, .18);
+}
+
+.lm-svc-sup__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, .9);
+  /* Both portraits are wide scenes, so each circle is zoomed onto its own face. */
+  transform: scale(3);
 }
 
-.lm-svc-avatar--a {
-  object-position: 28% 10%;
+.lm-svc-sup__avatar--a img {
+  transform-origin: 54% 30%;
 }
 
-.lm-svc-avatar--b {
-  object-position: 74% 10%;
-  margin-left: -14px;
+.lm-svc-sup__avatar--b img {
+  transform-origin: 63% 42%;
+}
+
+.lm-svc-sup__body {
+  display: block;
+  min-width: 0;
+}
+
+.lm-svc-sup__k {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #7a7166;
+}
+
+.lm-svc-sup__names {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #2a2622;
+}
+
+.lm-svc-sup__names a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(140, 112, 64, .35);
+}
+
+.lm-svc-sup__role {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: #6b6258;
 }
 
 @media (max-width: 899px) {
-  .lm-svc-badge {
-    max-width: 78%;
-    padding: 8px 10px;
-    font-size: 11.5px;
+  .lm-svc-sup {
+    gap: 10px;
+    padding: 9px 13px 9px 10px;
   }
 
-  .lm-svc-avatar {
-    width: 36px;
-    height: 36px;
+  .lm-svc-sup__avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .lm-svc-sup__names {
+    font-size: 13px;
+  }
+
+  .lm-svc-sup__role {
+    font-size: 11.5px;
   }
 }
 
