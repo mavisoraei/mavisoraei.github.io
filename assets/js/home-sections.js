@@ -75,9 +75,98 @@
     }
   }
 
+  /* "All Lemon Services": live search + popular chips; <details> handles expansion. */
+  function initServicesDirectory() {
+    var section = document.querySelector('.home-services');
+    if (!section || section.dataset.svcDirectory) return;
+    section.dataset.svcDirectory = '1';
+
+    var find = section.querySelector.bind(section);
+    var input = find('.lm-svc-input');
+    var grid = find('.lm-svc-grid');
+    var results = find('.lm-svc-results');
+    var list = find('.lm-svc-results-list');
+    var count = find('.lm-svc-results-count');
+    var empty = find('.lm-svc-empty');
+    var tpl = find('.lm-svc-row-tpl');
+    if (!input || !grid || !results || !list || !count || !empty || !tpl) return;
+
+    var index = [].map.call(section.querySelectorAll('.lm-svc-card a'), function (a) {
+      return {
+        a: a,
+        label: a.textContent.trim(),
+        hay: (a.textContent + ' ' + (a.closest('.lm-svc-card').dataset.svcCat || ''))
+          .toLowerCase().replace(/[-_/]+/g, ' ')
+      };
+    });
+
+    section.querySelectorAll('.lm-svc-toggle').forEach(function (btn) {
+      var card = btn.closest('.lm-svc-card');
+      var body = card.querySelector('.lm-svc-more-body');
+      btn.onclick = function () {
+        var open = card.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open);
+        body.toggleAttribute('inert', !open);
+        btn.textContent = open ? 'Show less' : btn.dataset.more;
+      };
+    });
+
+    function render(raw) {
+      var terms = (raw || '').trim().toLowerCase()
+        .replace(/[-_/]+/g, ' ').split(/\s+/).filter(Boolean);
+      var active = terms.length > 0;
+      var hits = active ? index.filter(function (item) {
+        return terms.every(function (t) { return item.hay.indexOf(t) !== -1; });
+      }) : [];
+
+      grid.hidden = active;
+      results.hidden = !active;
+      list.textContent = '';
+      empty.hidden = true;
+      count.textContent = '';
+      if (!active) return;
+
+      hits.forEach(function (item) {
+        var row = tpl.content.firstElementChild.cloneNode(true);
+        var link = row.firstElementChild;
+        link.href = item.a.getAttribute('href');
+        link.textContent = item.label;
+        list.appendChild(row);
+      });
+
+      count.textContent = hits.length
+        ? hits.length + (hits.length === 1 ? ' treatment' : ' treatments')
+        : '';
+      empty.hidden = hits.length > 0;
+      if (!hits.length) {
+        empty.textContent = 'No treatments match "' + raw.trim() +
+          '". Try a shorter word, or clear the search.';
+      }
+    }
+
+    input.oninput = function () { render(input.value); };
+
+    input.onkeydown = function (e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        input.value = '';
+        render('');
+        input.focus();
+      }
+    };
+
+    section.querySelectorAll('.lm-svc-chip').forEach(function (chip) {
+      chip.onclick = function () {
+        input.value = chip.dataset.svcQ || chip.textContent.trim();
+        render(input.value);
+      };
+    });
+  }
+
   function boot() {
     initCaseSliders();
     moveServicesAfterLocation();
+    initServicesDirectory();
   }
 
   if (document.readyState === 'loading') {

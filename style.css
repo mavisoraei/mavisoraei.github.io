@@ -11171,10 +11171,852 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .sheet {
    (restores the arrow that used to be a glyph inside a child <span>)
 -------------------------------------------------------------------------- */
 .arrow-link::after{
-  content:"";display:inline-block;width:14px;height:14px;margin-left:8px;vertical-align:-2px;
+  content:"";display:inline-block;width:16px;height:16px;margin-left:8px;vertical-align:-3px;
   background:currentColor;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;
   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;
   transition:transform .25s ease;
 }
 .arrow-link:hover::after{transform:translateX(3px)}
+
+/* ==========================================================================
+   BUTTON SYSTEM
+   --------------------------------------------------------------------------
+   One shared set of variants, sizes and states for every action control on
+   the pages that load this stylesheet. The legacy class names stay in the
+   markup; they are mapped onto the system here rather than renamed.
+
+     primary    dark espresso fill, light label, inner top highlight
+     secondary  translucent warm-white fill, champagne edge, dark label
+     text       quiet inline action, growing rule + 16px mask arrow
+
+   Sizes: .btn-lg 52px, .btn-md 44px, .btn-sm 36px. The legacy contexts below
+   pick the closest size so the header can stay compact while hero and AI
+   actions keep their taller hit area.
+
+   Only background-color, color, transform and box-shadow are transitioned.
+   ========================================================================== */
+
+:root {
+  --btn-espresso: #2a2622;
+  --btn-cream: #fbf9f5;
+  --btn-champagne: #b8a070;
+  --btn-secondary-bg: color-mix(in srgb, var(--btn-cream) 55%, transparent);
+  --btn-secondary-bg-hover: color-mix(in srgb, var(--btn-cream) 75%, transparent);
+}
+
+/* --- The shared box ------------------------------------------------------ */
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  :where(.bk-call-nums a),
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  :where(.ic-book-who button)
+):not([hidden]):not(#_) {
+  --btn-bg: transparent;
+  --btn-fg: var(--btn-espresso);
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-hover-bg: transparent;
+  --btn-hover-fg: #1e1e1e;
+  --btn-hover-shadow: none;
+  --btn-hover-transform: translateY(-1px);
+  --btn-spinner: var(--btn-espresso);
+
+  box-sizing: border-box;
+  position: relative;
+  overflow: visible;
+  isolation: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55em;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 1.5em;
+  border: 1px solid var(--btn-border);
+  border-radius: 999px;
+  background-color: var(--btn-bg);
+  background-image: none;
+  color: var(--btn-fg);
+  box-shadow: var(--btn-shadow);
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .01em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+/* --- Secondary ----------------------------------------------------------- */
+html body :is(
+  .btn-secondary,
+  .btn-ghost,
+  .btn-pill,
+  .lm-btn,
+  .lm-btn--ghost,
+  .lm-hero-v2__btn--outline,
+  .ai-btn-outline,
+  .bk-btn--ghost,
+  .bk-back,
+  :where(.bk-call-nums a),
+  .bb-ai,
+  .ai-consult-cta,
+  .f-top-btn,
+  .f-mascot-btn,
+  :where(.ic-book-who button)
+):not([hidden]):not(#_) {
+  --btn-bg: var(--btn-secondary-bg);
+  --btn-fg: var(--btn-espresso);
+  --btn-border: color-mix(in srgb, var(--btn-champagne) 62%, #fff);
+  --btn-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .62),
+    0 2px 8px rgba(31, 27, 25, .06);
+  --btn-hover-bg: var(--btn-secondary-bg-hover);
+  --btn-hover-fg: #1e1e1e;
+  --btn-hover-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .8),
+    0 4px 12px rgba(31, 27, 25, .09);
+  --btn-spinner: var(--btn-espresso);
+}
+
+/* .ai-btn.ghost needs two classes, so it sits in its own rule to keep the
+   main secondary selector at one-class specificity. */
+html body .ai-btn.ghost:not([hidden]):not(#_) {
+  --btn-bg: var(--btn-secondary-bg);
+  --btn-fg: var(--btn-espresso);
+  --btn-border: color-mix(in srgb, var(--btn-champagne) 62%, #fff);
+  --btn-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .62),
+    0 2px 8px rgba(31, 27, 25, .06);
+  --btn-hover-bg: var(--btn-secondary-bg-hover);
+  --btn-hover-fg: #1e1e1e;
+  --btn-hover-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .8),
+    0 4px 12px rgba(31, 27, 25, .09);
+  --btn-spinner: var(--btn-espresso);
+}
+
+/* --- Primary ------------------------------------------------------------- */
+html body :is(
+  .btn-primary,
+  .btn-pill--dark,
+  .lm-btn--primary,
+  .lm-btn-fill,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn--dark,
+  .ai-btn-dark,
+  .ai-start,
+  .bb-book,
+  .ic-book-go
+):not([hidden]):not(#_) {
+  --btn-bg: var(--btn-espresso);
+  --btn-fg: #faf8f5;
+  --btn-border: color-mix(in srgb, #fff 9%, transparent);
+  --btn-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .18),
+    inset 0 -1px 0 rgba(0, 0, 0, .18),
+    0 8px 20px rgba(31, 27, 25, .16),
+    0 2px 4px rgba(31, 27, 25, .1);
+  --btn-hover-bg: color-mix(in srgb, var(--btn-espresso) 94%, #fff);
+  --btn-hover-fg: #fff;
+  --btn-hover-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    0 10px 24px rgba(31, 27, 25, .2),
+    0 3px 6px rgba(31, 27, 25, .12);
+  --btn-spinner: #faf8f5;
+}
+
+/* These two legacy families need an exclusion so their ghost variants can sit
+   in the secondary group. Keeping them out of the main primary selector also
+   stops their higher specificity from overriding the on-dark context below. */
+html body :is(
+  .ai-btn:not(.ai-btn-outline):not(.ghost),
+  .bk-btn:not(.bk-btn--ghost)
+):not([hidden]):not(#_) {
+  --btn-bg: var(--btn-espresso);
+  --btn-fg: #faf8f5;
+  --btn-border: color-mix(in srgb, #fff 9%, transparent);
+  --btn-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .18),
+    inset 0 -1px 0 rgba(0, 0, 0, .18),
+    0 8px 20px rgba(31, 27, 25, .16),
+    0 2px 4px rgba(31, 27, 25, .1);
+  --btn-hover-bg: color-mix(in srgb, var(--btn-espresso) 94%, #fff);
+  --btn-hover-fg: #fff;
+  --btn-hover-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    0 10px 24px rgba(31, 27, 25, .2),
+    0 3px 6px rgba(31, 27, 25, .12);
+  --btn-spinner: #faf8f5;
+}
+
+/* --- Text ---------------------------------------------------------------- */
+html body :is(
+  .btn-text,
+  .btn-pill.arrow-link,
+  .ic-book-x,
+  .ic-call,
+  .bk-resend,
+  .bk-call-back
+):not([hidden]):not(#_) {
+  --btn-bg: transparent;
+  --btn-fg: var(--btn-espresso);
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-hover-bg: transparent;
+  --btn-hover-fg: #1e1e1e;
+  --btn-hover-shadow: none;
+  --btn-hover-transform: none;
+  --btn-spinner: var(--btn-espresso);
+
+  height: auto;
+  min-height: 36px;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  white-space: normal;
+  text-align: center;
+}
+
+/* The rule under a text action grows from its left edge. */
+html body :is(
+  .btn-text,
+  .btn-pill.arrow-link,
+  .ic-book-x,
+  .ic-call,
+  .bk-resend,
+  .bk-call-back
+):not([hidden]):not(#_)::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 4px;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 180ms ease;
+  pointer-events: none;
+}
+
+html body :is(
+  .btn-text,
+  .btn-pill.arrow-link,
+  .ic-book-x,
+  .ic-call,
+  .bk-resend,
+  .bk-call-back
+):not([hidden]):not(#_):is(:hover, :focus-visible)::before {
+  transform: scaleX(1);
+}
+
+/* Text actions carry the same 16px mask arrow as .arrow-link. */
+html body :is(.btn-text, .btn-pill.arrow-link):not([hidden]):not(#_)::after {
+  content: "";
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-inline-start: 8px;
+  vertical-align: -3px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;
+  transition: transform 180ms ease;
+}
+
+html body :is(.btn-text, .btn-pill.arrow-link):not([hidden]):not(#_):hover::after {
+  transform: translateX(3px);
+}
+
+/* The old primary/ghost shine is retired; the shared surface is the effect. */
+html body :is(.btn-primary, .btn-ghost):not(.arrow-link):not([hidden]):not(#_)::after {
+  content: none;
+  background: none;
+  transform: none;
+}
+
+/* --- States -------------------------------------------------------------- */
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  .bk-call-nums a,
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  .ic-book-who button
+):not([hidden]):not(#_):hover {
+  background-color: var(--btn-hover-bg);
+  color: var(--btn-hover-fg);
+  transform: var(--btn-hover-transform, translateY(-1px));
+  box-shadow: var(--btn-hover-shadow);
+}
+
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  .bk-call-nums a,
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  .ic-book-who button
+):not([hidden]):not(#_):active {
+  transform: scale(.98);
+  box-shadow: var(--btn-hover-shadow);
+}
+
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  .bk-call-nums a,
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  .ic-book-who button
+):not([hidden]):not(#_):focus-visible {
+  outline: 2px solid var(--btn-champagne);
+  outline-offset: 2px;
+}
+
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  .bk-call-nums a,
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  .ic-book-who button
+):not([hidden]):not(#_):is(:disabled, [aria-disabled="true"]) {
+  opacity: .5;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
+}
+
+/* --- Loading ------------------------------------------------------------- */
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  .bk-call-nums a,
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  .ic-book-who button
+):not([hidden]):not(#_).is-loading {
+  color: transparent;
+  cursor: progress;
+  pointer-events: none;
+}
+
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  .bk-call-nums a,
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  .ic-book-who button
+):not([hidden]):not(#_).is-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  border: 2px solid color-mix(in srgb, var(--btn-spinner) 28%, transparent);
+  border-top-color: var(--btn-spinner);
+  border-radius: 50%;
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+  transform: none;
+  transition: none;
+  animation: btn-spin .7s linear infinite;
+}
+
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  .bk-call-nums a,
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  .ic-book-who button
+):not([hidden]):not(#_).is-loading::before {
+  opacity: 0;
+}
+
+html body :is(
+  .btn-primary,
+  .btn-secondary,
+  .btn-text,
+  .btn-pill,
+  .btn-ghost,
+  .lm-btn,
+  .lm-cta,
+  .cta,
+  .lm-hero-v2__btn,
+  .ai-btn,
+  .ai-start,
+  .ai-consult-cta,
+  .bk-btn,
+  .bk-back,
+  .bk-resend,
+  .bk-call-back,
+  .bk-call-nums a,
+  .bb-book,
+  .bb-ai,
+  .f-top-btn,
+  .f-mascot-btn,
+  .ic-book-go,
+  .ic-book-x,
+  .ic-call,
+  .ic-book-who button
+):not([hidden]):not(#_).is-loading :is(svg, img) {
+  opacity: 0;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(1turn); }
+}
+
+/* --- Explicit sizes ------------------------------------------------------- */
+html body .btn-lg:not([hidden]):not(#_) {
+  height: 52px;
+  min-height: 52px;
+  padding-inline: 1.5em;
+  font-size: 16px;
+}
+
+html body .btn-md:not([hidden]):not(#_) {
+  height: 44px;
+  min-height: 44px;
+  padding-inline: 1.5em;
+  font-size: 15px;
+}
+
+html body .btn-sm:not([hidden]):not(#_) {
+  height: 36px;
+  min-height: 36px;
+  padding-inline: 1.5em;
+  font-size: 15px;
+}
+
+/* --- Context sizes -------------------------------------------------------- */
+/* Tall hero/AI actions keep the lg height. */
+html body :is(.lm-buttons .lm-btn, .lm-svc-ctas .lm-btn, .ai-start, .ai-consult-cta, .ai-btn):not([hidden]):not(#_) {
+  height: 52px;
+  min-height: 52px;
+  font-size: 16px;
+}
+
+/* Long AI labels wrap instead of forcing the page wider than the viewport. */
+html body :is(.ai-start, .ai-consult-cta):not([hidden]):not(#_) {
+  height: auto;
+  min-height: 52px;
+  padding-block: .72em;
+  white-space: normal;
+}
+
+/* The header pair is chrome, not body copy; it uses the sm box. */
+html body :is(.lm-cta, .site-header .cta):not([hidden]):not(#_) {
+  height: 36px;
+  min-height: 36px;
+  padding-inline: 1.25em;
+  font-size: 15px;
+}
+
+html body .cta-full:not([hidden]):not(#_) {
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+}
+
+/* The two-up mobile action bar needs a little more room on 320px phones. */
+@media (max-width: 360px) {
+  html body .bottombar:not([hidden]):not(#_) {
+    gap: .3rem;
+    padding-inline: .5rem;
+  }
+
+  html body :is(.bb-book, .bb-ai):not([hidden]):not(#_) {
+    padding-inline: 1em;
+  }
+}
+
+html body :is(.bk-btn--sm, .ai-btn.mini, .bk-call-nums a, .ic-book-who button):not([hidden]):not(#_) {
+  height: 36px;
+  min-height: 36px;
+  padding-inline: 1.5em;
+  font-size: 15px;
+}
+
+/* --- On-dark contexts ----------------------------------------------------- */
+/* The footer and mascot CTA sit on espresso, so the secondary surface has to
+   become opaque warm white; the dark label keeps the contrast. */
+html body :is(.f-top .f-top-btn, .f-mascot .f-mascot-btn, .svc-cta .btn-ghost):not([hidden]):not(#_) {
+  --btn-bg: var(--btn-cream);
+  --btn-fg: var(--btn-espresso);
+  --btn-border: rgba(255, 255, 255, .7);
+  --btn-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .9),
+    0 6px 18px rgba(0, 0, 0, .22);
+  --btn-hover-bg: #fff;
+  --btn-hover-fg: #1e1e1e;
+  --btn-hover-shadow:
+    inset 0 1px 0 #fff,
+    0 9px 24px rgba(0, 0, 0, .28);
+  --btn-spinner: var(--btn-espresso);
+}
+
+/* --- Icon-only controls --------------------------------------------------- */
+/* These keep their circular/square geometry; only the surface tokens change. */
+html body :is(.ic-x, .bk-arrow, .ai-back):not([hidden]):not(#_) {
+  background-color: color-mix(in srgb, var(--btn-cream) 72%, transparent);
+  background-image: none;
+  border: 1px solid color-mix(in srgb, var(--btn-champagne) 60%, #fff);
+  color: var(--btn-espresso);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .65),
+    0 2px 8px rgba(31, 27, 25, .06);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+html body :is(.ic-x, .bk-arrow, .ai-back):not([hidden]):not(#_):hover {
+  background-color: color-mix(in srgb, var(--btn-cream) 88%, transparent);
+  color: #1e1e1e;
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .8),
+    0 4px 12px rgba(31, 27, 25, .1);
+}
+
+html body :is(.ic-x, .bk-arrow, .ai-back):not([hidden]):not(#_):active {
+  transform: scale(.98);
+}
+
+html body :is(.ic-x, .bk-arrow, .ai-back):not([hidden]):not(#_):focus-visible,
+html body .ic-mic:not([hidden]):not(#_):focus-visible {
+  outline: 2px solid var(--btn-champagne);
+  outline-offset: 2px;
+}
+
+/* --- Compact filter chips ------------------------------------------------ */
+/* Gallery filters keep their small geometry, but they use the same warm-white
+   / espresso surfaces as the rest of the system instead of the old taupe fill. */
+html body .nb-chip:not([hidden]):not(#_) {
+  --chip-bg: var(--btn-secondary-bg);
+  --chip-fg: var(--btn-espresso);
+  --chip-border: color-mix(in srgb, var(--btn-champagne) 62%, #fff);
+  --chip-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .62),
+    0 2px 8px rgba(31, 27, 25, .06);
+  --chip-hover-bg: var(--btn-secondary-bg-hover);
+  --chip-hover-fg: #1e1e1e;
+  --chip-hover-border: color-mix(in srgb, var(--btn-champagne) 82%, #fff);
+  --chip-hover-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .8),
+    0 4px 12px rgba(31, 27, 25, .09);
+
+  background-color: var(--chip-bg);
+  background-image: none;
+  color: var(--chip-fg);
+  border-color: var(--chip-border);
+  box-shadow: var(--chip-shadow);
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+html body .nb-chip[aria-pressed="true"]:not([hidden]):not(#_) {
+  --chip-bg: var(--btn-espresso);
+  --chip-fg: #faf8f5;
+  --chip-border: color-mix(in srgb, #fff 9%, transparent);
+  --chip-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .18),
+    inset 0 -1px 0 rgba(0, 0, 0, .18),
+    0 8px 20px rgba(31, 27, 25, .16),
+    0 2px 4px rgba(31, 27, 25, .1);
+  --chip-hover-bg: color-mix(in srgb, var(--btn-espresso) 94%, #fff);
+  --chip-hover-fg: #fff;
+  --chip-hover-border: color-mix(in srgb, #fff 9%, transparent);
+  --chip-hover-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    0 10px 24px rgba(31, 27, 25, .2),
+    0 3px 6px rgba(31, 27, 25, .12);
+}
+
+html body .nb-chip:not([hidden]):not(#_):hover {
+  background-color: var(--chip-hover-bg);
+  color: var(--chip-hover-fg);
+  border-color: var(--chip-hover-border);
+  box-shadow: var(--chip-hover-shadow);
+  transform: translateY(-1px);
+}
+
+html body .nb-chip:not([hidden]):not(#_):active {
+  transform: scale(.98);
+}
+
+html body .nb-chip:not([hidden]):not(#_):focus-visible {
+  outline: 2px solid var(--btn-champagne);
+  outline-offset: 2px;
+}
+
+html body .nb-chip:not([hidden]):not(#_):is(:disabled, [aria-disabled="true"]) {
+  opacity: .5;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
+}
+
+/* --- Reduced motion ------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html body :is(
+    .btn-primary,
+    .btn-secondary,
+    .btn-text,
+    .btn-pill,
+    .btn-ghost,
+    .lm-btn,
+    .lm-cta,
+    .cta,
+    .lm-hero-v2__btn,
+    .ai-btn,
+    .ai-start,
+    .ai-consult-cta,
+    .bk-btn,
+    .bk-back,
+    .bk-resend,
+    .bk-call-back,
+    .bk-call-nums a,
+    .bb-book,
+    .bb-ai,
+    .f-top-btn,
+    .f-mascot-btn,
+    .ic-book-go,
+    .ic-book-x,
+    .ic-call,
+    .ic-book-who button
+  ):not([hidden]):not(#_) {
+    transition: none;
+  }
+
+  html body :is(
+    .btn-primary,
+    .btn-secondary,
+    .btn-text,
+    .btn-pill,
+    .btn-ghost,
+    .lm-btn,
+    .lm-cta,
+    .cta,
+    .lm-hero-v2__btn,
+    .ai-btn,
+    .ai-start,
+    .ai-consult-cta,
+    .bk-btn,
+    .bk-back,
+    .bk-resend,
+    .bk-call-back,
+    .bk-call-nums a,
+    .bb-book,
+    .bb-ai,
+    .f-top-btn,
+    .f-mascot-btn,
+    .ic-book-go,
+    .ic-book-x,
+    .ic-call,
+    .ic-book-who button
+  ):not([hidden]):not(#_):hover {
+    transform: none;
+  }
+
+  html body :is(.btn-text, .btn-pill.arrow-link):not([hidden]):not(#_):hover::after {
+    transform: none;
+  }
+
+  html body :is(.nb-chip, .ic-x, .bk-arrow, .ai-back):not([hidden]):not(#_) {
+    transition: none;
+  }
+
+  html body :is(.nb-chip, .ic-x, .bk-arrow, .ai-back):not([hidden]):not(#_):hover {
+    transform: none;
+  }
+}

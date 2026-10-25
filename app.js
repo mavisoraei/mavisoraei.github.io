@@ -1958,8 +1958,22 @@
     const bar = document.querySelector('[data-svc-tocbar]');
     if (!bar || !('IntersectionObserver' in window)) return;
 
+    const rail = bar.querySelector('.lm-svc-tocbar__in') || bar;
     const links = Array.prototype.slice.call(bar.querySelectorAll('a[href^="#"]'));
     if (!links.length) return;
+
+    /* Short visible labels come from data-short; the full original text stays
+       the link's accessible name and tooltip. */
+    links.forEach(function (a) {
+      const short = a.getAttribute('data-short');
+      if (!short) return;
+      const full = (a.getAttribute('aria-label') || a.getAttribute('title') || a.textContent || '').trim();
+      a.textContent = short;
+      if (full) {
+        a.setAttribute('title', full);
+        a.setAttribute('aria-label', full);
+      }
+    });
 
     const byId = {};
     links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
@@ -1971,13 +1985,34 @@
       });
     if (!heads.length) return;
 
+    let activeId = null;
+
+    /* Horizontal follow: keep the active chip on the rail's centre line.
+       scrollTo, never scrollIntoView. */
+    function centre(a) {
+      const max = rail.scrollWidth - rail.clientWidth;
+      if (max <= 1) return;
+      const r = a.getBoundingClientRect();
+      const rr = rail.getBoundingClientRect();
+      const left = rail.scrollLeft + (r.left - rr.left) - (rail.clientWidth - r.width) / 2;
+      rail.scrollTo({ left: Math.max(0, Math.min(max, left)), behavior: 'smooth' });
+    }
+
     function activate(id) {
+      if (id === activeId) return;
+      activeId = id;
+      let on = null;
       links.forEach(function (a) {
-        const on = a === byId[id];
-        a.classList.toggle('is-active', on);
-        if (on) a.setAttribute('aria-current', 'true');
-        else a.removeAttribute('aria-current');
+        const isOn = a === byId[id];
+        a.classList.toggle('is-active', isOn);
+        if (isOn) {
+          a.setAttribute('aria-current', 'true');
+          on = a;
+        } else {
+          a.removeAttribute('aria-current');
+        }
       });
+      if (on) centre(on);
     }
 
     const io = new IntersectionObserver(function (entries) {
@@ -1987,6 +2022,32 @@
     }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
 
     heads.forEach(function (h) { io.observe(h); });
+
+    /* Vertical wheel over the rail scrolls it sideways while it still has
+       somewhere to go; at either end the page scrolls normally. */
+    function onWheel(e) {
+      if (e.ctrlKey || !e.deltaY) return;
+      const max = rail.scrollWidth - rail.clientWidth;
+      if (max <= 1) return;
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? rail.clientWidth : 1;
+      const delta = e.deltaY * unit;
+      const atStart = rail.scrollLeft <= 0;
+      const atEnd = rail.scrollLeft >= max - 1;
+      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
+      const before = rail.scrollLeft;
+      rail.scrollLeft = Math.max(0, Math.min(max, before + delta));
+      if (rail.scrollLeft !== before) e.preventDefault();
+    }
+    rail.addEventListener('wheel', onWheel, { passive: false });
+
+    /* Chips reflow on resize; put the active one back on the centre line. */
+    let resizeTimer;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        if (activeId && byId[activeId]) centre(byId[activeId]);
+      }, 150);
+    }, { passive: true });
   }
 
   /* ------------------------------------------------------------------ *

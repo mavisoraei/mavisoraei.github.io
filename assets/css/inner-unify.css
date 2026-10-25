@@ -1397,11 +1397,12 @@ main .callout--media img:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_)
 /* ==========================================================================
    WIDTH SYSTEM (service pages: laser, facial, services)
    --------------------------------------------------------------------------
-   Two widths, one left edge. `main` is the only centred shell; inside it a
-   block is either the full container or a 760px content column, and BOTH are
-   flush left. Nothing is centred on its own any more, which was the thing
-   that made the table (980), the TOC + related row (~1150), the text (~700)
-   and the images (~640) all start at different x positions.
+   Two widths, both centred on the same axis. `main` is the only shell;
+   inside it a block is either the full container or the 760px content
+   column. Wide blocks (hero, price tables, big figures, CTA bars) run edge
+   to edge of --container; the reading column and FAQ sit on the page centre
+   line with their headings left-aligned inside them. The result is a clear
+   hierarchy: wide table > centred prose.
 
      --container  1160px  tables, TOC + related row, big images, CTA bars
      --content     760px  running text and in-text figures
@@ -1422,25 +1423,35 @@ main:has(:is(.svc-grid, .lm-svc-hero)) {
 
 /* The `:not(#_)` stacks are deliberately repeated: this file's earlier width
    rules carry up to eight of them, and these must land last AND win. */
-/* --- container blocks: full width, flush left ---------------------------- */
+/* --- container blocks: full width, centred ------------------------------- */
 main:has(:is(.svc-grid, .lm-svc-hero)) .svc-prices:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
 main:has(:is(.svc-grid, .lm-svc-hero)) .svc-figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
 main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
 main:has(:is(.svc-grid, .lm-svc-hero)) .svc-cta:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
-main:has(:is(.svc-grid, .lm-svc-hero)) .svc-cta .wrap:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-cta .wrap:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .lm-svc-hero:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
+main:has(:is(.svc-grid, .lm-svc-hero)) .lm-svc-tocbar:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
   width: 100%;
   max-width: none;
-  margin-inline: 0;
+  margin-inline: auto;
 }
 
-/* --- content blocks: 760px, flush left ----------------------------------- */
+/* --- content blocks: 760px, centred on the same axis ---------------------- */
 main:has(:is(.svc-grid, .lm-svc-hero)) .svc-body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
 main:has(:is(.svc-grid, .lm-svc-hero)) .svc-body figure:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
 main:has(:is(.svc-grid, .lm-svc-hero)) .svc-lead:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_),
 main:has(:is(.svc-grid, .lm-svc-hero)) .faq:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
   width: 100%;
   max-width: var(--content);
+  margin-inline: auto;
+}
+
+/* The price caption starts on the table's left edge but keeps a readable
+   measure; the table itself decides the block width. */
+main:has(:is(.svc-grid, .lm-svc-hero)) .svc-prices > p:not(#_):not(#_):not(#_) {
+  max-width: 68ch;
   margin-inline: 0;
+  text-align: start;
 }
 
 /* Running text fills its 760px column instead of stopping at 68ch. */
@@ -1837,21 +1848,56 @@ main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
   top: 62px;
   z-index: 60; /* under the navbar (100) */
   margin-top: clamp(16px, 2.4vw, 28px);
-  background: color-mix(in srgb, var(--card) 88%, transparent);
-  border-block: 1px solid var(--border);
-  box-shadow: 0 10px 30px -22px color-mix(in srgb, var(--foreground) 30%, transparent);
+  background: none;
+  border: 0;
+  box-shadow: none;
+  isolation: isolate;
+}
+
+/* The cream sheet is a masked pseudo-element rather than the bar's own
+   background, so the feather can run past the content edge without clipping
+   the chips. 12% left/right, 35% top/bottom, intersected; the centre stays at
+   ~.9 alpha so scrolling copy underneath cannot be read through the bar. */
+.lm-svc-tocbar::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(248, 243, 233, .92) 0%,
+    rgba(245, 239, 227, .90) 50%,
+    rgba(248, 243, 233, .92) 100%
+  );
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 35%, #000 65%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 35%, #000 65%, transparent 100%);
+  mask-composite: intersect;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
 }
 
 .lm-svc-tocbar__in {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  padding-block: 10px;
+  padding-block: 14px;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
 }
 
 .lm-svc-tocbar__in::-webkit-scrollbar {
@@ -1897,30 +1943,29 @@ main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
 
 .lm-svc-tocbar .svc-toc a {
   display: block;
-  max-width: 28ch;
+  max-width: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 8px 14px;
-  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  padding: 8px 15px;
+  border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--card) 70%, transparent);
+  background-color: color-mix(in srgb, var(--card) 68%, transparent);
   color: var(--foreground);
   font-size: 13.5px;
   line-height: 1.2;
   text-decoration: none;
-  scroll-snap-align: start;
-  transition: background .2s ease, color .2s ease, border-color .2s ease;
+  transition: background-color .22s ease, color .22s ease;
 }
 
 .lm-svc-tocbar .svc-toc a:hover {
-  background: var(--card);
+  background-color: color-mix(in srgb, var(--card) 92%, transparent);
 }
 
 .lm-svc-tocbar .svc-toc a.is-active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: var(--primary-foreground);
+  background-color: rgba(201, 182, 140, .28);
+  border-color: rgba(160, 137, 94, .55);
+  color: #2a251c;
 }
 
 .lm-svc-tocbar .svc-toc a:focus-visible {
