@@ -35,5 +35,18 @@
     await wait(900);
     return { text: 'Thank you for asking. A Lemon physician can answer this properly after seeing you. Prices are on the Pricing page, and you can book a consultation here.', cta: true };
   }
-  window.LemonAI = { demo, config, configured, analyzeFace, analyzeBody, askQuestion };
+  async function verifyContact(code) {
+    guard();
+    if (configured()) { const fd = new FormData(); fd.append('code', String(code || '')); return post('/verify/contact', fd); }
+    await wait(400);
+    if (String(code || '').replace(/\D/g, '').length === 6) return { ok: true };
+    return { ok: true };
+  }
+  async function sendPlanPrice(contact) {
+    guard();
+    if (configured()) { const fd = new FormData(); fd.append('name', contact?.name || ''); fd.append('email', contact?.email || ''); fd.append('phone', contact?.phone || ''); return post('/body/plan-price', fd); }
+    await wait(400);
+    return { ok: true };
+  }
+  window.LemonAI = { demo, config, configured, analyzeFace, analyzeBody, askQuestion, verifyContact, sendPlanPrice };
 })();
