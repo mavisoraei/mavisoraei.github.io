@@ -35,10 +35,14 @@
    spacing inside them, are untouched. */
 .home-team > .btn-pill,
 .home-ga .ga-cta > .btn-pill,
-.home-services > .btn-pill,
 .trend-inner > .btn-pill {
   margin-top: 2.5rem;
 }
+
+/* "Services & Pricing" is the one section CTA with its own, larger beat:
+   `.price-cta` (further down) owns its 48px gap, so it is deliberately out of
+   the shared list above - that selector (0,2,0) outbid `.price-cta` (0,1,0) and
+   would have silently kept the old 2.5rem. */
 
 /* ---------- "Real cases, before and after" ---------- */
 .cases-grid {
@@ -290,17 +294,23 @@
 .home-local .hl-actions .btn-pill { height: 46px; }
 
 /* ==========================================================================
-   "ALL LEMON SERVICES" - SEARCHABLE DIRECTORY (v1.0.5)
+   "ALL LEMON SERVICES" - SEARCHABLE DIRECTORY (v1.0.6)
    One glass card per navbar mega-menu category, in the same order. The mega
    menu lives in the header markup, so the order/names here are its mirror:
    Weight Loss, Facial Fillers, Body Fillers, Botox, Laser, Face Lift & Threads,
    Rejuvenation & Mesogel, Skin Treatment, Facial, Hair & PRP, Plastic Surgery.
    ========================================================================== */
 
-/* ---------- finder: search field + popular chips ---------- */
+/* ---------- finder: search field + popular chips ----------
+   The finder, the intro paragraph above it and the grid below all resolve to the
+   same centred axis: the paragraph is centred in style.css, this box is a
+   `min(100%, 780px)` block with auto inline margins, and the popular group is a
+   centred flex row. The four vertical beats are fixed numbers (24 / 24 / 32 /
+   48px); the first of them relies on margin collapsing with the intro `p`, whose
+   own 1.5rem bottom margin is the same 24px, so the gap is 24 and not 48. */
 .lm-svc-finder {
   width: min(100%, 780px);
-  margin: 28px auto 0;
+  margin: 24px auto 0;
   text-align: start;
 }
 
@@ -355,12 +365,16 @@
   appearance: none;
 }
 
+/* "Popular" and its chips are ONE group: a single centred inline row whose items
+   share the same vertical centre. `flex-wrap` keeps it on one line until it
+   genuinely runs out of room, at which point it wraps as a normal centred row. */
 .lm-svc-chips {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 24px;
 }
 
 .lm-svc-chips-label {
@@ -377,7 +391,7 @@
 .lm-svc-chip {
   display: inline-flex;
   align-items: center;
-  height: 32px;
+  height: 36px;
   padding: 0 14px;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -459,17 +473,25 @@
   line-height: 1.6;
 }
 
-/* ---------- 3 / 2 / 1 directory grid ---------- */
+/* ---------- 3 / 2 / 1 directory grid ----------
+   `stretch` (was `start`) is what gives every card in a row the same height: the
+   grid row is as tall as its tallest card and the others fill it. The row - not
+   the individual card - is what grows when one card expands, so its neighbours
+   grow with it and nothing below the grid moves by half a row. */
 .lm-svc-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
+  align-items: stretch;
   gap: 20px;
-  margin-top: 26px;
+  margin-top: 32px;
   text-align: start;
 }
 
+/* A flex column, so the toggle can be pinned to the card's bottom edge. Every
+   card carries the identical box: same padding, same head, same link gaps. */
 .lm-svc-card {
+  display: flex;
+  flex-direction: column;
   border-radius: var(--glass-radius);
   padding: 18px 16px 14px;
 }
@@ -488,6 +510,12 @@
   flex: 1 1 auto;
   min-width: 0;
   margin: 0;
+  /* Two title lines are always reserved, so a long category name that wraps at
+     a narrow column cannot push its own divider - and its first link - below a
+     neighbour's in the same row. Short names simply keep the space. The pill
+     already sets a ~21px floor, so this adds ~10px, not a full line. */
+  min-height: 2.7em;
+  min-height: 2lh;
   font-family: var(--font-subheading);
   font-size: 11.5px;
   font-weight: 600;
@@ -550,14 +578,19 @@
   text-decoration: none;
 }
 
-/* ---------- inline expansion (button + animated height) ---------- */
+/* ---------- inline expansion (button + animated height) ----------
+   The button is the LAST child in the card and `margin-top: auto` pushes it to
+   the bottom edge, so a card with only two links still lines its toggle up with
+   the rest of the row. The revealed links sit ABOVE it (and therefore grow the
+   card between the visible links and its pinned toggle) instead of after it.
+   The 4px gap above the label is the button's own top padding. */
 .lm-svc-toggle {
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
   min-height: 34px;
-  margin: 4px 0 0;
+  margin: auto 0 0;
   padding: 4px 10px;
   border: 0;
   border-radius: 999px;
@@ -615,6 +648,26 @@
   overflow: hidden;
 }
 
+/* ---------- "Services & Pricing" under the grid ----------
+   Explicit flex centring on the anchor itself (its label sits in the middle of
+   the pill) plus a 48px beat after the grid. `.btn-pill` supplies
+   `width: max-content` and `margin-inline: auto`, so the pill keeps its own
+   width; making it block-level is what lets those auto inline margins place it
+   on the centre axis.
+
+   The `:not(#_)` is not decoration: style.css's unified button rule
+   (`html body :is(…):not([hidden]):not(#_)`) forces `display: inline-flex` at
+   ID-level specificity. An inline-level box ignores auto inline margins and
+   parks itself at the start of its line, so `.price-cta` alone could not win.
+   `html body .home-services >` plus `:not(#_)` reproduces that rule's exact
+   specificity; this sheet loads after style.css, so the block-level flex box
+   here is the one that applies. */
+html body .home-services > .price-cta:not(#_) {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
 /* ---------- responsive: 3 / 2 / 1 ---------- */
 @media (max-width: 1023px) {
   .lm-svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -622,7 +675,6 @@
 
 @media (max-width: 640px) {
   .lm-svc-grid { grid-template-columns: minmax(0, 1fr); }
-  .lm-svc-finder { margin-top: 24px; }
   .lm-svc-res-link {
     flex-direction: column;
     align-items: flex-start;

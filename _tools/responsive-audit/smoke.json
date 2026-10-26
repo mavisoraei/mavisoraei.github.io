@@ -1,0 +1,555 @@
+{
+  "startedAt": "2026-10-25T08:13:32.180Z",
+  "finishedAt": "2026-10-25T08:14:22.468Z",
+  "base": "http://localhost:8000",
+  "chrome": "Chrome/156.0.8078.47",
+  "chromePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "pages": [
+    "index"
+  ],
+  "widths": [
+    390
+  ],
+  "shotWidths": [
+    390,
+    1440
+  ],
+  "serverStartedByTool": true,
+  "runs": [
+    {
+      "page": "index",
+      "width": 390,
+      "url": "http://localhost:8000/index.html",
+      "status": "ok",
+      "error": null,
+      "title": "Lemon Aesthetic Clinic Chitgar, West Tehran | Botox, Filler, Laser",
+      "layoutWidth": 390,
+      "probe": {
+        "meta": {
+          "requestedWidth": 390,
+          "innerWidth": 390,
+          "innerHeight": 900,
+          "visualWidth": 390,
+          "dpr": 1,
+          "maxTouchPoints": 5,
+          "docScrollWidth": 390,
+          "docClientWidth": 390,
+          "bodyScrollWidth": 390,
+          "bodyOverflowX": "clip",
+          "htmlOverflowX": "visible",
+          "scrollHeight": 47068,
+          "h1Count": 2,
+          "h1": {
+            "selector": "div.sheet__content:nth-of-type(2) > section.lm-hero:nth-of-type(1) > div.lm-hero-v2__copy:nth-of-type(1) > h1.lm-hero-v2__title",
+            "size": 44,
+            "lineHeight": "40.48px",
+            "family": "Runiga",
+            "text": "Your beauty,beautifully understood."
+          }
+        },
+        "overflow": [],
+        "tap": [
+          {
+            "selector": "div.sheet__content:nth-of-type(2) > section.home-services.wrap:nth-of-type(10) > div.lm-svc-finder.reveal:nth-of-type(1) > label.visually-hidden",
+            "tag": "label",
+            "width": 1,
+            "height": 1,
+            "area": 1,
+            "inline": false,
+            "fixed": false,
+            "label": "Find a treatment"
+          },
+          {
+            "selector": "article.glass-card.lm-svc-card:nth-of-type(4) > div.lm-svc-head:nth-of-type(1) > h3.lm-svc-title > a",
+            "tag": "a",
+            "width": 47.7,
+            "height": 17,
+            "area": 810,
+            "inline": false,
+            "fixed": false,
+            "label": "Botox"
+          },
+          {
+            "selector": "div.f-bar:nth-of-type(5) > div.wrap.f-bar-inner > span.f-bar-end:nth-of-type(2) > a.font-latin:nth-of-type(1)",
+            "tag": "a",
+            "width": 48.9,
+            "height": 23.4,
+            "area": 1146,
+            "inline": false,
+            "fixed": false,
+            "label": "English"
+          },
+          {
+            "selector": "#site-header > div.lm-nav > a.lm-brand",
+            "tag": "a",
+            "width": 38,
+            "height": 38,
+            "area": 1444,
+            "inline": false,
+            "fixed": false,
+            "label": "Lemon Aesthetic Clinic"
+          },
+          {
+            "selector": "div.wrap.cols > div.brand-col > div.f-social:nth-of-type(1) > a:nth-of-type(1)",
+            "tag": "a",
+            "width": 38,
+            "height": 38,
+            "area": 1444,
+            "inline": false,
+            "fixed": false,
+            "label": "Instagram"
+          },
+          {
+            "selector": "div.wrap.cols > div.brand-col > div.f-social:nth-of-type(1) > a:nth-of-type(2)",
+            "tag": "a",
+            "width": 38,
+            "height": 38,
+            "area": 1444,
+            "inline": false,
+            "fixed": false,
+            "label": "WhatsApp"
+          },
+          {
+            "selector": "div.wrap.cols > div.brand-col > div.f-social:nth-of-type(1) > a:nth-of-type(3)",
+            "tag": "a",
+            "width": 38,
+            "height": 38,
+            "area": 1444,
+            "inline": false,
+            "fixed": false,
+            "label": "Phone"
+          },
+          {
+            "selector": "article.glass-card.lm-svc-card:nth-of-type(1) > div.lm-svc-head > h3.lm-svc-title > a",
+            "tag": "a",
+            "width": 95.5,
+            "height": 17,
+            "area": 1624,
+            "inline": false,
+            "fixed": false,
+            "label": "Weight Loss"
+          },
+          {
+            "selector": "article.glass-card.lm-svc-card:nth-of-type(3) > div.lm-svc-head:nth-of-type(1) > h3.lm-svc-title > a",
+            "tag": "a",
+            "width": 99.8,
+            "height": 17,
+            "area": 1697,
+            "inline": false,
+            "fixed": false,
+            "label": "Body Fillers"
+          },
+          {
+            "selector": "div.f-bar:nth-of-type(5) > div.wrap.f-bar-inner > span.f-bar-end:nth-of-type(2) > a:nth-of-type(2)",
+            "tag": "a",
+            "width": 76.8,
+            "height": 23.4,
+            "area": 1799,
+            "inline": false,
+            "fixed": false,
+            "label": "Privacy Policy"
+          },
+          {
+            "selector": "article.glass-card.lm-svc-card:nth-of-type(2) > div.lm-svc-head:nth-of-type(1) > h3.lm-svc-title > a",
+            "tag": "a",
+            "width": 109.7,
+            "height": 17,
+            "area": 1864,
+            "inline": false,
+            "fixed": false,
+            "label": "Facial Fillers"
+          },
+          {
+            "selector": "section.home-services.wrap:nth-of-type(10) > div.lm-svc-finder.reveal:nth-of-type(1) > div.lm-svc-chips:nth-of-type(2) > button.lm-svc-chip:nth-of-type(1)",
+            "tag": "button",
+            "width": 58.7,
+            "height": 32,
+            "area": 1878,
+            "inline": false,
+            "fixed": false,
+            "label": "Botox"
+          },
+          {
+            "selector": "article.glass-card.lm-svc-card:nth-of-type(8) > div.lm-svc-head > h3.lm-svc-title > a",
+            "tag": "a",
+            "width": 119.4,
+            "height": 17,
+            "area": 2029,
+            "inline": false,
+            "fixed": false,
+            "label": "Skin Treatment"
+          },
+          {
+            "selector": "article.glass-card.lm-svc-card:nth-of-type(11) > div.lm-svc-head:nth-of-type(1) > h3.lm-svc-title > a",
+            "tag": "a",
+            "width": 129.6,
+            "height": 17,
+            "area": 2203,
+            "inline": false,
+            "fixed": false,
+            "label": "Plastic Surgery"
+          },
+          {
+            "selector": "div.wrap.cols > nav.link-col:nth-of-type(1) > h3 > a",
+            "tag": "a",
+            "width": 96.5,
+            "height": 24,
+            "area": 2315,
+            "inline": false,
+            "fixed": false,
+            "label": "Services"
+          },
+          {
+            "selector": "section.home-services.wrap:nth-of-type(10) > div.lm-svc-finder.reveal:nth-of-type(1) > div.lm-svc-chips:nth-of-type(2) > button.lm-svc-chip:nth-of-type(2)",
+            "tag": "button",
+            "width": 80.8,
+            "height": 32,
+            "area": 2585,
+            "inline": false,
+            "fixed": false,
+            "label": "Lip Fillers"
+          },
+          {
+            "selector": "article.glass-card.lm-svc-card:nth-of-type(6) > div.lm-svc-head:nth-of-type(1) > h3.lm-svc-title > a",
+            "tag": "a",
+            "width": 79.8,
+            "height": 32.5,
+            "area": 2595,
+            "inline": false,
+            "fixed": false,
+            "label": "Face Lift & Threads"
+          },
+          {
+            "selector": "section.home-services.wrap:nth-of-type(10) > div.lm-svc-finder.reveal:nth-of-type(1) > div.lm-svc-chips:nth-of-type(2) > button.lm-svc-chip:nth-of-type(5)",
+            "tag": "button",
+            "width": 85.3,
+            "height": 32,
+            "area": 2728,
+            "inline": false,
+            "fixed": false,
+            "label": "Thread Lift"
+          },
+          {
+            "selector": "section.home-services.wrap:nth-of-type(10) > div.lm-svc-finder.reveal:nth-of-type(1) > div.lm-svc-chips:nth-of-type(2) > button.lm-svc-chip:nth-of-type(6)",
+            "tag": "button",
+            "width": 94,
+            "height": 32,
+            "area": 3009,
+            "inline": false,
+            "fixed": false,
+            "label": "Weight Loss"
+          },
+          {
+            "selector": "section.home-services.wrap:nth-of-type(10) > div.lm-svc-finder.reveal:nth-of-type(1) > div.lm-svc-chips:nth-of-type(2) > button.lm-svc-chip:nth-of-type(3)",
+            "tag": "button",
+            "width": 94.8,
+            "height": 32,
+            "area": 3033,
+            "inline": false,
+            "fixed": false,
+            "label": "Facial Fillers"
+          }
+        ],
+        "tapInlineCount": 26,
+        "type": [],
+        "layers": [],
+        "images": [
+          {
+            "selector": "div.lm-hero-block.lm-hero-block--docs:nth-of-type(1) > ul.lm-avatars > li:nth-of-type(1) > img",
+            "src": "ghafouri-ava-96.webp",
+            "width": 0,
+            "height": 0,
+            "containerWidth": 330,
+            "wider": false,
+            "missingAttrs": true,
+            "broken": false
+          },
+          {
+            "selector": "div.lm-hero-block.lm-hero-block--docs:nth-of-type(1) > ul.lm-avatars > li:nth-of-type(2) > img",
+            "src": "havasi-ava-96.webp",
+            "width": 0,
+            "height": 0,
+            "containerWidth": 330,
+            "wider": false,
+            "missingAttrs": true,
+            "broken": false
+          },
+          {
+            "selector": "div.lm-hero-block.lm-hero-block--docs:nth-of-type(1) > ul.lm-avatars > li:nth-of-type(3) > img",
+            "src": "mehravaran-ava-96.webp",
+            "width": 0,
+            "height": 0,
+            "containerWidth": 330,
+            "wider": false,
+            "missingAttrs": true,
+            "broken": false
+          },
+          {
+            "selector": "div.lm-hero-block.lm-hero-block--docs:nth-of-type(1) > ul.lm-avatars > li:nth-of-type(4) > img",
+            "src": "qolizadeh-card.webp",
+            "width": 0,
+            "height": 0,
+            "containerWidth": 330,
+            "wider": false,
+            "missingAttrs": true,
+            "broken": false
+          },
+          {
+            "selector": "div.lm-hero-copy.lm-hero-copy--new > div.lm-hero-block.lm-hero-block--video:nth-of-type(2) > button.lm-play-card > img.lm-play-thumb",
+            "src": "havasi-ghafouri-team-420.webp",
+            "width": 0,
+            "height": 0,
+            "containerWidth": 330,
+            "wider": false,
+            "missingAttrs": true,
+            "broken": false
+          },
+          {
+            "selector": "li.case-card:nth-of-type(1) > div.case-meta:nth-of-type(2) > span.case-doc > img",
+            "src": "ghafouri-ava-96.webp",
+            "width": 36,
+            "height": 56,
+            "containerWidth": 118,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "li.case-card:nth-of-type(2) > div.case-meta:nth-of-type(2) > span.case-doc > img",
+            "src": "ghafouri-ava-96.webp",
+            "width": 36,
+            "height": 56,
+            "containerWidth": 118,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "li.case-card:nth-of-type(3) > div.case-meta:nth-of-type(2) > span.case-doc > img",
+            "src": "ghafouri-ava-96.webp",
+            "width": 36,
+            "height": 56,
+            "containerWidth": 118,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "li.case-card:nth-of-type(4) > div.case-meta:nth-of-type(2) > span.case-doc > img",
+            "src": "ghafouri-ava-96.webp",
+            "width": 36,
+            "height": 56,
+            "containerWidth": 118,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.room-figure.reveal-s:nth-of-type(1) > div.room-media.scan-host > picture > img",
+            "src": "filler-480.avif",
+            "width": 295.5,
+            "height": 221.1,
+            "containerWidth": 296,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(1) > a.cnp-card:nth-of-type(3) > img.cnp-ava",
+            "src": "r13.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(1) > a.cnp-card:nth-of-type(4) > img.cnp-ava",
+            "src": "r15.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(1) > a.cnp-card:nth-of-type(5) > img.cnp-ava",
+            "src": "r44.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(1) > a.cnp-card:nth-of-type(6) > img.cnp-ava",
+            "src": "av-13.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(1) > a.cnp-card:nth-of-type(7) > img.cnp-ava",
+            "src": "r10.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(1) > a.cnp-card:nth-of-type(8) > img.cnp-ava",
+            "src": "r02.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(2) > a.cnp-card:nth-of-type(1) > img.cnp-ava",
+            "src": "r28.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(2) > a.cnp-card:nth-of-type(2) > img.cnp-ava",
+            "src": "r11.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(2) > a.cnp-card:nth-of-type(3) > img.cnp-ava",
+            "src": "r13.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(2) > a.cnp-card:nth-of-type(4) > img.cnp-ava",
+            "src": "r15.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(2) > a.cnp-card:nth-of-type(5) > img.cnp-ava",
+            "src": "r44.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(2) > a.cnp-card:nth-of-type(6) > img.cnp-ava",
+            "src": "av-13.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(2) > a.cnp-card:nth-of-type(7) > img.cnp-ava",
+            "src": "r10.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.cnp-track > div.cnp-set:nth-of-type(2) > a.cnp-card:nth-of-type(8) > img.cnp-ava",
+            "src": "r02.webp",
+            "width": 38,
+            "height": 38,
+            "containerWidth": 308,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.f-top:nth-of-type(1) > div.wrap.f-top-inner:nth-of-type(2) > div.f-top-brand > img",
+            "src": "logo-wordmark.svg",
+            "width": 150,
+            "height": 44,
+            "containerWidth": 298,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.wrap.cols > div.brand-col > a.f-brand > img",
+            "src": "logo-icon.svg",
+            "width": 52,
+            "height": 128,
+            "containerWidth": 298,
+            "wider": false,
+            "missingAttrs": false,
+            "broken": true
+          },
+          {
+            "selector": "div.brand-col > div.f-enamad:nth-of-type(2) > a > img",
+            "src": "logo.aspx?id=764409&Code=jzqWSRRlUtkL0dmrodwqZV3EpfNxvfyk",
+            "width": 0,
+            "height": 0,
+            "containerWidth": 298,
+            "wider": false,
+            "missingAttrs": true,
+            "broken": false
+          }
+        ],
+        "strings": [],
+        "viewport": {
+          "content": "width=device-width, initial-scale=1",
+          "problems": []
+        }
+      },
+      "errors": [
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/logo/logo-wordmark.svg",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/doctors/ghafouri-ava-96.webp",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/rooms/filler-480.avif",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/logo/logo-icon.svg",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/reviews/r28.webp",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/reviews/r11.webp",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/reviews/r13.webp",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/reviews/r15.webp",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/reviews/r44.webp",
+        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT @ https://lemonclinic.org/images/reviews/av-13.webp"
+      ],
+      "shot": {
+        "file": "F:\\Webflow\\Lemon\\_tools\\responsive-audit\\shots\\index-390.png",
+        "height": 10000,
+        "fullHeight": 47068,
+        "clipped": true
+      },
+      "startedAt": "2026-10-25T08:13:32.183Z"
+    }
+  ]
+}
