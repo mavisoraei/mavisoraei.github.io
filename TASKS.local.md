@@ -1,5 +1,15 @@
 # Tasks
 
+## T00
+- [x] Create _tools/smoke/smoke.js (Node + headless Chrome/CDP, no root package.json)
+- [x] 13 built pages at 1440x900 and 390x844 touch against http://localhost:8000
+- [x] Report console/page errors, failed same-origin + other failed requests, horizontal overflow, exactly one h1
+- [x] Output SMOKE PASS / SMOKE FAIL n and _tools/reports/smoke-latest.md
+- [x] Baseline saved to _tools/reports/smoke-baseline.json; later runs fail only on NEW problems
+- Status: DONE
+- Commit: _pending_
+- Leftover: none (pre-existing findings tolerated)
+
 ## T15b
 - [x] Each card shows first 2 links; rest behind the existing "Show all N" toggle (cards with <=2 links have no toggle)
 - [x] 3/2/1 grid, equal row heights, toggle pinned to card bottom, identical padding/title row/gaps
