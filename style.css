@@ -8353,6 +8353,29 @@ tbody tr:nth-child(2n) {
   font-variant-numeric: normal;
 }
 
+/* T23 — every line in the doctor card is centred, the empty licence row and
+   its divider are removed, and the flat grey photo backdrop is warmed with a
+   champagne gradient under a multiply blend. */
+.home-team .team-meta,
+.home-team .team-meta h3,
+.home-team .team-role,
+.home-team .team-lic {
+  text-align: center;
+}
+
+.home-team .team-lic:empty {
+  display: none;
+}
+
+.home-team .team-photo {
+  background: linear-gradient(180deg, #f6eddc 0%, #ead9bb 100%);
+}
+
+.home-team .team-photo img {
+  mix-blend-mode: multiply;
+}
+
+
 .home-team .btn-pill {
   margin-inline: auto;
 }
