@@ -11387,7 +11387,6 @@ html body :is(
 /* --- Text ---------------------------------------------------------------- */
 html body :is(
   .btn-text,
-  .btn-pill.arrow-link,
   .ic-book-x,
   .ic-call,
   .bk-resend,
@@ -12020,3 +12019,33 @@ html body .nb-chip:not([hidden]):not(#_):is(:disabled, [aria-disabled="true"]) {
     transform: none;
   }
 }
+
+/* --------------------------------------------------------------------------
+   T22 — section CTAs mapped to the secondary variant, as an outlined glass pill.
+   `.btn-secondary` is added in the markup; this block only restores the earlier
+   outlined-pill look on top of the shared button box. Dark primary pills
+   (`.btn-pill--dark`) are deliberately excluded.
+   -------------------------------------------------------------------------- */
+html body :is(.btn-pill:not(.btn-pill--dark)):not([hidden]):not(#_) {
+  --btn-bg: rgba(255, 255, 255, .5);
+  --btn-border: rgba(176, 143, 86, .45);
+  --btn-fg: var(--btn-espresso);
+  --btn-hover-bg: rgba(255, 255, 255, .8);
+  --btn-hover-fg: var(--btn-espresso);
+  --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, .6);
+  --btn-hover-shadow: 0 4px 14px rgba(31, 27, 25, .08);
+  height: 48px;
+  min-height: 48px;
+  padding-inline: 28px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, .5);
+  border: 1px solid rgba(176, 143, 86, .45);
+  color: var(--btn-espresso);
+}
+
+html body :is(.btn-pill:not(.btn-pill--dark)):not([hidden]):not(#_):hover {
+  background-color: rgba(255, 255, 255, .8);
+  border-color: rgba(176, 143, 86, .75);
+  color: var(--btn-espresso);
+}
+
