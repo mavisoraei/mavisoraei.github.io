@@ -11,6 +11,7 @@ Status: RUNNING
 | T00 | DONE | 6525986 | Smoke harness + baseline created. |
 | T15b | DONE | ae22fbf | Completed before autopilot session. |
 | T22 | DONE | 77b5f9c | Outlined glass pill restored on section CTAs. |
+| T23 | DONE | bb59c84 | Warm doctor photos, centred card text, empty licence hidden. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -19,6 +20,13 @@ Status: RUNNING
 - Hover: bg `rgba(255,255,255,.8)`, border `rgba(176,143,86,.75)`, arrow slides 3px. Active scale `.98`, focus-visible ring inherited.
 - Dark `.btn-pill--dark` primary buttons untouched. `style.css` cache bumped to `1.0.33` on 214 pages.
 - Verified computed style on `.price-cta` (48px / 28px / 0.5 white / champagne border / 999px / centred).
+
+## T23 — Doctor cards
+- Home carousel `.team-card` only; `doctors.html` uses a different card system (`spread-photo` / `docs-*`), so it was left alone.
+- Photo container background changed from the flat `color-mix(...)` beige to `linear-gradient(180deg,#f6eddc 0%,#ead9bb 100%)`; `img` now uses `mix-blend-mode: multiply`.
+- `.team-meta`, `h3`, `.team-role`, `.team-lic` set to `text-align: center`; `.team-lic:empty` hidden (removes both the row and its top divider).
+- Equal heights confirmed: four visible cards measured 427px each; carousel animation and edge fades untouched.
+- Could not eyeball faces/green scrubs: the hotlinked doctor photos timed out on the local server, so the specified gradient was kept unchanged.
 
 ## T00 — Smoke test harness
 - Created `_tools/smoke/smoke.js` (zero dependencies, reuses `_tools/responsive-audit/lib/cdp.js`).

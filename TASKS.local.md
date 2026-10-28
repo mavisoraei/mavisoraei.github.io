@@ -32,6 +32,16 @@
 - Commit: 77b5f9c
 - Leftover: none
 
+## T23
+- [x] Home doctor photo container: `linear-gradient(180deg,#f6eddc 0%,#ead9bb 100%)`
+- [x] Photo `img { mix-blend-mode: multiply }`
+- [x] All card text centred (name, role, licence); empty `.team-lic` row and divider hidden
+- [x] Equal card heights retained (flex row stretch); carousel and edge fades untouched
+- [x] doctors.html uses a different card system (`spread-photo` / `docs-*`), so it was not restyled
+- Status: DONE
+- Commit: bb59c84
+- Leftover: faces/green scrubs not visually verifiable (hotlinked doctor photos timed out locally); gradient kept as specified
+
 ## T21
 - [x] Redesign BODY (weight-loss) flow in ai-analysis.html like reference flow
 - [x] Keep hash router and stubs in assets/js/ai-api.js

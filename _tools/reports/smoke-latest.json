@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-10-28T07:56:25.417Z",
+  "createdAt": "2026-10-28T08:06:47.689Z",
   "baselineUsed": true,
   "pass": true,
   "newIssues": [],
@@ -7,21 +7,10 @@
     {
       "page": "index",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -30,7 +19,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-4mww4v right=1481",
+        "#nav-svc-r9iryy right=1481",
         "li right=1443",
         "a right=1443",
         "div.mega-group right=1496"
@@ -70,6 +59,10 @@
         {
           "url": "https://lemonclinic.org/images/reviews/r15.webp",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
+          "url": "https://lemonclinic.org/images/reviews/r44.webp",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
       "overflow": false,
@@ -94,7 +87,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-570806 right=1481",
+        "#nav-svc-x0zx31 right=1481",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1496"
@@ -133,10 +126,10 @@
         "div.mega-groups right=2084",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-a89lv6 right=1480",
+        "#nav-svc-pz4jne right=1480",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-5deo99 right=1480"
+        "#nav-svc-mocz4w right=1480"
       ],
       "h1Count": 1,
       "h1Text": "Facial"
@@ -181,10 +174,6 @@
         {
           "url": "https://lemonclinic.org/images/doctors/havasi-ghafouri-team-420.avif",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
       "overflow": false,
@@ -195,10 +184,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-3h6h3s right=1479",
+        "#nav-svc-rhrrjo right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-aunb9s right=1479"
+        "#nav-svc-c5zxi9 right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Lemon Clinic Services"
@@ -231,10 +220,6 @@
         {
           "url": "https://lemonclinic.org/favicon.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.ico",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
       "overflow": false,
@@ -262,15 +247,15 @@
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
+          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
           "url": "https://lemonclinic.org/favicon.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
           "url": "https://lemonclinic.org/favicon.ico",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
@@ -286,7 +271,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-38limc right=1481",
+        "#nav-svc-0mbz24 right=1481",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1496"
@@ -312,15 +297,15 @@
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
+          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
           "url": "https://lemonclinic.org/favicon.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
           "url": "https://lemonclinic.org/favicon.ico",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
@@ -365,10 +350,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-fd984o right=1479",
+        "#nav-svc-8bg209 right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-qqnot3 right=1479"
+        "#nav-svc-qovivp right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Lemon Magazine"
@@ -392,10 +377,6 @@
         },
         {
           "url": "https://lemonclinic.org/favicon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.ico",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
@@ -436,10 +417,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-ns6bpb right=1479",
+        "#nav-svc-pwde6l right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-wnr0ou right=1479"
+        "#nav-svc-lzaoie right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Areas We Serve"
@@ -515,10 +496,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-ypuprz right=1479",
+        "#nav-svc-bvuco7 right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-7k2yd8 right=1479"
+        "#nav-svc-blzlnn right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Cases, real before and after"
@@ -606,10 +587,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-u5xx0s right=1479",
+        "#nav-svc-58l8aa right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-eiiw7u right=1479"
+        "#nav-svc-wp5etl right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Cases, real before and after"
@@ -689,7 +670,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-n8p4jq right=1480",
+        "#nav-svc-nvjfex right=1480",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1495"
@@ -756,10 +737,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-dewaxc right=1479",
+        "#nav-svc-53ulow right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-zqqu6g right=1479"
+        "#nav-svc-nv9aei right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Contact & Book Appointment"
@@ -804,7 +785,7 @@
         "div.mega-groups right=2087",
         "div.mega-group right=1498",
         "a.mega-group-title.mega-group-link right=1483",
-        "#nav-svc-e0gozk right=1483",
+        "#nav-svc-z1z6d6 right=1483",
         "li right=1462",
         "a right=1462"
       ],
@@ -840,7 +821,7 @@
         "div.mega-groups right=2087",
         "div.mega-group right=1498",
         "a.mega-group-title.mega-group-link right=1483",
-        "#nav-svc-60neh5 right=1483",
+        "#nav-svc-avl8or right=1483",
         "li right=1445",
         "a right=1445",
         "div.mega-group right=1498"
