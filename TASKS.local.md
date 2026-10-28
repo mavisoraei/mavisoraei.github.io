@@ -1,5 +1,15 @@
 # Tasks
 
+## T15b
+- [x] Each card shows first 2 links; rest behind the existing "Show all N" toggle (cards with <=2 links have no toggle)
+- [x] 3/2/1 grid, equal row heights, toggle pinned to card bottom, identical padding/title row/gaps
+- [x] Intro, search (max 780px) and Popular label+chips share one centred axis; chips 36px and wrap; gaps 24/24/32px
+- [x] "Services & Pricing" .price-cta centred under the grid
+- [x] CSS logical properties; home-sections.css cache bumped to 1.0.7 on index/contact
+- Status: DONE
+- Commit: ae22fbf
+- Leftover: none
+
 ## T21
 - [x] Redesign BODY (weight-loss) flow in ai-analysis.html like reference flow
 - [x] Keep hash router and stubs in assets/js/ai-api.js
