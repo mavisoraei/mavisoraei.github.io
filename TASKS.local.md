@@ -20,6 +20,18 @@
 - Commit: ae22fbf
 - Leftover: none
 
+## T22
+- [x] Grepped section CTAs and mapped non-dark `.btn-pill` links to `.btn-secondary`
+- [x] Shared CSS: outlined glass pill (48px, 28px inline padding, 1px rgba(176,143,86,.45), rgba(255,255,255,.5), 999px, dark text)
+- [x] Hover: rgba(255,255,255,.8), border rgba(176,143,86,.75), 16px mask arrow slides 3px
+- [x] Active scale .98 and focus-visible ring inherited from the button system
+- [x] Removed `.btn-pill.arrow-link` from the text variant so arrow pills keep the secondary box
+- [x] Dark primary `.btn-pill--dark` untouched; style.css cache bumped to 1.0.33
+- Links changed: index (See all cases, All Magazine Articles, Lemon Doctors, Services & Pricing, Directions, Neshan, Balad), contact (Directions, Neshan, Balad), laser/facial/services/prices (secondary CTA in the closing band)
+- Status: DONE
+- Commit: 77b5f9c
+- Leftover: none
+
 ## T21
 - [x] Redesign BODY (weight-loss) flow in ai-analysis.html like reference flow
 - [x] Keep hash router and stubs in assets/js/ai-api.js

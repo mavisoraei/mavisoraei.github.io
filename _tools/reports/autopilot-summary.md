@@ -10,6 +10,15 @@ Status: RUNNING
 |---|---|---|---|
 | T00 | DONE | 6525986 | Smoke harness + baseline created. |
 | T15b | DONE | ae22fbf | Completed before autopilot session. |
+| T22 | DONE | 77b5f9c | Outlined glass pill restored on section CTAs. |
+
+## T22 — Outlined glass pill for section CTAs
+- Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
+- Removed `.btn-pill.arrow-link` from the button system's text variant; it was the rule that had flattened these pills.
+- Final values: 48px high, `padding-inline: 28px`, border `rgba(176,143,86,.45)`, bg `rgba(255,255,255,.5)`, radius `999px`, text `var(--btn-espresso)`.
+- Hover: bg `rgba(255,255,255,.8)`, border `rgba(176,143,86,.75)`, arrow slides 3px. Active scale `.98`, focus-visible ring inherited.
+- Dark `.btn-pill--dark` primary buttons untouched. `style.css` cache bumped to `1.0.33` on 214 pages.
+- Verified computed style on `.price-cta` (48px / 28px / 0.5 white / champagne border / 999px / centred).
 
 ## T00 — Smoke test harness
 - Created `_tools/smoke/smoke.js` (zero dependencies, reuses `_tools/responsive-audit/lib/cdp.js`).
@@ -24,7 +33,7 @@ Status: RUNNING
 
 ## ASSUMPTIONS
 - `QUEUE.local.md` is not present in the repo; the queue text in the session prompt is authoritative.
-- `smoke.js` treats a changed h1 count, a new console/page error, a new failed request, or a new overflow offender as a NEW problem. Pre-existing keys are ignored.
+- `smoke.js` treats a changed h1 count, a new console/page error, a new failed same-origin request, or a new overflow offender as a NEW problem. Off-site request failures are reported but not compared, because hotlinked `lemonclinic.org` assets time out intermittently. Pre-existing keys are ignored.
 
 ## BLOCKED
 - None.
