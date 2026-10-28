@@ -7,7 +7,7 @@
 - [x] Output SMOKE PASS / SMOKE FAIL n and _tools/reports/smoke-latest.md
 - [x] Baseline saved to _tools/reports/smoke-baseline.json; later runs fail only on NEW problems
 - Status: DONE
-- Commit: _pending_
+- Commit: 6525986
 - Leftover: none (pre-existing findings tolerated)
 
 ## T15b

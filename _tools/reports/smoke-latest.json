@@ -1,6 +1,6 @@
 {
-  "createdAt": "2026-10-28T07:31:14.523Z",
-  "baselineUsed": false,
+  "createdAt": "2026-10-28T07:56:25.417Z",
+  "baselineUsed": true,
   "pass": true,
   "newIssues": [],
   "samples": [
@@ -16,6 +16,10 @@
         {
           "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
+          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
       "overflow": false,
@@ -26,7 +30,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-8nautw right=1481",
+        "#nav-svc-4mww4v right=1481",
         "li right=1443",
         "a right=1443",
         "div.mega-group right=1496"
@@ -56,7 +60,7 @@
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
-          "url": "https://lemonclinic.org/images/reviews/r15.webp",
+          "url": "https://lemonclinic.org/images/reviews/r11.webp",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
@@ -64,7 +68,7 @@
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
-          "url": "https://lemonclinic.org/images/reviews/r11.webp",
+          "url": "https://lemonclinic.org/images/reviews/r15.webp",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
@@ -90,7 +94,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-fbsfi3 right=1481",
+        "#nav-svc-570806 right=1481",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1496"
@@ -129,10 +133,10 @@
         "div.mega-groups right=2084",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-ptcfwy right=1480",
+        "#nav-svc-a89lv6 right=1480",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-q0yaeo right=1480"
+        "#nav-svc-5deo99 right=1480"
       ],
       "h1Count": 1,
       "h1Text": "Facial"
@@ -177,6 +181,10 @@
         {
           "url": "https://lemonclinic.org/images/doctors/havasi-ghafouri-team-420.avif",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
+          "url": "https://lemonclinic.org/favicon.svg",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
       "overflow": false,
@@ -187,10 +195,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-utfb7i right=1479",
+        "#nav-svc-3h6h3s right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-v4cg1e right=1479"
+        "#nav-svc-aunb9s right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Lemon Clinic Services"
@@ -223,6 +231,10 @@
         {
           "url": "https://lemonclinic.org/favicon.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
+          "url": "https://lemonclinic.org/favicon.ico",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
       "overflow": false,
@@ -250,19 +262,19 @@
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
           "url": "https://lemonclinic.org/favicon.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
-          "url": "https://lemonclinic.org/images/doctors/havasi.avif",
+          "url": "https://lemonclinic.org/favicon.ico",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
-          "url": "https://lemonclinic.org/favicon.ico",
+          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
+          "url": "https://lemonclinic.org/images/doctors/havasi.avif",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
@@ -274,7 +286,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-6jh4ej right=1481",
+        "#nav-svc-38limc right=1481",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1496"
@@ -292,10 +304,6 @@
       "failedSameOrigin": [],
       "failedOther": [
         {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
           "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
@@ -304,11 +312,19 @@
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
-          "url": "https://lemonclinic.org/images/doctors/havasi.avif",
+          "url": "https://lemonclinic.org/favicon.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
-          "url": "https://lemonclinic.org/favicon.svg",
+          "url": "https://lemonclinic.org/favicon.ico",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
+          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
+          "url": "https://lemonclinic.org/images/doctors/havasi.avif",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
@@ -349,10 +365,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-wamd4l right=1479",
+        "#nav-svc-fd984o right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-z5ubkc right=1479"
+        "#nav-svc-qqnot3 right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Lemon Magazine"
@@ -377,6 +393,10 @@
         {
           "url": "https://lemonclinic.org/favicon.svg",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
+          "url": "https://lemonclinic.org/favicon.ico",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
       "overflow": false,
@@ -416,10 +436,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-bw6g9c right=1479",
+        "#nav-svc-ns6bpb right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-7mvvwb right=1479"
+        "#nav-svc-wnr0ou right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Areas We Serve"
@@ -495,10 +515,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-rcvi37 right=1479",
+        "#nav-svc-ypuprz right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-mm4vln right=1479"
+        "#nav-svc-7k2yd8 right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Cases, real before and after"
@@ -586,10 +606,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-b7lebw right=1479",
+        "#nav-svc-u5xx0s right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-jxa1mh right=1479"
+        "#nav-svc-eiiw7u right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Cases, real before and after"
@@ -612,6 +632,10 @@
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
         {
+          "url": "https://lemonclinic.org/images/doctors/ghafouri-card.webp",
+          "error": "net::ERR_CONNECTION_TIMED_OUT"
+        },
+        {
           "url": "https://lemonclinic.org/images/doctors/havasi-card.webp",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         },
@@ -621,10 +645,6 @@
         },
         {
           "url": "https://lemonclinic.org/images/doctors/noormohammadi-card.webp",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri-card.webp",
           "error": "net::ERR_CONNECTION_TIMED_OUT"
         }
       ],
@@ -669,7 +689,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-oqa3ct right=1480",
+        "#nav-svc-n8p4jq right=1480",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1495"
@@ -736,10 +756,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-zbrfz3 right=1479",
+        "#nav-svc-dewaxc right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-03ylvs right=1479"
+        "#nav-svc-zqqu6g right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Contact & Book Appointment"
@@ -784,7 +804,7 @@
         "div.mega-groups right=2087",
         "div.mega-group right=1498",
         "a.mega-group-title.mega-group-link right=1483",
-        "#nav-svc-1djbjf right=1483",
+        "#nav-svc-e0gozk right=1483",
         "li right=1462",
         "a right=1462"
       ],
@@ -820,7 +840,7 @@
         "div.mega-groups right=2087",
         "div.mega-group right=1498",
         "a.mega-group-title.mega-group-link right=1483",
-        "#nav-svc-638uio right=1483",
+        "#nav-svc-60neh5 right=1483",
         "li right=1445",
         "a right=1445",
         "div.mega-group right=1498"

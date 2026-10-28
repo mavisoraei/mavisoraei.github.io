@@ -8,7 +8,7 @@ Status: RUNNING
 
 | Task | Status | Commit | Notes |
 |---|---|---|---|
-| T00 | DONE | _pending_ | Smoke harness + baseline created. |
+| T00 | DONE | 6525986 | Smoke harness + baseline created. |
 | T15b | DONE | ae22fbf | Completed before autopilot session. |
 
 ## T00 — Smoke test harness

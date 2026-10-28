@@ -141,7 +141,8 @@ function issueKeys(page, width, sample) {
   sample.consoleErrors.forEach((text) => keys.push('console|' + at + '|' + text));
   sample.pageErrors.forEach((text) => keys.push('pageerror|' + at + '|' + text));
   sample.failedSameOrigin.forEach((r) => keys.push('req-same|' + at + '|' + r.url + '|' + r.status));
-  sample.failedOther.forEach((r) => keys.push('req-other|' + at + '|' + r.url + '|' + r.error));
+  /* Off-site failures are reported in the table but not compared: the pages
+     hotlink lemonclinic.org and a transient timeout must not fail a local run. */
   if (sample.overflow) {
     if (sample.offenders.length) {
       sample.offenders.forEach((o) => keys.push('overflow|' + at + '|' + o));
