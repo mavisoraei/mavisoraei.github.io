@@ -42,6 +42,17 @@
 - Commit: bb59c84
 - Leftover: faces/green scrubs not visually verifiable (hotlinked doctor photos timed out locally); gradient kept as specified
 
+## T24
+- [x] Shared `.faq` heading centred; list max-width 820px, centred
+- [x] Items: rgba(250,246,238,.72) glass fill, white/champagne border, 20px radius, padding-block 22px / inline 28px 56px, soft shadow
+- [x] Question 18px/600 centred; 30px circle +/- icon absolute at inline-end
+- [x] Answer 16px/1.8, muted, centred, max-width 62ch; smooth height via `::details-content` + `interpolate-size`
+- [x] Open champagne ring; hover lift; focus-visible ring; reduced-motion respected
+- [x] Inner-page overrides in inner-unify.css aligned (no 17px/500 or 16px 22px padding); caches: style.css 1.0.35, inner-unify.css 1.2.2
+- Status: DONE
+- Commit: 9203f38
+- Leftover: none
+
 ## T21
 - [x] Redesign BODY (weight-loss) flow in ai-analysis.html like reference flow
 - [x] Keep hash router and stubs in assets/js/ai-api.js

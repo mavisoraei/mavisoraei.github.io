@@ -12,6 +12,7 @@ Status: RUNNING
 | T15b | DONE | ae22fbf | Completed before autopilot session. |
 | T22 | DONE | 77b5f9c | Outlined glass pill restored on section CTAs. |
 | T23 | DONE | bb59c84 | Warm doctor photos, centred card text, empty licence hidden. |
+| T24 | DONE | 9203f38 | Shared FAQ restyled as centred glass cards. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -20,6 +21,15 @@ Status: RUNNING
 - Hover: bg `rgba(255,255,255,.8)`, border `rgba(176,143,86,.75)`, arrow slides 3px. Active scale `.98`, focus-visible ring inherited.
 - Dark `.btn-pill--dark` primary buttons untouched. `style.css` cache bumped to `1.0.33` on 214 pages.
 - Verified computed style on `.price-cta` (48px / 28px / 0.5 white / champagne border / 999px / centred).
+
+## T24 — FAQ restyle
+- Shared `.faq`/`.faq-item` rules in `style.css`; `inner-unify.css` overrides removed so inner service pages use the same component.
+- Heading and list centred at 820px; card fill `rgba(250,246,238,.72)`, border `rgba(255,255,255,.7)`, radius `20px`, padding `22px 28px 22px 56px` (logical).
+- Question `18px/600`, centred; `+`/`−` in a 30px circle at the inline end. Answer `16px/1.8`, `62ch`, muted, centred.
+- Open state adds a `2px rgba(176,143,86,.45)` ring; hover lifts 2px; focus-visible outline; reduced-motion disables transitions.
+- Smooth open/close uses `::details-content` + `interpolate-size: allow-keywords` with an auto-height fallback.
+- Cache bumps: `style.css` 1.0.34 -> 1.0.35 (214 pages), `inner-unify.css` 1.2.0 -> 1.2.2 (11 pages).
+- Verified on index/laser/facial/prices: 820px, 18/600 question, 16/1.8 answer, 30px icon, 20px radius.
 
 ## T23 — Doctor cards
 - Home carousel `.team-card` only; `doctors.html` uses a different card system (`spread-photo` / `docs-*`), so it was left alone.
