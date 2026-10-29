@@ -53,6 +53,17 @@
 - Commit: 9203f38
 - Leftover: none
 
+## T30a
+- [x] Scanned 13 built pages, shared CSS/JS, JSON-LD/meta/alt and data/availability.json
+- [x] Counts per file + example lines for every requested term
+- [x] Hotlinked logo/map/mascot/consultant listed; other images grouped by directory
+- [x] Doctor names/licence numbers listed only (6 names, 3 licence numbers)
+- [x] Replacement plan for T30b added; no site files changed
+- Report: `_tools/reports/localization-inventory.md` (+ full hotlink list `_tools/reports/localization-hotlinks.csv`)
+- Status: DONE
+- Commit: 31de0af
+- Leftover: none
+
 ## T21
 - [x] Redesign BODY (weight-loss) flow in ai-analysis.html like reference flow
 - [x] Keep hash router and stubs in assets/js/ai-api.js

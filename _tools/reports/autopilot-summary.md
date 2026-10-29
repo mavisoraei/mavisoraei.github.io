@@ -13,6 +13,7 @@ Status: RUNNING
 | T22 | DONE | 77b5f9c | Outlined glass pill restored on section CTAs. |
 | T23 | DONE | bb59c84 | Warm doctor photos, centred card text, empty licence hidden. |
 | T24 | DONE | 9203f38 | Shared FAQ restyled as centred glass cards. |
+| T30a | DONE | 31de0af | Iran-specific localization inventory (analysis only). |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -21,6 +22,14 @@ Status: RUNNING
 - Hover: bg `rgba(255,255,255,.8)`, border `rgba(176,143,86,.75)`, arrow slides 3px. Active scale `.98`, focus-visible ring inherited.
 - Dark `.btn-pill--dark` primary buttons untouched. `style.css` cache bumped to `1.0.33` on 214 pages.
 - Verified computed style on `.price-cta` (48px / 28px / 0.5 white / champagne border / 999px / centred).
+
+## T30a — Localization inventory
+- Report `_tools/reports/localization-inventory.md`; full unique hotlink list `_tools/reports/localization-hotlinks.csv`.
+- 31 files scanned (13 pages, 9 CSS, 8 JS, `data/availability.json`); 17 had matches.
+- Key totals: Tehran 308, West Tehran 174, Chitgar 103, District 22 66, Kharazi 24, Ardestani 22, Parseh 31, Iranian 28, Neshan 220, Balad 76, +98 57, 021 41, 0912 13, 090 12, TTAC 12, Enamad 36, licence text 12, 1405 12, price index 26, installment 49, payment apps 78, area links 51.
+- 518 unique hotlinked `lemonclinic.org` image URLs (1354 references); logo/map/mascot/consultant listed individually, the rest grouped by directory.
+- Persian/Arabic-Indic digits: 0. `data/availability.json`: 0 matches.
+- No site file changed; replacement plan is at the end of the report.
 
 ## T24 — FAQ restyle
 - Shared `.faq`/`.faq-item` rules in `style.css`; `inner-unify.css` overrides removed so inner service pages use the same component.
