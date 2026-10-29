@@ -138,7 +138,9 @@ const MEASURE = `(function () {
 function issueKeys(page, width, sample) {
   const keys = [];
   const at = page + '@' + width;
-  sample.consoleErrors.forEach((text) => keys.push('console|' + at + '|' + text));
+  sample.consoleErrors
+    .filter((text) => !/^Failed to load resource:/i.test(text))
+    .forEach((text) => keys.push('console|' + at + '|' + text));
   sample.pageErrors.forEach((text) => keys.push('pageerror|' + at + '|' + text));
   sample.failedSameOrigin.forEach((r) => keys.push('req-same|' + at + '|' + r.url + '|' + r.status));
   /* Off-site failures are reported in the table but not compared: the pages
