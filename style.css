@@ -5883,8 +5883,17 @@ tbody tr:nth-child(2n) {
 .spread {
   display: grid;
   gap: clamp(1.5rem,4vw,3rem);
-  align-items: center;
+  align-items: stretch;
   padding-block: clamp(2rem,5vw,3.5rem);
+}
+
+.spread-photo {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg,#f6eddc 0%,#ead9bb 100%);
+  border-radius: var(--radius-lg);
 }
 
 .spread-photo-link {
@@ -5901,6 +5910,7 @@ tbody tr:nth-child(2n) {
   height: auto;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  mix-blend-mode: multiply;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
@@ -5916,22 +5926,36 @@ tbody tr:nth-child(2n) {
   box-shadow: var(--shadow-soft),0 0 0 3px color-mix(in srgb,var(--primary) 30%,transparent);
 }
 
+.spread-copy {
+  align-self: stretch;
+  text-align: center;
+}
+
 .spread-copy h2 {
   font-family: var(--font-heading);
   font-size: var(--step-3);
   color: var(--foreground);
+  text-align: center;
 }
 
 .role {
   color: var(--primary);
   font-size: var(--step--1);
   margin: .4rem 0 1.2rem;
+  text-align: center;
 }
 
 .doc-hours-line {
   color: var(--muted-foreground);
   font-size: var(--step--1);
   margin: -.7rem 0 1.1rem;
+  text-align: center;
+}
+
+.role:empty,
+.doc-hours-line:empty,
+.cred li:empty {
+  display: none;
 }
 
 .doc-hours-line .dh-label {
@@ -5941,14 +5965,17 @@ tbody tr:nth-child(2n) {
 
 .cred {
   display: grid;
+  justify-items: center;
   gap: .7rem;
 }
 
 .cred li {
   position: relative;
+  max-width: 46ch;
   padding-inline-start: 1.6rem;
   color: var(--muted-foreground);
   line-height: 1.9;
+  text-align: center;
 }
 
 .cred li:before {
@@ -5987,6 +6014,7 @@ tbody tr:nth-child(2n) {
   font-size: var(--step--1);
   font-weight: 700;
   color: var(--primary);
+  text-align: center;
   text-decoration: none;
 }
 
