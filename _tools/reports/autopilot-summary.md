@@ -1,6 +1,6 @@
 # Autopilot summary — October 2026
 
-Branch: `autopilot-oct26` · Queue: T00 → T15b → T22 → T23 → T24 → T30a → T30b → T27 → T28 → T26 → T25 → T29 → T99
+Branch: `autopilot-oct26` · Queue: T00 → T15b → T22 → T23 → T24 → T30a → T30b → T23b → T27 → T28 → T26 → T25 → T29 → T31 → T99
 
 Status: RUNNING
 
@@ -14,6 +14,7 @@ Status: RUNNING
 | T23 | DONE | bb59c84 | Warm doctor photos, centred card text, empty licence hidden. |
 | T24 | DONE | 9203f38 | Shared FAQ restyled as centred glass cards. |
 | T30a | DONE | 31de0af | Iran-specific localization inventory (analysis only). |
+| T30b | DONE | e9c7802 | Demo localization, sample USD prices, JSON-LD cleanup, noindex. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -30,6 +31,17 @@ Status: RUNNING
 - 518 unique hotlinked `lemonclinic.org` image URLs (1354 references); logo/map/mascot/consultant listed individually, the rest grouped by directory.
 - Persian/Arabic-Indic digits: 0. `data/availability.json`: 0 matches.
 - No site file changed; replacement plan is at the end of the report.
+
+## T30b — Demo localization
+- Added `site.config.json` with demo values: Lemon, Istanbul, Nisantasi, Turkiye; `12 Example Street, Nisantasi, Istanbul`; `+90 212 000 00 00`; WhatsApp `+90 500 000 00 00`; `hello@example.com`; Monday-Saturday 10:00-19:00; `Europe/Istanbul`; USD.
+- Localized 13 built pages plus `booking.js`, `contact-modal.js`, `ai-app.js` and the `style.css` locale comment: places, address, phones, WhatsApp, hours, map labels, meta, JSON-LD, booking placeholders, timezone and weekdays.
+- Prices: `data/sample-prices.json` holds 93 explicit sample USD amounts, preserving relative order. `_tools/reports/localization-map.md` records the mapping and 271 original visible occurrences; no currency conversion is implied.
+- Removed price-index, instalment/payment-app and area-page links, Neshan/Balad pills, TTAC/Enamad seals, the Tehran licence text and `1405`. Replaced the home/contact map image with a neutral CSS/inline-SVG placeholder.
+- Remaining hotlinked Lemon images are intentionally left: 512 unique URLs (509 under `/images/`, 1 mascot, 2 root icons), listed in `_tools/reports/localization-hotlinks-after.csv`.
+- JSON-LD: removed `Offer`, `AggregateOffer`, `hasOfferCatalog` and price keys; sanitized `fa-IR`, Tehran addresses, Iranian `sameAs` and `IRR`. All 18 JSON-LD blocks parse.
+- Added `<meta name="robots" content="noindex, nofollow">` to all 13 built pages.
+- After-scan in scope: 0 Toman, Tehran/West Tehran, Chitgar, District 22, Kharazi, Ardestani, Parseh, Iran Mall/Iranian, Neshan/Balad, +98/021/0912/090, Tehran time, TTAC, Enamad, licence text, 1405, price index, payment apps or removed-page links. Four legacy `.price-installment` CSS selectors and five generic `dir="rtl"` CSS rules remain (unused by the 13 pages).
+- Smoke: **SMOKE PASS**; `index.html` still has the pre-existing 2 visible h1 elements, left for T31.
 
 ## T24 — FAQ restyle
 - Shared `.faq`/`.faq-item` rules in `style.css`; `inner-unify.css` overrides removed so inner service pages use the same component.
@@ -59,7 +71,10 @@ Status: RUNNING
 - Off-site failed requests on most pages (hotlinked `lemonclinic.org` assets), no failed same-origin requests.
 
 ## ASSUMPTIONS
-- `QUEUE.local.md` is not present in the repo; the queue text in the session prompt is authoritative.
+- `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
+- T30b demo values are placeholders, not a real clinic address or phone number. Sample USD prices are illustrative and must not be treated as a currency conversion.
+- The 13 built pages are marked `<meta name="robots" content="noindex, nofollow">` because the demo values and sample prices must not be indexed.
+- T30b removed JSON-LD `Offer`/`AggregateOffer` blocks rather than publishing sample prices in structured data.
 - `smoke.js` treats a changed h1 count, a new console/page error, a new failed same-origin request, or a new overflow offender as a NEW problem. Off-site request failures are reported but not compared, because hotlinked `lemonclinic.org` assets time out intermittently. Pre-existing keys are ignored.
 
 ## BLOCKED
@@ -67,3 +82,7 @@ Status: RUNNING
 
 ## Manual review checklist
 - [ ] T00: open `_tools/reports/smoke-latest.md`; confirm the pre-existing baseline findings are acceptable.
+- [ ] T30b: review the 93 sample USD amounts and page counts in `_tools/reports/localization-map.md`; confirm the demo address/phone/email and the `noindex` decision.
+- [ ] T30b: spot-check `index.html`, `contact.html`, `prices.html` and `laser.html` for copy tone and the neutral map placeholder.
+- [ ] T23b: open `doctors.html` and confirm the champagne photo backdrop, centred text, hidden empty licence rows and equal card heights.
+- [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.

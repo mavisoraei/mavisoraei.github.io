@@ -64,6 +64,20 @@
 - Commit: 31de0af
 - Leftover: none
 
+## T30b
+- [x] `site.config.json` + demo values (Lemon, Istanbul, Nisantasi, Turkiye, sample USD)
+- [x] Replaced place names, address, phone, WhatsApp, hours, map labels, meta and JSON-LD
+- [x] Sample USD price map (`data/sample-prices.json`) + sample-price notes; no currency conversion
+- [x] Neutral copy; removed price-index, instalment, area links, Neshan/Balad, TTAC/Enamad, licence and 1405
+- [x] Neutral CSS/inline-SVG map placeholder; remaining hotlinked Lemon images listed
+- [x] Removed JSON-LD Offer/AggregateOffer price blocks; sanitized fa-IR/Tehran/sameAs/IRR
+- [x] Added `noindex, nofollow` to the 13 built pages
+- [x] Smoke PASS; JSON-LD blocks parse; no raw Toman/Tehran/phone traces in scope
+- Report: `_tools/reports/localization-map.md` (+ `localization-hotlinks-after.csv`)
+- Status: DONE
+- Commit: e9c7802
+- Leftover: 4 legacy `.price-installment` CSS selectors and 5 generic `dir=rtl` CSS rules remain; 512 hotlinked Lemon images intentionally left (listed)
+
 ## T21
 - [x] Redesign BODY (weight-loss) flow in ai-analysis.html like reference flow
 - [x] Keep hash router and stubs in assets/js/ai-api.js
@@ -89,3 +103,19 @@
 - [x] All texts/prices/currency/duration/flags in ONE config object at top of flow JS
 - [x] No new libraries
 - [x] Commit and update TASKS.local.md
+
+## T23b
+- [ ] Apply the T23 treatment to the `spread-photo` / `docs-*` cards in `doctors.html`
+- [ ] Warm champagne gradient + `mix-blend-mode: multiply` (same values as T23)
+- [ ] Centre all card text, hide empty licence rows, equal heights; keep layout and links
+- Status: TODO
+- Commit: —
+- Leftover: —
+
+## T31
+- [ ] Keep exactly one visible `h1` in `index.html` (hero title)
+- [ ] Demote the other `h1` to an equivalent `h2` or styled `p` without changing its appearance
+- [ ] Verify with the smoke test
+- Status: TODO
+- Commit: —
+- Leftover: —
