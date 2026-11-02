@@ -16,6 +16,7 @@ Status: RUNNING
 | T30a | DONE | 31de0af | Iran-specific localization inventory (analysis only). |
 | T30b | DONE | e9c7802 | Demo localization, sample USD prices, JSON-LD cleanup, noindex. |
 | T23b | DONE | e72cee4 | `doctors.html` cards warmed and centred; equal photo/copy heights. |
+| T27 | DONE | 6660579 | Laser/facial body split into 300px label + 760px reading column. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -50,6 +51,15 @@ Status: RUNNING
 - `.spread` and both columns use `align-self: stretch`; measured at 1440px with reveal transforms disabled, photo and copy heights matched in all four rows (601/601, 624/624, 853/853, 601/601).
 - Kept the alternating `spread-rev` layout, all links and the existing photo sources. Cache bump: `doctors.html` `style.css?v=1.0.36`.
 - Verified with `_tools/check-t23b.js`; smoke **PASS**.
+
+## T27 — Service body editorial split
+- Removed the duplicate `.svc-lead` on `laser.html`; `facial.html`'s lead also repeated the hero summary, so it was removed too. The body intro paragraph remains on both pages, so no unique copy was lost.
+- `_tools/split-service-body.js` grouped each H2 and its following siblings into `.svc-sec` with `.svc-sec__label` + `.svc-sec__content`; the pre-H2 intro became `.svc-sec--intro` so its text shares the reading-column edge.
+- `_tools/verify-t27.js` confirms body text, ids and hrefs are unchanged (laser 7331/7331 chars, facial 2786/2786).
+- At 900px+: `grid-template-columns: minmax(180px, 300px) minmax(0, 760px)`, space-between, 300px label at container left and 760px reading column at container right. `.svc-sec__content` uses `display: contents`; text children sit on `grid-column: 2`, tables/wide figures/.svc-wide span `1 / -1`. Below 900px it is a block layout at the container edge.
+- Measured at 1440px: before body 760px at x=340..1100; after body 1160px at x=140..1300, H2 x=140, text x=540..1300, wide figure x=140..1300. At 390px both before and after are 350px at x=20..370.
+- `.laser-pack img` resets `max-width` so the image itself, not only the figure box, spans the 1160px container. Cache bump: `inner-unify.css?v=1.2.3` on laser and facial.
+- Optional sticky H2 left off to avoid overlap with the sticky TOC bar. Smoke **PASS**. Local screenshots: `_tools/reports/t27-laser.png`, `_tools/reports/t27-facial.png` (untracked).
 
 ## T24 — FAQ restyle
 - Shared `.faq`/`.faq-item` rules in `style.css`; `inner-unify.css` overrides removed so inner service pages use the same component.
@@ -93,4 +103,5 @@ Status: RUNNING
 - [ ] T30b: review the 93 sample USD amounts and page counts in `_tools/reports/localization-map.md`; confirm the demo address/phone/email and the `noindex` decision.
 - [ ] T30b: spot-check `index.html`, `contact.html`, `prices.html` and `laser.html` for copy tone and the neutral map placeholder.
 - [ ] T23b: open `doctors.html` and confirm the champagne photo backdrop, centred text, hidden empty licence rows and equal card heights.
+- [ ] T27: open `laser.html` and `facial.html` at desktop and mobile; confirm the H2 label column, the shared reading-column edge, and that wide figures reach the container edge.
 - [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.

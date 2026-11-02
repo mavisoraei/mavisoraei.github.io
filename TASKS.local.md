@@ -112,6 +112,17 @@
 - Commit: e72cee4
 - Leftover: none
 
+## T27
+- [x] Removed the duplicate `.svc-lead` intro on `laser.html`; `facial.html`'s intro also repeated the hero summary, so it was removed too
+- [x] Wrapped every body H2 and its following siblings in `.svc-sec` with `.svc-sec__label` / `.svc-sec__content`; text, ids and hrefs preserved
+- [x] At 900px+: 300px label column + 760px reading column; tables and wide figures span the 1160px container; below 900px one left-aligned column
+- [x] Optional sticky H2 not applied (avoids overlap with the sticky TOC bar)
+- [x] Measured 1440px: before body 760px at x=340..1100; after body 1160px at x=140..1300, H2 x=140, text x=540..1300, wide figure x=140..1300. Mobile 350px at x=20..370
+- [x] Smoke PASS; `node --check`; `_tools/verify-t27.js` text/ids/hrefs PASS
+- Status: DONE
+- Commit: 6660579
+- Leftover: local screenshots `_tools/reports/t27-laser.png` and `_tools/reports/t27-facial.png` are untracked
+
 ## T31
 - [ ] Keep exactly one visible `h1` in `index.html` (hero title)
 - [ ] Demote the other `h1` to an equivalent `h2` or styled `p` without changing its appearance
