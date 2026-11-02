@@ -105,12 +105,12 @@
 - [x] Commit and update TASKS.local.md
 
 ## T23b
-- [ ] Apply the T23 treatment to the `spread-photo` / `docs-*` cards in `doctors.html`
-- [ ] Warm champagne gradient + `mix-blend-mode: multiply` (same values as T23)
-- [ ] Centre all card text, hide empty licence rows, equal heights; keep layout and links
-- Status: TODO
-- Commit: —
-- Leftover: —
+- [x] Applied the T23 treatment to the `spread-photo` / `docs-*` cards in `doctors.html`
+- [x] Warm champagne gradient + `mix-blend-mode: multiply` (same values as T23)
+- [x] Centred all card text, hid empty licence rows, equal photo/copy heights; kept layout and links
+- Status: DONE
+- Commit: e72cee4
+- Leftover: none
 
 ## T31
 - [ ] Keep exactly one visible `h1` in `index.html` (hero title)

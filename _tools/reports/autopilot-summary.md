@@ -15,6 +15,7 @@ Status: RUNNING
 | T24 | DONE | 9203f38 | Shared FAQ restyled as centred glass cards. |
 | T30a | DONE | 31de0af | Iran-specific localization inventory (analysis only). |
 | T30b | DONE | e9c7802 | Demo localization, sample USD prices, JSON-LD cleanup, noindex. |
+| T23b | DONE | e72cee4 | `doctors.html` cards warmed and centred; equal photo/copy heights. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -42,6 +43,13 @@ Status: RUNNING
 - Added `<meta name="robots" content="noindex, nofollow">` to all 13 built pages.
 - After-scan in scope: 0 Toman, Tehran/West Tehran, Chitgar, District 22, Kharazi, Ardestani, Parseh, Iran Mall/Iranian, Neshan/Balad, +98/021/0912/090, Tehran time, TTAC, Enamad, licence text, 1405, price index, payment apps or removed-page links. Four legacy `.price-installment` CSS selectors and five generic `dir="rtl"` CSS rules remain (unused by the 13 pages).
 - Smoke: **SMOKE PASS**; `index.html` still has the pre-existing 2 visible h1 elements, left for T31.
+
+## T23b — Doctors page cards
+- `doctors.html` only uses the `spread-photo` / `spread-copy` system; `.spread-photo` now has the same `linear-gradient(180deg,#f6eddc 0%,#ead9bb 100%)` as T23 and its image uses `mix-blend-mode: multiply`.
+- `.spread-copy`, headings, role, hours and credentials are centred; `.cred` is a centred grid with 46ch items, and `.role:empty`, `.doc-hours-line:empty` and `.cred li:empty` are hidden.
+- `.spread` and both columns use `align-self: stretch`; measured at 1440px with reveal transforms disabled, photo and copy heights matched in all four rows (601/601, 624/624, 853/853, 601/601).
+- Kept the alternating `spread-rev` layout, all links and the existing photo sources. Cache bump: `doctors.html` `style.css?v=1.0.36`.
+- Verified with `_tools/check-t23b.js`; smoke **PASS**.
 
 ## T24 — FAQ restyle
 - Shared `.faq`/`.faq-item` rules in `style.css`; `inner-unify.css` overrides removed so inner service pages use the same component.
