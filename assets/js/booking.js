@@ -7,8 +7,8 @@
   /* Fill endpoint when the backend exists */
   const BOOKING = {
     endpoint: '',
-    timezone: 'Asia/Tehran',
-    openWeekdays: [6, 0, 1, 2, 3, 4],
+    timezone: 'Europe/Istanbul',
+    openWeekdays: [1, 2, 3, 4, 5, 6],
     opensAt: '10:00',
     closesAt: '19:00',
     slotMinutes: 30,
@@ -42,8 +42,8 @@
     return n;
   };
 
-  /* -- Tehran-time helpers (never the visitor's zone) -- */
-  const tehranNow = function () {
+  /* -- Clinic-time helpers (never the visitor's zone) -- */
+  const clinicNow = function () {
     const parts = {};
     new Intl.DateTimeFormat('en-CA', {
       timeZone: BOOKING.timezone, year: 'numeric', month: '2-digit', day: '2-digit',
@@ -139,7 +139,7 @@
 
     const phoneF = el('label', 'bk-field');
     phoneF.appendChild(el('span', 'bk-label', 'Mobile number'));
-    const phoneIn = field('input', { type: 'tel', id: uid + '-phone', name: 'phone', inputmode: 'tel', dir: 'ltr', autocomplete: 'tel', placeholder: '0912xxxxxxx' }, 'bk-input');
+    const phoneIn = field('input', { type: 'tel', id: uid + '-phone', name: 'phone', inputmode: 'tel', dir: 'ltr', autocomplete: 'tel', placeholder: '+90 5xx xxx xx xx' }, 'bk-input');
     phoneIn.addEventListener('input', function () { state.phone = phoneIn.value; refresh(); });
     phoneF.appendChild(phoneIn);
     const phoneMsg = el('p', 'bk-fmsg');
@@ -195,7 +195,7 @@
     cal.appendChild(daysGrid);
 
     const timesWrap = el('div', 'bk-times-wrap');
-    const timesH = el('p', 'bk-times-h', 'Available times - Tehran time');
+    const timesH = el('p', 'bk-times-h', 'Available times - clinic time');
     timesH.setAttribute('aria-hidden', 'true');
     const timesGroup = el('div', 'bk-times');
     timesGroup.setAttribute('role', 'radiogroup');
@@ -276,7 +276,7 @@
     };
     const renderSummary = function () {
       if (state.date && state.time) {
-        summary.textContent = fmtLong(state.date) + ' - ' + state.time + ' (Tehran time)';
+        summary.textContent = fmtLong(state.date) + ' - ' + state.time + ' (clinic time)';
       } else {
         summary.textContent = '';
       }
@@ -285,7 +285,7 @@
     /* -- calendar -- */
     const view = { y: 0, m: 0, currYm: 0, lastYm: 0 };
     const setView = function (y, m) {
-      const now = tehranNow();
+      const now = clinicNow();
       view.y = y;
       view.m = m;
       view.currYm = parseInt(now.date.slice(0, 4), 10) * 100 + parseInt(now.date.slice(5, 7), 10);
@@ -295,7 +295,7 @@
     };
 
     const renderCal = function () {
-      const now = tehranNow();
+      const now = clinicNow();
       calTitle.textContent = MONTHS[view.m - 1] + ' ' + view.y;
       prev.disabled = view.y * 100 + view.m <= view.currYm;
       next.disabled = view.y * 100 + view.m >= view.lastYm;
@@ -330,14 +330,14 @@
 
     const selectDay = function (ds) {
       state.date = ds;
-      const now = tehranNow();
+      const now = clinicNow();
       if (state.time && !isSlotAvail(now, ds, state.time)) state.time = null;
       renderCal();
       renderTimes();
     };
 
     const renderTimes = function () {
-      const now = tehranNow();
+      const now = clinicNow();
       timesGroup.textContent = '';
       noTimes.textContent = '';
       if (!state.date) return;
@@ -396,15 +396,15 @@
       m.textContent = '';
       m.appendChild(document.createTextNode(txt));
       if (withTel) {
-        const a = el('a', 'bk-form-tel', '021 4700 9161');
-        a.href = 'tel:+982147009161';
+        const a = el('a', 'bk-form-tel', '+90 212 000 00 00');
+        a.href = 'tel:+902120000000';
         m.appendChild(a);
       }
     };
 
     const showSuccess = function () {
-      const now = tehranNow();
-      sucText.textContent = fmtLong(state.date) + ' at ' + state.time + ' (Tehran time). We will confirm by phone shortly.';
+      const now = clinicNow();
+      sucText.textContent = fmtLong(state.date) + ' at ' + state.time + ' (clinic time). We will confirm by phone shortly.';
       /* The panel is built around a hidden form: keep the success block a
          sibling, or `form.hidden` would hide it too. */
       if (success.parentNode === form) form.parentNode.insertBefore(success, form.nextSibling);
@@ -477,8 +477,8 @@
       if (dlg && dlg.open) closeDialog(dlg);
     });
 
-    /* initial view = current Tehran month */
-    const now = tehranNow().date;
+    /* initial view = current clinic month */
+    const now = clinicNow().date;
     const cy = parseInt(now.slice(0, 4), 10);
     const cm = parseInt(now.slice(5, 7), 10);
     setView(cy, cm);

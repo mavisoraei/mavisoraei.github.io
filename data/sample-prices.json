@@ -1,0 +1,566 @@
+{
+  "currency": "USD",
+  "currencySymbol": "$",
+  "note": "Sample prices for demonstration only. Final pricing is confirmed at consultation.",
+  "generated": "2026-10-29",
+  "rates": [
+    {
+      "sourceAmount": 100000,
+      "samplePrice": 10,
+      "sourceLabel": "100,000",
+      "sampleLabel": "$10"
+    },
+    {
+      "sourceAmount": 150000,
+      "samplePrice": 15,
+      "sourceLabel": "150,000",
+      "sampleLabel": "$15"
+    },
+    {
+      "sourceAmount": 180000,
+      "samplePrice": 20,
+      "sourceLabel": "180,000",
+      "sampleLabel": "$20"
+    },
+    {
+      "sourceAmount": 190000,
+      "samplePrice": 20,
+      "sourceLabel": "190,000",
+      "sampleLabel": "$20"
+    },
+    {
+      "sourceAmount": 200000,
+      "samplePrice": 20,
+      "sourceLabel": "200,000",
+      "sampleLabel": "$20"
+    },
+    {
+      "sourceAmount": 250000,
+      "samplePrice": 25,
+      "sourceLabel": "250,000",
+      "sampleLabel": "$25"
+    },
+    {
+      "sourceAmount": 300000,
+      "samplePrice": 30,
+      "sourceLabel": "300,000",
+      "sampleLabel": "$30"
+    },
+    {
+      "sourceAmount": 320000,
+      "samplePrice": 30,
+      "sourceLabel": "320,000",
+      "sampleLabel": "$30"
+    },
+    {
+      "sourceAmount": 350000,
+      "samplePrice": 35,
+      "sourceLabel": "350,000",
+      "sampleLabel": "$35"
+    },
+    {
+      "sourceAmount": 375000,
+      "samplePrice": 40,
+      "sourceLabel": "375,000",
+      "sampleLabel": "$40"
+    },
+    {
+      "sourceAmount": 390000,
+      "samplePrice": 40,
+      "sourceLabel": "390,000",
+      "sampleLabel": "$40"
+    },
+    {
+      "sourceAmount": 400000,
+      "samplePrice": 40,
+      "sourceLabel": "400,000",
+      "sampleLabel": "$40"
+    },
+    {
+      "sourceAmount": 450000,
+      "samplePrice": 45,
+      "sourceLabel": "450,000",
+      "sampleLabel": "$45"
+    },
+    {
+      "sourceAmount": 500000,
+      "samplePrice": 50,
+      "sourceLabel": "500,000",
+      "sampleLabel": "$50"
+    },
+    {
+      "sourceAmount": 550000,
+      "samplePrice": 55,
+      "sourceLabel": "550,000",
+      "sampleLabel": "$55"
+    },
+    {
+      "sourceAmount": 590000,
+      "samplePrice": 60,
+      "sourceLabel": "590,000",
+      "sampleLabel": "$60"
+    },
+    {
+      "sourceAmount": 600000,
+      "samplePrice": 60,
+      "sourceLabel": "600,000",
+      "sampleLabel": "$60"
+    },
+    {
+      "sourceAmount": 680000,
+      "samplePrice": 70,
+      "sourceLabel": "680,000",
+      "sampleLabel": "$70"
+    },
+    {
+      "sourceAmount": 690000,
+      "samplePrice": 70,
+      "sourceLabel": "690,000",
+      "sampleLabel": "$70"
+    },
+    {
+      "sourceAmount": 700000,
+      "samplePrice": 70,
+      "sourceLabel": "700,000",
+      "sampleLabel": "$70"
+    },
+    {
+      "sourceAmount": 880000,
+      "samplePrice": 90,
+      "sourceLabel": "880,000",
+      "sampleLabel": "$90"
+    },
+    {
+      "sourceAmount": 900000,
+      "samplePrice": 90,
+      "sourceLabel": "900,000",
+      "sampleLabel": "$90"
+    },
+    {
+      "sourceAmount": 1000000,
+      "samplePrice": 100,
+      "sourceLabel": "1,000,000",
+      "sampleLabel": "$100"
+    },
+    {
+      "sourceAmount": 1100000,
+      "samplePrice": 110,
+      "sourceLabel": "1,100,000",
+      "sampleLabel": "$110"
+    },
+    {
+      "sourceAmount": 1200000,
+      "samplePrice": 120,
+      "sourceLabel": "1,200,000",
+      "sampleLabel": "$120"
+    },
+    {
+      "sourceAmount": 1400000,
+      "samplePrice": 140,
+      "sourceLabel": "1,400,000",
+      "sampleLabel": "$140"
+    },
+    {
+      "sourceAmount": 1600000,
+      "samplePrice": 160,
+      "sourceLabel": "1,600,000",
+      "sampleLabel": "$160"
+    },
+    {
+      "sourceAmount": 1800000,
+      "samplePrice": 180,
+      "sourceLabel": "1,800,000",
+      "sampleLabel": "$180"
+    },
+    {
+      "sourceAmount": 2000000,
+      "samplePrice": 200,
+      "sourceLabel": "2,000,000",
+      "sampleLabel": "$200"
+    },
+    {
+      "sourceAmount": 2200000,
+      "samplePrice": 220,
+      "sourceLabel": "2,200,000",
+      "sampleLabel": "$220"
+    },
+    {
+      "sourceAmount": 2300000,
+      "samplePrice": 230,
+      "sourceLabel": "2,300,000",
+      "sampleLabel": "$230"
+    },
+    {
+      "sourceAmount": 2500000,
+      "samplePrice": 250,
+      "sourceLabel": "2,500,000",
+      "sampleLabel": "$250"
+    },
+    {
+      "sourceAmount": 2800000,
+      "samplePrice": 280,
+      "sourceLabel": "2,800,000",
+      "sampleLabel": "$280"
+    },
+    {
+      "sourceAmount": 2980000,
+      "samplePrice": 300,
+      "sourceLabel": "2,980,000",
+      "sampleLabel": "$300"
+    },
+    {
+      "sourceAmount": 3000000,
+      "samplePrice": 300,
+      "sourceLabel": "3,000,000",
+      "sampleLabel": "$300"
+    },
+    {
+      "sourceAmount": 3200000,
+      "samplePrice": 320,
+      "sourceLabel": "3,200,000",
+      "sampleLabel": "$320"
+    },
+    {
+      "sourceAmount": 3500000,
+      "samplePrice": 350,
+      "sourceLabel": "3,500,000",
+      "sampleLabel": "$350"
+    },
+    {
+      "sourceAmount": 3800000,
+      "samplePrice": 380,
+      "sourceLabel": "3,800,000",
+      "sampleLabel": "$380"
+    },
+    {
+      "sourceAmount": 4000000,
+      "samplePrice": 400,
+      "sourceLabel": "4,000,000",
+      "sampleLabel": "$400"
+    },
+    {
+      "sourceAmount": 5400000,
+      "samplePrice": 540,
+      "sourceLabel": "5,400,000",
+      "sampleLabel": "$540"
+    },
+    {
+      "sourceAmount": 5500000,
+      "samplePrice": 550,
+      "sourceLabel": "5,500,000",
+      "sampleLabel": "$550"
+    },
+    {
+      "sourceAmount": 5800000,
+      "samplePrice": 580,
+      "sourceLabel": "5,800,000",
+      "sampleLabel": "$580"
+    },
+    {
+      "sourceAmount": 6800000,
+      "samplePrice": 680,
+      "sourceLabel": "6,800,000",
+      "sampleLabel": "$680"
+    },
+    {
+      "sourceAmount": 7000000,
+      "samplePrice": 700,
+      "sourceLabel": "7,000,000",
+      "sampleLabel": "$700"
+    },
+    {
+      "sourceAmount": 7200000,
+      "samplePrice": 720,
+      "sourceLabel": "7,200,000",
+      "sampleLabel": "$720"
+    },
+    {
+      "sourceAmount": 8800000,
+      "samplePrice": 880,
+      "sourceLabel": "8,800,000",
+      "sampleLabel": "$880"
+    },
+    {
+      "sourceAmount": 9000000,
+      "samplePrice": 900,
+      "sourceLabel": "9,000,000",
+      "sampleLabel": "$900"
+    },
+    {
+      "sourceAmount": 10000000,
+      "samplePrice": 1000,
+      "sourceLabel": "10,000,000",
+      "sampleLabel": "$1,000"
+    },
+    {
+      "sourceAmount": 10500000,
+      "samplePrice": 1050,
+      "sourceLabel": "10,500,000",
+      "sampleLabel": "$1,050"
+    },
+    {
+      "sourceAmount": 11000000,
+      "samplePrice": 1100,
+      "sourceLabel": "11,000,000",
+      "sampleLabel": "$1,100"
+    },
+    {
+      "sourceAmount": 12500000,
+      "samplePrice": 1250,
+      "sourceLabel": "12,500,000",
+      "sampleLabel": "$1,250"
+    },
+    {
+      "sourceAmount": 13600000,
+      "samplePrice": 1360,
+      "sourceLabel": "13,600,000",
+      "sampleLabel": "$1,360"
+    },
+    {
+      "sourceAmount": 14000000,
+      "samplePrice": 1400,
+      "sourceLabel": "14,000,000",
+      "sampleLabel": "$1,400"
+    },
+    {
+      "sourceAmount": 14500000,
+      "samplePrice": 1450,
+      "sourceLabel": "14,500,000",
+      "sampleLabel": "$1,450"
+    },
+    {
+      "sourceAmount": 14800000,
+      "samplePrice": 1480,
+      "sourceLabel": "14,800,000",
+      "sampleLabel": "$1,480"
+    },
+    {
+      "sourceAmount": 16000000,
+      "samplePrice": 1600,
+      "sourceLabel": "16,000,000",
+      "sampleLabel": "$1,600"
+    },
+    {
+      "sourceAmount": 17000000,
+      "samplePrice": 1700,
+      "sourceLabel": "17,000,000",
+      "sampleLabel": "$1,700"
+    },
+    {
+      "sourceAmount": 17500000,
+      "samplePrice": 1750,
+      "sourceLabel": "17,500,000",
+      "sampleLabel": "$1,750"
+    },
+    {
+      "sourceAmount": 18000000,
+      "samplePrice": 1800,
+      "sourceLabel": "18,000,000",
+      "sampleLabel": "$1,800"
+    },
+    {
+      "sourceAmount": 18600000,
+      "samplePrice": 1860,
+      "sourceLabel": "18,600,000",
+      "sampleLabel": "$1,860"
+    },
+    {
+      "sourceAmount": 18800000,
+      "samplePrice": 1880,
+      "sourceLabel": "18,800,000",
+      "sampleLabel": "$1,880"
+    },
+    {
+      "sourceAmount": 20900000,
+      "samplePrice": 2090,
+      "sourceLabel": "20,900,000",
+      "sampleLabel": "$2,090"
+    },
+    {
+      "sourceAmount": 22000000,
+      "samplePrice": 2200,
+      "sourceLabel": "22,000,000",
+      "sampleLabel": "$2,200"
+    },
+    {
+      "sourceAmount": 23000000,
+      "samplePrice": 2300,
+      "sourceLabel": "23,000,000",
+      "sampleLabel": "$2,300"
+    },
+    {
+      "sourceAmount": 24800000,
+      "samplePrice": 2480,
+      "sourceLabel": "24,800,000",
+      "sampleLabel": "$2,480"
+    },
+    {
+      "sourceAmount": 26000000,
+      "samplePrice": 2600,
+      "sourceLabel": "26,000,000",
+      "sampleLabel": "$2,600"
+    },
+    {
+      "sourceAmount": 28000000,
+      "samplePrice": 2800,
+      "sourceLabel": "28,000,000",
+      "sampleLabel": "$2,800"
+    },
+    {
+      "sourceAmount": 28500000,
+      "samplePrice": 2850,
+      "sourceLabel": "28,500,000",
+      "sampleLabel": "$2,850"
+    },
+    {
+      "sourceAmount": 29800000,
+      "samplePrice": 2980,
+      "sourceLabel": "29,800,000",
+      "sampleLabel": "$2,980"
+    },
+    {
+      "sourceAmount": 32000000,
+      "samplePrice": 3200,
+      "sourceLabel": "32,000,000",
+      "sampleLabel": "$3,200"
+    },
+    {
+      "sourceAmount": 34500000,
+      "samplePrice": 3450,
+      "sourceLabel": "34,500,000",
+      "sampleLabel": "$3,450"
+    },
+    {
+      "sourceAmount": 36000000,
+      "samplePrice": 3600,
+      "sourceLabel": "36,000,000",
+      "sampleLabel": "$3,600"
+    },
+    {
+      "sourceAmount": 36500000,
+      "samplePrice": 3650,
+      "sourceLabel": "36,500,000",
+      "sampleLabel": "$3,650"
+    },
+    {
+      "sourceAmount": 38000000,
+      "samplePrice": 3800,
+      "sourceLabel": "38,000,000",
+      "sampleLabel": "$3,800"
+    },
+    {
+      "sourceAmount": 38800000,
+      "samplePrice": 3880,
+      "sourceLabel": "38,800,000",
+      "sampleLabel": "$3,880"
+    },
+    {
+      "sourceAmount": 40000000,
+      "samplePrice": 4000,
+      "sourceLabel": "40,000,000",
+      "sampleLabel": "$4,000"
+    },
+    {
+      "sourceAmount": 42000000,
+      "samplePrice": 4200,
+      "sourceLabel": "42,000,000",
+      "sampleLabel": "$4,200"
+    },
+    {
+      "sourceAmount": 48000000,
+      "samplePrice": 4800,
+      "sourceLabel": "48,000,000",
+      "sampleLabel": "$4,800"
+    },
+    {
+      "sourceAmount": 50000000,
+      "samplePrice": 5000,
+      "sourceLabel": "50,000,000",
+      "sampleLabel": "$5,000"
+    },
+    {
+      "sourceAmount": 55000000,
+      "samplePrice": 5500,
+      "sourceLabel": "55,000,000",
+      "sampleLabel": "$5,500"
+    },
+    {
+      "sourceAmount": 70000000,
+      "samplePrice": 7000,
+      "sourceLabel": "70,000,000",
+      "sampleLabel": "$7,000"
+    },
+    {
+      "sourceAmount": 110000000,
+      "samplePrice": 11000,
+      "sourceLabel": "110,000,000",
+      "sampleLabel": "$11,000"
+    },
+    {
+      "sourceAmount": 125000000,
+      "samplePrice": 12500,
+      "sourceLabel": "125,000,000",
+      "sampleLabel": "$12,500"
+    },
+    {
+      "sourceAmount": 140000000,
+      "samplePrice": 14000,
+      "sourceLabel": "140,000,000",
+      "sampleLabel": "$14,000"
+    },
+    {
+      "sourceAmount": 148000000,
+      "samplePrice": 14800,
+      "sourceLabel": "148,000,000",
+      "sampleLabel": "$14,800"
+    },
+    {
+      "sourceAmount": 160000000,
+      "samplePrice": 16000,
+      "sourceLabel": "160,000,000",
+      "sampleLabel": "$16,000"
+    },
+    {
+      "sourceAmount": 186000000,
+      "samplePrice": 18600,
+      "sourceLabel": "186,000,000",
+      "sampleLabel": "$18,600"
+    },
+    {
+      "sourceAmount": 280000000,
+      "samplePrice": 28000,
+      "sourceLabel": "280,000,000",
+      "sampleLabel": "$28,000"
+    },
+    {
+      "sourceAmount": 345000000,
+      "samplePrice": 34500,
+      "sourceLabel": "345,000,000",
+      "sampleLabel": "$34,500"
+    },
+    {
+      "sourceAmount": 360000000,
+      "samplePrice": 36000,
+      "sourceLabel": "360,000,000",
+      "sampleLabel": "$36,000"
+    },
+    {
+      "sourceAmount": 480000000,
+      "samplePrice": 48000,
+      "sourceLabel": "480,000,000",
+      "sampleLabel": "$48,000"
+    },
+    {
+      "sourceAmount": 500000000,
+      "samplePrice": 50000,
+      "sourceLabel": "500,000,000",
+      "sampleLabel": "$50,000"
+    },
+    {
+      "sourceAmount": 550000000,
+      "samplePrice": 55000,
+      "sourceLabel": "550,000,000",
+      "sampleLabel": "$55,000"
+    }
+  ]
+}

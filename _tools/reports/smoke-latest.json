@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-10-29T07:18:39.400Z",
+  "createdAt": "2026-11-02T06:29:26.918Z",
   "baselineUsed": true,
   "pass": true,
   "newIssues": [],
@@ -7,37 +7,10 @@
     {
       "page": "index",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri-ava-96.webp",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/rooms/filler.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/reviews/r28.webp",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/reviews/r15.webp",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -46,7 +19,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-y4wekt right=1481",
+        "#nav-svc-6p500n right=1481",
         "li right=1443",
         "a right=1443",
         "div.mega-group right=1496"
@@ -57,41 +30,16 @@
     {
       "page": "index",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/reviews/r28.webp",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/reviews/r11.webp",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/reviews/r13.webp",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/reviews/r15.webp",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
-      "scrollWidth": 392,
-      "innerWidth": 392,
-      "offenders": [],
+      "scrollWidth": 391,
+      "innerWidth": 390,
+      "offenders": [
+        "div.intro__ring right=396"
+      ],
       "h1Count": 2,
       "h1Text": "Your beauty,beautifully understood. | BeautyClinic"
     },
@@ -110,7 +58,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-rz4jg2 right=1481",
+        "#nav-svc-6csvdw right=1481",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1496"
@@ -129,7 +77,7 @@
       "scrollWidth": 390,
       "innerWidth": 390,
       "offenders": [
-        "a.bb-book right=444"
+        "a.bb-book right=405"
       ],
       "h1Count": 1,
       "h1Text": "Laser Hair Removal"
@@ -149,10 +97,10 @@
         "div.mega-groups right=2084",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-95mjl4 right=1480",
+        "#nav-svc-ldzz3p right=1480",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-0m2hp9 right=1480"
+        "#nav-svc-w69ng3 right=1480"
       ],
       "h1Count": 1,
       "h1Text": "Facial"
@@ -168,7 +116,7 @@
       "scrollWidth": 390,
       "innerWidth": 390,
       "offenders": [
-        "a.bb-book right=444"
+        "a.bb-book right=405"
       ],
       "h1Count": 1,
       "h1Text": "Facial"
@@ -176,29 +124,10 @@
     {
       "page": "services",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/services/services-500.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/havasi-ghafouri-team-420.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -207,10 +136,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-lkvq38 right=1479",
+        "#nav-svc-yqdvi2 right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-oo599c right=1479"
+        "#nav-svc-on0bxf right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Lemon Clinic Services"
@@ -218,37 +147,10 @@
     {
       "page": "services",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/services/services-500.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/havasi-ghafouri-team-420.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.ico",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 390,
       "innerWidth": 390,
@@ -259,37 +161,10 @@
     {
       "page": "doctors",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/havasi.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.ico",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -298,7 +173,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-l83xri right=1481",
+        "#nav-svc-3ybbl5 right=1481",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1496"
@@ -309,37 +184,10 @@
     {
       "page": "doctors",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.ico",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/havasi.avif",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 390,
       "innerWidth": 390,
@@ -350,25 +198,10 @@
     {
       "page": "blog",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -377,10 +210,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-ycvdsq right=1479",
+        "#nav-svc-kcdt40 right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-srnkai right=1479"
+        "#nav-svc-fvys3g right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Lemon Magazine"
@@ -388,25 +221,10 @@
     {
       "page": "blog",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/favicon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 390,
       "innerWidth": 390,
@@ -417,21 +235,10 @@
     {
       "page": "areas",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_CONNECTION_TIMED_OUT"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_CONNECTION_TIMED_OUT"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -440,73 +247,35 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-hxgibu right=1479",
+        "#nav-svc-4dpuoq right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-s4lvpc right=1479"
+        "#nav-svc-8jz0ko right=1479"
       ],
       "h1Count": 1,
-      "h1Text": "Areas We Serve"
+      "h1Text": "Visit the Clinic"
     },
     {
       "page": "areas",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_NAME_NOT_RESOLVED"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 390,
       "innerWidth": 390,
       "offenders": [],
       "h1Count": 1,
-      "h1Text": "Areas We Serve"
+      "h1Text": "Visit the Clinic"
     },
     {
       "page": "gallery",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_NAME_NOT_RESOLVED"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/doctors/noormohammadi-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/havasi-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/mehravaran-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/dehghani-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/gallery/nb-01-640.avif",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -515,10 +284,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-5u34rl right=1479",
+        "#nav-svc-lcfytx right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-n9eoh0 right=1479"
+        "#nav-svc-wwyb88 right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Cases, real before and after"
@@ -526,37 +295,10 @@
     {
       "page": "gallery",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_NAME_NOT_RESOLVED"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/havasi-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/dehghani-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/noormohammadi-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 390,
       "innerWidth": 390,
@@ -567,45 +309,10 @@
     {
       "page": "gallery_new",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_NAME_NOT_RESOLVED"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/dehghani-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/havasi-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/noormohammadi-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/gallery/nb-01-640.avif",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/gallery/nb-07-640.avif",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/gallery/nb-04-640.avif",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -614,10 +321,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-mfzkxr right=1479",
+        "#nav-svc-mi1epv right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-jd5n4n right=1479"
+        "#nav-svc-m941xv right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Cases, real before and after"
@@ -625,37 +332,10 @@
     {
       "page": "gallery_new",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_NAME_NOT_RESOLVED"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/ghafouri-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/havasi-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/dehghani-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/doctors/noormohammadi-card.webp",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 390,
       "innerWidth": 390,
@@ -666,21 +346,10 @@
     {
       "page": "prices",
       "width": 1440,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_NAME_NOT_RESOLVED"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 1440,
       "innerWidth": 1440,
@@ -689,7 +358,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-b2ray7 right=1480",
+        "#nav-svc-wevine right=1480",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1495"
@@ -700,21 +369,10 @@
     {
       "page": "prices",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_NAME_NOT_RESOLVED"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
       "scrollWidth": 390,
       "innerWidth": 390,
@@ -737,10 +395,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-6w2y2t right=1479",
+        "#nav-svc-1ie80j right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-cr7efo right=1479"
+        "#nav-svc-y49lzu right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Contact & Book Appointment"
@@ -748,24 +406,13 @@
     {
       "page": "contact",
       "width": 390,
-      "consoleErrors": [
-        "Failed to load resource: net::ERR_NAME_NOT_RESOLVED"
-      ],
+      "consoleErrors": [],
       "pageErrors": [],
       "failedSameOrigin": [],
-      "failedOther": [
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-icon.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        },
-        {
-          "url": "https://lemonclinic.org/images/logo/logo-wordmark.svg",
-          "error": "net::ERR_NAME_NOT_RESOLVED"
-        }
-      ],
+      "failedOther": [],
       "overflow": false,
-      "scrollWidth": 390,
-      "innerWidth": 390,
+      "scrollWidth": 391,
+      "innerWidth": 391,
       "offenders": [],
       "h1Count": 1,
       "h1Text": "Contact & Book Appointment"
@@ -785,7 +432,7 @@
         "div.mega-groups right=2087",
         "div.mega-group right=1498",
         "a.mega-group-title.mega-group-link right=1483",
-        "#nav-svc-pogiop right=1483",
+        "#nav-svc-1ov0de right=1483",
         "li right=1462",
         "a right=1462"
       ],
@@ -821,7 +468,7 @@
         "div.mega-groups right=2087",
         "div.mega-group right=1498",
         "a.mega-group-title.mega-group-link right=1483",
-        "#nav-svc-6au0xk right=1483",
+        "#nav-svc-kajdbe right=1483",
         "li right=1445",
         "a right=1445",
         "div.mega-group right=1498"

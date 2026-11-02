@@ -22,8 +22,9 @@
   const BODY_CFG = {
     verifyContact: false,        // example: true to require verification
     shareUnlock: false,          // example: true to enable share-to-unlock
-    priceEstimate: 16000000,     // example value - hard code no clinic-specific number in logic
-    currencyLabel: 'Toman',      // example label
+    priceEstimate: 1600,         // example value - hard code no clinic-specific number in logic
+    currencySymbol: '$',         // example symbol
+    currencyLabel: 'USD',        // example label
     durationText: '1-2 months'   // example text
   };
 
@@ -214,7 +215,7 @@
     }else{
       html += '<div class="ai-imgcard glass-card"><div class="ai-imgwrap"><img src="'+esc(S.url||MASCOT)+'" alt="User photo"><span class="ai-badge">'+(S.body.tab===1?'Month 1 change':'Your photo')+'</span><button class="ai-enlarge" id="enlarge" type="button">Enlarge</button></div></div>';
     }
-    html += '<div class="ai-est">Estimated cost of your course: about '+BODY_CFG.priceEstimate+' '+esc(BODY_CFG.currencyLabel)+'</div>';
+    html += '<div class="ai-est">Estimated cost of your course: about '+esc(BODY_CFG.currencySymbol)+Number(BODY_CFG.priceEstimate).toLocaleString('en-US')+' '+esc(BODY_CFG.currencyLabel)+'</div>';
     html += '<div class="ai-estnote">The first course is firm; the final amount is set by the doctor after a consultation.</div>';
     html += '<button class="ai-btn" id="book-cons">Book a free consultation</button><button class="ai-btn ghost" id="send-plan">Send me the plan and price</button>';
     render(html);

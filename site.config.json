@@ -1,0 +1,32 @@
+{
+  "brand": "Lemon",
+  "clinicName": "Lemon Aesthetic Clinic",
+  "legalName": "Lemon Medical Aesthetic Clinic",
+  "city": "Istanbul",
+  "district": "Nisantasi",
+  "country": "Turkiye",
+  "address": "12 Example Street, Nisantasi, Istanbul",
+  "addressLine": "12 Example Street, Nisantasi",
+  "phone": "+90 212 000 00 00",
+  "phoneHref": "+902120000000",
+  "whatsapp": "+90 500 000 00 00",
+  "whatsappHref": "905000000000",
+  "email": "hello@example.com",
+  "hours": "Monday to Saturday, 10:00 - 19:00",
+  "hoursShort": "Mon-Sat, 10:00 - 19:00",
+  "timezone": "Europe/Istanbul",
+  "currency": "USD",
+  "currencySymbol": "$",
+  "mapsUrl": "https://maps.google.com/?q=Nisantasi,+Istanbul",
+  "siteUrl": "https://lemonclinic.org",
+  "social": {
+    "instagram": "https://instagram.com/lemonclinic_org",
+    "youtube": "https://www.youtube.com/@lemonaestheticcenter"
+  },
+  "flags": {
+    "showLicenseBar": false,
+    "showLocalTrustSeals": false,
+    "showAreaPages": false,
+    "showSamplePricesNote": true
+  }
+}

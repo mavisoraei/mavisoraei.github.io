@@ -6182,7 +6182,7 @@ tbody tr:nth-child(2n) {
   margin-bottom: 1.2rem;
 }
 
-/* The single currency declaration that replaced "Toman" on every individual price.
+/* The single currency declaration used on every individual price.
    It is the only thing telling a reader what the bare numbers mean, so it is set
    a step up from the surrounding note copy and given real weight.
 
@@ -8804,7 +8804,7 @@ tbody tr:nth-child(2n) {
    `index.html`. The history, kept because it is the reason not to "restore" it:
 
    It began as a two-part EN/FA pill — `.lm-lang-cur` for the active English
-   state and `.lm-lang-alt` an `<a hreflang="fa-IR">` at the Persian production
+   state and `.lm-lang-alt` an `<a hreflang>` at the previous production
    domain. That link was a dead end for an English-locale visitor (it dumped
    them on the untranslated site) and was the only interactive nav element
    pointing off-domain. It was then reduced to a deliberately inert

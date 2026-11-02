@@ -7,21 +7,19 @@
 
   /* Fill the empty values: rows activate automatically */
   var CONTACT = {
-    whatsapp: 'https://wa.me/989004709161',
-    phone: '+982147009161',
-    email: '',
+    whatsapp: 'https://wa.me/905000000000',
+    phone: '+902120000000',
+    email: 'hello@example.com',
     instagram: 'https://instagram.com/lemonclinic_org',
     linkedin: '',
-    maps: 'https://www.google.com/maps?cid=2160021389971725298',
-    neshan: 'https://neshan.org/maps/places/abaf5ff52a87d9b2dcf313e9fae7f153',
-    balad: 'https://balad.ir/p/%DA%A9%D9%84%DB%8C%D9%86%DB%8C%DA%A9-%D8%B2%DB%8C%D8%A8%D8%A7%DB%8C%DB%8C-%D9%84%D9%85%D9%88%D9%86-tehran-nei-_medical-office-6kHIOEJAGfw5Ep',
+    maps: 'https://maps.google.com/?q=Nisantasi,+Istanbul',
     booking: '/contact.html'
   };
 
   window.LEMON_CONTACT = CONTACT;
 
-  var ADDRESS = 'Tehran, Kharazi Highway, Ardestani Boulevard, Parseh Commercial Complex, 8th Floor';
-  var HOURS = 'Saturday to Thursday, 10 to 19';
+  var ADDRESS = '12 Example Street, Nisantasi, Istanbul';
+  var HOURS = 'Monday to Saturday, 10:00 - 19:00';
 
   if (!document.body) return;
   if (typeof document.createElement('dialog').showModal !== 'function') return;
@@ -124,8 +122,6 @@
 
     var pills = el('div', 'cm-pills');
     pills.appendChild(makePill('Google Maps', CONTACT.maps));
-    pills.appendChild(makePill('Neshan', CONTACT.neshan));
-    pills.appendChild(makePill('Balad', CONTACT.balad));
     dialog.appendChild(pills);
 
     var book = el('a', 'cm-book btn-pill btn-pill--dark');
