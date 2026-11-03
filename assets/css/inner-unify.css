@@ -2112,3 +2112,441 @@ main:has(.svc-sec) .svc-sec__content > figure.portrait:not(#_):not(#_):not(#_):n
     max-width: none;
   }
 }
+
+/* ==========================================================================
+   T28 — PRICING PAGE: COMPACT HERO, GLASS PRICE CARDS, STICKY CHIP BAR
+   --------------------------------------------------------------------------
+   The page is one reading column at --content. The hero, the three notes and
+   the closing CTA stay on the wider --container axis; every price category is
+   a .glass-card panel in a single 760px column. The sidebar Quick jump is
+   replaced by the shared sticky .lm-svc-tocbar and its short data-short chips.
+   ========================================================================== */
+
+main:has(.pr-hero) {
+  --content: 760px;
+  --pr-price-col: 6.5rem;
+}
+
+/* --- hero ---------------------------------------------------------------- */
+main:has(.pr-hero) .pr-hero:not(#_) {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-block: clamp(1.4rem, 3.5vw, 2.2rem) clamp(1rem, 2.4vw, 1.4rem);
+}
+
+main:has(.pr-hero) .pr-hero__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .7rem 1.5rem;
+}
+
+main:has(.pr-hero) .pr-hero__top h1 {
+  margin: 0;
+}
+
+main:has(.pr-hero) .pr-updated:not(#_) {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0;
+  padding-block: .45rem;
+  padding-inline: .8rem;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, #fff);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 72%, transparent);
+  color: var(--muted-foreground);
+  font-size: var(--step--1);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+main:has(.pr-hero) .pr-updated__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+main:has(.pr-hero) .pr-hero .lead:not(#_) {
+  max-width: 58ch;
+  margin-block: .9rem 0;
+  color: var(--muted-foreground);
+  font-size: var(--step-0);
+}
+
+/* --- three compact notes ------------------------------------------------- */
+main:has(.pr-hero) .pr-benefits:not(#_) {
+  max-width: var(--container);
+  margin-inline: auto;
+  margin-block-start: clamp(.8rem, 2vw, 1.2rem);
+}
+
+main:has(.pr-hero) .pr-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 22px);
+}
+
+main:has(.pr-hero) .pr-benefit:not(#_) {
+  --glass-radius: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  padding: clamp(15px, 2.2vw, 20px);
+  border-radius: 16px;
+}
+
+main:has(.pr-hero) .pr-benefit__icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  color: var(--primary);
+}
+
+main:has(.pr-hero) .pr-benefit__body {
+  min-width: 0;
+}
+
+main:has(.pr-hero) .pr-benefit__title {
+  margin-block: 0 .2rem;
+  color: var(--foreground);
+  font-family: var(--font-subheading);
+  font-size: var(--step-0);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+main:has(.pr-hero) .pr-benefit p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: var(--step--1);
+  line-height: 1.55;
+}
+
+main:has(.pr-hero) .pr-benefit__link {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  margin-block-start: .55rem;
+  color: var(--primary);
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+main:has(.pr-hero) .pr-benefit__link:hover,
+main:has(.pr-hero) .pr-benefit__link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+/* --- sticky chip bar ----------------------------------------------------- */
+main:has(.pr-hero) .lm-svc-tocbar__in:not(#_) {
+  max-width: var(--container);
+}
+
+/* --- one reading column -------------------------------------------------- */
+main:has(.pr-hero) .pr-grid--single:not(#_) {
+  display: block;
+  max-width: var(--content);
+  margin-inline: auto;
+}
+
+main:has(.pr-hero) .pr-main:not(#_) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+}
+
+main:has(.pr-hero) .pr-sample-note:not(#_) {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: var(--step--1);
+  line-height: 1.6;
+}
+
+main:has(.pr-hero) .pr-sample-note:not(#_)::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  margin-block-start: .55em;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+/* --- glass category cards ------------------------------------------------ */
+main:has(.pr-hero) .pr-block:not(#_):not(#_) {
+  min-width: 0;
+  max-width: none;
+  padding: clamp(18px, 2.6vw, 26px);
+  border-radius: var(--radius-lg);
+}
+
+main:has(.pr-hero) .lp-scroll:not(#_),
+main:has(.pr-hero) .dose-scroll:not(#_) {
+  min-width: 0;
+}
+
+main:has(.pr-hero) .pr-block > h2:not(#_) {
+  margin-block: 0 .35rem;
+  font-size: var(--step-1);
+  line-height: 1.15;
+}
+
+main:has(.pr-hero) .pr-block > .pr-sub:not(#_) {
+  max-width: none;
+  margin-block: 0;
+  padding-block-end: .9rem;
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+}
+
+main:has(.pr-hero) .pr-brand:not(#_) {
+  margin-block-start: 1.1rem;
+}
+
+main:has(.pr-hero) .pr-brand + .pr-brand:not(#_) {
+  padding-block-start: 1.1rem;
+  border-block-start: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+main:has(.pr-hero) .pr-brand > h3:not(#_) {
+  margin-block: 0 .35rem;
+  font-size: var(--step-0);
+}
+
+main:has(.pr-hero) .pr-rows:not(#_) {
+  display: block;
+  margin-block-start: .2rem;
+}
+
+main:has(.pr-hero) .pr-rows li:not(#_):not(#_) {
+  grid-template-columns: minmax(0, 1fr) var(--pr-price-col);
+  column-gap: 1.25rem;
+  padding-block: .72rem;
+  padding-inline: .55rem;
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+  transition: background-color .18s ease;
+}
+
+main:has(.pr-hero) .pr-rows li:not(#_):not(#_):hover {
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+}
+
+main:has(.pr-hero) .pr-rows li:last-child:not(#_):not(#_) {
+  border-block-end: 0;
+}
+
+main:has(.pr-hero) .pr-rows li > span:not(#_):not(#_) {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+main:has(.pr-hero) .pr-rows li > b:not(#_):not(#_) {
+  min-width: var(--pr-price-col);
+  text-align: end;
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+main:has(.pr-hero) .pr-rows li > span a:not(#_):not(#_) {
+  text-decoration: none;
+}
+
+main:has(.pr-hero) .pr-rows li > span a:not(#_):not(#_):hover,
+main:has(.pr-hero) .pr-rows li > span a:not(#_):not(#_):focus-visible {
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  text-decoration-color: color-mix(in srgb, var(--primary) 55%, transparent);
+}
+
+main:has(.pr-hero) .pr-rows .pr-row-sub:not(#_):not(#_) {
+  color: var(--muted-foreground);
+}
+
+main:has(.pr-hero) .pr-list:not(#_) {
+  display: block;
+  margin-block-start: .2rem;
+}
+
+main:has(.pr-hero) .pr-list li:not(#_):not(#_) {
+  padding-block: .8rem;
+  padding-inline: .55rem;
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+  transition: background-color .18s ease;
+}
+
+main:has(.pr-hero) .pr-list li:not(#_):not(#_):hover {
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+}
+
+main:has(.pr-hero) .pr-list li:last-child:not(#_):not(#_) {
+  border-block-end: 0;
+}
+
+main:has(.pr-hero) .pr-name:not(#_) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--pr-price-col);
+  gap: .35rem 1.25rem;
+  align-items: baseline;
+}
+
+main:has(.pr-hero) .pr-name > span:first-child:not(#_) {
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+main:has(.pr-hero) .pr-price:not(#_) {
+  min-width: var(--pr-price-col);
+  text-align: end;
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+
+main:has(.pr-hero) .pr-price-multi:not(#_) {
+  min-width: 0;
+  text-align: start;
+  color: var(--muted-foreground);
+  font-size: var(--step--1);
+  font-weight: 500;
+  white-space: normal;
+}
+
+main:has(.pr-hero) .pr-list .pr-desc:not(#_) {
+  max-width: none;
+  margin-block-start: .35rem;
+}
+
+main:has(.pr-hero) .pr-list .pr-extra:not(#_) {
+  color: var(--primary);
+}
+
+/* --- tables -------------------------------------------------------------- */
+main:has(.pr-hero) .pr-table:not(#_) {
+  font-variant-numeric: tabular-nums;
+}
+
+main:has(.pr-hero) .lp-scroll .pr-table:not(#_) {
+  table-layout: fixed;
+}
+
+main:has(.pr-hero) .lp-scroll .pr-table thead th:nth-child(1):not(#_) {
+  width: 48%;
+}
+
+main:has(.pr-hero) .lp-scroll .pr-table thead th:nth-child(2):not(#_),
+main:has(.pr-hero) .lp-scroll .pr-table thead th:nth-child(3):not(#_) {
+  width: 26%;
+}
+
+main:has(.pr-hero) .pr-table .num:not(#_) {
+  min-width: var(--pr-price-col);
+}
+
+main:has(.pr-hero) .pr-table tbody tr:not(#_):hover {
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+}
+
+/* --- closing CTA band ---------------------------------------------------- */
+main:has(.pr-hero) .pr-note:not(#_) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1.2rem, 3vw, 2rem);
+  max-width: var(--container);
+  margin-block-start: clamp(2.4rem, 6vw, 4rem);
+  padding: clamp(1.5rem, 3.4vw, 2.4rem);
+  border-radius: var(--radius-lg);
+}
+
+main:has(.pr-hero) .pr-note__copy {
+  max-width: 60ch;
+}
+
+main:has(.pr-hero) .pr-note__eyebrow:not(#_):not(#_) {
+  margin: 0 0 .35rem;
+  color: var(--muted-foreground);
+  font-size: var(--step--1);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+main:has(.pr-hero) .pr-note h2:not(#_) {
+  margin-block: 0 .45rem;
+  font-family: var(--font-heading);
+  font-size: var(--step-1);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+main:has(.pr-hero) .pr-note__copy p:not(#_):not(#_) {
+  max-width: none;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: var(--step-0);
+  line-height: 1.6;
+}
+
+main:has(.pr-hero) .pr-note__actions:not(#_) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+
+/* --- anchors ------------------------------------------------------------- */
+main:has(.pr-hero) .pr-block[id]:not(#_),
+main:has(.pr-hero) .pr-block > h2[id]:not(#_),
+main:has(.pr-hero) #dose:not(#_) {
+  scroll-margin-block-start: 148px;
+}
+
+/* --- small screens ------------------------------------------------------- */
+@media (max-width: 899px) {
+  main:has(.pr-hero) .pr-benefits__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  main:has(.pr-hero) .pr-hero__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .6rem;
+  }
+
+  main:has(.pr-hero) .pr-grid--single:not(#_) {
+    max-width: 100%;
+  }
+
+  main:has(.pr-hero) .pr-note:not(#_) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  main:has(.pr-hero) .pr-note__actions:not(#_) {
+    width: 100%;
+  }
+
+  main:has(.pr-hero) .pr-note__actions .btn-pill {
+    flex: 1 1 auto;
+  }
+}

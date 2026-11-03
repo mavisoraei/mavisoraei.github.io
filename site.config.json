@@ -17,6 +17,7 @@
   "timezone": "Europe/Istanbul",
   "currency": "USD",
   "currencySymbol": "$",
+  "samplePricesNote": "Sample prices in USD for demonstration only; final pricing is confirmed at consultation.",
   "mapsUrl": "https://maps.google.com/?q=Nisantasi,+Istanbul",
   "siteUrl": "https://lemonclinic.org",
   "social": {
