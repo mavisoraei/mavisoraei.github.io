@@ -17,6 +17,7 @@ Status: RUNNING
 | T30b | DONE | e9c7802 | Demo localization, sample USD prices, JSON-LD cleanup, noindex. |
 | T23b | DONE | e72cee4 | `doctors.html` cards warmed and centred; equal photo/copy heights. |
 | T27 | DONE | 6660579 | Laser/facial body split into 300px label + 760px reading column. |
+| T28 | DONE | 279e8f3 | Pricing top rebuilt; sticky chips; 15 glass price cards; CTA band. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -61,6 +62,15 @@ Status: RUNNING
 - `.laser-pack img` resets `max-width` so the image itself, not only the figure box, spans the 1160px container. Cache bump: `inner-unify.css?v=1.2.3` on laser and facial.
 - Optional sticky H2 left off to avoid overlap with the sticky TOC bar. Smoke **PASS**. Local screenshots: `_tools/reports/t27-laser.png`, `_tools/reports/t27-facial.png` (untracked).
 
+## T28 — Pricing page top and glass cards
+- Hero is now H1 + one lead line + an "Updated October 2026" pill. The old notes became three compact glass cards: Pricing basis (`#pr-filler-head`), Final quote (`/contact.html`) and Customer Club (`/customer-club.html`); all targets exist.
+- The sidebar Quick jump is replaced by the shared `.lm-svc-tocbar` with 15 short chips. Category H2s got `-head` ids so the existing heading observer can set the active chip; the original section ids remain for old anchors.
+- All 15 price blocks (14 categories + the cc table) are `glass-card glass-card--panel` panels in a 760px column. `.pr-rows` and `.pr-list` use a 104px price column, tabular numerals, no underline until hover, and a 6% row hover tint.
+- Laser tables share a 48/26/26 column split; the dose table keeps its fixed layout. The sample note is rendered once above the cards from the new `site.config.json` `samplePricesNote`.
+- Closing CTA band after the FAQ with Book Appointment + Smart Mirror. Cache bump: `inner-unify.css?v=1.2.3` on `prices.html`.
+- Verification: `_tools/verify-t28.js` preserves 182 price tokens, 101 non-anchor hrefs, 79 price rows and all 40 old ids. `_tools/check-t28-compact.js` at 1440/390 measured 760px/298px cards, 104px price columns, no overflow, a working active chip, and hover underline/row tint. Smoke **PASS**.
+- Local screenshots `_tools/reports/t28-*.png` are untracked.
+
 ## T24 — FAQ restyle
 - Shared `.faq`/`.faq-item` rules in `style.css`; `inner-unify.css` overrides removed so inner service pages use the same component.
 - Heading and list centred at 820px; card fill `rgba(250,246,238,.72)`, border `rgba(255,255,255,.7)`, radius `20px`, padding `22px 28px 22px 56px` (logical).
@@ -94,6 +104,7 @@ Status: RUNNING
 - The 13 built pages are marked `<meta name="robots" content="noindex, nofollow">` because the demo values and sample prices must not be indexed.
 - T30b removed JSON-LD `Offer`/`AggregateOffer` blocks rather than publishing sample prices in structured data.
 - `smoke.js` treats a changed h1 count, a new console/page error, a new failed same-origin request, or a new overflow offender as a NEW problem. Off-site request failures are reported but not compared, because hotlinked `lemonclinic.org` assets time out intermittently. Pre-existing keys are ignored.
+- T28 keeps the old price category section ids and adds `-head` ids to their H2s so the shared chip bar's heading observer can track them. The sample note is a static mirror of `site.config.json` `samplePricesNote`; this static page has no runtime config loader.
 
 ## BLOCKED
 - None.
@@ -104,4 +115,5 @@ Status: RUNNING
 - [ ] T30b: spot-check `index.html`, `contact.html`, `prices.html` and `laser.html` for copy tone and the neutral map placeholder.
 - [ ] T23b: open `doctors.html` and confirm the champagne photo backdrop, centred text, hidden empty licence rows and equal card heights.
 - [ ] T27: open `laser.html` and `facial.html` at desktop and mobile; confirm the H2 label column, the shared reading-column edge, and that wide figures reach the container edge.
+- [ ] T28: open `prices.html` at desktop and mobile; confirm the three note cards, the sticky chip bar, the 760px glass price column, row hover, and the closing CTA band.
 - [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.

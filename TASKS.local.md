@@ -123,6 +123,17 @@
 - Commit: 6660579
 - Leftover: local screenshots `_tools/reports/t27-laser.png` and `_tools/reports/t27-facial.png` are untracked
 
+## T28
+- [x] Hero: H1 + one lead line + "Updated October 2026" pill; the old notes became three compact glass cards (pricing basis, final quote, Customer Club)
+- [x] Replaced the sidebar Quick jump with the shared sticky chip bar: 15 short labels, active chip, feathered edges
+- [x] All 15 price blocks are glass cards; service name left, price right in a 104px column, tabular numerals, underline only on hover, row hover highlight
+- [x] Added the sample-prices note from `site.config.json` (`samplePricesNote`) above the cards
+- [x] Closing CTA band with Book Appointment + Smart Mirror; all 182 price tokens, 101 non-anchor hrefs, 79 price rows and all old IDs preserved
+- [x] `inner-unify.css?v=1.2.3` on prices; measured 760px cards at 1440px and 298px at 390px, no overflow; active chip and hover verified
+- Status: DONE
+- Commit: 279e8f3
+- Leftover: local screenshots `_tools/reports/t28-*.png` are untracked
+
 ## T31
 - [ ] Keep exactly one visible `h1` in `index.html` (hero title)
 - [ ] Demote the other `h1` to an equivalent `h2` or styled `p` without changing its appearance
