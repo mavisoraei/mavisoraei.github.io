@@ -1,0 +1,23 @@
+'use strict';
+const fs = require('fs');
+const t = fs.readFileSync('gallery.html', 'utf8');
+const i = t.indexOf('id="nb-data"');
+const a = t.indexOf('>', i) + 1;
+const b = t.indexOf('</script>', a);
+const d = JSON.parse(t.slice(a, b));
+console.log('cases=' + d.length);
+const docs = {};
+d.forEach(x => { docs[x.dn] = (docs[x.dn] || 0) + 1; });
+console.log(docs);
+console.log('first=' + JSON.stringify(d[0]));
+console.log('last=' + JSON.stringify(d[d.length - 1]));
+const groups = {};
+const re = /data-g="([^"]+)"/g;
+let m;
+while ((m = re.exec(t))) groups[m[1]] = (groups[m[1]] || 0) + 1;
+console.log('groups=' + JSON.stringify(groups));
+
+const docCards = {};
+const dre = /data-doc="([^"]+)"/g;
+while ((m = dre.exec(t))) docCards[m[1]] = (docCards[m[1]] || 0) + 1;
+console.log('docCards=' + JSON.stringify(docCards));
