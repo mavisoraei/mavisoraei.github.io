@@ -134,6 +134,16 @@
 - Commit: 279e8f3
 - Leftover: local screenshots `_tools/reports/t28-*.png` are untracked
 
+## T26
+- [x] One glass filter panel at `--container` width; row 1 has a fixed 88px label column and 40px treatment chips with equal 8px gaps in a horizontal scroll row
+- [x] Row 2 doctor filter is a compact custom select/popover with avatars and initials fallback; result count and clear button sit on the right
+- [x] Feather edges on the chip scroller at 1200px and below; clear button only appears when a filter is active
+- [x] Filtering predicate and hash behaviour unchanged; chips keep `aria-pressed`; popover supports Arrow/Home/End/Escape and closes on outside click
+- [x] Verified 63 initial cases and all group/doctor counts; 40px chips, no orphan or overflow; popover flips up on short screens; smoke PASS
+- Status: DONE
+- Commit: 2e5b6c0
+- Leftover: local screenshots `_tools/reports/t26-*.png` are untracked
+
 ## T31
 - [ ] Keep exactly one visible `h1` in `index.html` (hero title)
 - [ ] Demote the other `h1` to an equivalent `h2` or styled `p` without changing its appearance

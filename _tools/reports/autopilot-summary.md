@@ -98,6 +98,15 @@ Status: RUNNING
 - One console error on index/services/doctors/blog/areas/gallery/gallery_new/prices/contact (same message on each page).
 - Off-site failed requests on most pages (hotlinked `lemonclinic.org` assets), no failed same-origin requests.
 
+## T26 - Gallery filter panel
+- One `glass-card` panel at `--container` width, aligned with the hero and grid; the label column is 88px at every breakpoint.
+- Treatment row: 10 chips, all 40px high with 8px gaps in a nowrap scroller; feathered mask at 1200px and below; the active chip keeps the design-system espresso treatment and `aria-pressed`.
+- Doctor row: custom trigger plus a listbox popover with 28px avatars and initials fallback; options use `aria-selected`; the trigger updates its avatar and label. The popover flips above the trigger when the space below is too short.
+- `63 cases` live count and `Clear filters`; the clear button is hidden until a filter is active, and the side area is right aligned at every width.
+- Filtering predicate (`all` / `g:*` / `doc:*`) and hash format (`#g=...`, `#doc=...`) are unchanged; invalid hashes fall back to `all`. The legacy `gallery_new.html` still filters and receives card avatars through a fallback source.
+- Verified at 1440/1200/1024/900/768/560/390: panel alignment, one 40px chip row, no page overflow, keyboard Arrow/Home/End/Escape, outside-click close and image-error initials fallback. Smoke **PASS**.
+- Local screenshots `_tools/reports/t26-*.png` are untracked.
+
 ## ASSUMPTIONS
 - `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
 - T30b demo values are placeholders, not a real clinic address or phone number. Sample USD prices are illustrative and must not be treated as a currency conversion.
@@ -105,6 +114,9 @@ Status: RUNNING
 - T30b removed JSON-LD `Offer`/`AggregateOffer` blocks rather than publishing sample prices in structured data.
 - `smoke.js` treats a changed h1 count, a new console/page error, a new failed same-origin request, or a new overflow offender as a NEW problem. Off-site request failures are reported but not compared, because hotlinked `lemonclinic.org` assets time out intermittently. Pre-existing keys are ignored.
 - T28 keeps the old price category section ids and adds `-head` ids to their H2s so the shared chip bar's heading observer can track them. The sample note is a static mirror of `site.config.json` `samplePricesNote`; this static page has no runtime config loader.
+- T26 keeps the existing single-active-filter behaviour (treatment or doctor) and the old hash format; the doctor control is a custom listbox popover, not a native select.
+- T26 turns the treatment row into a horizontal scroller at all widths and feathers it at 1200px and below; the 88px label column is retained on mobile by design.
+- T26 uses initials for missing or broken doctor photos and flips the doctor popover above the trigger when the viewport below is too short.
 
 ## BLOCKED
 - None.
@@ -116,4 +128,5 @@ Status: RUNNING
 - [ ] T23b: open `doctors.html` and confirm the champagne photo backdrop, centred text, hidden empty licence rows and equal card heights.
 - [ ] T27: open `laser.html` and `facial.html` at desktop and mobile; confirm the H2 label column, the shared reading-column edge, and that wide figures reach the container edge.
 - [ ] T28: open `prices.html` at desktop and mobile; confirm the three note cards, the sticky chip bar, the 760px glass price column, row hover, and the closing CTA band.
+- [ ] T26: open `gallery.html` at desktop and mobile; confirm the panel alignment, 40px chips, doctor popover/initials, result count and clear button.
 - [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.
