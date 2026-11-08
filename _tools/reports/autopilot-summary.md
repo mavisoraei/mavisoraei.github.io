@@ -107,6 +107,17 @@ Status: RUNNING
 - Verified at 1440/1200/1024/900/768/560/390: panel alignment, one 40px chip row, no page overflow, keyboard Arrow/Home/End/Escape, outside-click close and image-error initials fallback. Smoke **PASS**.
 - Local screenshots `_tools/reports/t26-*.png` are untracked.
 
+## T25 - Shared footer redesign
+- Old -> new: removed the `f-top` white brand band, the `f-mascot` dark band and the `f-trust` row; the mascot copy now lives in a light glass CTA card (`ft25-cta`) directly above one dark espresso footer.
+- CTA card: kicker, title, mascot on the right and two buttons (primary `Book Appointment`, secondary `Smart Mirror`); stacks at <=760px.
+- Footer grid: brand column (one logo, 2-line description, 40px social discs) + Services (8 links + All services), Clinic (6), Visit (address, phone, WhatsApp, hours with 16px icons), Company (8 merged club/doctors links). Column gaps 48px, min column 160px.
+- Tokens: background `#25211d`; titles 12px/600 uppercase `.14em` `#c8a96d`; links 15px/1.9 `#e9e1d2`; description 14.5px `#b8ae9d`; dividers `rgba(255,255,255,.08)`.
+- Contrast on `#25211d`: links **12.30:1**, champagne titles **7.12:1**, muted description **7.29:1**.
+- Responsive: 5 columns above 1279px, 2 columns <=1279px, single-column accordions <=640px. The 2-column breakpoint is 1279px rather than 1000px because a 5-column grid with 160px minimums plus 48px gaps cannot fit the 944px container at 1024px.
+- Flags: `showLicenseBar`, `showLocalTrustSeals` and `showAreaPages` are off, so the licence line, seals and area links are absent; the licence line is conditional on the flag.
+- Pages updated (13): index, laser, facial, services, doctors, blog, areas, gallery, gallery_new, prices, contact, ai-analysis, face-analysis. Implemented once in `_tools/partials/footer.html` and applied with `_tools/apply-footer.js`; `style.css` bumped to `1.0.36`.
+- Smoke **PASS** at 1440x900 and 390x844 on all 13 pages. Screenshots `_tools/reports/t25-*.png` are untracked.
+
 ## ASSUMPTIONS
 - `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
 - T30b demo values are placeholders, not a real clinic address or phone number. Sample USD prices are illustrative and must not be treated as a currency conversion.
@@ -117,6 +128,9 @@ Status: RUNNING
 - T26 keeps the existing single-active-filter behaviour (treatment or doctor) and the old hash format; the doctor control is a custom listbox popover, not a native select.
 - T26 turns the treatment row into a horizontal scroller at all widths and feathers it at 1200px and below; the 88px label column is retained on mobile by design.
 - T26 uses initials for missing or broken doctor photos and flips the doctor popover above the trigger when the viewport below is too short.
+- T25 keeps the footer's small accordion/year script inline in the shared partial, matching the inline `[data-year]` script already present on every built page; it is not added to `app.js` to avoid a second year handler and an `app.js` cache bump.
+- T25's 2-column breakpoint is 1279px, not the literal 1000px, because the 5-column grid cannot fit the 944px container at 1024px without overflow. At 1000px and below the layout is 2 columns as required.
+- T25 leaves the pre-existing `.ga-row` doctor-carousel overflow at 1024px alone; it is unrelated to the footer and is clipped below 1000px.
 
 ## BLOCKED
 - None.
@@ -129,4 +143,5 @@ Status: RUNNING
 - [ ] T27: open `laser.html` and `facial.html` at desktop and mobile; confirm the H2 label column, the shared reading-column edge, and that wide figures reach the container edge.
 - [ ] T28: open `prices.html` at desktop and mobile; confirm the three note cards, the sticky chip bar, the 760px glass price column, row hover, and the closing CTA band.
 - [ ] T26: open `gallery.html` at desktop and mobile; confirm the panel alignment, 40px chips, doctor popover/initials, result count and clear button.
+- [ ] T25: open any built page and confirm the glass CTA card, one-logo footer, 4 link columns, accordion at <=640px and the current-year bar.
 - [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.

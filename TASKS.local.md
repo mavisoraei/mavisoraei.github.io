@@ -144,6 +144,20 @@
 - Commit: 2e5b6c0
 - Leftover: local screenshots `_tools/reports/t26-*.png` are untracked
 
+## T25
+- [x] Removed the separate white brand band, dark mascot band and 4-item trust row
+- [x] Light glass CTA card above the footer (kicker, title, mascot right, Book Appointment + Smart Mirror); stacks at <=760px
+- [x] One dark espresso footer at container width: brand column + Services (8 + All services), Clinic, Visit (address/phone/WhatsApp/hours with 16px icons), Company (merged club and doctors/clinics links)
+- [x] `site.config.json` flags respected: no licence bar, no trust seals, no area links
+- [x] Bottom bar: current year, language, Privacy Policy; licence only when the flag is on
+- [x] Tokens: bg #25211d, 12px champagne titles, 15px/1.9 links, 14.5px muted description, 48px gaps, 160px min columns
+- [x] Responsive: 2 columns <=1279px, accordion columns <=640px (2-column breakpoint kept at 1279px so the 5-column grid never overflows at 1024px)
+- [x] Contrast: links 12.30:1, champagne titles 7.12:1, muted description 7.29:1 on #25211d
+- [x] 13 pages updated via `_tools/apply-footer.js`; `style.css?v=1.0.36`; smoke PASS
+- Status: DONE
+- Commit: 5a19d7c
+- Leftover: local screenshots `_tools/reports/t25-*.png` and the captured old footer are untracked
+
 ## T31
 - [ ] Keep exactly one visible `h1` in `index.html` (hero title)
 - [ ] Demote the other `h1` to an equivalent `h2` or styled `p` without changing its appearance
