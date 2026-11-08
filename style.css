@@ -6110,7 +6110,7 @@ tbody tr:nth-child(2n) {
   font-weight: 600;
   font-size: 18px;
   line-height: 1.5;
-  text-align: center;
+  text-align: start;
   transition: color .25s ease;
 }
 
@@ -6153,12 +6153,12 @@ tbody tr:nth-child(2n) {
 
 .faq-item p {
   max-width: 62ch;
-  margin-inline: auto;
+  margin-inline: 0;
   padding: .65rem 0 0;
   color: var(--muted-foreground);
   font-size: 16px;
   line-height: 1.8;
-  text-align: center;
+  text-align: start;
 }
 
 .faq-item::details-content {
