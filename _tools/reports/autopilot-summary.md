@@ -2,7 +2,9 @@
 
 Branch: `autopilot-oct26` · Queue: T00 → T15b → T22 → T23 → T24 → T30a → T30b → T23b → T27 → T28 → T26 → T25 → T29 → T31 → T99
 
-Status: COMPLETE
+Review branch: `review-nov26` · Queue: R01 → R02 → R03 → R04 → R05 → R06 → R07 → R08 → R09 → R10 → R11 → R12 → R13
+
+Status: COMPLETE (autopilot) · RUNNING (review)
 
 ## Task log
 
@@ -23,6 +25,7 @@ Status: COMPLETE
 | T29 | DONE | 3ece1b6 | 9 link-space/punctuation fixes; stray "See it." removed. |
 | T31 | DONE | db804d2 | Hidden second `h1` demoted; exactly one `h1` on `index.html`. |
 | T99 | DONE | this commit | Final smoke, JS syntax, link and localization checks pass; 2 pre-existing JS syntax failures reported. |
+| R01 | DONE | 8999f52 | Hover underline removed from card and pill CTAs only. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -162,8 +165,17 @@ Smoke **PASS**. No other text changed.
 
 All queue tasks are DONE. No task was marked BLOCKED and no destructive command was needed.
 
+## R01 — Button hover underline
+- CDP hover sweep over index, laser, facial, doctors, prices, gallery: only two button-like elements gained `text-decoration: underline` — `.case-treat` (case-card CTA) and `.pr-benefit__link` ("Book a consultation →").
+- Both now resolve to `text-decoration: none` on `:hover`/`:focus-visible`. No `border-bottom`, animated `::after` line or background-image underline was found on any `.btn*`, `.btn-pill`, `.btn-secondary`, `.lm-cta`, chip or card CTA.
+- Body-text links keep their underline (`main p … a` rule untouched).
+- Verified at 1440 and 390 with `_tools/r01-verify.js`: `decoration: none`, `border-bottom: 0px none`, `::after: none`.
+- Cache queries bumped: `home-sections.css?v=1.0.8`, `inner-unify.css?v=1.2.3`.
+
 ## ASSUMPTIONS
 - `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
+- `REVIEW-QUEUE.local.md` holds the review queue verbatim, is gitignored and intentionally left untracked. Review work happens on `review-nov26`.
+- R01 treats footer and mega-nav text links as inline text links, so they keep their hover underline; only card CTAs and pill CTAs were changed.
 - T30b demo values are placeholders, not a real clinic address or phone number. Sample USD prices are illustrative and must not be treated as a currency conversion.
 - The 13 built pages are marked `<meta name="robots" content="noindex, nofollow">` because the demo values and sample prices must not be indexed.
 - T30b removed JSON-LD `Offer`/`AggregateOffer` blocks rather than publishing sample prices in structured data.

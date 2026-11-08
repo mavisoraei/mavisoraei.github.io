@@ -184,3 +184,10 @@
 - Status: DONE
 - Commit: this commit
 - Leftover: pre-existing dead ai-flow.js and UTF-16 extract.js; 509 intentional Lemon hotlinks
+
+## R01
+- [x] Hover audit via CDP on 6 pages: only .case-treat (card CTA) and .pr-benefit__link (pill CTA) gained an underline
+- [x] Removed the hover/focus underline from both; body-text links keep theirs
+- Status: DONE
+- Commit: 8999f52
+- Leftover: footer text links still underline on hover (nav links, not button-like)
