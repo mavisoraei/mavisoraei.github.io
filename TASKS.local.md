@@ -191,3 +191,11 @@
 - Status: DONE
 - Commit: 8999f52
 - Leftover: footer text links still underline on hover (nav links, not button-like)
+
+## R02
+- [x] FAQ summary and answer text set to text-align:start; block margin start-aligned
+- [x] FAQ section title restated as centred on inner pages (main h2 reset outranked it)
+- [x] Glass card, plus/minus icon, hover lift and details animation untouched
+- Status: DONE
+- Commit: 180a4ce
+- Leftover: none

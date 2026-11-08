@@ -26,6 +26,7 @@ Status: COMPLETE (autopilot) · RUNNING (review)
 | T31 | DONE | db804d2 | Hidden second `h1` demoted; exactly one `h1` on `index.html`. |
 | T99 | DONE | this commit | Final smoke, JS syntax, link and localization checks pass; 2 pre-existing JS syntax failures reported. |
 | R01 | DONE | 8999f52 | Hover underline removed from card and pill CTAs only. |
+| R02 | DONE | 180a4ce | FAQ question/answer left-aligned; title stays centred. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -172,10 +173,17 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - Verified at 1440 and 390 with `_tools/r01-verify.js`: `decoration: none`, `border-bottom: 0px none`, `::after: none`.
 - Cache queries bumped: `home-sections.css?v=1.0.8`, `inner-unify.css?v=1.2.3`.
 
+## R02 — FAQ alignment
+- `.faq-item summary` and `.faq-item p` now use `text-align: start`; the answer block lost `margin-inline: auto` so it starts at the card's text edge.
+- The shared `.faq h2` centre rule was being outranked on inner pages by `main h2:not(#_)`; added `main .faq h2:not(#_)` in `inner-unify.css` so the "FAQ" title stays centred everywhere.
+- Glass card, `+`/`−` icon, hover lift and `::details-content` animation are unchanged (verified via computed styles).
+- Cache queries bumped: `style.css?v=1.0.37`, `inner-unify.css?v=1.2.5`.
+
 ## ASSUMPTIONS
 - `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
 - `REVIEW-QUEUE.local.md` holds the review queue verbatim, is gitignored and intentionally left untracked. Review work happens on `review-nov26`.
 - R01 treats footer and mega-nav text links as inline text links, so they keep their hover underline; only card CTAs and pill CTAs were changed.
+- R02 keeps the 62ch answer measure and the existing card padding; only alignment changed. The `style.css` cache bump touches all 214 HTML files because every page shares it.
 - T30b demo values are placeholders, not a real clinic address or phone number. Sample USD prices are illustrative and must not be treated as a currency conversion.
 - The 13 built pages are marked `<meta name="robots" content="noindex, nofollow">` because the demo values and sample prices must not be indexed.
 - T30b removed JSON-LD `Offer`/`AggregateOffer` blocks rather than publishing sample prices in structured data.
