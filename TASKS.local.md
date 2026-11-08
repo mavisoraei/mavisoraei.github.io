@@ -174,3 +174,13 @@
 - Status: DONE
 - Commit: db804d2
 - Leftover: none
+
+## T99
+- [x] Final smoke PASS on all 13 pages at 1440 and 390
+- [x] node --check over 94 JS files; 2 pre-existing failures reported (extract.js UTF-16, assets/js/ai-flow.js dead duplicate declaration)
+- [x] check-links: 3107 local refs, 0 missing, 0 case mismatches
+- [x] JSON-LD: 18/18 blocks parse
+- [x] Localization re-search: 0 Iran-specific traces in scope; 4 legacy CSS installment selectors + 5 dir=rtl rules remain
+- Status: DONE
+- Commit: this commit
+- Leftover: pre-existing dead ai-flow.js and UTF-16 extract.js; 509 intentional Lemon hotlinks

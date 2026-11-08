@@ -408,8 +408,6 @@ url,references,group
 "https://lemonclinic.org/images/gallery/nb-63-960.avif",2,images
 "https://lemonclinic.org/images/gallery/nb-63-960.webp",4,images
 "https://lemonclinic.org/images/logo/logo-icon.png",6,images
-"https://lemonclinic.org/images/logo/logo-icon.svg",9,images
-"https://lemonclinic.org/images/logo/logo-wordmark.svg",9,images
 "https://lemonclinic.org/images/og/aineh-mirror-og.jpg",2,images
 "https://lemonclinic.org/images/og/clinic-building.jpg",2,images
 "https://lemonclinic.org/images/og/manategh.jpg",2,images
@@ -510,4 +508,3 @@ url,references,group
 "https://lemonclinic.org/images/services/services-500.webp",1,images
 "https://lemonclinic.org/images/services/services-768.avif",1,images
 "https://lemonclinic.org/images/services/services-768.webp",2,images
-"https://lemonclinic.org/mascot/full-v2/mascot.webp",9,mascot

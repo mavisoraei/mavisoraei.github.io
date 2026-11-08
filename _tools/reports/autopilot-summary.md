@@ -2,7 +2,7 @@
 
 Branch: `autopilot-oct26` · Queue: T00 → T15b → T22 → T23 → T24 → T30a → T30b → T23b → T27 → T28 → T26 → T25 → T29 → T31 → T99
 
-Status: RUNNING
+Status: COMPLETE
 
 ## Task log
 
@@ -18,6 +18,11 @@ Status: RUNNING
 | T23b | DONE | e72cee4 | `doctors.html` cards warmed and centred; equal photo/copy heights. |
 | T27 | DONE | 6660579 | Laser/facial body split into 300px label + 760px reading column. |
 | T28 | DONE | 279e8f3 | Pricing top rebuilt; sticky chips; 15 glass price cards; CTA band. |
+| T26 | DONE | 2e5b6c0 | Gallery filters rebuilt as one glass panel with a doctor popover. |
+| T25 | DONE | 5a19d7c | Shared footer rebuilt with a glass CTA card and four link columns. |
+| T29 | DONE | 3ece1b6 | 9 link-space/punctuation fixes; stray "See it." removed. |
+| T31 | DONE | db804d2 | Hidden second `h1` demoted; exactly one `h1` on `index.html`. |
+| T99 | DONE | this commit | Final smoke, JS syntax, link and localization checks pass; 2 pre-existing JS syntax failures reported. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -143,6 +148,19 @@ Smoke **PASS**. No other text changed.
 - The only visible `h1` is now the hero title `h1.lm-hero-v2__title` ("Your beauty, beautifully understood.").
 - The second `h1.lm-hero-giant` (the decorative "Beauty Clinic" wordmark, hidden with `sr-only visually-hidden`) was demoted to `<p>` with the same classes and `id="lm-hero-title"`, so its `.lm-hero-giant` styling and the hero's `aria-labelledby` target are unchanged.
 - Smoke **PASS**: `index.html` reports `h1=1` at 1440x900 and 390x844.
+
+## T99 - Final verification
+| Check | Command | Result |
+|---|---|---|
+| Smoke (13 pages x 1440/390) | `node _tools/smoke/smoke.js` | **SMOKE PASS**; 0 console errors, 0 page errors, 0 failed same-origin requests, no overflow, `h1=1` on every page |
+| JS syntax | `node --check` over 94 JS files | 92 pass; 2 **pre-existing** failures: `extract.js` is UTF-16 (helper, not loaded by the site) and `assets/js/ai-flow.js` redeclares `const url` (dead file, referenced by no HTML) |
+| Local links | `node _tools/check-links.js` | 31 files, **3107** local refs, **0** missing, **0** case mismatches |
+| JSON-LD | `node _tools/validate-jsonld.js` | **18/18** blocks parse |
+| Localization re-search | `node _tools/after-scan.js` | 0 Toman/Persian digits/Tehran/West Tehran/Chitgar/District 22/Kharazi/Ardestani/Parseh/Iran Mall/Iranian/Neshan/Balad/+98/021/0912/090/Tehran time/TTAC/Enamad/licence text/1405/price index/payment apps/area links/`fa-IR` |
+| Known CSS leftovers | `node _tools/after-scan.js` | 4 legacy `installment` selectors + 5 generic `dir="rtl"` rules in `style.css` / `inner-unify.css`; unused by the 13 built pages (recorded since T30b) |
+| Hotlinked Lemon images | `node _tools/after-scan.js` | 509 unique images remain intentionally hotlinked; listed in `_tools/reports/localization-hotlinks-after.csv` |
+
+All queue tasks are DONE. No task was marked BLOCKED and no destructive command was needed.
 
 ## ASSUMPTIONS
 - `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
