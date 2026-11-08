@@ -139,6 +139,11 @@ Ambiguous, left unchanged (doctor name followed by a role caption, so no sentenc
 
 Smoke **PASS**. No other text changed.
 
+## T31 - One h1 on index.html
+- The only visible `h1` is now the hero title `h1.lm-hero-v2__title` ("Your beauty, beautifully understood.").
+- The second `h1.lm-hero-giant` (the decorative "Beauty Clinic" wordmark, hidden with `sr-only visually-hidden`) was demoted to `<p>` with the same classes and `id="lm-hero-title"`, so its `.lm-hero-giant` styling and the hero's `aria-labelledby` target are unchanged.
+- Smoke **PASS**: `index.html` reports `h1=1` at 1440x900 and 390x844.
+
 ## ASSUMPTIONS
 - `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
 - T30b demo values are placeholders, not a real clinic address or phone number. Sample USD prices are illustrative and must not be treated as a currency conversion.
@@ -154,6 +159,7 @@ Smoke **PASS**. No other text changed.
 - T25 leaves the pre-existing `.ga-row` doctor-carousel overflow at 1024px alone; it is unrelated to the footer and is clipped below 1000px.
 - T29 adds a full stop rather than a semicolon or comma where a link ends a sentence and the next clause starts with a capital letter; the "we have calculated / we have written" cases only needed the missing space because the queue gave them as the canonical missing-space examples.
 - T29 leaves doctor name + role captions unchanged because "Dr. Name Role" is a valid caption pattern, not a demonstrably missing punctuation mark.
+- T31 demotes the second `h1` to a `<p>` rather than an `h2` because it is a decorative, visually hidden wordmark and is not a section heading; keeping the class and id preserves both its styling and the hero's accessible name.
 
 ## BLOCKED
 - None.

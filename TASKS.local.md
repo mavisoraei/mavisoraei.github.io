@@ -168,9 +168,9 @@
 - Leftover: ambiguous captions listed in the summary for manual review
 
 ## T31
-- [ ] Keep exactly one visible `h1` in `index.html` (hero title)
-- [ ] Demote the other `h1` to an equivalent `h2` or styled `p` without changing its appearance
-- [ ] Verify with the smoke test
-- Status: TODO
-- Commit: —
-- Leftover: —
+- [x] Kept the single visible `h1.lm-hero-v2__title` ("Your beauty, beautifully understood.")
+- [x] Demoted the hidden decorative `h1.lm-hero-giant` wordmark to `<p>` with the same classes and `id="lm-hero-title"`; `.lm-hero-giant` styles keep its appearance and the hero `aria-labelledby` target intact
+- [x] Smoke PASS with `h1=1` on `index.html` at 1440 and 390
+- Status: DONE
+- Commit: db804d2
+- Leftover: none
