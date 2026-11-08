@@ -190,8 +190,9 @@
 }
 .case-treat:hover,
 .case-treat:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  /* R01 — card CTAs never grow an underline on hover; the whole card is the
+     affordance. */
+  text-decoration: none;
 }
 
 .case-doc {

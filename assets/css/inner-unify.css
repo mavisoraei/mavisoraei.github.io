@@ -2243,8 +2243,8 @@ main:has(.pr-hero) .pr-benefit__link {
 
 main:has(.pr-hero) .pr-benefit__link:hover,
 main:has(.pr-hero) .pr-benefit__link:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: .2em;
+  /* R01 — pill-style CTA, no underline on hover/focus. */
+  text-decoration: none;
 }
 
 /* --- sticky chip bar ----------------------------------------------------- */
