@@ -118,6 +118,27 @@ Status: RUNNING
 - Pages updated (13): index, laser, facial, services, doctors, blog, areas, gallery, gallery_new, prices, contact, ai-analysis, face-analysis. Implemented once in `_tools/partials/footer.html` and applied with `_tools/apply-footer.js`; `style.css` bumped to `1.0.36`.
 - Smoke **PASS** at 1440x900 and 390x844 on all 13 pages. Screenshots `_tools/reports/t25-*.png` are untracked.
 
+## T29 - Copy artifacts
+Scanned all 13 built pages with `_tools/find-t29.js` for `</a>[A-Za-z]`, `See it.`, `</a> [A-Z]` and the two examples in the queue. The "Prices 2026we" and "Customer Club Beyond this price list" examples no longer exist verbatim; the closest live cases are below.
+
+Applied (9):
+- `laser.html`: `Hair Removal Laser Prices 2026</a>we have calculated.` -> `...2026</a> we have calculated.`
+- `laser.html`: `Alexandrite or Diode Laser: Which Is Better?</a>we have written.` -> `...</a> we have written.`
+- `doctors.html`: `About Us</a> See it.</p>` -> `About Us</a>.</p>` (stray "See it." removed)
+- `services.html`: `real cases of the same treatment</a> If you are unsure` -> `...</a>. If you are unsure`
+- `doctors.html`: `Dr. Atefeh Norouhmohammadi</a>` + newline + `They are part` -> `...</a>.` + newline + `They are part`
+- `doctors.html`: `Case Gallery</a> You can see it by filtering` -> `...</a>. You can see it by filtering`
+- `face-analysis.html`: `Spartina Calculator</a> It helps you alongside` -> `...</a>. It helps you alongside`
+- `index.html`: `Lemon Medical Aesthetic Clinic</a> In Nisantasi, near` -> `...</a>. In Nisantasi, near`
+- `facial.html`: `skin care routine matched to your skin type</a> At home` -> `...</a>. At home`
+
+Ambiguous, left unchanged (doctor name followed by a role caption, so no sentence punctuation is obviously missing):
+- `laser.html`, `facial.html`, `services.html`: `Dr. Mostafa Hoosavi</a> General physician, ...`
+- `laser.html`, `facial.html`, `services.html`: `Dr. Shadi Ghafouri</a> Dentist, founder and clinic director`
+- `doctors.html`: `Dr. Gholizadeh</a> Researcher & Science Writer <a ...>Lemon Magazine</a> and injections ...`
+
+Smoke **PASS**. No other text changed.
+
 ## ASSUMPTIONS
 - `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
 - T30b demo values are placeholders, not a real clinic address or phone number. Sample USD prices are illustrative and must not be treated as a currency conversion.
@@ -131,6 +152,8 @@ Status: RUNNING
 - T25 keeps the footer's small accordion/year script inline in the shared partial, matching the inline `[data-year]` script already present on every built page; it is not added to `app.js` to avoid a second year handler and an `app.js` cache bump.
 - T25's 2-column breakpoint is 1279px, not the literal 1000px, because the 5-column grid cannot fit the 944px container at 1024px without overflow. At 1000px and below the layout is 2 columns as required.
 - T25 leaves the pre-existing `.ga-row` doctor-carousel overflow at 1024px alone; it is unrelated to the footer and is clipped below 1000px.
+- T29 adds a full stop rather than a semicolon or comma where a link ends a sentence and the next clause starts with a capital letter; the "we have calculated / we have written" cases only needed the missing space because the queue gave them as the canonical missing-space examples.
+- T29 leaves doctor name + role captions unchanged because "Dr. Name Role" is a valid caption pattern, not a demonstrably missing punctuation mark.
 
 ## BLOCKED
 - None.
@@ -144,4 +167,5 @@ Status: RUNNING
 - [ ] T28: open `prices.html` at desktop and mobile; confirm the three note cards, the sticky chip bar, the 760px glass price column, row hover, and the closing CTA band.
 - [ ] T26: open `gallery.html` at desktop and mobile; confirm the panel alignment, 40px chips, doctor popover/initials, result count and clear button.
 - [ ] T25: open any built page and confirm the glass CTA card, one-logo footer, 4 link columns, accordion at <=640px and the current-year bar.
+- [ ] T29: review the 7 ambiguous doctor name/role captions listed above and decide whether they need punctuation.
 - [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.

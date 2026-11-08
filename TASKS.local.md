@@ -158,6 +158,15 @@
 - Commit: 5a19d7c
 - Leftover: local screenshots `_tools/reports/t25-*.png` and the captured old footer are untracked
 
+## T29
+- [x] Scanned all 13 built pages for `</a>[A-Za-z]`, `See it.`, `</a> [A-Z]` and the known "Prices 2026we" / "Customer Club Beyond" examples
+- [x] Applied 9 unambiguous fixes: 2 missing spaces in `laser.html`; 7 missing sentence punctuation in index, facial, services, doctors and face-analysis; removed the stray "See it." in `doctors.html`
+- [x] Listed 7 ambiguous doctor name/role captions without adding punctuation
+- [x] Smoke PASS; no other text changes
+- Status: DONE
+- Commit: 3ece1b6
+- Leftover: ambiguous captions listed in the summary for manual review
+
 ## T31
 - [ ] Keep exactly one visible `h1` in `index.html` (hero title)
 - [ ] Demote the other `h1` to an equivalent `h2` or styled `p` without changing its appearance
