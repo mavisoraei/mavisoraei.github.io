@@ -1,14 +1,14 @@
 # Smoke test — latest run
 
-- Date: 2026-11-08T07:42:02.497Z
+- Date: 2026-11-08T07:44:23.681Z
 - Pages: 13 × 2 viewports (1440×900, 390×844 touch)
 - Baseline: `smoke-baseline.json`
 - Result: **SMOKE PASS**
 
 | Page | Width | Console | Page errors | Failed same-origin | Failed other | Overflow | H1 | New issues |
 |---|---:|---:|---:|---:|---:|---|---:|---:|
-| index | 1440 | 0 | 0 | 0 | 0 | no | 2 | 0 |
-| index | 390 | 0 | 0 | 0 | 0 | no | 2 | 0 |
+| index | 1440 | 0 | 0 | 0 | 0 | no | 1 | 0 |
+| index | 390 | 0 | 0 | 0 | 0 | no | 1 | 0 |
 | laser | 1440 | 0 | 0 | 0 | 0 | no | 1 | 0 |
 | laser | 390 | 0 | 0 | 0 | 0 | no | 1 | 0 |
 | facial | 1440 | 0 | 0 | 0 | 0 | no | 1 | 0 |

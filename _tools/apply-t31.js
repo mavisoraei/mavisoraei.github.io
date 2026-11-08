@@ -1,0 +1,11 @@
+'use strict';
+const fs = require('fs');
+const f = 'index.html';
+let t = fs.readFileSync(f, 'utf8');
+const from = '<h1 class="lm-hero-giant sr-only visually-hidden" id="lm-hero-title"><span>Beauty</span><span>Clinic</span></h1>';
+const to = '<p class="lm-hero-giant sr-only visually-hidden" id="lm-hero-title"><span>Beauty</span><span>Clinic</span></p>';
+const count = t.split(from).length - 1;
+if (count !== 1) throw new Error('expected 1 match, got ' + count);
+t = t.replace(from, to);
+fs.writeFileSync(f, t, 'utf8');
+console.log('ok');
