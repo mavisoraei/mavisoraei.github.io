@@ -227,6 +227,9 @@ navigation         .site-header .nav-desktop .mega-panel .mobile-drawer
   --cream: var(--background);
   --cream-soft: var(--secondary);
   --surface: var(--card);
+  /* The closing colour of the home sheet gradient (`arch-intro.css`, section 8a).
+     Used to run the page background past the sheet to the footer with no seam. */
+  --page-end: #f6f3ec;
   --line: var(--border);
   --ink: var(--foreground);
   --ink-soft: var(--muted-foreground);
@@ -12149,7 +12152,17 @@ html body :is(.btn-pill:not(.btn-pill--dark)):not([hidden]):not(#_):hover {
 .ft25-cta-zone {
   position: relative;
   z-index: 4;
-  padding-block: clamp(2rem, 5vw, 4rem) 0;
+  /* R03 — keep at least 56px (up to ~112px) of page background between the CTA
+     card and the footer. */
+  padding-block: clamp(2rem, 5vw, 4rem) clamp(3.5rem, 7vw, 7rem);
+}
+
+/* R03 — on home the fixed lobby photograph (`#arch-intro-photo`) sits behind
+   everything outside `.sheet`, so without a fill it showed through this section
+   and cut hard against the footer. Paint the sheet's closing cream here so the
+   page background runs unbroken from the last section to the footer. */
+body.arch-intro:not(.classic-layout):not(.classic-mode) .ft25-cta-zone {
+  background-color: var(--page-end);
 }
 
 .ft25-cta {
