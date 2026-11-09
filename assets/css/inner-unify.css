@@ -2669,3 +2669,59 @@ main:has(.pr-hero) #dose:not(#_) {
 main .lm-svc-hero .lm-svc-reviewed:not(#_) {
   font-size: .875rem;
 }
+
+/* R07 -- doctors page: left-aligned cards and calmer lower sections. */
+.spread-copy {
+  text-align: start;
+}
+
+.spread-copy h2 {
+  text-align: start;
+}
+
+.role,
+.doc-hours-line {
+  text-align: start;
+}
+
+.cred {
+  justify-items: stretch;
+}
+
+.cred li {
+  text-align: start;
+}
+
+/* One soft diffuse shadow on the photo panel; no border or hard edge on the image. */
+.spread-photo {
+  overflow: hidden;
+  box-shadow: 0 26px 64px -34px rgba(42, 38, 34, .38);
+}
+
+.spread-photo img {
+  border: 0;
+  box-shadow: none;
+}
+
+.spread-photo-link:hover img {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+main .docs-more h2:not(#_) {
+  margin-block: 2.25em .5em;
+  font-size: clamp(1.5rem, 1.7vw, 2rem);
+  line-height: 1.15;
+  text-align: start;
+}
+
+main .docs-more p:not(#_) {
+  max-width: 72ch;
+  margin-block: 0 1.1em;
+  line-height: 1.7;
+  text-align: start;
+}
+
+main .docs-more p:last-child:not(#_) {
+  margin-block-end: 0;
+}
