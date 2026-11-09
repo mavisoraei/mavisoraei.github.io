@@ -199,3 +199,11 @@
 - Status: DONE
 - Commit: 180a4ce
 - Leftover: none
+
+## R03
+- [x] Home CTA no longer shows the fixed lobby photo: .ft25-cta-zone is painted with the sheet closing cream (--page-end)
+- [x] CTA-to-footer gap now clamp(3.5rem, 7vw, 7rem) = 101px at 1440, 56px at 390 on all pages
+- [x] Pixel sample across the junction on home: rgb(245,242,235) above / rgb(246,243,236) below, no seam
+- Status: DONE
+- Commit: 393a266
+- Leftover: none

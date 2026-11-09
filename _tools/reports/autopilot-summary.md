@@ -27,6 +27,7 @@ Status: COMPLETE (autopilot) · RUNNING (review)
 | T99 | DONE | this commit | Final smoke, JS syntax, link and localization checks pass; 2 pre-existing JS syntax failures reported. |
 | R01 | DONE | 8999f52 | Hover underline removed from card and pill CTAs only. |
 | R02 | DONE | 180a4ce | FAQ question/answer left-aligned; title stays centred. |
+| R03 | DONE | 393a266 | Home CTA background seamless; 56-112px before the footer. |
 
 ## T22 — Outlined glass pill for section CTAs
 - Mapped 14 non-dark `.btn-pill` links to `.btn-secondary` across index, contact, laser, facial, services, prices.
@@ -179,11 +180,18 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - Glass card, `+`/`−` icon, hover lift and `::details-content` animation are unchanged (verified via computed styles).
 - Cache queries bumped: `style.css?v=1.0.37`, `inner-unify.css?v=1.2.5`.
 
+## R03 — Pre-footer CTA and footer
+- The fixed `#arch-intro-photo` (the lobby photograph, `position: fixed`, `z-index: 0`) was visible behind `.ft25-cta-zone` because that section lives outside `.sheet`. The section is now painted with `--page-end` (`#f6f3ec`, the closing colour of the sheet gradient), so the page background runs unbroken into the footer and the photo cannot show through.
+- `.ft25-cta-zone` bottom padding changed from `0` to `clamp(3.5rem, 7vw, 7rem)`: measured gap CTA-card → footer is 101px at 1440 and 56px at 390 on index, laser, facial, prices and doctors.
+- Pixel check across the junction at 1440 and 390: both sides of the seam read the same cream (246,243,236), so there is no hard cut.
+- Cache query bumped: `style.css?v=1.0.38`.
+
 ## ASSUMPTIONS
 - `QUEUE.local.md` is now exported in the project root from the recovered queue text. It is gitignored and intentionally left untracked.
 - `REVIEW-QUEUE.local.md` holds the review queue verbatim, is gitignored and intentionally left untracked. Review work happens on `review-nov26`.
 - R01 treats footer and mega-nav text links as inline text links, so they keep their hover underline; only card CTAs and pill CTAs were changed.
 - R02 keeps the 62ch answer measure and the existing card padding; only alignment changed. The `style.css` cache bump touches all 214 HTML files because every page shares it.
+- R03 paints the CTA zone with a flat cream (`--page-end`) rather than moving the footer partial inside `.sheet`; the sheet gradient is flat `#f6f3ec` at 100%, so the flat fill is an exact continuation. Pixel sampling used a small PNG decoder in `_tools/r03-verify.js`.
 - T30b demo values are placeholders, not a real clinic address or phone number. Sample USD prices are illustrative and must not be treated as a currency conversion.
 - The 13 built pages are marked `<meta name="robots" content="noindex, nofollow">` because the demo values and sample prices must not be indexed.
 - T30b removed JSON-LD `Offer`/`AggregateOffer` blocks rather than publishing sample prices in structured data.
