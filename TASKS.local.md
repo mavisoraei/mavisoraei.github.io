@@ -218,3 +218,4 @@
 ## R05 - DONE - label H2 24.5px/1.15, free of 3-4 line wraps at 1440; label column sticky at 157px (stops at section end); laser intro H2 'About laser hair removal' (#overview). Leftover: longest mobile H2 wraps 3 lines.
 ## R06 - DONE - supervised card 18px padding and 6px line gaps (32px to docs); review meta 14px; intro full width 1160px; two-up 4/3 figures 568x425 each, 28px radius; relaxing callout at container edge. Leftover: none.
 ## R07 - DONE - doctor cards left-aligned incl. check-mark list; image border/shadow removed in favour of one soft panel shadow on all cards; lower sections H2 24.5px with 2.25em top gap, 1.1em paragraphs, 1.7 line-height, 72ch measure at container edge. Leftover: none.
+## R08 - DONE - price cards span the full container (144,1296 at 1440; 46,344 at 390) matching notes/chip bar; tabular price column and row hover kept; laser tables fit at 390, #dose keeps its designed six-column scroller. Leftover: none.

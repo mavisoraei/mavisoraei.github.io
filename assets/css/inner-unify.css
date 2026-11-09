@@ -2259,9 +2259,12 @@ main:has(.pr-hero) .lm-svc-tocbar__in:not(#_) {
 }
 
 /* --- one reading column -------------------------------------------------- */
+/* R08 — price cards use the full container axis, matching the hero notes,
+   chip bar and closing CTA; the shared tabular price column stays intact. */
 main:has(.pr-hero) .pr-grid--single:not(#_) {
   display: block;
-  max-width: var(--content);
+  width: 100%;
+  max-width: var(--container);
   margin-inline: auto;
 }
 
@@ -2540,7 +2543,20 @@ main:has(.pr-hero) #dose:not(#_) {
   }
 
   main:has(.pr-hero) .pr-grid--single:not(#_) {
-    max-width: 100%;
+    max-width: var(--container);
+  }
+
+  /* R08 — at phone width the laser tables use the stacked row layout
+     instead of the fixed column canvas, so they fit the card. The #dose
+     table keeps its six columns and scrolls by design. */
+  main:has(.pr-hero) .lp-scroll .pr-table:not(#_):not(#_) {
+    min-width: 0;
+    width: 100%;
+    table-layout: auto;
+  }
+
+  main:has(.pr-hero) .pr-table tbody td:not(#_) {
+    flex-wrap: wrap;
   }
 
   main:has(.pr-hero) .pr-note:not(#_) {
