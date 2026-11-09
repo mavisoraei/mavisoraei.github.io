@@ -226,3 +226,4 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - R06 (this commit) DONE - facial supervised card, 14px meta, full-width intro, two-up figures, callout alignment; no leftovers.
 - R07 (this commit) DONE - doctors cards left-aligned, unified soft photo shadow, lower sections 24.5px H2/72ch; no leftovers.
 - R08 (this commit) DONE - price cards full container axis (144-1296 / 46-344), shared tabular column and hover intact, laser tables fit at 390, dose scroller unchanged. Leftover: none.
+- R09 (this commit) DONE - face-analysis article left edge 144px matching the hero cards, text measure 72ch/734px, mobile 46px. Leftover: 360px illustration stays centred.
