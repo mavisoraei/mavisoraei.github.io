@@ -215,3 +215,5 @@
 - Status: DONE
 - Commit: this commit
 - Leftover: none
+## R05 - DONE - label H2 24.5px/1.15, free of 3-4 line wraps at 1440; label column sticky at 157px (stops at section end); laser intro H2 'About laser hair removal' (#overview). Leftover: longest mobile H2 wraps 3 lines.
+## R06 - DONE - supervised card 18px padding and 6px line gaps (32px to docs); review meta 14px; intro full width 1160px; two-up 4/3 figures 568x425 each, 28px radius; relaxing callout at container edge. Leftover: none.

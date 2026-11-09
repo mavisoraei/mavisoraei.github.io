@@ -222,3 +222,5 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - [ ] T29: review the 7 ambiguous doctor name/role captions listed above and decide whether they need punctuation.
 - [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.
 - R04 (this commit) DONE — text/template cleanup: Before labels, doctors copy, local-mirror removed (201 pages), skip-link + nav active; no leftovers.
+- R05 (this commit) DONE - sticky label H2 24.5px, laser overview H2; leftover mobile long H2 wraps 3 lines.
+- R06 (this commit) DONE - facial supervised card, 14px meta, full-width intro, two-up figures, callout alignment; no leftovers.

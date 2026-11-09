@@ -2562,3 +2562,110 @@ main:has(.pr-hero) #dose:not(#_) {
   color: var(--primary);
   font-weight: 700;
 }
+
+/* R05 - label-column rhythm: smaller H2, sticky within its section. */
+@media (min-width: 900px) {
+  .svc-sec__label {
+    align-self: start;
+    position: sticky;
+    top: 157px;
+  }
+
+  main .svc-sec__label h2:not(#_) {
+    position: static;
+    font-size: clamp(1.5rem, 1.7vw, 2rem);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  main .svc-sec__content h3:not(#_) {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  main .svc-sec__content h4:not(#_) {
+    font-size: 1.15rem;
+    line-height: 1.35;
+  }
+}
+
+@media (min-width: 1200px) {
+  .svc-sec {
+    grid-template-columns: minmax(180px, 400px) minmax(0, 720px);
+    column-gap: clamp(1.5rem, 3vw, 3rem);
+  }
+}
+
+@media (max-width: 899px) {
+  .svc-sec__label {
+    position: static;
+    top: auto;
+  }
+
+  main .svc-sec__label h2:not(#_) {
+    position: static;
+    top: auto;
+  }
+}
+
+/* R06 - - facial: full-width intro row and two-up figure row. */
+.svc-sec--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.svc-sec--full .svc-sec__label {
+  display: none;
+}
+
+.svc-sec--full .svc-sec__content > * {
+  grid-column: 1 / -1;
+}
+
+.svc-duo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+  margin-block: clamp(1.4rem, 4vw, 2.2rem);
+}
+
+.svc-duo .svc-fig {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.svc-duo .svc-fig img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* R06 - - the relaxing-session callout follows the container's left edge. */
+.svc-sec__content > .callout--media {
+  grid-column: 1 / -1;
+  text-align: start;
+}
+
+/* R06 - - supervised card breathing room and the quiet review line. */
+.lm-svc-sup {
+  padding: 18px 22px 18px 18px;
+}
+
+.lm-svc-sup__names {
+  margin-block-start: 6px;
+}
+
+.lm-svc-sup__role {
+  margin-block-start: 6px;
+}
+
+.lm-svc-docs {
+  margin-block-start: 24px;
+}
+
+main .lm-svc-hero .lm-svc-reviewed:not(#_) {
+  font-size: .875rem;
+}
