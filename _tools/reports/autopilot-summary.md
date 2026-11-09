@@ -227,3 +227,4 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - R07 (this commit) DONE - doctors cards left-aligned, unified soft photo shadow, lower sections 24.5px H2/72ch; no leftovers.
 - R08 (this commit) DONE - price cards full container axis (144-1296 / 46-344), shared tabular column and hover intact, laser tables fit at 390, dose scroller unchanged. Leftover: none.
 - R09 (this commit) DONE - face-analysis article left edge 144px matching the hero cards, text measure 72ch/734px, mobile 46px. Leftover: 360px illustration stays centred.
+- R10 (this commit) DONE - 63 gallery figures unified at 18px radius, 4/3 cover, 50% 30%; intro sections aligned to the grid at 144/46px with 28.8px H2 and 72ch text. Leftover: none.
