@@ -2556,3 +2556,9 @@ main:has(.pr-hero) #dose:not(#_) {
     flex: 1 1 auto;
   }
 }
+
+/* Active section for pages whose top-level nav item is the Services mega menu. */
+.lm-menu details.mega.active > summary[aria-current="true"] {
+  color: var(--primary);
+  font-weight: 700;
+}

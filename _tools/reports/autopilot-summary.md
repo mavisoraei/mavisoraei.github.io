@@ -221,3 +221,4 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - [ ] T25: open any built page and confirm the glass CTA card, one-logo footer, 4 link columns, accordion at <=640px and the current-year bar.
 - [ ] T29: review the 7 ambiguous doctor name/role captions listed above and decide whether they need punctuation.
 - [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.
+- R04 (this commit) DONE — text/template cleanup: Before labels, doctors copy, local-mirror removed (201 pages), skip-link + nav active; no leftovers.

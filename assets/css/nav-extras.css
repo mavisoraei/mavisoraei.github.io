@@ -296,3 +296,38 @@
     transform: rotate(180deg);
   }
 }
+
+/* Skip link: hidden until keyboard focus (generated inner pages included). */
+.skip-link:not(:focus) {
+  position: absolute;
+  inset-inline-start: -9999px;
+  inset-block-start: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  transform: none;
+}
+
+.skip-link:focus {
+  position: fixed;
+  inset-block-start: .6rem;
+  inset-inline-start: .6rem;
+  z-index: 9999;
+  width: auto;
+  height: auto;
+  padding: .6rem 1rem;
+  overflow: visible;
+  background: #2a2622;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+}
+
+/* Active section where the top-level nav item is the Services mega menu. */
+.lm-menu details.mega.active > summary[aria-current="true"] {
+  color: var(--primary);
+  font-weight: 700;
+}

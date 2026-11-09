@@ -207,3 +207,11 @@
 - Status: DONE
 - Commit: 393a266
 - Leftover: none
+
+## R04
+- [x] laser 'ago:' and face-analysis 'ago' caption now read 'Before'; doctors garbled paragraph rewritten; 'the the' and spaced comma fixed
+- [x] Removed ' (local mirror)' from 201 generated titles/H1s and from placeholder pages
+- [x] .skip-link hidden until keyboard focus on generated pages (nav-extras.css); Services marked active on service pages, Home no longer active
+- Status: DONE
+- Commit: this commit
+- Leftover: none
