@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-11-10T07:06:10.551Z",
+  "createdAt": "2026-11-10T07:09:58.444Z",
   "baselineUsed": true,
   "pass": true,
   "newIssues": [],
@@ -19,7 +19,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-h2eqq2 right=1481",
+        "#nav-svc-iadxp4 right=1481",
         "li right=1443",
         "a right=1443",
         "div.mega-group right=1496"
@@ -35,9 +35,11 @@
       "failedSameOrigin": [],
       "failedOther": [],
       "overflow": false,
-      "scrollWidth": 392,
-      "innerWidth": 392,
-      "offenders": [],
+      "scrollWidth": 391,
+      "innerWidth": 390,
+      "offenders": [
+        "div.intro__ring right=396"
+      ],
       "h1Count": 1,
       "h1Text": "Your beauty,beautifully understood."
     },
@@ -56,7 +58,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-irtu2y right=1481",
+        "#nav-svc-ogzklh right=1481",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1496"
@@ -95,10 +97,10 @@
         "div.mega-groups right=2084",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-xcxsfv right=1480",
+        "#nav-svc-uzg4xc right=1480",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-vsygb4 right=1480"
+        "#nav-svc-nwhf2x right=1480"
       ],
       "h1Count": 1,
       "h1Text": "Facial"
@@ -134,10 +136,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-58cytc right=1479",
+        "#nav-svc-5uo7rw right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-cglzqw right=1479"
+        "#nav-svc-r4kvy2 right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Lemon Clinic Services"
@@ -171,7 +173,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1496",
         "a.mega-group-title.mega-group-link right=1481",
-        "#nav-svc-nb126x right=1481",
+        "#nav-svc-gro4qp right=1481",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1496"
@@ -208,10 +210,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-hfibcv right=1479",
+        "#nav-svc-j39tn5 right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-9u7f4d right=1479"
+        "#nav-svc-k6v7c0 right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Lemon Magazine"
@@ -245,10 +247,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-hef7tq right=1479",
+        "#nav-svc-fnzlzk right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-57h2u9 right=1479"
+        "#nav-svc-4826fh right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Visit the Clinic"
@@ -282,10 +284,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-5a3w9q right=1479",
+        "#nav-svc-1ovo0c right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-7gluch right=1479"
+        "#nav-svc-nu6sxa right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Cases, real before and after"
@@ -319,10 +321,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-t487o9 right=1479",
+        "#nav-svc-91jtjz right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-j7q549 right=1479"
+        "#nav-svc-vw84i1 right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Cases, real before and after"
@@ -356,7 +358,7 @@
         "div.mega-groups right=2085",
         "div.mega-group right=1495",
         "a.mega-group-title.mega-group-link right=1480",
-        "#nav-svc-u73bi5 right=1480",
+        "#nav-svc-d777qj right=1480",
         "li right=1442",
         "a right=1442",
         "div.mega-group right=1495"
@@ -393,10 +395,10 @@
         "div.mega-groups right=2083",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-j7un5c right=1479",
+        "#nav-svc-zx4gt7 right=1479",
         "div.mega-group right=1494",
         "a.mega-group-title.mega-group-link right=1479",
-        "#nav-svc-ewtn5p right=1479"
+        "#nav-svc-cyy8fl right=1479"
       ],
       "h1Count": 1,
       "h1Text": "Contact & Book Appointment"
@@ -430,7 +432,7 @@
         "div.mega-groups right=2087",
         "div.mega-group right=1498",
         "a.mega-group-title.mega-group-link right=1483",
-        "#nav-svc-st08qe right=1483",
+        "#nav-svc-7fzjml right=1483",
         "li right=1462",
         "a right=1462"
       ],
@@ -466,7 +468,7 @@
         "div.mega-groups right=2087",
         "div.mega-group right=1498",
         "a.mega-group-title.mega-group-link right=1483",
-        "#nav-svc-a3htkc right=1483",
+        "#nav-svc-c67mnn right=1483",
         "li right=1445",
         "a right=1445",
         "div.mega-group right=1498"
