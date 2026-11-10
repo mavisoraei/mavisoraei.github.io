@@ -110,7 +110,8 @@
     chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>',
     prev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>',
-    next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>'
+    next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>',
+    cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>'
   };
 
   const buildForm = function () {
@@ -236,6 +237,7 @@
     /* success state */
     const success = el('div', 'bk-success');
     success.setAttribute('hidden', '');
+    success.setAttribute('role', 'status');
     const sucImg = el('img', 'bk-suc-img');
     sucImg.src = SUCCESS_IMG;
     sucImg.alt = '';
@@ -244,13 +246,27 @@
     sucImg.loading = 'lazy';
     sucImg.decoding = 'async';
     const sucH = el('h3', 'bk-suc-title', 'Request received');
-    const sucText = el('p', 'bk-suc-text');
-    const done = el('button', 'bk-suc-done btn-pill', 'Done');
+    const sucCard = el('div', 'bk-suc-card');
+    const sucIcon = el('span', 'bk-suc-icon', ICONS.cal);
+    sucIcon.setAttribute('aria-hidden', 'true');
+    const sucWhen = el('span', 'bk-suc-when');
+    const sucDate = el('span', 'bk-suc-date');
+    const sucTime = el('span', 'bk-suc-time');
+    const sucText = el('span', 'bk-suc-text', 'We will confirm by phone shortly.');
+    sucWhen.appendChild(sucDate);
+    sucWhen.appendChild(sucTime);
+    sucWhen.appendChild(sucText);
+    sucCard.appendChild(sucIcon);
+    sucCard.appendChild(sucWhen);
+    const done = el('button', 'bk-suc-done btn-pill btn-pill--dark', 'Done');
     done.type = 'button';
+    const addCal = el('button', 'bk-suc-ics', 'Add to calendar');
+    addCal.type = 'button';
     success.appendChild(sucImg);
     success.appendChild(sucH);
-    success.appendChild(sucText);
+    success.appendChild(sucCard);
     success.appendChild(done);
+    success.appendChild(addCal);
 
     form.appendChild(success);
 
@@ -378,6 +394,7 @@
       nameIn.value = ''; phoneIn.value = ''; notesIn.value = '';
       clearMsgs();
       success.setAttribute('hidden', '');
+      if (form.parentNode) form.parentNode.classList.remove('is-success');
       form.hidden = false;
       refresh();
     };
@@ -402,12 +419,52 @@
       }
     };
 
+    const icsStamp = function (d) {
+      return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    };
+    const downloadIcs = function () {
+      if (!state.date || !state.time) return;
+      const p = state.date.split('-');
+      const hm = state.time.split(':');
+      /* BOOKING.timezone is Europe/Istanbul, a fixed UTC+3 offset. */
+      const start = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2], +hm[0], +hm[1]) - 3 * 60 * 60 * 1000);
+      const end = new Date(start.getTime() + BOOKING.slotMinutes * 60 * 1000);
+      const svc = SERVICES.filter(function (s) { return s.value === state.service; })[0].label;
+      const lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Lemon Clinic//Booking//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        'UID:' + Date.now() + '@lemonclinic.org',
+        'DTSTAMP:' + icsStamp(new Date()),
+        'DTSTART:' + icsStamp(start),
+        'DTEND:' + icsStamp(end),
+        'SUMMARY:Lemon Clinic - ' + svc,
+        'DESCRIPTION:Consultation request received. The clinic will confirm by phone shortly.',
+        'LOCATION:Lemon Clinic',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ];
+      const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'lemon-clinic-consultation.ics';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    };
+
     const showSuccess = function () {
-      const now = clinicNow();
-      sucText.textContent = fmtLong(state.date) + ' at ' + state.time + ' (clinic time). We will confirm by phone shortly.';
+      sucDate.textContent = fmtLong(state.date);
+      sucTime.textContent = state.time + ' \u00b7 clinic time';
       /* The panel is built around a hidden form: keep the success block a
          sibling, or `form.hidden` would hide it too. */
       if (success.parentNode === form) form.parentNode.insertBefore(success, form.nextSibling);
+      if (form.parentNode) form.parentNode.classList.add('is-success');
       form.hidden = true;
       success.removeAttribute('hidden');
     };
@@ -476,6 +533,7 @@
       var dlg = form.closest('dialog');
       if (dlg && dlg.open) closeDialog(dlg);
     });
+    addCal.addEventListener('click', downloadIcs);
 
     /* initial view = current clinic month */
     const now = clinicNow().date;

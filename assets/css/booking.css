@@ -330,6 +330,10 @@
 
 /* --- success state --- */
 .bk-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 8px 0 4px;
 }
@@ -338,31 +342,116 @@
   display: none;
 }
 
+/* The heading belongs to the form flow: hide it while the receipt is shown. */
+.booking-dialog.is-success .cm-eyebrow,
+.booking-dialog.is-success .cm-title,
+.booking-dialog.is-success .cm-desc,
+.bk-inline-box.is-success > .cm-eyebrow,
+.bk-inline-box.is-success > .cm-title,
+.bk-inline-box.is-success > .cm-desc {
+  display: none;
+}
+
 .bk-suc-img {
   display: block;
-  width: 116px;
+  width: 92px;
   height: auto;
-  margin: 0 auto 14px;
+  margin: 0 auto 12px;
 }
 
 .bk-suc-title {
-  margin: 0 0 8px;
+  margin: 0 0 16px;
   font-family: var(--font-heading);
-  font-size: 28px;
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 500;
+  line-height: 1.15;
   color: #2a2622;
 }
 
-.bk-suc-text {
-  margin: 0 auto 20px;
+.bk-suc-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
   max-width: 320px;
+  margin: 0 0 20px;
+  padding: 13px 16px;
+  background: #fffdf9;
+  border: 1px solid rgba(184, 160, 112, .35);
+  border-radius: 16px;
+  text-align: left;
+}
+
+.bk-suc-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(184, 160, 112, .14);
+  color: #8c7040;
+}
+
+.bk-suc-icon svg {
+  display: block;
+  width: 19px;
+  height: 19px;
+}
+
+.bk-suc-when {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bk-suc-date {
+  font-family: var(--font-body), Jost, sans-serif;
   font-size: 15px;
-  line-height: 1.6;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #2a2622;
+}
+
+.bk-suc-time {
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #6b6258;
+}
+
+.bk-suc-text {
+  margin: 2px 0 0;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
   color: #6b6258;
 }
 
 .bk-suc-done {
+  width: 100%;
+  max-width: 280px;
   margin-inline: auto;
+}
+
+.bk-suc-ics {
+  margin: 10px 0 0;
+  padding: 8px 4px;
+  border: 0;
+  background: none;
+  font-family: var(--font-body), Jost, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b6258;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: color .18s ease;
+}
+
+.bk-suc-ics:hover {
+  color: #2a2622;
 }
 
 /* --- inline mount (contact.html) --- */
@@ -549,6 +638,11 @@ main .contact-local .hl-near:not(#_) {
   display: none;
 }
 
+/* Receipt: shrink the panel instead of stretching it to the viewport. */
+.contact-modal.booking-dialog.is-success {
+  height: max-content;
+}
+
 .booking-dialog .cm-eyebrow,
 .booking-dialog .cm-title,
 .booking-dialog .cm-desc {
@@ -622,10 +716,10 @@ main .contact-local .hl-near:not(#_) {
 /* Success state becomes a sibling of the hidden form (see booking.js) */
 .booking-dialog .bk-success {
   flex: 1 1 auto;
-  min-height: 0;
+  min-height: min(520px, calc(100dvh - 120px));
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 0 32px 24px;
+  padding: 32px;
 }
 
 /* Bottom sheet on phones: full width, still capped below the top edge */

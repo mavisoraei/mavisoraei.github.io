@@ -228,3 +228,4 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - R08 (this commit) DONE - price cards full container axis (144-1296 / 46-344), shared tabular column and hover intact, laser tables fit at 390, dose scroller unchanged. Leftover: none.
 - R09 (this commit) DONE - face-analysis article left edge 144px matching the hero cards, text measure 72ch/734px, mobile 46px. Leftover: 360px illustration stays centred.
 - R10 (this commit) DONE - 63 gallery figures unified at 18px radius, 4/3 cover, 50% 30%; intro sections aligned to the grid at 144/46px with 28.8px H2 and 72ch text. Leftover: none.
+- R11 (this commit) DONE - receipt hides header and centres mascot/title/card/CTA in a 520px panel (520x548 at 1440, 390 sheet at 390); .ics export is a 30-min Europe/Istanbul event. Leftover: none.
