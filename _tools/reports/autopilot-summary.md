@@ -231,3 +231,63 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - R11 (this commit) DONE - receipt hides header and centres mascot/title/card/CTA in a 520px panel (520x548 at 1440, 390 sheet at 390); .ics export is a 30-min Europe/Istanbul event. Leftover: none.
 - R12 (this commit) DONE - generated-article H1 is clamp(1.75rem,3.2vw,2.75rem)/1.15 (44px/1440, 28px/390) and the hero card now spans the 1152px container; body 16.8px/1.8. Reference scan: 201/201 generated pages mention Tehran in the shared footer, 7 Iranian, 1 CinnaGen; blog.html has 1 CinnaGen. Leftover: blog hero H1 remains 64px because it is full-width, not in a card.
 - R13 (this commit) DONE - _tools/reports/placeholder-links.md maps 81 nav/footer/home links to 201 placeholders; facial-fillers-2.html, mesogel-skin-boosters.html and botox.html are real T27 pages with sample USD prices and noindex; 198 other placeholders use a clean Coming soon card. Final smoke PASS, check-links 0 missing. Leftover: pre-existing syntax error in assets/js/ai-flow.js (duplicate `url`), not touched.
+
+## FINAL VERIFICATION — R01–R13 (2026-11-10)
+
+Final gate re-run after R13 (HEAD `db9e99c`). No site files changed in this step.
+
+| Task | Commit | Status | Leftover |
+|---|---|---|---|
+| R01 | `8999f52` | DONE | Footer/mega-nav text links keep hover underline by design |
+| R02 | `180a4ce` | DONE | None |
+| R03 | `393a266` | DONE | None |
+| R04 | `80b5bbf` | DONE | None |
+| R05 | `9031b84` | DONE | Longest mobile label H2 wraps 3 lines |
+| R06 | `9031b84` | DONE | None |
+| R07 | `11e33b3` | DONE | None |
+| R08 | `eed8f0a` | DONE | None |
+| R09 | `78922a2` | DONE | 360px illustration stays centred |
+| R10 | `0c527fa` | DONE | None |
+| R11 | `38b981f` | DONE | None |
+| R12 | `47ba1a6` | DONE | blog hero H1 stays 64px; generated article refs report-only |
+| R13 | `db9e99c` | DONE | `assets/js/ai-flow.js` pre-existing syntax error (file not loaded by any page) |
+
+### Final checks
+- `node _tools/smoke/smoke.js`: **PASS** — 13 pages × 1440/390 = 26 runs, 0 console errors, 0 page errors, 0 failed requests, no horizontal overflow, exactly one visible h1 per page.
+- `node --check` on all JS: **128/130 pass**. Failures: `extract.js` (UTF-16 encoded throwaway tool script, not site code) and `assets/js/ai-flow.js` (pre-existing duplicate `const url`, unused — ai-analysis loads `ai-app.js`).
+- `node _tools/check-links.js`: **PASS** — 31 files, 3107 local refs, 0 case mismatches, 0 missing files.
+- Localization scan (16 pages: 13 built + `facial-fillers-2`, `mesogel-skin-boosters`, `botox`):
+  - `Toman` 0, `Iran` 0, `Iranian` 0, `+98` 0, `0912` 0, `local mirror` 0, `the the` 0, `ago:` 0.
+  - `Tehran` 1 — `index.html:185` hero eyebrow reads "PERSONALIZED AESTHETICS · WEST TEHRAN".
+  - `ago` 156 hits across the built pages, all legitimate Google-review dates ("5 months ago · Google").
+  - License numbers: index 9, laser 2, facial 2, services 2, doctors 1 (demo credentials); the three new service pages contain none.
+- Repo-wide localization context (report-only, article content untouched per R12): 198 generated pages still carry the old footer with `tel:+982147009161` and West Tehran; 7 pages mention "Iranian", 1 "Iran", 3 "CinnaGen", 3 "Toman".
+
+### ASSUMPTIONS
+- R01: footer and mega-nav text links are inline text links, so they keep their hover underline; only card/pill CTAs changed.
+- R02: 62ch answer measure and existing card padding stay; only alignment changed.
+- R03: CTA zone is flat `--page-end` cream, exactly continuing the flat sheet end, instead of moving the footer partial.
+- R04: "local mirror" removal applied to generated placeholder pages; body text otherwise unchanged.
+- R05: sticky offset = header + chip bar + 24px (157px measured); mobile 3-line wraps accepted as cosmetic.
+- R06: two-up figures use 4/3, 28px radius and shared caption style; "A facial session" figure moved without changing ids/links.
+- R07: one soft panel shadow replaces per-image borders/shadows; lower-section H2 matched to R05 scale.
+- R08: price card column widened to the container; designed six-column `#dose` scroller kept on mobile.
+- R09: 72ch measure means 734px at the built container; illustration left centred.
+- R10: 18px medium radius and 50% 30% object-position applied to all 63 figures.
+- R11: "Add to calendar" is a client-side `.ics` download with Europe/Istanbul clinic time.
+- R12: generated article content is report-only; blog hero H1 left full-width at 64px.
+- R13: new service pages are demo-safe English with sample USD prices, noindex, and the T27/facial layout.
+- FINAL: `ago` inside review dates is not a broken fragment; license numbers on built pages are demo credentials and were counted rather than removed. `index.html` copy was not edited because this gate authorises scans/checks only.
+
+### PARTIAL / BLOCKED
+- BLOCKED: none.
+- PARTIAL (report-only): index hero "WEST TEHRAN" leftover; 198 generated article footers with +98 phone and Tehran address; `ai-flow.js` syntax error.
+
+### Manual review checklist
+- [ ] Booking popup success state at 1440 and 390: form header hidden, mascot/title/summary card/Done/Add to calendar centred, `.ics` downloads, no large empty area.
+- [ ] Sticky H2 on `laser.html` and `facial.html`: follows scroll inside its section, stops at section end, at most 2 lines at 1440.
+- [ ] `doctors.html`: three equal-height cards, left-aligned text/check lists, identical soft shadows with no hard photo edge.
+- [ ] `prices.html`: price cards share the exact 144/1296 (46/344 mobile) container axis; laser tables and `#dose` scroller have no page overflow.
+- [ ] `gallery.html`: all before/after halves share 18px radius, 4/3 ratio and 50% 30% crop.
+- [ ] Article template: generated article H1 44px at 1440 / 28px at 390 in the 1152px hero card; `blog.html` hero intentionally still 64px.
+- [ ] New service pages `facial-fillers-2.html`, `mesogel-skin-boosters.html`, `botox.html`: T27 layout, USD prices, noindex, no Iranian references or license numbers, nav/footer working.
