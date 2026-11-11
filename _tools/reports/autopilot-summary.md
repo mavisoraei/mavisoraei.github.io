@@ -298,3 +298,4 @@ Final gate re-run after R13 (HEAD `db9e99c`). No site files changed in this step
 | S05 | DONE | this commit | Doctor photos anchored bottom, overflow hidden, no tilt/rotation; 4/4 cards flush (bottom gap 0px) at 1440 and 390; smoke PASS. |
 | S07 | DONE | this commit | Contact calendar+times group centred at max 900px (equal gaps 1440/390), popup calendar centred, empty times panel now prompts for a day; smoke PASS. |
 | S02 | DONE | this commit | Sticky service H2 bounded by `.svc-sec__row` (305 scroll steps at 1440, 0 overlaps), faded-rule dividers with 3.5rem spacing, tocbar/header 0.92 + blur; smoke PASS. |
+| S06 | DONE | this commit | face-analysis: 5-card How It Works grid (equal height at 1440) + two-column about block; all later sections and FAQ JSON-LD removed; check-links 0 missing, smoke PASS. |

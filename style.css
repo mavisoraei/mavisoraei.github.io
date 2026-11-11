@@ -3071,15 +3071,93 @@ main:not(.hero-overlap) {
   margin-block: clamp(1.6rem,4vw,2.4rem) .8rem;
 }
 
-.ai-steps {
+/* S06 - How It Works: five equal-height glass cards with a gold number. */
+.ai-how-grid {
   display: grid;
-  gap: .8rem;
-  padding-inline-start: 1.3rem;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: clamp(.8rem, 1.4vw, 1.1rem);
+  align-items: stretch;
+  margin: clamp(1.4rem, 3vw, 2rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ai-how-card {
+  --glass-radius: var(--radius-lg);
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: .55rem;
+  padding: 1.5rem 1.35rem;
+}
+
+.ai-how-num {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #b8a070;
+  color: #fffdf7;
+  font-family: var(--font-subheading);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ai-how-name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+.ai-how-desc {
+  margin: 0;
+  font-size: .95rem;
+  line-height: 1.65;
   color: var(--muted-foreground);
 }
 
-.ai-steps li {
-  list-style: decimal;
+.ai-how h2,
+.ai-about h2 {
+  margin-block: 0 .9rem;
+  font-size: clamp(1.5rem, 1.7vw, 2rem);
+  line-height: 1.15;
+  text-align: start;
+}
+
+/* S06 - the two-column "what it is" block: copy left, lip-analysis image right. */
+.ai-about {
+  display: grid;
+  gap: clamp(1.6rem, 3.5vw, 3.5rem);
+  align-items: center;
+  padding-block: clamp(2.2rem, 4vw, 3.5rem) 0;
+}
+
+.ai-about-note {
+  margin-top: .85rem;
+  font-size: var(--step--1);
+  color: var(--muted-foreground);
+}
+
+.ai-about .ai-illus {
+  margin: 0;
+  width: 100%;
+  max-width: 360px;
+  justify-self: end;
+}
+
+@media (min-width: 900px) {
+  .ai-about {
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 360px);
+  }
+}
+
+@media (max-width: 899px) {
+  .ai-about .ai-illus {
+    justify-self: start;
+  }
 }
 
 .ai-body ul {

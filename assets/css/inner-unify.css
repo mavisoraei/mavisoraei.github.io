@@ -2757,3 +2757,11 @@ main:has(.ai-body) .ai-body > :is(h2, p, ul, ol, .callout):not(#_) {
   max-width: 72ch;
   margin-inline: 0;
 }
+
+/* S06 - the two surviving sections use the service-page heading scale. */
+main:has(.ai-body) .ai-how > h2:not(#_),
+main:has(.ai-body) .ai-about h2:not(#_) {
+  font-size: clamp(1.5rem, 1.7vw, 2rem);
+  line-height: 1.15;
+  text-align: start;
+}
