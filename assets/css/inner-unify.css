@@ -350,10 +350,10 @@ main .faq:not(#_) {
   padding-inline: 0;
 }
 
-/* The inner-page heading reset (`main h2:not(#_)`) outranks the shared
-   `.faq h2` rule, so restate the centred FAQ title here. */
+/* The heading reset outranks the shared `.faq h2` rule, so restate the
+   left-aligned FAQ title here (aligned with the list's left edge). */
 main .faq h2:not(#_) {
-  text-align: center;
+  text-align: start;
 }
 
 /* Body copy on inner pages is 17px; the FAQ answer keeps the shared 16px/1.8
