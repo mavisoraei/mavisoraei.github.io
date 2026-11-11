@@ -10861,8 +10861,10 @@ body.lm-modal-open {
 }
 
 .lm-header.is-solid {
-  background: rgba(246, 243, 236, .94);
+  background: rgba(246, 243, 236, .92);
   border-bottom-color: rgba(42, 38, 34, .08);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 /* Neutralise the retired pill on every state, including the old `.scrolled`
@@ -11024,14 +11026,18 @@ body.lm-modal-open {
    drawer is open, on any page. */
 @media (max-width: 900px) {
   body:not(:has(.arch-hero)) .lm-header {
-    background: rgba(246, 243, 236, .94);
+    background: rgba(246, 243, 236, .92);
     border-bottom-color: rgba(42, 38, 34, .08);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
   }
 }
 
 body:has(#mobile-drawer.open) .lm-header {
-  background: rgba(246, 243, 236, .94);
+  background: rgba(246, 243, 236, .92);
   border-bottom-color: rgba(42, 38, 34, .08);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 /* ==========================================================================

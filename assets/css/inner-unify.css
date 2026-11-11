@@ -1856,10 +1856,12 @@ main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
   transform: translateX(-50%);
   z-index: 0;
   pointer-events: none;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   background: linear-gradient(
     180deg,
     rgba(248, 243, 233, .92) 0%,
-    rgba(245, 239, 227, .90) 50%,
+    rgba(245, 239, 227, .92) 50%,
     rgba(248, 243, 233, .92) 100%
   );
   -webkit-mask-image:
@@ -2050,7 +2052,12 @@ main:has(.svc-sec) .svc-body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not
 }
 
 .svc-sec {
-  padding-block: clamp(1.5rem, 4vw, 2.5rem);
+  padding-block: 0;
+}
+
+/* S02 - space and a doctors-style hairline between consecutive sections. */
+.svc-sec-rule {
+  margin-block: clamp(2.25rem, 3.9vw, 3.5rem);
 }
 
 .svc-sec__label h2 {
@@ -2063,7 +2070,7 @@ main:has(.svc-sec) .svc-sec__content > figure.portrait:not(#_):not(#_):not(#_):n
 }
 
 @media (min-width: 900px) {
-  .svc-sec {
+  .svc-sec__row {
     display: grid;
     grid-template-columns: minmax(180px, 300px) minmax(0, 760px);
     column-gap: clamp(2rem, 4vw, 5rem);
@@ -2071,37 +2078,29 @@ main:has(.svc-sec) .svc-sec__content > figure.portrait:not(#_):not(#_):not(#_):n
     align-items: start;
   }
 
-  .svc-sec__label {
-    grid-column: 1;
-  }
-
   .svc-sec__content {
-    display: contents;
-  }
-
-  .svc-sec__content > * {
-    grid-column: 2;
     min-width: 0;
   }
 
-  .svc-sec__content > :is(table, figure:not(.portrait), .svc-wide) {
-    grid-column: 1 / -1;
+  .svc-sec__content > * {
+    min-width: 0;
   }
 
-  main:has(.svc-sec) .svc-sec__content > figure:not(.portrait):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+  .svc-sec > :is(table, figure:not(.portrait), .svc-wide, .callout--media) {
     width: 100%;
     max-width: none;
     margin-inline: 0;
   }
 
-  .svc-sec__content > figure:not(.portrait) img {
+  .svc-sec > figure:not(.portrait) img {
     width: 100%;
     max-width: none;
   }
 }
 
 @media (max-width: 899px) {
-  .svc-sec {
+  .svc-sec,
+  .svc-sec__row {
     display: block;
   }
 
@@ -2585,6 +2584,7 @@ main:has(.pr-hero) #dose:not(#_) {
     align-self: start;
     position: sticky;
     top: 157px;
+    z-index: 2;
   }
 
   main .svc-sec__label h2:not(#_) {
@@ -2606,7 +2606,7 @@ main:has(.pr-hero) #dose:not(#_) {
 }
 
 @media (min-width: 1200px) {
-  .svc-sec {
+  .svc-sec__row {
     grid-template-columns: minmax(180px, 400px) minmax(0, 720px);
     column-gap: clamp(1.5rem, 3vw, 3rem);
   }
