@@ -5786,18 +5786,13 @@ tbody tr:nth-child(2n) {
   margin-inline-start: .1rem;
 }
 
-.pr-note {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  justify-content: space-between;
-  padding-block: clamp(2rem,5vw,3rem);
-}
-
-.pr-note p {
+/* The one line that sits under the last price card. */
+.pr-note-line,
+main .pr-note-line:not(#_):not(#_) {
+  margin-block: .9rem 0;
+  font-size: var(--step--1);
   color: var(--muted-foreground);
-  max-width: 52ch;
+  max-width: 62ch;
 }
 
 .pr-side {
@@ -12225,6 +12220,8 @@ body.arch-intro:not(.classic-layout):not(.classic-mode) .ft25-cta-zone {
   display: block;
   inline-size: 100%;
   block-size: auto;
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
 }
 
 .ft25-footer {

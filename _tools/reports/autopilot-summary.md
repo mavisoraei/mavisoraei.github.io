@@ -293,3 +293,4 @@ Final gate re-run after R13 (HEAD `db9e99c`). No site files changed in this step
 - [ ] New service pages `facial-fillers-2.html`, `mesogel-skin-boosters.html`, `botox.html`: T27 layout, USD prices, noindex, no Iranian references or license numbers, nav/footer working.
 | S01 | DONE | this commit | Pill CTAs and .svc-card no longer draw a hover/focus underline; quiet scan 0/16 pages, smoke PASS. |
 | S04 | DONE | this commit | FAQ heading starts at the list edge (delta 0px, 1440/390); accordion boxes untouched; smoke PASS. |
+| S03 | DONE | this commit | One closing mascot CTA per page; extra bands removed (6 svc-cta, prices pr-note, doctors docs-cta), mascot bottom fade masked on 16/16; smoke PASS. |
