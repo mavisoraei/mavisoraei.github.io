@@ -5608,6 +5608,12 @@ tbody tr:nth-child(2n) {
   }
 }
 
+@media(max-width:819px) {
+  .spread-photo {
+    aspect-ratio: 1 / 1;
+  }
+}
+
 /* --------------------------------------------------------------------------
    HERO BANNER
    -------------------------------------------------------------------------- */
@@ -5890,8 +5896,9 @@ main .pr-note-line:not(#_):not(#_) {
 .spread-photo {
   display: flex;
   align-self: stretch;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  overflow: hidden;
   background: linear-gradient(180deg,#f6eddc 0%,#ead9bb 100%);
   border-radius: var(--radius-lg);
 }
@@ -5905,11 +5912,19 @@ main .pr-note-line:not(#_):not(#_) {
   display: block;
 }
 
-.spread-photo img {
+.spread-photo-link,
+.spread-photo picture {
+  display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 1 / 1;
+  height: 100%;
+}
+
+.spread-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: bottom;
   mix-blend-mode: multiply;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
@@ -5918,7 +5933,7 @@ main .pr-note-line:not(#_):not(#_) {
 }
 
 .spread-photo .img-top {
-  object-position: top;
+  object-position: bottom;
 }
 
 .spread-photo-link:hover img {

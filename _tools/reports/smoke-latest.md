@@ -1,6 +1,6 @@
 # Smoke test — latest run
 
-- Date: 2026-11-11T09:46:31.268Z
+- Date: 2026-11-11T09:53:37.693Z
 - Pages: 13 × 2 viewports (1440×900, 390×844 touch)
 - Baseline: `smoke-baseline.json`
 - Result: **SMOKE PASS**
