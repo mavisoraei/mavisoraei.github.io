@@ -202,6 +202,7 @@
     timesGroup.setAttribute('role', 'radiogroup');
     timesGroup.setAttribute('aria-label', 'Available times');
     const noTimes = el('p', 'bk-notimes');
+    noTimes.textContent = 'Select a day to see available times.';
     timesWrap.appendChild(timesH);
     timesWrap.appendChild(timesGroup);
     timesWrap.appendChild(noTimes);

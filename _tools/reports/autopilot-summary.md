@@ -296,3 +296,4 @@ Final gate re-run after R13 (HEAD `db9e99c`). No site files changed in this step
 | S03 | DONE | this commit | One closing mascot CTA per page; extra bands removed (6 svc-cta, prices pr-note, doctors docs-cta), mascot bottom fade masked on 16/16; smoke PASS. |
 | S08 | DONE | this commit | Index eyebrow now NISANTASI, ISTANBUL; 16/16 pages clean of Tehran/Iran/Toman in copy, titles and meta; smoke PASS. |
 | S05 | DONE | this commit | Doctor photos anchored bottom, overflow hidden, no tilt/rotation; 4/4 cards flush (bottom gap 0px) at 1440 and 390; smoke PASS. |
+| S07 | DONE | this commit | Contact calendar+times group centred at max 900px (equal gaps 1440/390), popup calendar centred, empty times panel now prompts for a day; smoke PASS. |

@@ -531,8 +531,8 @@
 
 /* --- calendar + times, side by side --- */
 .bk-inline-box .bk-cal {
-  max-width: none;
-  margin: 28px 0 0;
+  max-width: 900px;
+  margin: 28px auto 0;
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   grid-template-areas:
