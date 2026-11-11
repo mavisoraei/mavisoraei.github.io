@@ -1810,6 +1810,7 @@ body[data-mascot=rig] #iconsult .ic-photo>img {
   display: grid;
   gap: .3rem;
   padding: 2rem;
+  text-decoration: none;
   background: var(--lux-card);
   border: 1px solid var(--lux-hair);
   border-inline-end: 0;
@@ -8048,7 +8049,7 @@ tbody tr:nth-child(2n) {
   text-decoration: none;
 }
 
-.svc-group a:hover {
+.svc-group a:hover:not(.svc-card) {
   color: var(--foreground);
   text-decoration: underline;
 }
@@ -11511,7 +11512,6 @@ html body :is(
 /* The rule under a text action grows from its left edge. */
 html body :is(
   .btn-text,
-  .btn-pill.arrow-link,
   .ic-book-x,
   .ic-call,
   .bk-resend,
@@ -11531,7 +11531,6 @@ html body :is(
 
 html body :is(
   .btn-text,
-  .btn-pill.arrow-link,
   .ic-book-x,
   .ic-call,
   .bk-resend,

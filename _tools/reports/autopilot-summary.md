@@ -291,3 +291,4 @@ Final gate re-run after R13 (HEAD `db9e99c`). No site files changed in this step
 - [ ] `gallery.html`: all before/after halves share 18px radius, 4/3 ratio and 50% 30% crop.
 - [ ] Article template: generated article H1 44px at 1440 / 28px at 390 in the 1152px hero card; `blog.html` hero intentionally still 64px.
 - [ ] New service pages `facial-fillers-2.html`, `mesogel-skin-boosters.html`, `botox.html`: T27 layout, USD prices, noindex, no Iranian references or license numbers, nav/footer working.
+| S01 | DONE | this commit | Pill CTAs and .svc-card no longer draw a hover/focus underline; quiet scan 0/16 pages, smoke PASS. |
