@@ -31,7 +31,8 @@ const LATEST_MD = path.join(REPORTS, 'smoke-latest.md');
 
 const PAGES = [
   'index', 'laser', 'facial', 'services', 'doctors', 'blog', 'areas',
-  'gallery', 'gallery_new', 'prices', 'contact', 'ai-analysis', 'face-analysis'
+  'gallery', 'gallery_new', 'prices', 'contact', 'ai-analysis', 'face-analysis',
+  'facial-fillers-2', 'mesogel-skin-boosters', 'botox'
 ];
 const WIDTHS = [
   { width: 1440, height: 900, mobile: false },

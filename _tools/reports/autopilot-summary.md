@@ -299,3 +299,35 @@ Final gate re-run after R13 (HEAD `db9e99c`). No site files changed in this step
 | S07 | DONE | this commit | Contact calendar+times group centred at max 900px (equal gaps 1440/390), popup calendar centred, empty times panel now prompts for a day; smoke PASS. |
 | S02 | DONE | this commit | Sticky service H2 bounded by `.svc-sec__row` (305 scroll steps at 1440, 0 overlaps), faded-rule dividers with 3.5rem spacing, tocbar/header 0.92 + blur; smoke PASS. |
 | S06 | DONE | this commit | face-analysis: 5-card How It Works grid (equal height at 1440) + two-column about block; all later sections and FAQ JSON-LD removed; check-links 0 missing, smoke PASS. |
+
+## Review2 final verification
+
+| Task | Commit | Status | Leftovers |
+| --- | --- | --- | --- |
+| S01 | 1325dbc | DONE | none |
+| S02 | 2b36e0a | DONE | none |
+| S03 | c959d09 | DONE | unused `.svc-cta` / `.pr-note` rules remain in inner-unify.css |
+| S04 | f97e9b9 | DONE | none |
+| S05 | 8e20c0f | DONE | none |
+| S06 | 31e0a56 | DONE | none |
+| S07 | 45edc8a | DONE | none |
+| S08 | b254946 | DONE | 199 generated placeholder/article pages still carry Tehran in the shared footer (outside the 16-page scope) |
+
+Final checks (branch `review2-nov26`, not merged, not pushed):
+
+- smoke: 16 pages (13 built + 3 new service pages) at 1440 and 390 -> PASS, 0 console/page errors, 0 failed requests, no overflow, exactly one h1 per page.
+- check-links: 31 files, 3083 local refs, 0 missing files, 0 case mismatches.
+- rendered text: 16 pages at 1440 + 390 -> 0 hits for Tehran, Iran, Toman, +98, "ago:" and "local mirror" across body text, title, meta description, JSON-LD and href/src/alt/aria-label.
+- node --check: 2 pre-existing failures, both unreferenced by any page: `extract.js` (UTF-16 scratch utility) and `assets/js/ai-flow.js` (duplicate `const url`); neither was touched in this review.
+
+Manual checks before merge:
+
+- [ ] Hover and keyboard-focus a pill CTA and a `.svc-card`: no underline appears (S01).
+- [ ] Scroll laser/facial/botox/fillers/mesogel: each sticky H2 stops at its text block and never covers a figure, callout, table or the next section; faded dividers and 3.5rem rhythm visible (S02).
+- [ ] Each of the 16 pages shows exactly one closing mascot CTA with a soft bottom fade (S03).
+- [ ] FAQ title sits flush with the list left edge on every page (S04).
+- [ ] Doctors: all four portraits sit flush to the card bottom with no hover rotation; gradient/multiply blend intact (S05).
+- [ ] Face-analysis: one row of five equal glass cards at 1440, two-column about block with the lip image, no leftover sections or FAQ (S06).
+- [ ] Contact: calendar + times panel centred as one group; empty state reads "Select a day to see available times."; popup matches (S07).
+- [ ] Home eyebrow reads "NISANTASI, ISTANBUL"; no Tehran/Iran/Toman text on the 16 pages (S08).
+

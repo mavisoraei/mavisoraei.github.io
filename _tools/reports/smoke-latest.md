@@ -1,7 +1,7 @@
 # Smoke test — latest run
 
-- Date: 2026-11-11T10:43:19.962Z
-- Pages: 13 × 2 viewports (1440×900, 390×844 touch)
+- Date: 2026-11-14T07:12:29.372Z
+- Pages: 16 × 2 viewports (1440×900, 390×844 touch)
 - Baseline: `smoke-baseline.json`
 - Result: **SMOKE PASS**
 
@@ -33,4 +33,10 @@
 | ai-analysis | 390 | 0 | 0 | 0 | 0 | no | 1 | 0 |
 | face-analysis | 1440 | 0 | 0 | 0 | 0 | no | 1 | 0 |
 | face-analysis | 390 | 0 | 0 | 0 | 0 | no | 1 | 0 |
+| facial-fillers-2 | 1440 | 0 | 0 | 0 | 0 | no | 1 | 0 |
+| facial-fillers-2 | 390 | 0 | 0 | 0 | 0 | no | 1 | 0 |
+| mesogel-skin-boosters | 1440 | 0 | 0 | 0 | 0 | no | 1 | 0 |
+| mesogel-skin-boosters | 390 | 0 | 0 | 0 | 0 | no | 1 | 0 |
+| botox | 1440 | 0 | 0 | 0 | 0 | no | 1 | 0 |
+| botox | 390 | 0 | 0 | 0 | 0 | no | 1 | 0 |
 
