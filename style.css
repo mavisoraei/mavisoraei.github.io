@@ -8168,10 +8168,23 @@ main .pr-note-line:not(#_):not(#_) {
   margin-top: 1.6rem;
 }
 
+/* DR3: the copy column is exactly as tall as the map box; the address block
+   starts at the map's top edge and the route buttons sit on its bottom edge,
+   with the normal small column gap. */
 .hl-copy {
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
+}
+
+.hl-copy > :last-child {
+  margin-bottom: 0;
+}
+
+/* Push the route buttons to the map's bottom edge without spreading the
+   address rows. */
+.hl-copy > .hl-actions {
+  margin-top: auto;
 }
 
 .hl-nap {
@@ -8264,11 +8277,32 @@ main .pr-note-line:not(#_):not(#_) {
 
 .hl-map {
   display: block;
+  position: relative;
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
   transition: transform .4s ease;
+}
+
+/* DR3: OpenStreetMap embed sits over the old placeholder, which stays as the
+   painted fallback until the frame loads. The frame inherits the box radius. */
+.hl-map-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hl-map-frame {
+    pointer-events: none;
+  }
 }
 
 .hl-map:hover {

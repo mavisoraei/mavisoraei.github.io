@@ -289,7 +289,9 @@
   margin-top: 28px;
 }
 .home-local .hl-actions {
-  margin-top: 24px;
+  /* DR3: pin the route buttons to the map's bottom edge on desktop; on phones
+     there is no free space, so the normal column gap still applies. */
+  margin-top: auto;
   gap: 12px;
 }
 .home-local .hl-actions .btn-pill { height: 46px; }
