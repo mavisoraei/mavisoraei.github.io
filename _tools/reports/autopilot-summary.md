@@ -221,7 +221,7 @@ All queue tasks are DONE. No task was marked BLOCKED and no destructive command 
 - [ ] T25: open any built page and confirm the glass CTA card, one-logo footer, 4 link columns, accordion at <=640px and the current-year bar.
 - [ ] T29: review the 7 ambiguous doctor name/role captions listed above and decide whether they need punctuation.
 - [ ] T31: run smoke and confirm `index.html` has exactly one visible `h1`.
-- R04 (this commit) DONE — text/template cleanup: Before labels, doctors copy, local-mirror removed (201 pages), skip-link + nav active; no leftovers.
+- R04 (this commit) DONE ï¿½ text/template cleanup: Before labels, doctors copy, local-mirror removed (201 pages), skip-link + nav active; no leftovers.
 - R05 (this commit) DONE - sticky label H2 24.5px, laser overview H2; leftover mobile long H2 wraps 3 lines.
 - R06 (this commit) DONE - facial supervised card, 14px meta, full-width intro, two-up figures, callout alignment; no leftovers.
 - R07 (this commit) DONE - doctors cards left-aligned, unified soft photo shadow, lower sections 24.5px H2/72ch; no leftovers.
@@ -331,3 +331,9 @@ Manual checks before merge:
 - [ ] Contact: calendar + times panel centred as one group; empty state reads "Select a day to see available times."; popup matches (S07).
 - [ ] Home eyebrow reads "NISANTASI, ISTANBUL"; no Tehran/Iran/Toman text on the 16 pages (S08).
 
+
+## Review3 task log
+
+| Task | Commit | Status | Notes |
+| --- | --- | --- | --- |
+| D1 | this commit | DONE | gallery: removed the two intro text sections, FAQ block and FAQ JSON-LD after the case grid (kept 63 figures, lightbox data, one CTA band + footer); check-links 0 missing, smoke PASS |
