@@ -2702,15 +2702,35 @@ main .lm-svc-hero .lm-svc-reviewed:not(#_) {
   text-align: start;
 }
 
-/* One soft diffuse shadow on the photo panel; no border or hard edge on the image. */
+/* D4: one photo box geometry for all four doctors. The panel takes the
+   column width and a 4/5 frame instead of stretching to the copy column, so
+   every portrait box measures exactly the same. The soft shadow sits on the
+   panel (which also carries the gradient backdrop) so nothing is clipped. */
 .spread-photo {
+  align-self: start;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  box-shadow: 0 26px 64px -34px rgba(42, 38, 34, .38);
+  box-shadow: var(--shadow-soft);
+}
+
+/* The scroll-reveal animation owns `transform` on this element and would
+   override the inline tilt transform; the photo box is the tilt target now. */
+.spread-photo.reveal-s {
+  animation: none;
 }
 
 .spread-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
   border: 0;
   box-shadow: none;
+}
+
+/* The two illustrated 560x700 cards read as full scenes, so centre them. */
+.spread-photo .img-top {
+  object-position: center;
 }
 
 .spread-photo-link:hover img {
