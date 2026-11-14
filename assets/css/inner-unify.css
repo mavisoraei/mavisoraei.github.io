@@ -1843,39 +1843,32 @@ main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
   isolation: isolate;
 }
 
-/* The cream sheet is a masked pseudo-element rather than the bar's own
-   background, so the feather can run past the content edge without clipping
-   the chips. 12% left/right, 35% top/bottom, intersected; the centre stays at
-   ~.9 alpha so scrolling copy underneath cannot be read through the bar. */
+/* DR3: the bar is invisible until it actually sticks. The old feather ran
+   100vw wide even in normal flow, painting a cream smear over the golden
+   corner light left of the container. Once stuck it becomes a full-width
+   sheet at the header tone (same rgba(246,243,236) family, slightly denser),
+   with the same 10px blur and a hairline bottom border. No mask, no glow,
+   no shadow outside the bar. */
 .lm-svc-tocbar::before {
   content: "";
   position: absolute;
   inset-block: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
+  left: 0;
+  width: 100%;
   z-index: 0;
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  background: linear-gradient(
-    180deg,
-    rgba(248, 243, 233, .92) 0%,
-    rgba(245, 239, 227, .92) 50%,
-    rgba(248, 243, 233, .92) 100%
-  );
-  -webkit-mask-image:
-    linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 35%, #000 65%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-image:
-    linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 35%, #000 65%, transparent 100%);
-  mask-composite: intersect;
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
+  background: rgba(246, 243, 236, .94);
+  border-bottom: 1px solid rgba(42, 38, 34, .08);
+  transition: opacity .18s ease;
+}
+
+.lm-svc-tocbar.is-stuck::before {
+  opacity: 1;
+  visibility: visible;
 }
 
 .lm-svc-tocbar__in {
@@ -1942,6 +1935,7 @@ main:has(:is(.svc-grid, .lm-svc-hero)) .svc-grid:has(.svc-side) {
   border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
   border-radius: 999px;
   background-color: color-mix(in srgb, var(--card) 68%, transparent);
+  box-shadow: 0 2px 10px rgba(70, 55, 30, .10);
   color: var(--foreground);
   font-size: 13.5px;
   line-height: 1.2;

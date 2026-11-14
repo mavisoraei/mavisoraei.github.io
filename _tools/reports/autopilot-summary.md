@@ -337,3 +337,4 @@ Manual checks before merge:
 | Task | Commit | Status | Notes |
 | --- | --- | --- | --- |
 | D1 | this commit | DONE | gallery: removed the two intro text sections, FAQ block and FAQ JSON-LD after the case grid (kept 63 figures, lightbox data, one CTA band + footer); check-links 0 missing, smoke PASS |
+| D2 | this commit | DONE | chip bar: cream sheet is hidden in normal flow (opacity 0, no 100vw feather), turns into a full-width rgba(246,243,236,.94) blur sheet with a hairline bottom border only when the is-stuck class fires from a sentinel IntersectionObserver; chip shadow kept inside the masked scroller; delta vs bar-hidden outside the container <=5/255 at 1440 on laser/prices/facial/facial-fillers-2, stuck state verified at y=62, smoke PASS |

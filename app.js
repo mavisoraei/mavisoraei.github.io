@@ -1962,6 +1962,22 @@
     const links = Array.prototype.slice.call(bar.querySelectorAll('a[href^="#"]'));
     if (!links.length) return;
 
+    /* DR3: keep the cream sheet off the golden corner light until the bar is
+       actually pinned under the navbar. A zero-height sentinel just before
+       the bar gives the exact transition without a scroll listener. */
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:relative;height:1px;margin-bottom:-1px;pointer-events:none;visibility:hidden';
+    if (bar.parentNode) {
+      bar.parentNode.insertBefore(sentinel, bar);
+      const stuckIO = new IntersectionObserver(function (entries) {
+        const entry = entries[0];
+        if (!entry) return;
+        bar.classList.toggle('is-stuck', entry.boundingClientRect.top < (entry.rootBounds ? entry.rootBounds.top : 0));
+      }, { rootMargin: '-63px 0px 0px 0px', threshold: 0 });
+      stuckIO.observe(sentinel);
+    }
+
     /* Short visible labels come from data-short; the full original text stays
        the link's accessible name and tooltip. */
     links.forEach(function (a) {
