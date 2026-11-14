@@ -825,39 +825,6 @@ main .dose-scroll .dose-modal:not(#_) {
   margin-top: 2px;
 }
 
-/* Keep the six real columns on small screens and scroll instead of collapsing
-   into stacked label/value cards (which is what the shared .pr-table mobile
-   rule does to the other pricing tables). */
-@media (max-width: 640px) {
-  main .dose-scroll .pr-table thead:not(#_) {
-    display: table-header-group;
-  }
-
-  main .dose-scroll .pr-table tbody tr:not(#_) {
-    display: table-row;
-    padding: 0;
-    border: 0;
-  }
-
-  main .dose-scroll .pr-table tbody th:not(#_),
-  main .dose-scroll .pr-table tbody td:not(#_) {
-    display: table-cell;
-    padding: 16px 14px;
-  }
-
-  main .dose-scroll .pr-table tbody th:not(#_) {
-    border-bottom: 1px solid rgba(42, 38, 34, .08);
-  }
-
-  main .dose-scroll .pr-table tbody td:not(#_) {
-    border: 0;
-  }
-
-  main .dose-scroll .pr-table tbody td:not(#_):before {
-    content: none;
-  }
-}
-
 /* ==========================================================================
    PRICING SIDEBAR — Quick jump and the Smart Mirror CTA card
 
@@ -2778,4 +2745,343 @@ main:has(.ai-body) .ai-about h2:not(#_) {
   font-size: clamp(1.5rem, 1.7vw, 2rem);
   line-height: 1.15;
   text-align: start;
+}
+
+/* ==========================================================================
+   M2 - PRICE TABLES ON PHONES (<=640px)
+
+   One component for laser, facial, prices (#pr-laser, #dose) and the three
+   new service pages. The card surface is the only frame: no outer border, no
+   nested border, no glass ring. Rows are separated by one hairline and the
+   first cell becomes the row title. Two-column tables put title and price on
+   one line; wider tables stack label/value lines under the title.
+   ========================================================================== */
+@media (max-width: 640px) {
+  /* --- single card surface ------------------------------------------------ */
+  main .svc-prices .lp-scroll:not(#_):not(#_):not(#_) {
+    padding: 16px;
+    border: 0;
+    border-radius: 16px;
+    background: #fbf9f5;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  main:has(.pr-hero) .pr-block.glass-card:not(#_):not(#_):not(#_) {
+    padding: 16px;
+    border: 0;
+    border-radius: 16px;
+    background: #fbf9f5;
+    box-shadow: none;
+  }
+
+  main:has(.pr-hero) .pr-block.glass-card:not(#_):not(#_):not(#_)::before {
+    display: none;
+  }
+
+  /* Tables inside a price card are already on the card; no second frame. */
+  main:has(.pr-hero) .pr-block .lp-scroll:not(#_):not(#_):not(#_),
+  main:has(.pr-hero) .pr-block .dose-scroll:not(#_):not(#_):not(#_) {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  /* --- table canvas becomes a stack of row cards -------------------------- */
+  main .lp-scroll .pr-table:not(#_):not(#_):not(#_):not(#_),
+  main .dose-scroll .pr-table:not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: table;
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  main .lp-scroll .pr-table thead:not(#_):not(#_):not(#_):not(#_),
+  main .dose-scroll .pr-table thead:not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: none;
+  }
+
+  main .lp-scroll .pr-table tbody tr:not(#_):not(#_):not(#_):not(#_),
+  main .dose-scroll .pr-table tbody tr:not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: block;
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid rgba(42, 38, 34, .08);
+  }
+
+  main .lp-scroll .pr-table tbody tr:last-child:not(#_):not(#_):not(#_):not(#_),
+  main .dose-scroll .pr-table tbody tr:last-child:not(#_):not(#_):not(#_):not(#_):not(#_) {
+    border-bottom: 0;
+  }
+
+  main .lp-scroll .pr-table tbody th:not(#_):not(#_):not(#_):not(#_):not(#_),
+  main .lp-scroll .pr-table tbody td:not(#_):not(#_):not(#_):not(#_):not(#_),
+  main .dose-scroll .pr-table tbody th:not(#_):not(#_):not(#_):not(#_):not(#_),
+  main .dose-scroll .pr-table tbody td:not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: block;
+    width: auto;
+    padding: 3px 0;
+    border: 0;
+    background: transparent;
+    font-size: 16px;
+    line-height: 1.4;
+    text-align: start;
+    white-space: normal;
+    vertical-align: top;
+  }
+
+  /* The first cell is the row title, never a labelled field. */
+  main .lp-scroll .pr-table tbody tr > :first-child:not(#_):not(#_):not(#_):not(#_):not(#_),
+  main .dose-scroll .pr-table tbody tr > :first-child:not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: block;
+    width: auto;
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2a2622;
+  }
+
+  main .lp-scroll .pr-table tbody tr > :first-child::before,
+  main .dose-scroll .pr-table tbody tr > :first-child::before {
+    content: none;
+    display: none;
+  }
+
+  /* Every other cell is a muted label on the left, value on the right. */
+  main .lp-scroll .pr-table tbody tr > :not(:first-child):not(#_):not(#_):not(#_):not(#_):not(#_),
+  main .dose-scroll .pr-table tbody tr > :not(:first-child):not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 12px;
+    align-items: baseline;
+    padding: 3px 0;
+    text-align: end;
+  }
+
+  main .lp-scroll .pr-table tbody tr > :not(:first-child):not(#_):not(#_):not(#_):not(#_):not(#_)::before,
+  main .dose-scroll .pr-table tbody tr > :not(:first-child):not(#_):not(#_):not(#_):not(#_):not(#_)::before {
+    content: attr(data-label);
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #6b625d;
+    text-align: start;
+    white-space: normal;
+  }
+
+  main .dose-scroll .pr-table tbody .dose-modal {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #6b625d;
+    text-align: end;
+  }
+
+  /* Two-column tables: title left and its one price right, same line. */
+  main .lp-scroll .pr-table tbody tr:has(> :nth-child(2):last-child):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    align-items: baseline;
+  }
+
+  main .lp-scroll .pr-table tbody tr:has(> :nth-child(2):last-child) > :first-child:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+    margin: 0;
+  }
+
+  main .lp-scroll .pr-table tbody tr:has(> :nth-child(2):last-child) > :nth-child(2):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: block;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: end;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  main .lp-scroll .pr-table tbody tr:has(> :nth-child(2):last-child) > :nth-child(2):not(#_):not(#_):not(#_):not(#_):not(#_):not(#_)::before {
+    content: none;
+    display: none;
+  }
+
+  /* Group headings are labels, not rows: 12px uppercase, no divider, no fill. */
+  main .lp-scroll .pr-table tbody tr.pr-group-row:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  main .lp-scroll .pr-table tbody tr.pr-group-row > td:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+    display: block;
+    width: auto;
+    margin: 0;
+    padding: 16px 0 6px;
+    border: 0;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #8a8178;
+  }
+
+  /* Keep the small gold dash that marks an add-on row. */
+  main .lp-scroll .pr-table tbody tr.pr-sub-row > td:first-child:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) {
+    padding-inline-start: 18px;
+  }
+
+  main .lp-scroll .pr-table tbody tr.pr-sub-row > td:first-child::before {
+    content: "\2014";
+    display: inline;
+    margin-inline-end: 8px;
+    color: #8c7040;
+  }
+
+  /* --- prices.html list cards -------------------------------------------- */
+  main:has(.pr-hero) .pr-block > .pr-sub:not(#_):not(#_) {
+    padding-block-end: 0;
+    border-block-end: 0;
+  }
+
+  main:has(.pr-hero) .pr-brand + .pr-brand:not(#_):not(#_) {
+    margin-block-start: 18px;
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  /* Category sub-headings: 12px uppercase muted, unit becomes a pill. */
+  main .svc-prices .laser-prices > h3:not(#_):not(#_):not(#_) {
+    margin: 18px 0 8px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #8a8178;
+  }
+
+  main:has(.pr-hero) .pr-brand > h3:not(#_):not(#_):not(#_):not(#_) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 18px 0 6px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #8a8178;
+  }
+
+  main:has(.pr-hero) .pr-brand > h3 a:not(#_) {
+    color: inherit;
+  }
+
+  main:has(.pr-hero) .pr-brand > h3 .pr-tag:not(#_) {
+    flex: none;
+    padding: 2px 8px;
+    border: 1px solid rgba(42, 38, 34, .1);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #6b625d;
+  }
+
+  /* Service / price rows: 16px title, 13px descriptor, 16px price right. */
+  main:has(.pr-hero) .pr-rows li:not(#_):not(#_):not(#_) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(42, 38, 34, .08);
+  }
+
+  main:has(.pr-hero) .pr-rows li:last-child:not(#_):not(#_):not(#_) {
+    border-bottom: 0;
+  }
+
+  main:has(.pr-hero) .pr-rows li > span:not(#_):not(#_) {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  main:has(.pr-hero) .pr-rows li > b:not(#_):not(#_) {
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+  }
+
+  main:has(.pr-hero) .pr-rows .pr-row-sub:not(#_):not(#_):not(#_) {
+    margin-top: 2px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #6b625d;
+  }
+
+  /* The richer facial list uses the same title/price/descriptor rhythm. */
+  main:has(.pr-hero) .pr-list li:not(#_):not(#_):not(#_) {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(42, 38, 34, .08);
+  }
+
+  main:has(.pr-hero) .pr-list li:last-child:not(#_):not(#_):not(#_) {
+    border-bottom: 0;
+  }
+
+  main:has(.pr-hero) .pr-name {
+    flex-wrap: nowrap;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  main:has(.pr-hero) .pr-name > span:first-child:not(#_):not(#_) {
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  main:has(.pr-hero) .pr-price:not(#_):not(#_) {
+    flex: none;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  main:has(.pr-hero) .pr-list .pr-desc:not(#_):not(#_) {
+    max-width: none;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #6b625d;
+  }
+
+  main:has(.pr-hero) .pr-list .pr-extra:not(#_):not(#_) {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  main:has(.pr-hero) .pr-price-multi:not(#_):not(#_) {
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: normal;
+  }
 }
