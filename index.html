@@ -140,8 +140,8 @@ html.intro-play .intro__photo {
   }
 
   if (play) {
-    /* Hard fail-safe. */
-    setTimeout(end, 5000);
+    /* Hard fail-safe: never leave a phone behind the intro for 4s+. */
+    setTimeout(end, 3800);
     /* Soft fail-safe: once the CSS timeline has really ended, #intro is
        transparent but would still be swallowing clicks. Hand the page back
        anyway. arch-intro.js removes it first when it is alive, so on the happy

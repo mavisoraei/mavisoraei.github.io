@@ -36,7 +36,9 @@ const PAGES = [
 ];
 const WIDTHS = [
   { width: 1440, height: 900, mobile: false },
-  { width: 390, height: 844, mobile: true }
+  { width: 428, height: 926, mobile: true },
+  { width: 390, height: 844, mobile: true },
+  { width: 360, height: 800, mobile: true }
 ];
 
 function sanitise(value, max = 300) {
@@ -87,7 +89,17 @@ const MEASURE = `(function () {
     var s = getComputedStyle(el);
     if (s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) === 0) return false;
     if (el.closest('[hidden]')) return false;
+    if (el.checkVisibility && !el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) return false;
     return true;
+  }
+  function inOverlay(el) {
+    var node = el;
+    while (node && node !== document.body && node !== document.documentElement) {
+      var pos = getComputedStyle(node).position;
+      if (pos === 'fixed' || pos === 'absolute') return true;
+      node = node.parentElement;
+    }
+    return false;
   }
   function inScroller(el) {
     var node = el.parentElement;
@@ -120,6 +132,37 @@ const MEASURE = `(function () {
     }
   }
 
+  /* M1: a visible text box that crosses the viewport edge is clipped copy,
+     even when an ancestor's overflow hides it. Horizontal scrollers are
+     exempted (their off-screen cards are intentional); everything else is
+     not. */
+  var textOffenders = [];
+  for (var k = 0; k < all.length; k++) {
+    var tel = all[k];
+    if (!visible(tel) || inScroller(tel) || inOverlay(tel)) continue;
+    if (tel.closest('script,style,noscript,svg')) continue;
+    var textRects = [];
+    var range = document.createRange();
+    for (var n = 0; n < tel.childNodes.length; n++) {
+      var node = tel.childNodes[n];
+      if (node.nodeType !== 3 || !node.textContent.trim()) continue;
+      range.selectNodeContents(node);
+      var rects = range.getClientRects();
+      for (var q = 0; q < rects.length; q++) textRects.push(rects[q]);
+    }
+    for (var q2 = 0; q2 < textRects.length; q2++) {
+      var tr = textRects[q2];
+      if (tr.width < 1 || tr.height < 1) continue;
+      if (tr.bottom <= 0 || tr.top >= innerHeight) continue;
+      if (tr.right <= 0 || tr.left >= vw) continue;
+      if (tr.left < -2 || tr.right > vw + 2) {
+        textOffenders.push(selector(tel) + ' left=' + Math.round(tr.left) + ' right=' + Math.round(tr.right) + ' "' + node.textContent.trim().replace(/\\s+/g, ' ').slice(0, 32) + '"');
+        break;
+      }
+    }
+    if (textOffenders.length >= 8) break;
+  }
+
   var h1s = [];
   var nodes = document.querySelectorAll('h1');
   for (var j = 0; j < nodes.length; j++) {
@@ -131,6 +174,7 @@ const MEASURE = `(function () {
     scrollWidth: sw,
     overflow: sw > vw + 2,
     offenders: offenders,
+    textOffenders: textOffenders,
     h1Count: h1s.length,
     h1Text: h1s.join(' | ')
   };
@@ -153,6 +197,7 @@ function issueKeys(page, width, sample) {
       keys.push('overflow|' + at + '|scrollWidth ' + sample.scrollWidth);
     }
   }
+  (sample.textOffenders || []).forEach((o) => keys.push('textclip|' + at + '|' + o));
   if (sample.h1Count !== 1) keys.push('h1|' + at + '|count ' + sample.h1Count);
   return keys;
 }
@@ -170,6 +215,7 @@ async function runSample(cdp, page, viewport) {
     scrollWidth: 0,
     innerWidth: viewport.width,
     offenders: [],
+    textOffenders: [],
     h1Count: 0,
     h1Text: ''
   };
@@ -245,6 +291,17 @@ async function runSample(cdp, page, viewport) {
     await loaded;
     await sleep(1400);
 
+    /* M1: the home intro is a real first-paint layer. Wait for it to lift
+       (max ~4.3s total) before measuring, so the hero is the visible page. */
+    if (page === 'index') {
+      for (let i = 0; i < 15; i++) {
+        const gone = await evaluate(cdp, sessionId, "!document.getElementById('intro')");
+        if (gone) break;
+        await sleep(200);
+      }
+      await sleep(300);
+    }
+
     const measured = await evaluate(cdp, sessionId, MEASURE);
     Object.assign(sample, measured);
   } catch (err) {
@@ -305,7 +362,7 @@ async function main() {
         run.samples.push(sample);
         console.log(sample.consoleErrors.length + ' console, ' + sample.pageErrors.length + ' page, ' +
           sample.failedSameOrigin.length + '/' + sample.failedOther.length + ' failed, ' +
-          (sample.overflow ? 'overflow' : 'no overflow') + ', h1=' + sample.h1Count);
+          (sample.overflow ? 'overflow' : 'no overflow') + ', textclip=' + (sample.textOffenders.length) + ', h1=' + sample.h1Count);
       }
     }
   } finally {
